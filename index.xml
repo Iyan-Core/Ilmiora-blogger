@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:version='2' class='v2' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+  <meta charset='UTF-8'/>
+  <meta content='width=device-width, initial-scale=1.0' name='viewport'/>
+  <b:include data='blog' name='all-head-content'/>
+  <title><data:blog.pageTitle/></title>
+  <script src='https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js'></script>
+  <script src='https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js'></script>
+  <b:skin><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+:root{--ink:#07070f;--surface:#11111e;--card:#161625;--cream:#ede8db;--cream-dim:rgba(237,232,219,0.65);--gold:#e8b84b;--teal:#1a9b8a;--coral:#e85d4a;--lavender:#7c6aff;--muted:#5a5a72;--border:rgba(255,255,255,0.06);--border-h:rgba(255,255,255,0.12);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--cream);overflow-x:hidden;}
+.navbar,.quickedit,.widget-item-control,.b-navbar,#b-navbar,.bloggerPinButton,.widget.Attribution,.feed-links,.blog-pager{display:none!important;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--lavender);border-radius:2px;}
+#ilm-auth{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:var(--ink);overflow:hidden;}
+.ilm-orb1{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(124,106,255,0.14),transparent 70%);top:-150px;left:-100px;animation:orbF 9s ease-in-out infinite;pointer-events:none;}
+.ilm-orb2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(26,155,138,0.11),transparent 70%);bottom:-100px;right:-80px;animation:orbF 11s ease-in-out infinite reverse;pointer-events:none;}
+.ilm-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:55px 55px;pointer-events:none;}
+@keyframes orbF{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(25px,-25px) scale(1.08);}}
+.ilm-card{position:relative;z-index:2;width:100%;max-width:420px;background:rgba(255,255,255,0.04);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.09);border-radius:28px;padding:44px 38px 38px;box-shadow:0 48px 96px rgba(0,0,0,0.65);animation:cardUp 0.55s cubic-bezier(0.22,1,0.36,1) both;margin:16px;}
+@keyframes cardUp{from{opacity:0;transform:translateY(36px);}to{opacity:1;transform:translateY(0);}}
+.ilm-brand{display:flex;align-items:center;gap:11px;margin-bottom:4px;}
+.ilm-brand-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--lavender),var(--teal));display:flex;align-items:center;justify-content:center;font-size:19px;}
+.ilm-brand-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;background:linear-gradient(90deg,var(--gold),var(--lavender));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ilm-slogan{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.8px;margin-bottom:28px;}
+.ilm-h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:6px;}
+.ilm-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.ilm-err{background:rgba(232,93,74,0.1);border:1px solid rgba(232,93,74,0.22);border-radius:8px;padding:10px 14px;font-size:12px;color:#ff8878;margin-bottom:12px;display:none;}
+.ilm-ok{background:rgba(26,155,138,0.1);border:1px solid rgba(26,155,138,0.22);border-radius:8px;padding:10px 14px;font-size:12px;color:#4ecdb8;margin-bottom:12px;display:none;}
+.ilm-lbl{display:block;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.ilm-inp{width:100%;padding:12px 15px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:var(--cream);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:all 0.2s;margin-bottom:14px;-webkit-appearance:none;}
+.ilm-inp:focus{border-color:var(--lavender);background:rgba(124,106,255,0.07);}
+.ilm-inp::placeholder{color:rgba(255,255,255,0.18);}
+.ilm-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--lavender),var(--teal));border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.3s;margin-top:4px;}
+.ilm-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(124,106,255,0.38);}
+.ilm-btn-g{width:100%;padding:11px;margin-top:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:10px;color:var(--cream);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:9px;}
+.ilm-btn-g:hover{background:rgba(255,255,255,0.09);}
+.ilm-div{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:11px;font-family:'Space Mono',monospace;}
+.ilm-div::before,.ilm-div::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.07);}
+.ilm-tog{text-align:center;margin-top:16px;font-size:12px;color:var(--muted);}
+.ilm-tog a{color:var(--lavender);cursor:pointer;font-weight:600;}
+.ilm-spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#ilm-nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:rgba(7,7,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.ilm-nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.ilm-nav-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--lavender),var(--teal));display:flex;align-items:center;justify-content:center;font-size:16px;}
+.ilm-nav-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;background:linear-gradient(90deg,var(--gold),var(--lavender));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ilm-menu{display:flex;align-items:center;gap:2px;list-style:none;}
+.ilm-menu>li{position:relative;}
+.ilm-menu>li>a{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:8px;color:var(--cream-dim);text-decoration:none;font-size:13px;font-weight:500;transition:all 0.2s;white-space:nowrap;}
+.ilm-menu>li>a:hover{color:var(--cream);background:rgba(255,255,255,0.06);}
+.arr{font-size:9px;opacity:0.5;}
+.ilm-drop{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(-8px);min-width:220px;background:var(--card);border:1px solid var(--border-h);border-radius:14px;padding:7px;box-shadow:0 20px 50px rgba(0,0,0,0.5);opacity:0;visibility:hidden;transition:all 0.22s cubic-bezier(0.22,1,0.36,1);pointer-events:none;}
+.ilm-menu>li:hover .ilm-drop{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto;}
+.ilm-drop a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--cream-dim);text-decoration:none;font-size:13px;transition:all 0.18s;}
+.ilm-drop a:hover{background:rgba(255,255,255,0.06);color:var(--cream);}
+.d-ico{width:27px;height:27px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.dm{background:rgba(124,106,255,0.18);}.ds{background:rgba(26,155,138,0.18);}.dh{background:rgba(232,184,75,0.18);}.dmu{background:rgba(168,85,247,0.18);}.dsp{background:rgba(251,191,36,0.18);}
+.d-hr{height:1px;background:var(--border);margin:5px 3px;}
+.ilm-nav-r{display:flex;align-items:center;gap:10px;}
+.ilm-av{width:33px;height:33px;border-radius:50%;background:linear-gradient(135deg,var(--lavender),var(--teal));display:none;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;}
+.ilm-lo-btn{padding:6px 14px;background:rgba(232,93,74,0.12);border:1px solid rgba(232,93,74,0.25);border-radius:8px;color:#ff8878;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:none;}
+.ilm-lo-btn:hover{background:rgba(232,93,74,0.22);}
+.ilm-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
+.ilm-ham span{display:block;width:22px;height:2px;background:var(--cream);border-radius:2px;}
+.ilm-mob{display:none;position:fixed;top:66px;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 20px;z-index:999;max-height:calc(100vh - 66px);overflow-y:auto;}
+.ilm-mob.open{display:block;}
+.ilm-mob a{display:flex;align-items:center;gap:9px;padding:10px 11px;border-radius:9px;color:var(--cream-dim);text-decoration:none;font-size:14px;transition:all 0.18s;}
+.ilm-mob a:hover{background:rgba(255,255,255,0.06);color:var(--cream);}
+.ilm-mob-sec{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);padding:10px 11px 4px;margin-top:6px;}
+.ilm-mob-lo{display:none;align-items:center;gap:9px;padding:10px 11px;border-radius:9px;color:#ff8878;font-size:14px;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;width:100%;margin-top:6px;}
+#ilm-main-wrapper{display:none;padding-top:66px;}
+.ilm-hero{min-height:calc(100vh - 66px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 36px 60px;position:relative;overflow:hidden;}
+.ilm-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% -10%,rgba(124,106,255,0.13),transparent 60%),radial-gradient(ellipse 40% 40% at 90% 90%,rgba(26,155,138,0.09),transparent 60%);}
+.ilm-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,184,75,0.12);border:1px solid rgba(232,184,75,0.25);border-radius:100px;padding:7px 17px;font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:26px;position:relative;z-index:1;}
+.ilm-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.ilm-h1{font-family:'Playfair Display',serif;font-size:clamp(42px,7vw,86px);font-weight:900;line-height:1.05;margin-bottom:18px;position:relative;z-index:1;}
+.ilm-h1 em{font-style:italic;background:linear-gradient(90deg,var(--gold),var(--coral));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ilm-hero-sl{font-family:'Space Mono',monospace;font-size:clamp(10px,1.4vw,13px);color:var(--muted);letter-spacing:2px;margin-bottom:28px;text-transform:uppercase;position:relative;z-index:1;}
+.ilm-hero-p{font-size:clamp(14px,2vw,17px);color:var(--cream-dim);max-width:500px;line-height:1.75;margin-bottom:36px;position:relative;z-index:1;}
+.ilm-cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+.ilm-cta-p{padding:13px 32px;border-radius:100px;background:linear-gradient(135deg,var(--lavender),var(--teal));color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.3s;}
+.ilm-cta-p:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(124,106,255,0.38);}
+.ilm-cta-g{padding:13px 32px;border-radius:100px;background:transparent;color:var(--cream);border:1px solid rgba(255,255,255,0.18);font-size:14px;font-weight:700;text-decoration:none;transition:all 0.3s;}
+.ilm-cta-g:hover{background:rgba(255,255,255,0.07);}
+.ilm-stats{display:flex;margin-top:64px;position:relative;z-index:1;}
+.ilm-stat{text-align:center;padding:0 40px;border-right:1px solid rgba(255,255,255,0.07);}
+.ilm-stat:last-child{border-right:none;}
+.ilm-stat-n{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;background:linear-gradient(90deg,var(--gold),var(--lavender));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ilm-stat-l{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;}
+.ilm-mq{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:12px 0;background:rgba(255,255,255,0.018);}
+.ilm-mq-t{display:flex;gap:40px;animation:mq 25s linear infinite;white-space:nowrap;}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.ilm-mq-i{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.ilm-mq-d{width:4px;height:4px;border-radius:50%;background:var(--gold);}
+.ilm-sec{padding:60px 36px 80px;max-width:1200px;margin:0 auto;}
+.ilm-sec-tag{font-family:'Space Mono',monospace;font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:10px;}
+.ilm-sec-h{font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,40px);font-weight:700;margin-bottom:36px;line-height:1.15;}
+.ilm-sec-h em{font-style:italic;color:var(--gold);}
+.ilm-tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.ilm-tc{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px 22px;transition:all 0.3s;position:relative;overflow:hidden;}
+.ilm-tc::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;border-radius:20px;}
+.ilm-tc:hover{transform:translateY(-5px);border-color:var(--border-h);box-shadow:0 24px 60px rgba(0,0,0,0.35);}
+.ilm-tc:hover::before{opacity:1;}
+.tc-m::before{background:linear-gradient(135deg,rgba(124,106,255,0.1),transparent);}
+.tc-s::before{background:linear-gradient(135deg,rgba(26,155,138,0.1),transparent);}
+.tc-h::before{background:linear-gradient(135deg,rgba(232,184,75,0.1),transparent);}
+.tc-mu::before{background:linear-gradient(135deg,rgba(168,85,247,0.1),transparent);}
+.tc-sp::before{background:linear-gradient(135deg,rgba(251,191,36,0.1),transparent);}
+.ilm-tc-ico{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;}
+.tc-m .ilm-tc-ico{background:rgba(124,106,255,0.15);}.tc-s .ilm-tc-ico{background:rgba(26,155,138,0.15);}.tc-h .ilm-tc-ico{background:rgba(232,184,75,0.15);}.tc-mu .ilm-tc-ico{background:rgba(168,85,247,0.15);}.tc-sp .ilm-tc-ico{background:rgba(251,191,36,0.15);}
+.ilm-tc-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:6px;}
+.ilm-tc-sub{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;line-height:1.7;}
+.ilm-tc-arr{position:absolute;bottom:18px;right:18px;font-size:15px;color:var(--muted);transition:all 0.2s;}
+.ilm-tc:hover .ilm-tc-arr{color:var(--gold);transform:translate(3px,-3px);}
+.ilm-label-wrap{max-width:860px;margin:0 auto;padding:20px 20px 20px;}
+.ilm-label-tag{font-family:'Space Mono',monospace;font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px;}
+.ilm-label-title{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,44px);font-weight:900;margin-bottom:32px;}
+.ilm-card-item{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:12px;transition:all 0.2s;}
+.ilm-card-item:hover{border-color:var(--border-h);transform:translateY(-2px);}
+.ilm-card-date{font-size:10px;color:var(--muted);font-family:monospace;margin-bottom:6px;}
+.ilm-card-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:8px;line-height:1.3;}
+.ilm-card-title a{color:var(--cream);text-decoration:none;}
+.ilm-card-title a:hover{color:var(--gold);}
+.ilm-card-snip{font-size:13px;color:var(--cream-dim);line-height:1.7;margin-bottom:12px;}
+.ilm-card-read{color:var(--lavender);font-size:12px;font-weight:600;text-decoration:none;}
+.ilm-pager{display:flex;justify-content:space-between;padding:24px 0 60px;}
+.ilm-pager a{color:var(--lavender);text-decoration:none;font-size:13px;font-weight:600;}
+.ilm-post-wrap{max-width:820px;margin:0 auto;padding:20px 20px 80px;}
+.ilm-post-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,44px);font-weight:900;line-height:1.2;margin-bottom:16px;}
+.ilm-post-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:32px;display:flex;gap:16px;flex-wrap:wrap;}
+.ilm-post-body{font-size:16px;line-height:1.85;color:var(--cream-dim);}
+.ilm-post-body h2,.ilm-post-body h3{font-family:'Playfair Display',serif;font-weight:700;margin:32px 0 14px;color:var(--cream);}
+.ilm-post-body h2{font-size:24px;}.ilm-post-body h3{font-size:20px;}
+.ilm-post-body p{margin-bottom:16px;}
+.ilm-post-body ul,.ilm-post-body ol{margin:0 0 16px 24px;}
+.ilm-post-body li{margin-bottom:8px;}
+.ilm-post-body img{max-width:100%;border-radius:12px;margin:16px 0;}
+.ilm-post-body a{color:var(--lavender);}
+.ilm-post-body blockquote{border-left:3px solid var(--lavender);padding-left:18px;margin:20px 0;color:var(--muted);font-style:italic;}
+.ilm-toast{position:fixed;top:80px;right:18px;z-index:2000;background:rgba(26,155,138,0.92);backdrop-filter:blur(12px);border-radius:12px;padding:11px 17px;font-size:13px;color:#fff;font-weight:600;transform:translateX(130%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;}
+.ilm-toast.show{transform:translateX(0);}
+footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.ilm-ft-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--gold);}
+.ilm-ft-sl{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:3px;}
+.ilm-ft-links{display:flex;gap:18px;}
+.ilm-ft-links a{font-size:12px;color:var(--muted);text-decoration:none;}
+.ilm-ft-links a:hover{color:var(--cream);}
+@media(max-width:900px){.ilm-tgrid{grid-template-columns:1fr 1fr;}}
+@media(max-width:660px){#ilm-nav{padding:0 18px;}.ilm-menu{display:none;}.ilm-ham{display:flex;}.ilm-hero{padding:60px 18px 50px;}.ilm-stats{flex-wrap:wrap;gap:20px;}.ilm-stat{border-right:none;padding:0 20px;}.ilm-sec{padding:40px 18px 60px;}.ilm-tgrid{grid-template-columns:1fr;}footer.ilm-footer{padding:26px 18px;flex-direction:column;gap:12px;}}
+  ]]></b:skin>
+</head>
+<body>
+<div class='ilm-toast' id='ilm-toast'></div>
+
+<!-- AUTH OVERLAY -->
+<div id='ilm-auth'>
+  <div class='ilm-orb1'></div><div class='ilm-orb2'></div><div class='ilm-grid'></div>
+  <div class='ilm-card'>
+    <div class='ilm-brand'><div class='ilm-brand-icon'>📚</div><span class='ilm-brand-name'>ILMIORA</span></div>
+    <p class='ilm-slogan'>// Where Knowledge Becomes Light</p>
+    <div id='ilm-lf'>
+      <h2 class='ilm-h2'>Selamat Datang 👋</h2>
+      <p class='ilm-sub'>Masuk untuk mengakses ruang pengetahuan</p>
+      <div class='ilm-err' id='ilm-le'></div>
+      <label class='ilm-lbl'>Email</label>
+      <input class='ilm-inp' id='ilm-em' placeholder='nama@email.com' type='email'/>
+      <label class='ilm-lbl'>Password</label>
+      <input class='ilm-inp' id='ilm-pw' placeholder='Min. 6 karakter' type='password'/>
+      <button class='ilm-btn' id='ilm-lb'>Masuk ke ILMIORA →</button>
+      <div class='ilm-div'>atau</div>
+      <button class='ilm-btn-g' id='ilm-gb1'><svg height='17' viewBox='0 0 24 24' width='17'><path d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z' fill='#4285F4'/><path d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z' fill='#34A853'/><path d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z' fill='#FBBC05'/><path d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z' fill='#EA4335'/></svg>Lanjutkan dengan Google</button>
+      <p class='ilm-tog'>Belum punya akun? <a id='ilm-sr'>Daftar sekarang</a></p>
+    </div>
+    <div id='ilm-rf' style='display:none;'>
+      <h2 class='ilm-h2'>Bergabung ✨</h2>
+      <p class='ilm-sub'>Buat akun gratis dan mulai perjalanan ilmumu</p>
+      <div class='ilm-err' id='ilm-re'></div><div class='ilm-ok' id='ilm-ro'></div>
+      <label class='ilm-lbl'>Nama Lengkap</label>
+      <input class='ilm-inp' id='ilm-rn' placeholder='Nama kamu' type='text'/>
+      <label class='ilm-lbl'>Email</label>
+      <input class='ilm-inp' id='ilm-rem' placeholder='nama@email.com' type='email'/>
+      <label class='ilm-lbl'>Password</label>
+      <input class='ilm-inp' id='ilm-rpw' placeholder='Min. 6 karakter' type='password'/>
+      <button class='ilm-btn' id='ilm-rb'>Buat Akun →</button>
+      <div class='ilm-div'>atau</div>
+      <button class='ilm-btn-g' id='ilm-gb2'><svg height='17' viewBox='0 0 24 24' width='17'><path d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z' fill='#4285F4'/><path d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z' fill='#34A853'/><path d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z' fill='#FBBC05'/><path d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z' fill='#EA4335'/></svg>Daftar dengan Google</button>
+      <p class='ilm-tog'>Sudah punya akun? <a id='ilm-sl'>Masuk di sini</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id='ilm-nav'>
+  <a class='ilm-nav-brand' href='https://ilmiora.blogspot.com'>
+    <div class='ilm-nav-icon'>📚</div><span class='ilm-nav-name'>ILMIORA</span>
+  </a>
+  <ul class='ilm-menu'>
+    <li><a href='https://ilmiora.blogspot.com'>Beranda</a></li>
+    <li>
+      <a href='#'>Taman Ilmu <span class='arr'>▾</span></a>
+      <div class='ilm-drop'>
+        <a href='https://ilmiora.blogspot.com/search/label/Matematika'><span class='d-ico dm'>🔢</span>Taman Matematika</a>
+        <a href='https://ilmiora.blogspot.com/search/label/Sains'><span class='d-ico ds'>🔬</span>Taman Sains</a>
+        <a href='https://ilmiora.blogspot.com/search/label/Sejarah'><span class='d-ico dh'>🏛️</span>Taman Sejarah</a>
+        <a href='https://ilmiora.blogspot.com/search/label/Musik'><span class='d-ico dmu'>🎵</span>Taman Musik</a>
+        <div class='d-hr'></div>
+        <a href='https://ilmiora.blogspot.com/search/label/Spiritual'><span class='d-ico dsp'>🕌</span>Taman Spiritual</a>
+      </div>
+    </li>
+    <li><a href='https://ilmiora.blogspot.com/search'>Semua Artikel</a></li>
+    <li><a href='https://ilmiora.blogspot.com/p/tentang.html'>Tentang</a></li>
+  </ul>
+  <div class='ilm-nav-r'>
+    <div class='ilm-av' id='ilm-av'>?</div>
+    <button class='ilm-lo-btn' id='ilm-lo'>Keluar</button>
+    <button class='ilm-ham' id='ilm-hm'><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class='ilm-mob' id='ilm-mob'>
+  <div class='ilm-mob-sec'>Navigasi</div>
+  <a href='https://ilmiora.blogspot.com'>🏠 Beranda</a>
+  <a href='https://ilmiora.blogspot.com/search'>📰 Semua Artikel</a>
+  <div class='ilm-mob-sec'>Taman Ilmu</div>
+  <a href='https://ilmiora.blogspot.com/search/label/Matematika'>🔢 Taman Matematika</a>
+  <a href='https://ilmiora.blogspot.com/search/label/Sains'>🔬 Taman Sains</a>
+  <a href='https://ilmiora.blogspot.com/search/label/Sejarah'>🏛️ Taman Sejarah</a>
+  <a href='https://ilmiora.blogspot.com/search/label/Musik'>🎵 Taman Musik</a>
+  <a href='https://ilmiora.blogspot.com/search/label/Spiritual'>🕌 Taman Spiritual</a>
+  <div class='ilm-mob-sec'>Lainnya</div>
+  <a href='https://ilmiora.blogspot.com/p/tentang.html'>ℹ️ Tentang</a>
+  <a href='https://ilmiora.blogspot.com/p/kontak.html'>📬 Kontak</a>
+  <button class='ilm-mob-lo' id='ilm-mob-lo'>🚪 Keluar</button>
+</div>
+
+<!-- MAIN WRAPPER -->
+<div id='ilm-main-wrapper'>
+
+  <b:if cond='data:view.isHomepage'>
+    <section class='ilm-hero'>
+      <div class='ilm-hero-bg'></div>
+      <div class='ilm-badge'>🌟 Platform Belajar Digital</div>
+      <h1 class='ilm-h1'>Ruang untuk<br/><em>Tumbuh &amp; Belajar</em></h1>
+      <p class='ilm-hero-sl'>// Where Knowledge Becomes Light</p>
+      <p class='ilm-hero-p'>Jelajahi artikel berkualitas dari matematika, sains, sejarah, musik, hingga spiritual.</p>
+      <div class='ilm-cta'>
+        <a class='ilm-cta-p' href='https://ilmiora.blogspot.com/search/label/Sains'>Mulai Membaca →</a>
+        <a class='ilm-cta-g' href='#ilm-taman'>Jelajahi Taman</a>
+      </div>
+      <div class='ilm-stats'>
+        <div class='ilm-stat'><div class='ilm-stat-n'>5</div><div class='ilm-stat-l'>Taman Ilmu</div></div>
+        <div class='ilm-stat'><div class='ilm-stat-n'>1K+</div><div class='ilm-stat-l'>Artikel</div></div>
+        <div class='ilm-stat'><div class='ilm-stat-n'>&#8734;</div><div class='ilm-stat-l'>Pengetahuan</div></div>
+      </div>
+    </section>
+    <div class='ilm-mq'>
+      <div class='ilm-mq-t'>
+        <span class='ilm-mq-i'><span class='ilm-mq-d'></span>Matematika</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Fisika Kuantum</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Sejarah Islam</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Teori Musik</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Biologi Molekuler</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Spiritual</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Kimia Organik</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Sejarah Nusantara</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Matematika</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Fisika Kuantum</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Sejarah Islam</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Teori Musik</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Biologi Molekuler</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Spiritual</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Kimia Organik</span><span class='ilm-mq-i'><span class='ilm-mq-d'></span>Sejarah Nusantara</span>
+      </div>
+    </div>
+    <div class='ilm-sec' id='ilm-taman'>
+      <p class='ilm-sec-tag'>// Eksplorasi</p>
+      <h2 class='ilm-sec-h'>Pilih <em>Taman Ilmu</em> Favoritmu</h2>
+      <div class='ilm-tgrid'>
+        <a class='ilm-tc tc-m' href='https://ilmiora.blogspot.com/search/label/Matematika'><div class='ilm-tc-ico'>🔢</div><div class='ilm-tc-name'>Taman Matematika</div><div class='ilm-tc-sub'>Aljabar · Kalkulus<br/>Geometri · Statistika</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-s' href='https://ilmiora.blogspot.com/search/label/Sains'><div class='ilm-tc-ico'>🔬</div><div class='ilm-tc-name'>Taman Sains</div><div class='ilm-tc-sub'>Fisika · Kimia<br/>Biologi · Astronomi</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-h' href='https://ilmiora.blogspot.com/search/label/Sejarah'><div class='ilm-tc-ico'>🏛️</div><div class='ilm-tc-name'>Taman Sejarah</div><div class='ilm-tc-sub'>Nusantara · Islam<br/>Dunia · Peradaban</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-mu' href='https://ilmiora.blogspot.com/search/label/Musik'><div class='ilm-tc-ico'>🎵</div><div class='ilm-tc-name'>Taman Musik</div><div class='ilm-tc-sub'>Teori · Piano<br/>Gitar · Vokal</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-sp' href='https://ilmiora.blogspot.com/search/label/Spiritual'><div class='ilm-tc-ico'>🕌</div><div class='ilm-tc-name'>Taman Spiritual</div><div class='ilm-tc-sub'>Hikmah · Tafsir<br/>Akhlak · Renungan</div><span class='ilm-tc-arr'>↗</span></a>
+      </div>
+    </div>
+    <footer class='ilm-footer'>
+      <div><div class='ilm-ft-brand'>ILMIORA</div><div class='ilm-ft-sl'>// Where Knowledge Becomes Light</div></div>
+      <div class='ilm-ft-links'>
+        <a href='https://ilmiora.blogspot.com/p/tentang.html'>Tentang</a>
+        <a href='https://ilmiora.blogspot.com/p/kebijakan.html'>Kebijakan</a>
+        <a href='https://ilmiora.blogspot.com/p/kontak.html'>Kontak</a>
+      </div>
+    </footer>
+  </b:if>
+
+  <div class='ilm-post-container'>
+    <b:section id='main-content' showaddelement='yes'>
+      <b:widget id='Blog1' locked='true' title='Blog Posts' type='Blog' version='2'>
+        <b:includable id='main'>
+          <b:loop values='data:posts' var='post'>
+            <b:if cond='data:view.isPost'>
+              <div class='ilm-post-wrap'>
+                <h1 class='ilm-post-title'><data:post.title/></h1>
+                <div class='ilm-post-meta'><span>📅 <data:post.dateHeader/></span><span>✍️ <data:post.author/></span></div>
+                <div class='ilm-post-body'><data:post.body/></div>
+              </div>
+            <b:else/>
+              <b:if cond='data:view.isHomepage'>
+              <b:else/>
+                <div class='ilm-label-wrap'>
+                  <p class='ilm-label-tag'>// Taman Ilmu</p>
+                  <h1 class='ilm-label-title'><data:blog.pageName/></h1>
+                </div>
+              </b:if>
+              <b:if cond='data:view.isHomepage'>
+              <b:else/>
+                <div style='max-width:860px;margin:0 auto;padding:0 20px;'>
+                  <div class='ilm-card-item'>
+                    <div class='ilm-card-date'><data:post.dateHeader/></div>
+                    <div class='ilm-card-title'><a expr:href='data:post.url'><data:post.title/></a></div>
+                    <div class='ilm-card-snip'><data:post.snippet/></div>
+                    <a class='ilm-card-read' expr:href='data:post.url'>Baca Selengkapnya →</a>
+                  </div>
+                </div>
+              </b:if>
+            </b:if>
+          </b:loop>
+          <b:if cond='data:view.isMultipleItems'>
+            <b:if cond='data:newerPageUrl or data:olderPageUrl'>
+              <div class='ilm-pager' style='max-width:860px;margin:0 auto;padding:0 20px 60px;'>
+                <b:if cond='data:newerPageUrl'><a expr:href='data:newerPageUrl'>← Lebih Baru</a></b:if>
+                <b:if cond='data:olderPageUrl'><a expr:href='data:olderPageUrl' style='margin-left:auto;'>Lebih Lama →</a></b:if>
+              </div>
+            </b:if>
+          </b:if>
+        </b:includable>
+      </b:widget>
+    </b:section>
+  </div>
+
+</div>
+
+<b:section class='sidebar' id='sidebar' showaddelement='yes'/>
+
+<script type='text/javascript'>//<![CDATA[
+const firebaseConfig={apiKey:"AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",authDomain:"ilmiora-auth.firebaseapp.com",projectId:"ilmiora-auth",storageBucket:"ilmiora-auth.firebasestorage.app",messagingSenderId:"945061456781",appId:"1:945061456781:web:222e641bdef891dfe2abc4"};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+
+document.getElementById('ilm-hm').addEventListener('click',function(){document.getElementById('ilm-mob').classList.toggle('open');});
+function doLogout(){auth.signOut().then(function(){window.location.href='https://ilmiora.blogspot.com';});}
+document.getElementById('ilm-lo').addEventListener('click',doLogout);
+document.getElementById('ilm-mob-lo').addEventListener('click',doLogout);
+document.getElementById('ilm-sr').addEventListener('click',function(){document.getElementById('ilm-lf').style.display='none';document.getElementById('ilm-rf').style.display='block';});
+document.getElementById('ilm-sl').addEventListener('click',function(){document.getElementById('ilm-rf').style.display='none';document.getElementById('ilm-lf').style.display='block';});
+
+auth.onAuthStateChanged(function(user){
+  var authDiv=document.getElementById('ilm-auth');
+  var wrapper=document.getElementById('ilm-main-wrapper');
+  var p=window.location.pathname;
+  var isHome=(p==='/'||p===''||p==='/index.html');
+  if(user){
+    authDiv.style.display='none';
+    wrapper.style.display='block';
+    var name=user.displayName||user.email||'User';
+    var av=document.getElementById('ilm-av');
+    av.textContent=name.substring(0,2).toUpperCase();
+    av.style.display='flex';
+    document.getElementById('ilm-lo').style.display='block';
+    document.getElementById('ilm-mob-lo').style.display='flex';
+    if(isHome){var t=document.getElementById('ilm-toast');t.textContent='👋 Halo, '+name.split(' ')[0]+'!';t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3500);}
+  } else {
+    if(isHome){authDiv.style.display='flex';wrapper.style.display='none';}
+    else{authDiv.style.display='none';wrapper.style.display='block';}
+  }
+});
+
+document.getElementById('ilm-lb').addEventListener('click',doLogin);
+document.getElementById('ilm-rb').addEventListener('click',doRegister);
+document.getElementById('ilm-gb1').addEventListener('click',doGoogle);
+document.getElementById('ilm-gb2').addEventListener('click',doGoogle);
+document.addEventListener('keydown',function(e){if(e.key==='Enter'){var rf=document.getElementById('ilm-rf');if(rf&&rf.style.display!=='none')doRegister();else doLogin();}});
+
+function doLogin(){
+  var email=document.getElementById('ilm-em').value.trim();
+  var pass=document.getElementById('ilm-pw').value;
+  var err=document.getElementById('ilm-le');
+  var btn=document.getElementById('ilm-lb');
+  err.style.display='none';
+  if(!email||!pass){showErr(err,'Email dan password wajib diisi.');return;}
+  btn.innerHTML='<span class="ilm-spin"></span>Memproses...';
+  auth.signInWithEmailAndPassword(email,pass).catch(function(e){showErr(err,errMsg(e.code));btn.textContent='Masuk ke ILMIORA →';});
+}
+function doRegister(){
+  var name=document.getElementById('ilm-rn').value.trim();
+  var email=document.getElementById('ilm-rem').value.trim();
+  var pass=document.getElementById('ilm-rpw').value;
+  var err=document.getElementById('ilm-re');var ok=document.getElementById('ilm-ro');var btn=document.getElementById('ilm-rb');
+  err.style.display='none';ok.style.display='none';
+  if(!name||!email||!pass){showErr(err,'Semua field wajib diisi.');return;}
+  if(pass.length<6){showErr(err,'Password minimal 6 karakter.');return;}
+  btn.innerHTML='<span class="ilm-spin"></span>Mendaftarkan...';
+  auth.createUserWithEmailAndPassword(email,pass).then(function(r){return r.user.updateProfile({displayName:name});}).then(function(){ok.textContent='✅ Akun berhasil dibuat!';ok.style.display='block';btn.textContent='Buat Akun →';}).catch(function(e){showErr(err,errMsg(e.code));btn.textContent='Buat Akun →';});
+}
+function doGoogle(){
+  var p=new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(p).catch(function(e){showErr(document.getElementById('ilm-le'),'Login Google gagal.');});
+}
+function showErr(el,msg){el.textContent=msg;el.style.display='block';}
+function errMsg(c){var m={'auth/user-not-found':'Email tidak terdaftar.','auth/wrong-password':'Password salah.','auth/invalid-credential':'Email atau password salah.','auth/email-already-in-use':'Email sudah digunakan.','auth/weak-password':'Password minimal 6 karakter.','auth/invalid-email':'Format email tidak valid.','auth/too-many-requests':'Terlalu banyak percobaan.'};return m[c]||'Terjadi kesalahan.';}
+//]]></script>
+</body>
+</html>
