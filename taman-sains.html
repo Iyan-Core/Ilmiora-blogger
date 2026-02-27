@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taman Sains — Ilmiora</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   DESIGN: "Deep Space Lab"
+   Obsidian black · Bio-electric green
+   Phosphor glow · Like a quantum lab
+   running at 3AM orbiting Earth.
+════════════════════════════════════════ */
+:root {
+  --void:     #020405;
+  --deep:     #050a08;
+  --surface:  #0a120e;
+  --card:     #0d1710;
+  --lift:     #121f15;
+  --neon:     #00ff88;
+  --green:    #10b981;
+  --lime:     #84cc16;
+  --plasma:   #22d3ee;
+  --violet:   #a855f7;
+  --warn:     #f59e0b;
+  --danger:   #ef4444;
+  --chalk:    #d4f0e0;
+  --muted:    #3d6b4f;
+  --border:   rgba(0,255,136,0.08);
+  --glow:     rgba(0,255,136,0.05);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Syne',sans-serif;
+  background:var(--void);
+  color:var(--chalk);
+  overflow-x:hidden;
+}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--void);}
+::-webkit-scrollbar-thumb{background:var(--neon);border-radius:2px;}
+
+/* SCANLINE OVERLAY */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.012) 2px,rgba(0,255,136,0.012) 4px);
+  pointer-events:none;z-index:9998;
+}
+
+/* SCROLL PROGRESS */
+#scrollBar{
+  position:fixed;top:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--neon),var(--plasma));
+  z-index:1000;width:0%;transition:width 0.1s;
+}
+
+/* CANVAS */
+#bgCanvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;opacity:0.5;
+}
+
+.page{position:relative;z-index:1;}
+
+/* ══ NAV ══ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:62px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(2,4,5,0.93);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav-brand{
+  font-family:'Fira Code',monospace;
+  font-size:14px;color:var(--neon);
+  text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+}
+
+.nav-brand span{color:var(--muted);}
+
+.nav-status{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+}
+
+.status-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--neon);
+  box-shadow:0 0 6px var(--neon);
+  animation:statusPulse 2s infinite;
+}
+
+@keyframes statusPulse{0%,100%{opacity:1;box-shadow:0 0 6px var(--neon);}50%{opacity:0.4;box-shadow:none;}}
+
+.nav-back{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--muted);text-decoration:none;
+  letter-spacing:1px;transition:color 0.2s;
+}
+.nav-back:hover{color:var(--neon);}
+
+/* ══ HERO ══ */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:100px 32px 72px;
+  position:relative;overflow:hidden;
+}
+
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,255,136,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,136,0.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 0%,transparent 100%);
+}
+
+.hero-orb{
+  position:absolute;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,255,136,0.06) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-60%);
+  pointer-events:none;
+}
+
+/* Floating particles */
+.particle{
+  position:absolute;border-radius:50%;
+  background:var(--neon);
+  animation:particleDrift linear infinite;
+  pointer-events:none;
+}
+
+@keyframes particleDrift{
+  0%{transform:translate(0,0);opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:0.5;}
+  100%{transform:translate(var(--dx),var(--dy));opacity:0;}
+}
+
+.hero-badge{
+  font-family:'Fira Code',monospace;
+  font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--neon);
+  background:rgba(0,255,136,0.05);
+  border:1px solid rgba(0,255,136,0.2);
+  border-radius:3px;padding:7px 20px;
+  margin-bottom:32px;
+  display:inline-flex;align-items:center;gap:10px;
+  animation:fadeUp 0.7s ease both;
+}
+
+.badge-line{width:20px;height:1px;background:var(--neon);}
+
+.hero-h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(48px,9vw,110px);
+  font-weight:800;line-height:0.92;
+  margin-bottom:14px;letter-spacing:-3px;
+  animation:fadeUp 0.7s 0.1s ease both;
+}
+
+.hero-h1 .t-neon{
+  color:var(--neon);
+  text-shadow:0 0 40px rgba(0,255,136,0.3);
+}
+.hero-h1 .t-dim{color:rgba(212,240,224,0.18);}
+
+.hero-sub{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(18px,2.5vw,26px);
+  font-style:italic;font-weight:400;
+  color:rgba(212,240,224,0.35);
+  margin-bottom:24px;
+  animation:fadeUp 0.7s 0.2s ease both;
+}
+
+.hero-desc{
+  max-width:560px;font-size:15px;
+  color:var(--muted);line-height:1.85;
+  margin-bottom:44px;
+  animation:fadeUp 0.7s 0.3s ease both;
+  font-weight:400;
+}
+
+.hero-cta{
+  display:flex;gap:14px;justify-content:center;
+  flex-wrap:wrap;margin-bottom:60px;
+  animation:fadeUp 0.7s 0.4s ease both;
+}
+
+.btn-neon{
+  padding:14px 36px;
+  background:var(--neon);color:var(--void);
+  border:none;border-radius:3px;
+  font-size:13px;font-weight:700;
+  font-family:'Syne',sans-serif;
+  cursor:pointer;text-decoration:none;display:inline-block;
+  letter-spacing:0.5px;transition:all 0.25s;
+}
+.btn-neon:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,255,136,0.35);}
+
+.btn-outline-neon{
+  padding:14px 36px;background:transparent;
+  border:1px solid rgba(0,255,136,0.3);color:var(--neon);
+  border-radius:3px;font-size:13px;font-weight:600;
+  font-family:'Syne',sans-serif;
+  cursor:pointer;text-decoration:none;display:inline-block;
+  transition:all 0.25s;
+}
+.btn-outline-neon:hover{background:rgba(0,255,136,0.06);}
+
+.hero-stats{
+  display:flex;gap:56px;justify-content:center;
+  border-top:1px solid var(--border);padding-top:44px;
+  animation:fadeUp 0.7s 0.5s ease both;flex-wrap:wrap;
+}
+
+.hs{text-align:center;}
+.hs-num{
+  font-family:'Fira Code',monospace;
+  font-size:44px;font-weight:700;
+  color:var(--neon);display:block;line-height:1;
+  text-shadow:0 0 20px rgba(0,255,136,0.3);
+}
+.hs-lbl{
+  font-family:'Fira Code',monospace;font-size:9px;
+  color:var(--muted);text-transform:uppercase;
+  letter-spacing:2px;margin-top:6px;display:block;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══ SECTION ══ */
+.section{max-width:1200px;margin:0 auto;padding:80px 40px;}
+
+.sec-eyebrow{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--neon);text-transform:uppercase;
+  letter-spacing:3px;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+
+.sec-eyebrow::before{
+  content:'';width:24px;height:1px;background:var(--neon);
+}
+
+.sec-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(28px,3.5vw,48px);
+  font-weight:800;line-height:1.1;margin-bottom:48px;
+}
+.sec-title em{font-style:italic;color:var(--neon);font-family:'Libre Baskerville',serif;font-weight:400;}
+
+/* ══ CABANG ILMU ══ */
+.cabang-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  margin-bottom:56px;
+}
+
+.cabang-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:6px;padding:24px 20px;
+  cursor:pointer;transition:all 0.3s;
+  text-decoration:none;color:inherit;display:block;
+  position:relative;overflow:hidden;
+}
+
+.cabang-card::after{
+  content:'';position:absolute;
+  top:0;right:0;width:2px;height:100%;
+  background:linear-gradient(180deg,var(--neon),transparent);
+  transform:scaleY(0);transform-origin:top;transition:transform 0.3s;
+}
+
+.cabang-card:hover{transform:translateY(-3px);border-color:rgba(0,255,136,0.2);background:var(--lift);}
+.cabang-card:hover::after{transform:scaleY(1);}
+
+.cc-icon{font-size:30px;margin-bottom:12px;display:block;}
+.cc-id{font-family:'Fira Code',monospace;font-size:9px;color:rgba(0,255,136,0.25);letter-spacing:1px;margin-bottom:8px;}
+.cc-name{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--chalk);}
+.cc-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* ══ FUTURISTIK ARTICLES ══ */
+/* TIMELINE LAYOUT */
+.timeline{position:relative;padding-left:32px;}
+
+.timeline::before{
+  content:'';position:absolute;
+  left:0;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,var(--neon),rgba(0,255,136,0.1));
+}
+
+.tl-item{
+  position:relative;margin-bottom:8px;
+  animation:fadeUp 0.5s ease both;
+}
+
+.tl-dot{
+  position:absolute;left:-37px;top:24px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--neon);
+  box-shadow:0 0 10px var(--neon);
+  z-index:2;
+}
+
+.tl-year-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Fira Code',monospace;font-size:9px;
+  color:var(--neon);background:rgba(0,255,136,0.08);
+  border:1px solid rgba(0,255,136,0.2);
+  border-radius:2px;padding:3px 8px;
+  margin-bottom:10px;letter-spacing:1px;
+}
+
+.art-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;
+  margin-bottom:16px;transition:all 0.3s;
+  text-decoration:none;color:inherit;display:block;
+  position:relative;
+}
+
+.art-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--neon),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform 0.4s;
+}
+
+.art-card:hover{border-color:rgba(0,255,136,0.2);transform:translateX(6px);}
+.art-card:hover::before{transform:scaleX(1);}
+
+.art-card-inner{padding:24px 28px;}
+
+.art-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+
+.art-tag{
+  font-family:'Fira Code',monospace;font-size:9px;
+  text-transform:uppercase;letter-spacing:1px;
+  padding:3px 8px;border-radius:2px;
+}
+
+.tag-bio   {background:rgba(16,185,129,0.12);color:var(--green);}
+.tag-phys  {background:rgba(34,211,238,0.12);color:var(--plasma);}
+.tag-space {background:rgba(168,85,247,0.12);color:var(--violet);}
+.tag-ai    {background:rgba(245,158,11,0.12); color:var(--warn);}
+.tag-chem  {background:rgba(239,68,68,0.12);  color:var(--danger);}
+.tag-nano  {background:rgba(132,204,22,0.12);  color:var(--lime);}
+
+.art-year{
+  font-family:'Fira Code',monospace;font-size:9px;
+  color:rgba(0,255,136,0.35);margin-left:auto;
+}
+
+.art-title{
+  font-family:'Syne',sans-serif;font-size:20px;
+  font-weight:800;line-height:1.25;margin-bottom:10px;
+  color:var(--chalk);
+}
+
+.art-excerpt{
+  font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;
+  font-family:'Syne',sans-serif;font-weight:400;
+}
+
+.art-meta-row{
+  display:flex;align-items:center;gap:14px;
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+}
+
+.art-read-btn{
+  margin-left:auto;color:var(--neon);font-size:12px;
+  transition:all 0.2s;
+}
+
+.art-card:hover .art-read-btn{transform:translateX(4px);}
+
+/* FEATURED ARTICLE */
+.art-card.featured{
+  grid-column:1/-1;
+  background:linear-gradient(135deg,var(--card),var(--lift));
+}
+
+.art-card.featured .art-title{font-size:26px;}
+
+/* SIDEBAR */
+.articles-layout{
+  display:grid;grid-template-columns:1fr 320px;gap:36px;align-items:start;
+}
+
+.art-sidebar{position:sticky;top:80px;}
+
+.sw{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:6px;padding:20px;margin-bottom:14px;
+}
+
+.sw-head{
+  font-family:'Fira Code',monospace;font-size:9px;
+  color:var(--neon);text-transform:uppercase;
+  letter-spacing:2px;margin-bottom:14px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+
+.sw-link{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);
+  text-decoration:none;color:inherit;transition:all 0.2s;cursor:pointer;
+}
+.sw-link:last-child{border-bottom:none;}
+.sw-link:hover .sw-link-text{color:var(--neon);}
+
+.sw-link-num{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:rgba(0,255,136,0.25);flex-shrink:0;margin-top:1px;
+}
+.sw-link-text{font-size:12px;color:var(--muted);line-height:1.5;transition:color 0.2s;}
+
+/* SEARCH */
+.sw-search{display:flex;gap:6px;}
+.sw-search input{
+  flex:1;padding:9px 12px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:3px;color:var(--chalk);
+  font-family:'Fira Code',monospace;font-size:12px;outline:none;
+}
+.sw-search input:focus{border-color:var(--neon);}
+.sw-search input::placeholder{color:var(--muted);}
+.sw-search button{
+  padding:9px 12px;background:rgba(0,255,136,0.1);
+  border:1px solid rgba(0,255,136,0.2);border-radius:3px;
+  color:var(--neon);cursor:pointer;transition:all 0.2s;font-size:12px;
+}
+.sw-search button:hover{background:rgba(0,255,136,0.2);}
+
+/* ══ EKSPERIMEN INTERAKTIF ══ */
+.lab-section{
+  background:linear-gradient(180deg,var(--void),var(--deep));
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:80px 0;
+}
+
+.lab-grid{
+  max-width:1200px;margin:0 auto;padding:0 40px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+
+.lab-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;
+}
+
+.lab-header{
+  background:rgba(0,255,136,0.04);
+  border-bottom:1px solid var(--border);
+  padding:14px 18px;
+  display:flex;align-items:center;gap:8px;
+}
+
+.lab-dot{width:8px;height:8px;border-radius:50%;}
+
+.lab-title{
+  font-family:'Fira Code',monospace;font-size:11px;
+  color:var(--muted);margin-left:4px;
+}
+
+.lab-body{padding:20px;}
+
+/* SPEED OF LIGHT SIMULATOR */
+.sol-display{
+  background:rgba(0,0,0,0.5);border:1px solid rgba(0,255,136,0.1);
+  border-radius:4px;padding:16px;margin-bottom:14px;
+  font-family:'Fira Code',monospace;font-size:12px;
+  min-height:100px;
+}
+
+.sol-result{font-size:20px;color:var(--neon);font-weight:700;margin-bottom:6px;}
+.sol-compare{font-size:11px;color:var(--muted);line-height:1.6;}
+
+.sol-input{
+  display:flex;flex-direction:column;gap:8px;margin-bottom:14px;
+}
+
+.sol-row{display:flex;align-items:center;gap:8px;}
+.sol-label{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--muted);width:80px;flex-shrink:0;
+}
+
+.sol-inp{
+  flex:1;padding:8px 10px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:3px;color:var(--chalk);
+  font-family:'Fira Code',monospace;font-size:12px;outline:none;
+}
+.sol-inp:focus{border-color:var(--neon);}
+.sol-inp::placeholder{color:rgba(255,255,255,0.15);}
+
+.sol-select{
+  flex:1;padding:8px 10px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:3px;color:var(--chalk);
+  font-family:'Fira Code',monospace;font-size:11px;outline:none;cursor:pointer;
+}
+
+.lab-btn{
+  width:100%;padding:10px;
+  background:rgba(0,255,136,0.1);
+  border:1px solid rgba(0,255,136,0.2);
+  border-radius:3px;color:var(--neon);
+  font-family:'Fira Code',monospace;font-size:11px;
+  cursor:pointer;letter-spacing:2px;text-transform:uppercase;
+  transition:all 0.2s;
+}
+.lab-btn:hover{background:rgba(0,255,136,0.18);}
+
+/* PERIODIC TABLE MINI */
+.element-search{
+  display:flex;gap:6px;margin-bottom:12px;
+}
+
+.el-input{
+  flex:1;padding:8px 12px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:3px;color:var(--chalk);
+  font-family:'Fira Code',monospace;font-size:12px;outline:none;
+  text-transform:uppercase;
+}
+.el-input:focus{border-color:var(--neon);}
+.el-input::placeholder{color:var(--muted);text-transform:none;}
+
+.element-card{
+  background:rgba(0,0,0,0.4);border:1px solid rgba(0,255,136,0.15);
+  border-radius:4px;padding:16px;text-align:center;
+  min-height:120px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  margin-bottom:12px;transition:all 0.3s;
+}
+
+.el-num{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);margin-bottom:4px;}
+.el-sym{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--neon);line-height:1;text-shadow:0 0 20px rgba(0,255,136,0.4);}
+.el-name{font-size:13px;color:var(--chalk);margin-top:6px;font-weight:600;}
+.el-mass{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);margin-top:3px;}
+.el-cat{font-family:'Fira Code',monospace;font-size:9px;color:var(--green);margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+.el-config{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);margin-top:4px;}
+
+/* DNA SEQUENCE VISUALIZER */
+.dna-canvas-wrap{
+  background:rgba(0,0,0,0.4);border:1px solid rgba(0,255,136,0.1);
+  border-radius:4px;overflow:hidden;margin-bottom:12px;
+}
+
+.dna-seq-input{
+  display:flex;gap:6px;margin-bottom:10px;
+}
+
+.dna-inp{
+  flex:1;padding:8px 10px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:3px;color:var(--neon);
+  font-family:'Fira Code',monospace;font-size:13px;outline:none;
+  text-transform:uppercase;letter-spacing:3px;
+}
+.dna-inp:focus{border-color:var(--neon);}
+.dna-inp::placeholder{color:var(--muted);letter-spacing:0;text-transform:none;}
+
+.dna-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+  margin-bottom:10px;
+}
+
+.dna-stat{
+  background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.04);
+  border-radius:3px;padding:8px;text-align:center;
+}
+.dna-stat-val{font-family:'Fira Code',monospace;font-size:16px;font-weight:700;}
+.dna-stat-lbl{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
+
+.dna-A{color:#ef4444;}
+.dna-T{color:#f59e0b;}
+.dna-G{color:#10b981;}
+.dna-C{color:#3b82f6;}
+
+/* ══ VIDEO ══ */
+.video-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
+}
+
+.vid-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;transition:all 0.3s;cursor:pointer;
+}
+.vid-card:hover{transform:translateY(-3px);border-color:rgba(0,255,136,0.25);}
+
+.vid-thumb{
+  aspect-ratio:16/9;background:var(--deep);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:10px;position:relative;overflow:hidden;
+}
+
+.vid-bg-text{
+  position:absolute;font-family:'Fira Code',monospace;
+  font-size:60px;opacity:0.04;color:var(--neon);pointer-events:none;
+}
+
+.vid-play-btn{
+  width:50px;height:50px;border-radius:50%;
+  background:rgba(0,255,136,0.12);
+  border:2px solid var(--neon);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--neon);font-size:18px;
+  transition:all 0.3s;z-index:1;
+}
+.vid-card:hover .vid-play-btn{background:var(--neon);color:var(--void);transform:scale(1.1);}
+
+.vid-formula{font-family:'Fira Code',monospace;font-size:14px;color:rgba(0,255,136,0.3);z-index:1;}
+
+.vid-info{padding:16px 18px;}
+.vi-badge{
+  font-family:'Fira Code',monospace;font-size:9px;
+  text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--neon);background:rgba(0,255,136,0.07);
+  padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:8px;
+}
+.vi-title{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+  line-height:1.3;color:var(--chalk);margin-bottom:5px;
+}
+.vi-meta{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
+
+/* VIDEO MODAL */
+.vid-modal{
+  display:none;position:fixed;inset:0;z-index:8000;
+  background:rgba(0,0,0,0.97);
+  align-items:center;justify-content:center;padding:24px;
+}
+.vid-modal.open{display:flex;}
+.vid-modal-inner{width:100%;max-width:880px;}
+.vid-modal-top{display:flex;justify-content:flex-end;margin-bottom:10px;}
+.vid-close{
+  background:rgba(255,255,255,0.05);border:none;
+  color:var(--chalk);width:36px;height:36px;
+  border-radius:50%;font-size:18px;cursor:pointer;transition:all 0.2s;
+}
+.vid-close:hover{background:rgba(239,68,68,0.15);color:var(--danger);}
+.vid-embed{aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#000;}
+.vid-embed iframe{width:100%;height:100%;border:none;}
+
+/* ══ DIVIDER ══ */
+.divider{
+  display:flex;align-items:center;gap:16px;
+  padding:0 40px;max-width:1200px;margin:0 auto;opacity:0.2;
+}
+.divider::before,.divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--neon),transparent);
+}
+.divider span{
+  font-family:'Fira Code',monospace;font-size:11px;
+  color:var(--neon);white-space:nowrap;
+}
+
+/* ══ FOOTER ══ */
+.footer{
+  border-top:1px solid var(--border);
+  padding:32px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;
+}
+.footer-back{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;}
+.footer-back:hover{color:var(--neon);}
+.footer-copy{font-family:'Fira Code',monospace;font-size:9px;color:rgba(61,107,79,0.4);}
+
+/* ══ REVEAL ══ */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ══ ARTICLE MODAL ══ */
+.art-modal{
+  display:none;position:fixed;inset:0;z-index:7000;
+  background:rgba(2,4,5,0.97);
+  align-items:flex-start;justify-content:center;
+  padding:20px;overflow-y:auto;
+}
+.art-modal.open{display:flex;}
+
+.art-modal-inner{
+  width:100%;max-width:780px;
+  margin:0 auto;
+  background:var(--card);
+  border:1px solid rgba(0,255,136,0.12);
+  border-radius:10px;
+  overflow:hidden;
+  animation:modalIn 0.35s cubic-bezier(0.22,1,0.36,1) both;
+  position:relative;
+  margin-top:20px;
+  margin-bottom:40px;
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(30px) scale(0.98);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+
+.art-modal-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;
+  background:rgba(0,255,136,0.04);
+  border-bottom:1px solid var(--border);
+}
+
+.art-modal-breadcrumb{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--muted);letter-spacing:1px;
+}
+
+.art-modal-close{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  color:var(--chalk);width:32px;height:32px;border-radius:50%;
+  font-size:16px;cursor:pointer;transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.art-modal-close:hover{background:rgba(239,68,68,0.15);color:var(--danger);border-color:rgba(239,68,68,0.3);}
+
+.art-modal-hero{
+  padding:40px 48px 32px;
+  border-bottom:1px solid var(--border);
+}
+
+.art-modal-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+
+.art-modal-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(22px,3vw,34px);
+  font-weight:800;line-height:1.2;
+  color:var(--chalk);margin-bottom:20px;
+}
+
+.art-modal-meta{
+  display:flex;align-items:center;gap:16px;
+  font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);
+  flex-wrap:wrap;
+}
+
+.art-modal-meta .author-chip{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(0,255,136,0.06);
+  border:1px solid rgba(0,255,136,0.12);
+  border-radius:100px;padding:5px 12px;
+  color:var(--chalk);font-size:11px;
+}
+
+.art-modal-meta .author-av{
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,var(--neon),var(--plasma));
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;color:var(--void);flex-shrink:0;
+}
+
+.art-modal-body{
+  padding:36px 48px 48px;
+  font-family:'Libre Baskerville',serif;
+  font-size:16px;line-height:1.9;
+  color:rgba(212,240,224,0.8);
+}
+
+.art-modal-body h3{
+  font-family:'Syne',sans-serif;font-size:20px;font-weight:800;
+  color:var(--neon);margin:32px 0 14px;
+  padding-left:16px;
+  border-left:3px solid var(--neon);
+}
+
+.art-modal-body p{margin-bottom:20px;}
+
+.art-modal-body .highlight-box{
+  background:rgba(0,255,136,0.05);
+  border:1px solid rgba(0,255,136,0.15);
+  border-radius:6px;padding:20px 24px;
+  margin:24px 0;
+  font-family:'Fira Code',monospace;
+  font-size:13px;color:var(--chalk);line-height:1.7;
+}
+
+.art-modal-body .highlight-box .hb-label{
+  font-size:9px;color:var(--neon);text-transform:uppercase;
+  letter-spacing:2px;margin-bottom:8px;display:block;
+}
+
+.art-modal-body .fact-list{
+  list-style:none;padding:0;margin:16px 0;
+}
+
+.art-modal-body .fact-list li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 0;border-bottom:1px solid rgba(0,255,136,0.05);
+  font-size:14px;
+}
+.art-modal-body .fact-list li::before{
+  content:'→';color:var(--neon);font-family:'Fira Code',monospace;
+  font-size:12px;flex-shrink:0;margin-top:3px;
+}
+
+.art-modal-body .conclusion{
+  background:linear-gradient(135deg,rgba(0,255,136,0.07),rgba(34,211,238,0.04));
+  border:1px solid rgba(0,255,136,0.15);
+  border-radius:8px;padding:24px;margin-top:32px;
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:600;
+  color:var(--chalk);line-height:1.7;
+  font-style:italic;
+}
+
+.art-modal-footer{
+  padding:20px 48px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+
+.art-nav-btn{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Fira Code',monospace;font-size:11px;
+  color:var(--muted);cursor:pointer;transition:color 0.2s;
+  background:none;border:none;
+}
+.art-nav-btn:hover{color:var(--neon);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1000px){
+  .cabang-grid{grid-template-columns:repeat(2,1fr);}
+  .articles-layout{grid-template-columns:1fr;}
+  .art-sidebar{position:static;}
+  .lab-grid{grid-template-columns:1fr;}
+  .video-grid{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .hero{padding:90px 20px 60px;}
+  .section{padding:60px 20px;}
+  .nav{padding:0 20px;}
+  .hero-stats{gap:28px;}
+  .cabang-grid{grid-template-columns:1fr 1fr;}
+  .footer{padding:28px 20px;}
+}
+</style>
+</head>
+<body>
+
+<div id="scrollBar"></div>
+<canvas id="bgCanvas"></canvas>
+
+<div class="page">
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <a class="nav-brand" href="/">
+    <span>~/</span>Ilmiora<span>/</span>sains
+  </a>
+  <div class="nav-status">
+    <span class="status-dot"></span>
+    sistem aktif
+  </div>
+  <a class="nav-back" href="/">← /beranda</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+
+  <div class="hero-badge">
+    <span class="badge-line"></span>
+    Taman Bacaan &bull; Sains &amp; IPA
+    <span class="badge-line"></span>
+  </div>
+
+  <h1 class="hero-h1">
+    <span class="t-dim">Batas</span><br>
+    <span class="t-neon">Sains</span>
+  </h1>
+  <p class="hero-sub">— Masa Kini &amp; Masa Depan</p>
+
+  <p class="hero-desc">
+    Jelajahi ilmu pengetahuan dari fisika kuantum hingga biologi sintetik. Temukan bagaimana sains hari ini
+    sedang membangun fondasi dunia yang akan kamu hidupi 10—20 tahun mendatang.
+  </p>
+
+  <div class="hero-cta">
+    <a class="btn-neon" href="#artikel">Baca Artikel →</a>
+    <a class="btn-outline-neon" href="#lab">Buka Laboratorium</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hs">
+      <span class="hs-num" data-target="312">0</span>
+      <span class="hs-lbl">Artikel</span>
+    </div>
+    <div class="hs">
+      <span class="hs-num" data-target="8">0</span>
+      <span class="hs-lbl">Cabang Ilmu</span>
+    </div>
+    <div class="hs">
+      <span class="hs-num" data-target="42">0</span>
+      <span class="hs-lbl">Video</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CABANG ILMU ══ -->
+<div class="section reveal" id="cabang">
+  <p class="sec-eyebrow">// 01 — Cabang Ilmu</p>
+  <h2 class="sec-title">Eksplorasi <em>Bidang Sains</em></h2>
+
+  <div class="cabang-grid">
+    <a class="cabang-card" href="#">
+      <div class="cc-id">// S-001</div>
+      <span class="cc-icon">⚛️</span>
+      <div class="cc-name">Fisika Kuantum</div>
+      <div class="cc-desc">Superposisi, entanglement, dan mekanika gelombang yang menjadi fondasi teknologi masa depan.</div>
+    </a>
+    <a class="cabang-card" href="#">
+      <div class="cc-id">// S-002</div>
+      <span class="cc-icon">🧬</span>
+      <div class="cc-name">Biologi Molekuler</div>
+      <div class="cc-desc">DNA, RNA, protein, rekayasa genetika CRISPR, dan rahasia kehidupan di tingkat molekuler.</div>
+    </a>
+    <a class="cabang-card" href="#">
+      <div class="cc-id">// S-003</div>
+      <span class="cc-icon">🧪</span>
+      <div class="cc-name">Kimia Material</div>
+      <div class="cc-desc">Nanomaterial, graphene, metamaterial, dan revolusi bahan yang mengubah industri global.</div>
+    </a>
+    <a class="cabang-card" href="#">
+      <div class="cc-id">// S-004</div>
+      <span class="cc-icon">🌌</span>
+      <div class="cc-name">Astrofisika</div>
+      <div class="cc-desc">Lubang hitam, gelombang gravitasi, materi gelap, dan misteri alam semesta terbesar.</div>
+    </a>
+    <a class="cabang-card" href="#">
+      <div class="cc-id">// S-005</div>
+      <span class="cc-icon">🧠</span>
+      <div class="cc-name">Neurosains</div>
+      <div class="cc-desc">Peta otak, kognisi, neuroplastisitas, dan interface otak-komputer yang mulai jadi kenyataan.</div>
+    </a>
+    <a class="cabang-card" href="#">
+      <div class="cc-id">// S-006</div>
+      <span class="cc-icon">🌿</span>
+      <div class="cc-name">Biologi Sintetik</div>
+      <div class="cc-desc">Merancang organisme baru, biofuel, pengobatan presisi, dan batas baru rekayasa kehidupan.</div>
+    </a>
+    <a class="cabang-card" href="#">
+      <div class="cc-id">// S-007</div>
+      <span class="cc-icon">🔬</span>
+      <div class="cc-name">Nanoteknologi</div>
+      <div class="cc-desc">Manipulasi materi skala atom, nanorobot medis, dan material dengan sifat yang belum pernah ada.</div>
+    </a>
+    <a class="cabang-card" href="#">
+      <div class="cc-id">// S-008</div>
+      <span class="cc-icon">🌡️</span>
+      <div class="cc-name">Ilmu Iklim</div>
+      <div class="cc-desc">Sistem atmosfer, permodelan iklim, geoengineering, dan sains di balik perubahan iklim global.</div>
+    </a>
+  </div>
+</div>
+
+<div class="divider"><span>// artikel sains masa depan</span></div>
+
+<!-- ══ ARTIKEL FUTURISTIK ══ -->
+<div class="section reveal" id="artikel">
+  <p class="sec-eyebrow">// 02 — Proyeksi Sains 2030—2045</p>
+  <h2 class="sec-title">Sains yang Akan <em>Mengubah Dunia</em></h2>
+
+  <div class="articles-layout">
+    <div>
+      <div class="timeline">
+
+        <!-- 2028-2030 -->
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year-badge">⏱ Proyeksi 2028—2030</div>
+
+          <div class="art-card featured" onclick="openArticle(0)" style="cursor:pointer;">
+            <div class="art-card-inner">
+              <div class="art-tags">
+                <span class="art-tag tag-bio">Biologi</span>
+                <span class="art-tag tag-ai">AI</span>
+                <span class="art-year">~2028</span>
+              </div>
+              <h3 class="art-title">AlphaFold 3 dan Akhir Era "Protein Misterius": Ketika AI Memecahkan 200 Juta Struktur Protein</h3>
+              <p class="art-excerpt">Pada 2022, DeepMind's AlphaFold 2 memecahkan masalah 50 tahun biologi — memprediksi bentuk 3D protein dari sekuens asam amino. Kini dengan AlphaFold 3 dan generasi berikutnya, para ilmuwan mampu merancang protein yang belum pernah ada di alam. Implikasinya: obat-obatan custom untuk setiap individu, enzim yang mendegradasi plastik, dan material hidup yang dapat memperbaiki dirinya sendiri. Berdasarkan lintasan penelitian saat ini, pada 2028-2030 kita akan melihat obat pertama yang sepenuhnya dirancang oleh AI memasuki uji klinis fase akhir.</p>
+              <div class="art-meta-row">
+                <span>Dr. Ahmad Fauzi</span>
+                <span>·</span>
+                <span>12 menit baca</span>
+                <span class="art-read-btn">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="art-card" onclick="openArticle(0)" style="cursor:pointer;">
+            <div class="art-card-inner">
+              <div class="art-tags">
+                <span class="art-tag tag-phys">Fisika</span>
+                <span class="art-year">~2029</span>
+              </div>
+              <h3 class="art-title">Komputer Kuantum 1 Juta Qubit: Mengapa Enkripsi Internet Kita Perlu Diganti Sekarang</h3>
+              <p class="art-excerpt">IBM menargetkan 100.000 qubit pada 2033. Google dan startup kuantum berlomba menembus batas "quantum advantage" yang sesungguhnya. Saat komputer kuantum mencapai skala ini, algoritma RSA-2048 yang melindungi semua transaksi bank, email, dan VPN dunia bisa dipecahkan dalam hitungan jam. NIST (National Institute of Standards and Technology) sudah mulai menetapkan standar kriptografi post-kuantum sejak 2022 — tapi apakah dunia bergerak cukup cepat?</p>
+              <div class="art-meta-row">
+                <span>Rina Kartika, MSc</span>
+                <span>·</span>
+                <span>9 menit baca</span>
+                <span class="art-read-btn">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- 2031-2035 -->
+        <div class="tl-item" style="animation-delay:0.1s;">
+          <div class="tl-dot" style="box-shadow:0 0 10px var(--plasma);background:var(--plasma);"></div>
+          <div class="tl-year-badge" style="color:var(--plasma);background:rgba(34,211,238,0.08);border-color:rgba(34,211,238,0.2);">⏱ Proyeksi 2031—2035</div>
+
+          <div class="art-card" onclick="openArticle(1)" style="cursor:pointer;">
+            <div class="art-card-inner">
+              <div class="art-tags">
+                <span class="art-tag tag-bio">Genetika</span>
+                <span class="art-tag tag-chem">Medis</span>
+                <span class="art-year">~2032</span>
+              </div>
+              <h3 class="art-title">CRISPR 3.0 dan Terapi Gen In Vivo: Menyuntikkan "Kode Editor" Langsung ke Dalam Tubuh Manusia</h3>
+              <p class="art-excerpt">Generasi pertama CRISPR membutuhkan sel diambil dari tubuh, diedit di laboratorium, lalu dikembalikan. CRISPR generasi terbaru — prime editing dan base editing — memungkinkan koreksi DNA langsung di dalam tubuh pasien. Uji klinis untuk penyakit sickle cell dan beta-thalassemia sudah menunjukkan hasil yang hampir sempurna pada 2023-2024. Proyeksi untuk 2032: terapi gen single-dose untuk lebih dari 6.000 penyakit genetik monogenik akan tersedia secara klinis. Harganya masih mahal, tapi teknologinya nyata.</p>
+              <div class="art-meta-row">
+                <span>Prof. Siti Rahmawati</span>
+                <span>·</span>
+                <span>11 menit baca</span>
+                <span class="art-read-btn">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="art-card" onclick="openArticle(2)" style="cursor:pointer;">
+            <div class="art-card-inner">
+              <div class="art-tags">
+                <span class="art-tag tag-space">Astrofisika</span>
+                <span class="art-year">~2034</span>
+              </div>
+              <h3 class="art-title">Teleskop Ruang Angkasa Generasi Ketiga: Pertama Kali Memotret Atmosfer Planet Mirip Bumi</h3>
+              <p class="art-excerpt">James Webb Space Telescope (JWST) sudah mendeteksi sidik jari kimia atmosfer exoplanet. Generasi selanjutnya — Habitable Worlds Observatory (HWO) yang dijadwalkan diluncurkan NASA sekitar 2035-2040 — dirancang khusus untuk melakukan direct imaging planet seukuran Bumi di zona habitabel. Bukan hanya memotret, tapi menganalisis apakah ada oksigen, metana, ozon, dan air — indikator biokimia kehidupan. Kita mungkin tidak sendirian, dan jawaban itu mungkin datang dalam 10 tahun.</p>
+              <div class="art-meta-row">
+                <span>Hendra Kusuma</span>
+                <span>·</span>
+                <span>14 menit baca</span>
+                <span class="art-read-btn">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="art-card" onclick="openArticle(3)" style="cursor:pointer;">
+            <div class="art-card-inner">
+              <div class="art-tags">
+                <span class="art-tag tag-nano">Nanoteknologi</span>
+                <span class="art-tag tag-chem">Material</span>
+                <span class="art-year">~2033</span>
+              </div>
+              <h3 class="art-title">Nanorobot Medis Generasi Pertama Masuk Uji Klinis: 100 Juta Robot Berukuran Virus di Dalam Darahmu</h3>
+              <p class="art-excerpt">Laboratorium Wyss di Harvard dan beberapa startup biotech telah mendemonstrasikan DNA origami nanostructures yang bisa menempel pada sel kanker spesifik dan melepaskan obat tepat sasaran. Prediksi konservatif: nanorobot medis generasi pertama yang bisa dinavigasi dengan medan magnet eksternal akan memasuki uji klinis pertama sekitar 2030-2033. Ini bukan fiksi ilmiah — ini ekstensi langsung dari penelitian yang sedang berjalan hari ini di lebih dari 200 laboratorium di seluruh dunia.</p>
+              <div class="art-meta-row">
+                <span>Dr. Budi Santoso</span>
+                <span>·</span>
+                <span>10 menit baca</span>
+                <span class="art-read-btn">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- 2036-2045 -->
+        <div class="tl-item" style="animation-delay:0.2s;">
+          <div class="tl-dot" style="box-shadow:0 0 10px var(--violet);background:var(--violet);"></div>
+          <div class="tl-year-badge" style="color:var(--violet);background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.2);">⏱ Proyeksi 2036—2045</div>
+
+          <div class="art-card" onclick="openArticle(4)" style="cursor:pointer;">
+            <div class="art-card-inner">
+              <div class="art-tags">
+                <span class="art-tag tag-phys">Energi</span>
+                <span class="art-tag tag-nano">Plasma</span>
+                <span class="art-year">~2040</span>
+              </div>
+              <h3 class="art-title">Fusi Nuklir Komersial: Bintang Mini di Dalam Reaktor — Energi Tak Terbatas Tanpa Karbon</h3>
+              <p class="art-excerpt">Pada Desember 2022, NIF (National Ignition Facility) mencapai ignition — pertama kalinya dalam sejarah manusia menghasilkan lebih banyak energi dari fusi daripada yang dimasukkan ke laser. ITER di Prancis dijadwalkan mulai operasi penuh 2035. Commonwealth Fusion Systems menargetkan reaktor komersial pertama pada 2030-an. Fusi menggunakan deuterium dari air laut — secara praktis tidak terbatas — dan menghasilkan helium sebagai sisa, bukan karbon atau limbah radioaktif jangka panjang. Ini bukan hanya tentang energi bersih, ini tentang mengakhiri keterbatasan energi manusia selamanya.</p>
+              <div class="art-meta-row">
+                <span>Prof. Dewi Anggraini</span>
+                <span>·</span>
+                <span>16 menit baca</span>
+                <span class="art-read-btn">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="art-card" onclick="openArticle(5)" style="cursor:pointer;">
+            <div class="art-card-inner">
+              <div class="art-tags">
+                <span class="art-tag tag-bio">Neurosains</span>
+                <span class="art-tag tag-ai">BCI</span>
+                <span class="art-year">~2038</span>
+              </div>
+              <h3 class="art-title">Brain-Computer Interface Generasi Kedua: Menulis, Berpikir, Berkomunikasi Tanpa Gerak Sepatah pun</h3>
+              <p class="art-excerpt">Neuralink N1 sudah memungkinkan pasien quadriplegic menggerakkan kursor komputer dengan pikiran pada 2024. BrainGate dan Synchron menambahkan kemampuan mengetik 40 kata per menit dari imajinasi gerakan jari. Proyeksi 2038: BCI non-invasif resolusi tinggi (melalui kulit kepala) akan memungkinkan komunikasi dua arah dengan bandwidth yang setara dengan berbicara. Ini akan merevolusi aksesibilitas untuk penyandang disabilitas, dan mungkin — ini yang kontroversial — mulai mengaburkan batas antara pikiran manusia dan jaringan digital.</p>
+              <div class="art-meta-row">
+                <span>Anisa Putri, PhD</span>
+                <span>·</span>
+                <span>13 menit baca</span>
+                <span class="art-read-btn">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="art-card" onclick="openArticle(6)" style="cursor:pointer;">
+            <div class="art-card-inner">
+              <div class="art-tags">
+                <span class="art-tag tag-bio">Aging</span>
+                <span class="art-tag tag-chem">Longevity</span>
+                <span class="art-year">~2042</span>
+              </div>
+              <h3 class="art-title">Biologi Penuaan Terpecahkan? Senolytic Therapy dan Kemungkinan Pertama Manusia yang Akan Hidup 150 Tahun</h3>
+              <p class="art-excerpt">Penuaan bukan lagi dianggap "takdir" oleh sains modern — melainkan proses biologis yang bisa diintervensi. Sel-sel senesen (sel "zombie" tua yang menolak mati) telah terbukti menjadi driver utama penyakit degeneratif. Obat-obat senolytic yang membersihkan sel-sel ini sudah dalam uji klinis fase 2-3. Paralel: NAD+ precursor, rapamycin, dan reprogramming epigenetik à la Yamanaka factors menunjukkan pembalikan "usia biologis" pada tikus. David Sinclair dan komunitas longevity science memproyeksikan pada 2040-an kita akan punya intervensi klinis yang memperlambat penuaan secara signifikan — bukan immortality, tapi 120-150 tahun dengan kualitas hidup tinggi mungkin bukan fiksi.</p>
+              <div class="art-meta-row">
+                <span>Dr. Fajar Ramadhan</span>
+                <span>·</span>
+                <span>18 menit baca</span>
+                <span class="art-read-btn">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="art-card" onclick="openArticle(7)" style="cursor:pointer;">
+            <div class="art-card-inner">
+              <div class="art-tags">
+                <span class="art-tag tag-space">Luar Angkasa</span>
+                <span class="art-year">~2044</span>
+              </div>
+              <h3 class="art-title">Koloni Mars Pertama: Bukan Petualangan — Ini Asuransi Eksistensial Bagi Seluruh Umat Manusia</h3>
+              <p class="art-excerpt">SpaceX Starship telah melakukan test flight trans-atmosferik. Misi tak berawak ke Mars dijadwalkan 2026. Misi berawak pertama antara 2029-2033. Tapi koloni yang berfungsi penuh — dengan pertanian terkontrol, produksi oksigen dari elektrolisis CO₂ Mars, dan struktur sosial yang berkelanjutan — membutuhkan 10.000 orang minimum menurut Elon Musk, atau sekitar 1 juta menurut beberapa ahli. Ini bukan hanya tentang eksplorasi — Carl Sagan, Stephen Hawking, dan banyak ilmuwan sepakat: menjadi spesies multi-planet adalah satu-satunya cara menjamin kelangsungan hidup manusia dari bencana skala planet.</p>
+              <div class="art-meta-row">
+                <span>Rizky Pratama</span>
+                <span>·</span>
+                <span>15 menit baca</span>
+                <span class="art-read-btn">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div><!-- end timeline -->
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="art-sidebar reveal">
+      <div class="sw">
+        <div class="sw-head">// Cari Artikel</div>
+        <div class="sw-search">
+          <input id="sciSearch" placeholder="ketik topik sains..." type="text">
+          <button>🔍</button>
+        </div>
+      </div>
+
+      <div class="sw">
+        <div class="sw-head">// Paling Banyak Dibaca</div>
+        <a class="sw-link" href="#">
+          <span class="sw-link-num">01</span>
+          <span class="sw-link-text">Apa Itu Materi Gelap? 27% Alam Semesta yang Tak Bisa Dilihat</span>
+        </a>
+        <a class="sw-link" href="#">
+          <span class="sw-link-num">02</span>
+          <span class="sw-link-text">CRISPR Dijelaskan: Gunting Genetik yang Mengubah Segalanya</span>
+        </a>
+        <a class="sw-link" href="#">
+          <span class="sw-link-num">03</span>
+          <span class="sw-link-text">Relativitas Umum dalam 10 Menit: Einstein Ternyata Mudah</span>
+        </a>
+        <a class="sw-link" href="#">
+          <span class="sw-link-num">04</span>
+          <span class="sw-link-text">Mengapa Graphene Disebut "Material Ajaib Abad 21"</span>
+        </a>
+        <a class="sw-link" href="#">
+          <span class="sw-link-num">05</span>
+          <span class="sw-link-text">Bagaimana Vaksin mRNA Bekerja — dan Apa Selanjutnya</span>
+        </a>
+      </div>
+
+      <div class="sw">
+        <div class="sw-head">// Filter Bidang</div>
+        <a class="sw-link" href="#"><span class="sw-link-num">→</span><span class="sw-link-text">Fisika (68 artikel)</span></a>
+        <a class="sw-link" href="#"><span class="sw-link-num">→</span><span class="sw-link-text">Biologi (74 artikel)</span></a>
+        <a class="sw-link" href="#"><span class="sw-link-num">→</span><span class="sw-link-text">Kimia (52 artikel)</span></a>
+        <a class="sw-link" href="#"><span class="sw-link-num">→</span><span class="sw-link-text">Astrofisika (38 artikel)</span></a>
+        <a class="sw-link" href="#"><span class="sw-link-num">→</span><span class="sw-link-text">Neurosains (44 artikel)</span></a>
+        <a class="sw-link" href="#"><span class="sw-link-num">→</span><span class="sw-link-text">Teknologi (36 artikel)</span></a>
+      </div>
+
+      <div class="sw">
+        <div class="sw-head">// Kutipan Ilmuwan</div>
+        <p style="font-family:'Libre Baskerville',serif;font-style:italic;font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:10px;">
+          "The most beautiful thing we can experience is the mysterious. It is the source of all true art and science."
+        </p>
+        <p style="font-family:'Fira Code',monospace;font-size:10px;color:rgba(0,255,136,0.35);">— Albert Einstein</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="divider"><span>// laboratorium interaktif</span></div>
+
+<!-- ══ LAB INTERAKTIF ══ -->
+<div class="lab-section reveal" id="lab">
+  <div style="max-width:1200px;margin:0 auto;padding:0 40px 44px;text-align:center;">
+    <p class="sec-eyebrow" style="justify-content:center;display:flex;">// 03 — Lab Interaktif</p>
+    <h2 class="sec-title" style="text-align:center;">Eksperimen <em>Digital</em></h2>
+  </div>
+
+  <div class="lab-grid">
+
+    <!-- SPEED OF LIGHT & SPACE CALCULATOR -->
+    <div class="lab-card">
+      <div class="lab-header">
+        <div class="lab-dot" style="background:#ef4444;"></div>
+        <div class="lab-dot" style="background:#f59e0b;margin-left:4px;"></div>
+        <div class="lab-dot" style="background:#10b981;margin-left:4px;"></div>
+        <span class="lab-title" style="margin-left:8px;">kalkulator_kosmik.exe</span>
+      </div>
+      <div class="lab-body">
+        <div class="sol-display">
+          <div class="sol-result" id="solResult">—</div>
+          <div class="sol-compare" id="solCompare">Masukkan nilai dan pilih perhitungan</div>
+        </div>
+        <div class="sol-input">
+          <div class="sol-row">
+            <span class="sol-label">Hitung</span>
+            <select class="sol-select" id="solMode" onchange="solCalc()">
+              <option value="dist">Jarak → Waktu cahaya</option>
+              <option value="year">Tahun cahaya → km</option>
+              <option value="escape">Kecepatan lepas planet</option>
+              <option value="doppler">Pergeseran Doppler</option>
+              <option value="energy">E = mc² (massa → energi)</option>
+            </select>
+          </div>
+          <div class="sol-row">
+            <span class="sol-label" id="solL1">Jarak (km)</span>
+            <input class="sol-inp" id="solA" placeholder="mis: 384400" type="number" oninput="solCalc()">
+          </div>
+          <div class="sol-row" id="solRow2" style="display:none;">
+            <span class="sol-label" id="solL2">Nilai 2</span>
+            <input class="sol-inp" id="solB" placeholder="..." type="number" oninput="solCalc()">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+          <button class="lab-btn" onclick="setPreset('moon')">Bumi→Bulan</button>
+          <button class="lab-btn" onclick="setPreset('sun')">Bumi→Matahari</button>
+          <button class="lab-btn" onclick="setPreset('mars')">Bumi→Mars</button>
+          <button class="lab-btn" onclick="setPreset('proxima')">Bintang Terdekat</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERIODIC TABLE LOOKUP -->
+    <div class="lab-card">
+      <div class="lab-header">
+        <div class="lab-dot" style="background:#ef4444;"></div>
+        <div class="lab-dot" style="background:#f59e0b;margin-left:4px;"></div>
+        <div class="lab-dot" style="background:#10b981;margin-left:4px;"></div>
+        <span class="lab-title" style="margin-left:8px;">tabel_periodik.exe</span>
+      </div>
+      <div class="lab-body">
+        <div class="element-search">
+          <input class="el-input" id="elInput" placeholder="Ketik simbol atau nama (mis: H, Fe, Gold)..." type="text" oninput="lookupElement(this.value)" maxlength="20">
+        </div>
+        <div class="element-card" id="elCard">
+          <span style="font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">// Ketik simbol elemen</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:6px;">
+          <button class="lab-btn" style="font-size:10px;" onclick="quickEl('H')">H</button>
+          <button class="lab-btn" style="font-size:10px;" onclick="quickEl('C')">C</button>
+          <button class="lab-btn" style="font-size:10px;" onclick="quickEl('Au')">Au</button>
+          <button class="lab-btn" style="font-size:10px;" onclick="quickEl('Fe')">Fe</button>
+          <button class="lab-btn" style="font-size:10px;" onclick="quickEl('O')">O</button>
+          <button class="lab-btn" style="font-size:10px;" onclick="quickEl('N')">N</button>
+          <button class="lab-btn" style="font-size:10px;" onclick="quickEl('U')">U</button>
+          <button class="lab-btn" style="font-size:10px;" onclick="quickEl('Pb')">Pb</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DNA ANALYZER -->
+    <div class="lab-card">
+      <div class="lab-header">
+        <div class="lab-dot" style="background:#ef4444;"></div>
+        <div class="lab-dot" style="background:#f59e0b;margin-left:4px;"></div>
+        <div class="lab-dot" style="background:#10b981;margin-left:4px;"></div>
+        <span class="lab-title" style="margin-left:8px;">dna_analyzer.exe</span>
+      </div>
+      <div class="lab-body">
+        <div class="dna-seq-input">
+          <input class="dna-inp" id="dnaInput" placeholder="Ketik urutan DNA (A,T,G,C)..." maxlength="40" oninput="analyzeDNA(this.value)">
+        </div>
+        <canvas id="dnaCanvas" width="260" height="80" style="width:100%;display:block;border-radius:4px;background:rgba(0,0,0,0.4);border:1px solid rgba(0,255,136,0.08);margin-bottom:10px;"></canvas>
+        <div class="dna-stats" id="dnaStats">
+          <div class="dna-stat"><div class="dna-stat-val dna-A" id="dnaA">0</div><div class="dna-stat-lbl">Adenin</div></div>
+          <div class="dna-stat"><div class="dna-stat-val dna-T" id="dnaT">0</div><div class="dna-stat-lbl">Timin</div></div>
+          <div class="dna-stat"><div class="dna-stat-val dna-G" id="dnaG">0</div><div class="dna-stat-lbl">Guanin</div></div>
+          <div class="dna-stat"><div class="dna-stat-val dna-C" id="dnaC">0</div><div class="dna-stat-lbl">Sitosin</div></div>
+        </div>
+        <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(0,255,136,0.08);border-radius:3px;padding:10px;font-family:'Fira Code',monospace;font-size:11px;">
+          <div style="color:var(--muted);margin-bottom:4px;">// Untai Komplementer:</div>
+          <div id="dnaComplement" style="color:var(--neon);word-break:break-all;letter-spacing:2px;">—</div>
+          <div style="color:var(--muted);margin-top:6px;margin-bottom:4px;">// Transkripsi RNA:</div>
+          <div id="dnaRNA" style="color:var(--plasma);word-break:break-all;letter-spacing:2px;">—</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"><span>// video sains</span></div>
+
+<!-- ══ VIDEO ══ -->
+<div class="section reveal" id="video">
+  <p class="sec-eyebrow">// 04 — Video Sains</p>
+  <h2 class="sec-title">Tonton &amp; <em>Pahami</em></h2>
+
+  <div class="video-grid">
+    <div class="vid-card" onclick="openVid('https://www.youtube.com/embed/MX9-svmG2pw')">
+      <div class="vid-thumb">
+        <div class="vid-bg-text">⚛</div>
+        <div class="vid-play-btn">▶</div>
+        <div class="vid-formula">E = mc²</div>
+      </div>
+      <div class="vid-info">
+        <span class="vi-badge">Fisika Kuantum</span>
+        <h4 class="vi-title">Quantum Mechanics — Explained Simply</h4>
+        <p class="vi-meta">// 26 menit · Menengah</p>
+      </div>
+    </div>
+
+    <div class="vid-card" onclick="openVid('https://www.youtube.com/embed/jAhjPd4uNFY')">
+      <div class="vid-thumb">
+        <div class="vid-bg-text">🧬</div>
+        <div class="vid-play-btn">▶</div>
+        <div class="vid-formula">ATGC</div>
+      </div>
+      <div class="vid-info">
+        <span class="vi-badge">Biologi Molekuler</span>
+        <h4 class="vi-title">CRISPR: Gene Editing dan Masa Depan Manusia</h4>
+        <p class="vi-meta">// 19 menit · Menengah</p>
+      </div>
+    </div>
+
+    <div class="vid-card" onclick="openVid('https://www.youtube.com/embed/0NbBjNiw4tk')">
+      <div class="vid-thumb">
+        <div class="vid-bg-text">🌌</div>
+        <div class="vid-play-btn">▶</div>
+        <div class="vid-formula">∞</div>
+      </div>
+      <div class="vid-info">
+        <span class="vi-badge">Astrofisika</span>
+        <h4 class="vi-title">Lubang Hitam: Dari Teori ke Foto Pertama</h4>
+        <p class="vi-meta">// 22 menit · Lanjut</p>
+      </div>
+    </div>
+
+    <div class="vid-card" onclick="openVid('https://www.youtube.com/embed/IFKnq9QM6_A')">
+      <div class="vid-thumb">
+        <div class="vid-bg-text">🧪</div>
+        <div class="vid-play-btn">▶</div>
+        <div class="vid-formula">NaCl</div>
+      </div>
+      <div class="vid-info">
+        <span class="vi-badge">Kimia Material</span>
+        <h4 class="vi-title">Graphene: Material Paling Tipis &amp; Kuat di Dunia</h4>
+        <p class="vi-meta">// 14 menit · Dasar</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ARTICLE MODAL ══ -->
+<div class="art-modal" id="artModal" onclick="if(event.target===this)closeArticle()">
+  <div class="art-modal-inner">
+    <div class="art-modal-topbar">
+      <span class="art-modal-breadcrumb">~/ilmiora/sains/artikel</span>
+      <button class="art-modal-close" onclick="closeArticle()">✕</button>
+    </div>
+    <div class="art-modal-hero">
+      <div class="art-modal-tags art-tags" id="artModalTags"></div>
+      <h2 class="art-modal-title" id="artModalTitle"></h2>
+      <div class="art-modal-meta" id="artModalMeta"></div>
+    </div>
+    <div class="art-modal-body" id="artModalBody"></div>
+    <div class="art-modal-footer">
+      <button class="art-nav-btn" id="artNavPrev" onclick="navArticle(-1)">← Artikel Sebelumnya</button>
+      <span style="font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);">// tekan ESC untuk tutup</span>
+      <button class="art-nav-btn" id="artNavNext" onclick="navArticle(1)">Artikel Berikutnya →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIDEO MODAL ══ -->
+<div class="vid-modal" id="vidModal">
+  <div class="vid-modal-inner">
+    <div class="vid-modal-top">
+      <button class="vid-close" onclick="closeVid()">✕</button>
+    </div>
+    <div class="vid-embed">
+      <iframe id="vidFrame" allowfullscreen src="" allow="autoplay; encrypted-media"></iframe>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <a class="footer-back" href="/">← /beranda</a>
+  <span class="footer-copy">// Taman Sains &amp; IPA · ilmiora 2026</span>
+</footer>
+
+</div><!-- .page -->
+
+<script>
+/* ════ SCROLL BAR ════ */
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('scrollBar').style.width = pct + '%';
+});
+
+/* ════ CANVAS BACKGROUND ════ */
+const canvas = document.getElementById('bgCanvas');
+const ctx    = canvas.getContext('2d');
+let W, H;
+const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+resize(); window.addEventListener('resize', resize);
+
+// Constellation nodes
+const nodes = Array.from({length: 55}, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight,
+  vx: (Math.random() - 0.5) * 0.3,
+  vy: (Math.random() - 0.5) * 0.3,
+  r: Math.random() * 1.5 + 0.5,
+}));
+
+function drawBg() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Connections
+  nodes.forEach((n, i) => {
+    nodes.slice(i + 1).forEach(m => {
+      const d = Math.hypot(n.x - m.x, n.y - m.y);
+      if (d < 130) {
+        ctx.strokeStyle = `rgba(0,255,136,${0.06 * (1 - d / 130)})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
+      }
+    });
+  });
+
+  // Nodes
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
+    ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,255,136,0.4)'; ctx.fill();
+  });
+
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+/* ════ PARTICLES ════ */
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 2 + 1;
+  p.style.cssText = `
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;top:${Math.random()*100}%;
+    --dx:${(Math.random()-0.5)*200}px;
+    --dy:${-(Math.random()*300+100)}px;
+    animation-duration:${6+Math.random()*8}s;
+    animation-delay:${Math.random()*8}s;
+    opacity:0.2;
+  `;
+  document.querySelector('.hero').appendChild(p);
+}
+
+/* ════ COUNTER ════ */
+const cObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('[data-target]').forEach(el => {
+        const t = parseInt(el.dataset.target), step = t / 55;
+        let c = 0;
+        const tm = setInterval(() => {
+          c += step; if (c >= t) { c = t; clearInterval(tm); }
+          el.textContent = Math.floor(c);
+        }, 25);
+      });
+      cObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.hero-stats').forEach(el => cObs.observe(el));
+
+/* ════ REVEAL ════ */
+const rObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); rObs.unobserve(e.target); } });
+}, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => rObs.observe(el));
+
+/* ════ COSMIC CALCULATOR ════ */
+const C = 299792.458; // km/s
+
+function solCalc() {
+  const mode = document.getElementById('solMode').value;
+  const a = parseFloat(document.getElementById('solA').value);
+  const b = parseFloat(document.getElementById('solB').value);
+  const res = document.getElementById('solResult');
+  const cmp = document.getElementById('solCompare');
+  const row2 = document.getElementById('solRow2');
+  const l1 = document.getElementById('solL1');
+
+  row2.style.display = 'none';
+
+  if (mode === 'dist') {
+    l1.textContent = 'Jarak (km)';
+    if (!a) { res.textContent = '—'; cmp.textContent = 'Masukkan jarak dalam km'; return; }
+    const secs = a / C;
+    const mins = secs / 60, hrs = mins / 60, days = hrs / 24, years = days / 365.25;
+    res.textContent = secs < 60 ? secs.toFixed(3) + ' detik' : mins < 60 ? mins.toFixed(2) + ' menit' : hrs < 24 ? hrs.toFixed(2) + ' jam' : days < 365 ? days.toFixed(1) + ' hari' : years.toFixed(4) + ' tahun cahaya';
+    cmp.textContent = `Cahaya menempuh ${a.toLocaleString('id-ID')} km dalam waktu tersebut (c = 299.792 km/s)`;
+  } else if (mode === 'year') {
+    l1.textContent = 'Tahun cahaya';
+    if (!a) { res.textContent = '—'; return; }
+    const km = a * C * 3600 * 24 * 365.25;
+    res.textContent = km.toExponential(4) + ' km';
+    cmp.textContent = `= ${(km / 1.496e8).toFixed(2)} Satuan Astronomi (AU)`;
+  } else if (mode === 'escape') {
+    l1.textContent = 'Massa (kg)';
+    row2.style.display = 'flex';
+    document.getElementById('solL2').textContent = 'Radius (km)';
+    if (!a || !b) return;
+    const G = 6.674e-11, R = b * 1000;
+    const ve = Math.sqrt(2 * G * a / R) / 1000;
+    res.textContent = ve.toFixed(2) + ' km/s';
+    cmp.textContent = `Kecepatan lepas = √(2GM/R). Bumi: 11.2 km/s, Mars: 5.0 km/s`;
+  } else if (mode === 'doppler') {
+    l1.textContent = 'Frek. asli (Hz)';
+    row2.style.display = 'flex';
+    document.getElementById('solL2').textContent = 'Kec. sumber (km/s)';
+    if (!a || !b) return;
+    const fo = a * ((C + 0) / (C + b));
+    const shift = ((fo - a) / a * 100).toFixed(4);
+    res.textContent = fo.toFixed(2) + ' Hz';
+    cmp.textContent = `Pergeseran: ${shift}%. Negatif = menjauh (redshift), Positif = mendekat (blueshift)`;
+  } else if (mode === 'energy') {
+    l1.textContent = 'Massa (kg)';
+    if (!a) return;
+    const cms = C * 1000;
+    const E = a * cms * cms;
+    res.textContent = E.toExponential(4) + ' Joule';
+    cmp.textContent = `= ${(E / 4.184e9).toExponential(3)} ton TNT. 1 gram massa = ${(0.001 * cms * cms / 4.184e9).toFixed(0)} ton TNT`;
+  }
+}
+
+function setPreset(p) {
+  document.getElementById('solMode').value = 'dist';
+  document.getElementById('solRow2').style.display = 'none';
+  const presets = {
+    moon: 384400, sun: 149600000, mars: 225000000, proxima: 40208000000000
+  };
+  document.getElementById('solA').value = presets[p];
+  document.getElementById('solL1').textContent = 'Jarak (km)';
+  solCalc();
+}
+
+document.getElementById('solMode').addEventListener('change', solCalc);
+
+/* ════ PERIODIC TABLE ════ */
+const elements = {
+  'H': {num:1, name:'Hidrogen', mass:'1.008', cat:'Nonlogam', config:'1s¹'},
+  'HE': {num:2, name:'Helium', mass:'4.003', cat:'Gas Mulia', config:'1s²'},
+  'LI': {num:3, name:'Litium', mass:'6.941', cat:'Logam Alkali', config:'[He] 2s¹'},
+  'BE': {num:4, name:'Berilium', mass:'9.012', cat:'Logam Alkali Tanah', config:'[He] 2s²'},
+  'B': {num:5, name:'Boron', mass:'10.811', cat:'Metaloid', config:'[He] 2s² 2p¹'},
+  'C': {num:6, name:'Karbon', mass:'12.011', cat:'Nonlogam', config:'[He] 2s² 2p²'},
+  'N': {num:7, name:'Nitrogen', mass:'14.007', cat:'Nonlogam', config:'[He] 2s² 2p³'},
+  'O': {num:8, name:'Oksigen', mass:'15.999', cat:'Nonlogam', config:'[He] 2s² 2p⁴'},
+  'F': {num:9, name:'Fluor', mass:'18.998', cat:'Halogen', config:'[He] 2s² 2p⁵'},
+  'NE': {num:10, name:'Neon', mass:'20.180', cat:'Gas Mulia', config:'[He] 2s² 2p⁶'},
+  'NA': {num:11, name:'Natrium', mass:'22.990', cat:'Logam Alkali', config:'[Ne] 3s¹'},
+  'MG': {num:12, name:'Magnesium', mass:'24.305', cat:'Logam Alkali Tanah', config:'[Ne] 3s²'},
+  'AL': {num:13, name:'Aluminium', mass:'26.982', cat:'Logam Pasca-transisi', config:'[Ne] 3s² 3p¹'},
+  'SI': {num:14, name:'Silikon', mass:'28.086', cat:'Metaloid', config:'[Ne] 3s² 3p²'},
+  'P': {num:15, name:'Fosfor', mass:'30.974', cat:'Nonlogam', config:'[Ne] 3s² 3p³'},
+  'S': {num:16, name:'Belerang', mass:'32.060', cat:'Nonlogam', config:'[Ne] 3s² 3p⁴'},
+  'CL': {num:17, name:'Klor', mass:'35.453', cat:'Halogen', config:'[Ne] 3s² 3p⁵'},
+  'AR': {num:18, name:'Argon', mass:'39.948', cat:'Gas Mulia', config:'[Ne] 3s² 3p⁶'},
+  'K': {num:19, name:'Kalium', mass:'39.098', cat:'Logam Alkali', config:'[Ar] 4s¹'},
+  'CA': {num:20, name:'Kalsium', mass:'40.078', cat:'Logam Alkali Tanah', config:'[Ar] 4s²'},
+  'FE': {num:26, name:'Besi', mass:'55.845', cat:'Logam Transisi', config:'[Ar] 3d⁶ 4s²'},
+  'CU': {num:29, name:'Tembaga', mass:'63.546', cat:'Logam Transisi', config:'[Ar] 3d¹⁰ 4s¹'},
+  'ZN': {num:30, name:'Seng', mass:'65.38', cat:'Logam Transisi', config:'[Ar] 3d¹⁰ 4s²'},
+  'AG': {num:47, name:'Perak', mass:'107.868', cat:'Logam Transisi', config:'[Kr] 4d¹⁰ 5s¹'},
+  'AU': {num:79, name:'Emas', mass:'196.967', cat:'Logam Transisi', config:'[Xe] 4f¹⁴ 5d¹⁰ 6s¹'},
+  'PB': {num:82, name:'Timbal', mass:'207.2', cat:'Logam Pasca-transisi', config:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²'},
+  'U': {num:92, name:'Uranium', mass:'238.029', cat:'Aktinida', config:'[Rn] 5f³ 6d¹ 7s²'},
+  'RN': {num:86, name:'Radon', mass:'(222)', cat:'Gas Mulia', config:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶'},
+  'PT': {num:78, name:'Platina', mass:'195.084', cat:'Logam Transisi', config:'[Xe] 4f¹⁴ 5d⁹ 6s¹'},
+  'HG': {num:80, name:'Merkuri', mass:'200.592', cat:'Logam Transisi', config:'[Xe] 4f¹⁴ 5d¹⁰ 6s²'},
+};
+
+// Name-to-symbol map
+const nameMap = {
+  'hidrogen':'H','helium':'HE','litium':'LI','karbon':'C','oksigen':'O',
+  'nitrogen':'N','besi':'FE','emas':'AU','perak':'AG','tembaga':'CU',
+  'uranium':'U','silikon':'SI','gold':'AU','iron':'FE','silver':'AG',
+  'copper':'CU','hydrogen':'H','carbon':'C','oxygen':'O','sodium':'NA',
+  'calcium':'CA','neon':'NE','argon':'AR','chlorine':'CL','sulfur':'S',
+};
+
+function lookupElement(val) {
+  const q = val.trim().toUpperCase();
+  if (!q) { document.getElementById('elCard').innerHTML = '<span style="font-family:Fira Code,monospace;font-size:12px;color:var(--muted);">// Ketik simbol elemen</span>'; return; }
+  const sym = elements[q] ? q : (nameMap[q.toLowerCase()] ? nameMap[q.toLowerCase()].toUpperCase() : null);
+  const el  = sym ? elements[sym] : null;
+  const card = document.getElementById('elCard');
+  if (el) {
+    const symDisplay = sym === 'HE'?'He':sym === 'LI'?'Li':sym === 'BE'?'Be':sym === 'NE'?'Ne':sym === 'NA'?'Na':sym === 'MG'?'Mg':sym === 'AL'?'Al':sym === 'SI'?'Si':sym === 'CL'?'Cl':sym === 'AR'?'Ar':sym === 'CA'?'Ca':sym === 'FE'?'Fe':sym === 'CU'?'Cu':sym === 'ZN'?'Zn':sym === 'AG'?'Ag':sym === 'AU'?'Au':sym === 'PB'?'Pb':sym === 'RN'?'Rn':sym === 'PT'?'Pt':sym === 'HG'?'Hg':sym;
+    card.innerHTML = `
+      <div class="el-num">${el.num}</div>
+      <div class="el-sym">${symDisplay}</div>
+      <div class="el-name">${el.name}</div>
+      <div class="el-mass">Massa: ${el.mass} u</div>
+      <div class="el-cat">${el.cat}</div>
+      <div class="el-config">${el.config}</div>`;
+    card.style.borderColor = 'rgba(0,255,136,0.3)';
+  } else if (q.length > 0) {
+    card.innerHTML = '<span style="font-family:Fira Code,monospace;font-size:11px;color:var(--danger);">// Elemen tidak ditemukan. Coba: H, C, Au, Fe, O...</span>';
+    card.style.borderColor = 'rgba(239,68,68,0.2)';
+  }
+}
+
+function quickEl(sym) {
+  document.getElementById('elInput').value = sym;
+  lookupElement(sym);
+}
+
+/* ════ DNA ANALYZER ════ */
+const dnaCanvas = document.getElementById('dnaCanvas');
+const dnaCtx    = dnaCanvas.getContext('2d');
+const complement = {'A':'T','T':'A','G':'C','C':'G'};
+const rnaMap     = {'A':'U','T':'A','G':'C','C':'G'};
+const dnaColors  = {'A':'#ef4444','T':'#f59e0b','G':'#10b981','C':'#3b82f6'};
+
+function analyzeDNA(raw) {
+  const seq = raw.toUpperCase().replace(/[^ATGC]/g,'');
+  const counts = {A:0,T:0,G:0,C:0};
+  seq.split('').forEach(b => { if (counts[b] !== undefined) counts[b]++; });
+  document.getElementById('dnaA').textContent = counts['A'];
+  document.getElementById('dnaT').textContent = counts['T'];
+  document.getElementById('dnaG').textContent = counts['G'];
+  document.getElementById('dnaC').textContent = counts['C'];
+
+  const comp = seq.split('').map(b => complement[b] || b).join('');
+  const rna  = seq.split('').map(b => rnaMap[b] || b).join('');
+  document.getElementById('dnaComplement').textContent = comp || '—';
+  document.getElementById('dnaRNA').textContent       = rna  || '—';
+
+  // Draw helix
+  dnaCtx.clearRect(0, 0, dnaCanvas.width, dnaCanvas.height);
+  if (!seq) return;
+
+  const w = dnaCanvas.width, h = dnaCanvas.height;
+  const len = Math.min(seq.length, 30);
+  const step = w / (len + 1);
+
+  for (let i = 0; i < len; i++) {
+    const x   = step * (i + 1);
+    const wave = Math.sin(i * 0.6) * (h * 0.28);
+    const y1  = h / 2 + wave;
+    const y2  = h / 2 - wave;
+
+    // Strand 1
+    dnaCtx.beginPath();
+    dnaCtx.arc(x, y1, 5, 0, Math.PI * 2);
+    dnaCtx.fillStyle = dnaColors[seq[i]] || '#ffffff';
+    dnaCtx.fill();
+
+    // Strand 2 (complement)
+    const cBase = complement[seq[i]];
+    dnaCtx.beginPath();
+    dnaCtx.arc(x, y2, 5, 0, Math.PI * 2);
+    dnaCtx.fillStyle = dnaColors[cBase] || '#444';
+    dnaCtx.fill();
+
+    // Bridge
+    dnaCtx.strokeStyle = 'rgba(255,255,255,0.08)';
+    dnaCtx.lineWidth = 1;
+    dnaCtx.beginPath(); dnaCtx.moveTo(x, y1); dnaCtx.lineTo(x, y2); dnaCtx.stroke();
+
+    // Connect along strand
+    if (i > 0) {
+      const px   = step * i;
+      const py1  = h / 2 + Math.sin((i-1) * 0.6) * (h * 0.28);
+      const py2  = h / 2 - Math.sin((i-1) * 0.6) * (h * 0.28);
+      dnaCtx.strokeStyle = `rgba(${hexToRgb(dnaColors[seq[i]])},0.5)`;
+      dnaCtx.lineWidth = 1.5;
+      dnaCtx.beginPath(); dnaCtx.moveTo(px, py1); dnaCtx.lineTo(x, y1); dnaCtx.stroke();
+      dnaCtx.strokeStyle = `rgba(${hexToRgb(dnaColors[complement[seq[i]]]||'#444')},0.5)`;
+      dnaCtx.beginPath(); dnaCtx.moveTo(px, py2); dnaCtx.lineTo(x, y2); dnaCtx.stroke();
+    }
+  }
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+/* ════ ARTICLE MODAL ════ */
+const articles = [
+  {
+    tags: [{cls:'tag-bio',label:'Biologi'},{cls:'tag-ai',label:'AI'}],
+    year: '~2028',
+    title: 'AlphaFold 3 dan Akhir Era "Protein Misterius": Ketika AI Memecahkan 200 Juta Struktur Protein',
+    author: 'Dr. Ahmad Fauzi',
+    role: 'Peneliti Bioinformatika, ITB',
+    readTime: '12 menit baca',
+    body: `
+      <p>Bayangkan sebuah teka-teki tiga dimensi dengan miliaran kemungkinan bentuk. Itulah yang dihadapi para ilmuwan selama lebih dari 50 tahun ketika mencoba memprediksi bagaimana sebuah rantai asam amino akan melipat dirinya menjadi protein fungsional. Masalah yang dikenal sebagai <em>protein folding problem</em> ini bukan sekadar tantangan akademis — ia adalah kunci untuk memahami hampir semua proses biologis di tubuh manusia.</p>
+
+      <h3>Revolusi AlphaFold</h3>
+      <p>Pada November 2020, DeepMind mengumumkan AlphaFold 2 berhasil memecahkan masalah ini dengan akurasi atomik. Di CASP14 (Critical Assessment of Protein Structure Prediction), AlphaFold 2 mencapai skor median GDT 92.4 — setara dengan hasil eksperimen laboratorium yang membutuhkan waktu bertahun-tahun dan biaya miliaran rupiah.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Data Kunci</span>
+        Pada 2022, DeepMind merilis struktur 200+ juta protein — mencakup hampir seluruh proteom organisme hidup yang diketahui. Database ini tersedia gratis untuk seluruh komunitas sains global melalui AlphaFold Protein Structure Database.
+      </div>
+
+      <h3>AlphaFold 3: Merancang Protein yang Belum Pernah Ada</h3>
+      <p>Generasi terbaru tidak hanya memprediksi struktur protein alami — ia mampu merancang protein <em>de novo</em>: molekul yang tidak ditemukan di alam namun memiliki fungsi yang kita tentukan. Ini adalah pergeseran paradigma dari "membaca" ke "menulis" bahasa biologi.</p>
+
+      <ul class="fact-list">
+        <li>Enzim yang dirancang untuk mendegradasi plastik PET dengan efisiensi 3x lebih tinggi dari enzim alami terbaik</li>
+        <li>Antibodi sintetis yang mengenali target kanker dengan spesifisitas 100x lebih tinggi</li>
+        <li>Protein struktural baru untuk material biokompatibel yang dapat memperbaiki dirinya sendiri</li>
+        <li>Vaksin berbasis protein yang dirancang dalam hitungan hari, bukan bulan</li>
+      </ul>
+
+      <h3>Proyeksi 2028-2030: Obat Pertama Buatan AI</h3>
+      <p>Beberapa perusahaan seperti Isomorphic Labs (spin-off DeepMind), Recursion Pharmaceuticals, dan Insilico Medicine sudah menggunakan platform berbasis AlphaFold untuk drug discovery. Berdasarkan pipeline yang tersedia secara publik per 2024-2025, proyeksi konservatif menunjukkan:</p>
+
+      <ul class="fact-list">
+        <li>2026-2027: Setidaknya 3-5 kandidat obat yang sepenuhnya dirancang AI akan memasuki uji klinis fase I</li>
+        <li>2028-2030: Obat pertama dengan persetujuan FDA/EMA yang desain molekulnya didominasi oleh AI</li>
+        <li>2030-an: Personalized medicine berbasis struktur protein individu mulai tersedia untuk kanker langka</li>
+      </ul>
+
+      <p>Yang membuat proyeksi ini bukan sekadar optimisme adalah kecepatan perkembangannya. Dari masalah yang dinyatakan "mungkin tidak pernah terpecahkan" pada 1990-an, ke pemecahan komprehensif dalam satu dekade setelah deep learning matang. Momentum ini tidak menunjukkan tanda-tanda melambat.</p>
+
+      <div class="conclusion">
+        "Kita sedang beralih dari biologi sebagai ilmu observasional ke biologi sebagai ilmu rekayasa. AlphaFold bukan hanya alat — ia adalah bukti bahwa kita akhirnya mulai benar-benar membaca bahasa kehidupan. Menulis kalimat baru dalam bahasa itu hanya masalah waktu." — Dr. Demis Hassabis, CEO DeepMind
+      </div>`
+  },
+  {
+    tags: [{cls:'tag-phys',label:'Fisika Kuantum'}],
+    year: '~2029',
+    title: 'Komputer Kuantum 1 Juta Qubit: Mengapa Enkripsi Internet Kita Perlu Diganti Sekarang',
+    author: 'Rina Kartika, MSc',
+    role: 'Kriptografer, Badan Siber Nasional',
+    readTime: '9 menit baca',
+    body: `
+      <p>Setiap kali kamu mengetik password, melakukan transfer bank, atau mengirim pesan melalui aplikasi terenkripsi, keamananmu bergantung pada satu asumsi matematika: bahwa memfaktorkan bilangan bulat yang sangat besar adalah masalah yang secara komputasional tidak praktis diselesaikan. RSA-2048 — standar enkripsi yang melindungi sebagian besar internet — membutuhkan komputer klasik terbaik sekitar 300 triliun tahun untuk dipecahkan.</p>
+
+      <h3>Algoritma Shor dan Ancaman Kuantum</h3>
+      <p>Pada 1994, Peter Shor membuktikan secara matematis bahwa komputer kuantum yang cukup besar dapat memfaktorkan bilangan besar secara eksponensial lebih cepat. RSA-2048 yang membutuhkan 300 triliun tahun di komputer klasik? Komputer kuantum dengan ~4.000 qubit logis yang cukup berkualitas bisa memecahkannya dalam hitungan jam.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Status Terkini (2025-2026)</span>
+        IBM Quantum: 1.121 qubit fisik (Condor processor). Google: ~1.000 qubit. Target IBM 2033: 100.000+ qubit. Qubit "logis" (error-corrected) masih membutuhkan ~1.000 qubit fisik per qubit logis — jadi ancaman nyata masih beberapa tahun lagi, tapi timeline-nya semakin jelas.
+      </div>
+
+      <h3>Post-Quantum Cryptography: Solusi yang Harus Dimulai Sekarang</h3>
+      <p>NIST menyelesaikan standardisasi algoritma kriptografi post-kuantum pertama pada 2024: CRYSTALS-Kyber (key encapsulation) dan CRYSTALS-Dilithium (digital signatures) — keduanya berbasis masalah matematika yang diyakini tahan terhadap serangan kuantum.</p>
+
+      <ul class="fact-list">
+        <li>Migrasi enkripsi internet adalah proses bertahun-tahun yang harus dimulai jauh sebelum ancaman nyata tiba</li>
+        <li>"Harvest now, decrypt later" — aktor negara sudah mengumpulkan data terenkripsi hari ini untuk didekripsi ketika komputer kuantum siap</li>
+        <li>Infrastruktur kritis (perbankan, militer, kesehatan) harus menjadi prioritas migrasi pertama</li>
+        <li>Browser, OS, dan protokol internet utama sudah mulai mengintegrasikan algoritma post-kuantum</li>
+      </ul>
+
+      <h3>Timeline Proyeksi Ancaman Nyata</h3>
+      <p>Komunitas keamanan siber menggunakan konsep "Crypto-Relevant Quantum Computer" (CRQC) — komputer kuantum yang benar-benar mampu memecahkan enkripsi modern. Berdasarkan lintasan perkembangan saat ini, sebagian besar ahli memproyeksikan CRQC pertama muncul antara 2030-2035.</p>
+
+      <div class="conclusion">
+        Ancaman komputer kuantum terhadap enkripsi bukan soal "apakah" tapi "kapan". Dan waktu untuk bersiap adalah sekarang — sebelum ancamannya nyata, bukan sesudahnya. Sejarah kriptografi mengajarkan kita bahwa migrasi enkripsi selalu lebih lambat dari yang direncanakan.
+      </div>`
+  },
+  {
+    tags: [{cls:'tag-bio',label:'Genetika'},{cls:'tag-chem',label:'Medis'}],
+    year: '~2032',
+    title: 'CRISPR 3.0 dan Terapi Gen In Vivo: Menyuntikkan "Kode Editor" Langsung ke Dalam Tubuh Manusia',
+    author: 'Prof. Siti Rahmawati',
+    role: 'Guru Besar Biologi Molekuler, UI',
+    readTime: '11 menit baca',
+    body: `
+      <p>Jennifer Doudna dan Emmanuelle Charpentier memenangkan Nobel Kimia 2020 untuk penemuan CRISPR-Cas9 — "gunting molekuler" yang memungkinkan editing DNA dengan presisi yang sebelumnya tidak terbayangkan. Tapi apa yang kita lihat hari ini baru permulaan dari revolusi yang sesungguhnya.</p>
+
+      <h3>Dari CRISPR 1.0 ke CRISPR 3.0</h3>
+      <p>CRISPR generasi pertama (Cas9 klasik) memotong kedua untai DNA, lalu mengandalkan perbaikan sel yang tidak selalu presisi. Generasi berikutnya — <em>base editing</em> dan <em>prime editing</em> — memungkinkan perubahan satu huruf DNA tanpa memotong untai ganda, dengan akurasi jauh lebih tinggi dan efek samping yang lebih rendah.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Pencapaian Klinis 2023-2024</span>
+        Casgevy (exa-cel) mendapat persetujuan FDA dan EMA pada akhir 2023 — terapi gen berbasis CRISPR pertama yang disetujui untuk sickle cell disease dan beta-thalassemia. Dari 44 pasien uji klinis: 42 tidak lagi membutuhkan transfusi darah setelah satu kali perawatan. Ini bukan percobaan — ini sudah tersedia secara klinis.
+      </div>
+
+      <h3>In Vivo: Editor Gen yang Disuntikkan Langsung</h3>
+      <p>Casgevy masih menggunakan pendekatan <em>ex vivo</em> — sel diambil, diedit di lab, dikembalikan. Pendekatan in vivo — menyuntikkan mesin CRISPR langsung ke tubuh pasien menggunakan nanopartikel lipid (LNP) sebagai kendaraan pengiriman — adalah Holy Grail berikutnya.</p>
+
+      <ul class="fact-list">
+        <li>Intellia Therapeutics berhasil mendemonstrasikan pengeditan gen in vivo pertama pada manusia untuk penyakit transthyretin amyloidosis (2021), dengan reduksi protein patologis hingga 87%</li>
+        <li>Pendekatan ini jauh lebih skalabel dan berpotensi menjangkau organ yang sulit (otak, otot jantung) yang tidak bisa dilakukan ex vivo</li>
+        <li>Pipeline untuk 6.000+ penyakit genetik monogenik sedang dalam berbagai tahap pengembangan</li>
+        <li>Proyeksi biaya: dari $2-3 juta per perawatan saat ini menuju ratusan ribu dolar pada 2030-an seiring skala produksi</li>
+      </ul>
+
+      <h3>Tantangan yang Masih Harus Diatasi</h3>
+      <p>Akurasi off-target (pengeditan lokasi DNA yang salah) meski sudah sangat berkurang di generasi terbaru, masih menjadi perhatian utama regulator. Sistem pengiriman yang efisien ke jaringan selain hati masih dalam pengembangan aktif. Dan ekuitas akses — siapa yang bisa menjangkau harga terapi gen — menjadi tantangan etis yang tidak kalah penting.</p>
+
+      <div class="conclusion">
+        CRISPR bukan sekadar obat baru — ia adalah platform. Seperti bagaimana antibiotik mengubah paradigma pengobatan abad 20, terapi gen berbasis CRISPR sedang membangun fondasi paradigma pengobatan abad 21: dari mengobati gejala, ke memperbaiki penyebab di tingkat kode genetik itu sendiri.
+      </div>`
+  },
+  {
+    tags: [{cls:'tag-space',label:'Astrofisika'}],
+    year: '~2034',
+    title: 'Teleskop Generasi Ketiga: Pertama Kali Memotret Atmosfer Planet Mirip Bumi',
+    author: 'Hendra Kusuma',
+    role: 'Astrofisikawan, LAPAN/BRIN',
+    readTime: '14 menit baca',
+    body: `
+      <p>James Webb Space Telescope (JWST) yang diluncurkan Desember 2021 sudah mengubah cara kita memandang alam semesta. Dengan cermin berdiameter 6.5 meter dan sensitivitas inframerah yang belum pernah ada, JWST mampu mendeteksi tanda-tanda kimia atmosfer exoplanet — planet di luar tata surya kita.</p>
+
+      <h3>Apa yang Sudah JWST Temukan</h3>
+      <p>Pada 2022-2025, JWST mendeteksi CO₂, metana, dan uap air di atmosfer berbagai exoplanet. Pada TRAPPIST-1c — planet berbatu seukuran Venus di sistem yang menjadi kandidat utama kehidupan — JWST berhasil mengukur fluks termal yang memberikan petunjuk tentang ada-tidaknya atmosfer. Ini adalah astrofisika observasional yang sebelumnya dianggap tidak mungkin dalam generasi ini.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Habitable Worlds Observatory (HWO)</span>
+        NASA sedang mengembangkan penerus JWST yang dirancang khusus untuk melakukan direct imaging planet seukuran Bumi di zona habitabel bintang seperti Matahari. Dijadwalkan untuk dekret konstruksi awal 2030-an, dengan kemungkinan operasi penuh sekitar 2040. Ini bukan spekulasi — HWO adalah prioritas tertinggi dalam Decadal Survey on Astronomy 2020.
+      </div>
+
+      <h3>Biosignature: Mencari Sidik Jari Kehidupan</h3>
+      <p>Yang membuat HWO berbeda dari semua teleskop sebelumnya adalah kemampuan coronagraph-nya: sebuah sistem optik yang memblokir cahaya bintang induk, memungkinkan pengamatan langsung planet-planet yang mengorbitnya. Dengan kemampuan ini, HWO dapat menganalisis spektrum cahaya yang dipantulkan planet dan mencari:</p>
+
+      <ul class="fact-list">
+        <li>Oksigen (O₂) dan Ozon (O₃) — hampir mustahil ada dalam jumlah besar tanpa kehidupan fotosintesis</li>
+        <li>Metana (CH₄) bersamaan dengan oksigen — kombinasi yang tidak stabil secara kimiawi, menunjukkan sumber biologis aktif</li>
+        <li>Uap air (H₂O) di zona temperatur yang memungkinkan air cair</li>
+        <li>Nitrous oxide (N₂O) — produk sampingan metabolisme mikroba di Bumi</li>
+      </ul>
+
+      <h3>Implikasi Penemuan</h3>
+      <p>Jika biosignature ditemukan — bahkan meski hanya berupa sinyal ambigus dari atmosfer exoplanet — dampaknya terhadap sains, filsafat, agama, dan kebijakan global akan melampaui peristiwa ilmiah apapun dalam sejarah manusia. Pertanyaan "Apakah kita sendirian?" mungkin mendapatkan jawaban pertamanya dalam 15-20 tahun.</p>
+
+      <div class="conclusion">
+        Generasi pertama teleskop luar angkasa menunjukkan kepada kita seperti apa alam semesta. Generasi kedua (JWST) menunjukkan komposisi kimianya. Generasi ketiga (HWO) akan menjawab pertanyaan paling mendasar dalam sejarah sains: apakah Bumi adalah satu-satunya tempat di alam semesta tempat kehidupan bermekaran?
+      </div>`
+  },
+  {
+    tags: [{cls:'tag-nano',label:'Nanoteknologi'},{cls:'tag-chem',label:'Material'}],
+    year: '~2033',
+    title: 'Nanorobot Medis: 100 Juta Robot Berukuran Virus di Dalam Darahmu',
+    author: 'Dr. Budi Santoso',
+    role: 'Peneliti Nanoteknologi, ITS',
+    readTime: '10 menit baca',
+    body: `
+      <p>Ide nanobot medis yang mengalir di pembuluh darah dan memperbaiki tubuh dari dalam pernah dianggap sebagai fiksi ilmiah kelas B. Hari ini, di lebih dari 200 laboratorium di seluruh dunia, berbagai versi konsep ini sedang diuji pada sel dan jaringan hidup — dan beberapa sudah dalam uji klinis awal pada manusia.</p>
+
+      <h3>DNA Origami: Robot dari Kode Genetik</h3>
+      <p>Laboratorium Wyss di Harvard, dipimpin oleh Shawn Douglas dan William Shih, telah mendemonstrasikan struktur DNA origami yang bisa "berjalan" di sepanjang permukaan sel, mengenali penanda spesifik kanker, dan melepaskan payload obat hanya ketika target yang tepat diidentifikasi. Ini bukan robot mekanis dengan roda dan motor — ini adalah mesin molekuler yang menggunakan fisika DNA untuk beroperasi.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Demonstrasi Lab Terkini</span>
+        Tim dari MIT dan Tel Aviv University (2023) mendemonstrasikan nanorobot DNA yang berhasil mengecilkan tumor pada tikus dengan efisiensi 80% menggunakan mekanisme anti-angiogenesis yang hanya aktif di lingkungan tumor. Zero efek samping sistemik yang terdeteksi.
+      </div>
+
+      <h3>Nanopartikel Terapeutik yang Sudah Disetujui</h3>
+      <p>Meski nanorobot otonom penuh masih dalam pengembangan, nanopartikel terapeutik sudah menjadi kenyataan klinis. Vaksin mRNA COVID-19 menggunakan nanopartikel lipid (LNP) sebagai kendaraan pengiriman — ini adalah nanoteknologi yang sudah disuntikkan ke miliaran manusia.</p>
+
+      <ul class="fact-list">
+        <li>Doxil (1995) — nanopartikel liposom pertama yang disetujui FDA untuk kemoterapi kanker ovarium</li>
+        <li>Abraxane — nanopartikel albumin untuk paclitaxel, mengurangi efek samping kemoterapi</li>
+        <li>LNP-mRNA (2020-2021) — platform pengiriman yang kini digunakan untuk vaksin dan terapi gen</li>
+        <li>Puluhan kandidat nanopartikel aktif-navigasi dalam pipeline klinis per 2025</li>
+      </ul>
+
+      <h3>Tantangan Teknis Menuju Nanobot Otonom</h3>
+      <p>Nanorobot yang benar-benar otonom — yang bisa bernavigasi, mengambil keputusan, dan beroperasi independen di dalam tubuh — membutuhkan pemecahan beberapa tantangan fundamental: sumber energi (ATP selular atau gradien kimia), sistem navigasi (gradient sensing seperti bakteri), dan biokompatibilitas jangka panjang.</p>
+
+      <div class="conclusion">
+        Nanorobot medis bukan pertanyaan "apakah mungkin" lagi — pertanyaannya adalah "berapa lama". Dari nanopartikel lipid yang sudah ada di dalam miliaran tubuh manusia, ke nanorobot DNA yang sudah terbukti in vitro dan in vivo pada hewan, jaraknya lebih dekat dari yang kebanyakan orang sadari.
+      </div>`
+  },
+  {
+    tags: [{cls:'tag-phys',label:'Energi'},{cls:'tag-nano',label:'Plasma'}],
+    year: '~2040',
+    title: 'Fusi Nuklir Komersial: Bintang Mini di Dalam Reaktor',
+    author: 'Prof. Dewi Anggraini',
+    role: 'Fisikawan Plasma, BATAN',
+    readTime: '16 menit baca',
+    body: `
+      <p>Lelucon lama di komunitas fisika adalah: "Energi fusi selalu 30 tahun lagi." Pada 13 Desember 2022, untuk pertama kalinya dalam sejarah manusia, lelucon itu tidak lagi lucu. National Ignition Facility (NIF) di Lawrence Livermore National Laboratory mengumumkan pencapaian <em>ignition</em> — menghasilkan lebih banyak energi dari reaksi fusi (3.15 MJ) dibandingkan energi laser yang digunakan untuk memicunya (2.05 MJ).</p>
+
+      <h3>Mengapa Fusi Berbeda dari Fisi</h3>
+      <p>Reaktor nuklir yang ada saat ini menggunakan <em>fisi</em> — memecah atom berat (Uranium, Plutonium) untuk melepaskan energi. Fusi adalah kebalikannya: menggabungkan atom ringan (Deuterium dan Tritium, isotop Hidrogen) untuk menghasilkan Helium dan energi yang jauh lebih besar. Matahari dan semua bintang beroperasi menggunakan prinsip ini.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Keunggulan Fusi vs Fisi</span>
+        Bahan bakar: Deuterium dari air laut (tersedia praktis tak terbatas) + Tritium (diproduksi dari Litium yang melimpah). Produk sampingan: Helium — gas mulia yang tidak berbahaya. Tidak ada reaksi berantai yang bisa lepas kendali. Tidak ada limbah radioaktif jangka panjang. Potensi energi: 1 liter air laut setara dengan 300 liter bensin dalam fusi.
+      </div>
+
+      <h3>Pemain Utama dan Timeline</h3>
+      <p>Tiga jalur pengembangan utama sedang berlomba menuju reaktor komersial pertama. ITER — proyek kolaborasi 35 negara senilai $22 miliar di selatan Prancis — menggunakan desain Tokamak (medan magnet toroidal) dan dijadwalkan mencapai operasi plasma penuh pada 2035. Commonwealth Fusion Systems (CFS), spin-off MIT, mengklaim desain SPARC mereka yang menggunakan magnet superkonductor bersuhu tinggi baru akan mencapai Q>1 pada 2025 dan reaktor komersial ARC pada awal 2030-an.</p>
+
+      <ul class="fact-list">
+        <li>TAE Technologies menggunakan pendekatan field-reversed configuration yang lebih kompak</li>
+        <li>Helion Energy (didukung Sam Altman, OpenAI) mengklaim bisa mencapai listrik komersial pada 2028</li>
+        <li>General Fusion menggunakan tekanan magnetohydrodynamic dengan pendekatan "compression"</li>
+        <li>Lebih dari 30 startup fusi privat dengan total pendanaan $6+ miliar per 2024</li>
+      </ul>
+
+      <div class="conclusion">
+        Setelah 70 tahun penelitian, fusi nuklir bukan lagi "mungkin suatu hari nanti." Ini adalah masalah rekayasa — bukan fisika — yang tersisa. Dan dengan momentum investasi dan kemajuan teknologi magnet superkonductor saat ini, dekade 2030-2040 kemungkinan besar akan menjadi dekade di mana manusia pertama kali menerangi sebuah kota menggunakan energi dari bintang buatan.
+      </div>`
+  },
+  {
+    tags: [{cls:'tag-bio',label:'Neurosains'},{cls:'tag-ai',label:'BCI'}],
+    year: '~2038',
+    title: 'Brain-Computer Interface Generasi Kedua: Berkomunikasi dengan Pikiran',
+    author: 'Anisa Putri, PhD',
+    role: 'Neurosaintis Komputasional, UGM',
+    readTime: '13 menit baca',
+    body: `
+      <p>Pada Januari 2024, Noland Arbaugh — seorang pria 29 tahun yang mengalami kelumpuhan total akibat kecelakaan menyelam — menjadi manusia pertama yang menerima implan Neuralink. Dalam beberapa minggu, ia bisa menggerakkan kursor komputer, memainkan catur online, dan streaming video hanya dengan memikirkan gerakan yang ingin dilakukan. Tidak ada perangkat fisik. Tidak ada gerakan otot. Hanya pikiran.</p>
+
+      <h3>Status BCI Saat Ini (2024-2026)</h3>
+      <p>Neuralink N1 menggunakan 1.024 elektroda fleksibel yang ditanamkan di korteks motorik menggunakan robot bedah R1. BrainGate, platform penelitian dari Brown University, telah membantu puluhan pasien mencapai kemampuan serupa sejak 2004. Synchron's Stentrode — yang dimasukkan melalui pembuluh darah tanpa bedah otak terbuka — memungkinkan pasien ALS mengetik 40 kata per menit.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Terobosan 2024</span>
+        Peneliti dari UC San Francisco (Chang lab) berhasil mendekode sinyal otak menjadi ucapan dengan akurasi 97% dan kecepatan 78 kata per menit pada pasien yang tidak bisa berbicara akibat stroke — menggunakan array elektroda ECoG di permukaan korteks. Ini adalah komunikasi berbasis pikiran dengan kecepatan mendekati percakapan normal.
+      </div>
+
+      <h3>Generasi Kedua: Non-Invasif dan Bandwidth Tinggi</h3>
+      <p>Implan bedah memiliki keterbatasan jelas: risiko operasi, infeksi, dan degradasi sinyal seiring waktu. Generasi berikutnya BCI berfokus pada metode non-invasif dengan resolusi tinggi. Teknologi seperti fNIRS (functional near-infrared spectroscopy), high-density EEG, dan ultrasound fungsional sedang dikembangkan untuk mencapai resolusi spasial yang mendekati implan.</p>
+
+      <ul class="fact-list">
+        <li>Meta AI Research berhasil mendekode gambar mental dari sinyal MEG non-invasif dengan akurasi mengejutkan (2023)</li>
+        <li>Kernel Flow — helm EEG berbiaya $50.000 (turun dari $1 juta) yang mengukur oksigenasi otak secara real-time</li>
+        <li>Proyeksi 2038: BCI non-invasif wearable yang memungkinkan komunikasi basic (ya/tidak, angka, kata kunci) untuk aksesibilitas massal</li>
+        <li>Jangka panjang: "neural lace" — jaringan elektroda ultratipis yang bisa disuntikkan dan menyebar mengikuti topografi otak</li>
+      </ul>
+
+      <div class="conclusion">
+        BCI bukan hanya tentang membantu orang dengan disabilitas — meski itu adalah aplikasi paling mendesak dan paling jelas. Ini adalah pertanyaan fundamental tentang apa artinya menjadi manusia di era di mana batas antara pikiran biologis dan sistem digital mulai mengabur. Pertanyaan etis yang perlu dijawab sekarang, sebelum teknologinya lebih dulu menjawabnya untuk kita.
+      </div>`
+  }
+];
+
+let currentArticleIdx = 0;
+
+function openArticle(idx) {
+  currentArticleIdx = idx;
+  const art = articles[idx];
+  if (!art) return;
+
+  const modal = document.getElementById('artModal');
+
+  // Tags
+  modal.querySelector('#artModalTags').innerHTML =
+    art.tags.map(t => `<span class="art-tag ${t.cls}">${t.label}</span>`).join('') +
+    `<span class="art-year" style="margin-left:auto;">${art.year}</span>`;
+
+  // Title, meta
+  modal.querySelector('#artModalTitle').textContent = art.title;
+  const av = (art.author.match(/\b\w/g) || []).slice(0,2).join('').toUpperCase();
+  modal.querySelector('#artModalMeta').innerHTML = `
+    <div class="author-chip">
+      <div class="author-av">${av}</div>
+      <span>${art.author}</span>
+    </div>
+    <span>${art.role}</span>
+    <span>·</span>
+    <span>${art.readTime}</span>`;
+
+  // Body
+  modal.querySelector('#artModalBody').innerHTML = art.body;
+
+  // Nav
+  modal.querySelector('#artNavPrev').style.visibility = idx > 0 ? 'visible' : 'hidden';
+  modal.querySelector('#artNavNext').style.visibility = idx < articles.length - 1 ? 'visible' : 'hidden';
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  modal.scrollTop = 0;
+}
+
+function closeArticle() {
+  document.getElementById('artModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navArticle(dir) {
+  const next = currentArticleIdx + dir;
+  if (next >= 0 && next < articles.length) openArticle(next);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeArticle();
+});
+
+/* ════ VIDEO MODAL ════ */
+function openVid(url) {
+  document.getElementById('vidFrame').src = url + '?autoplay=1';
+  document.getElementById('vidModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeVid() {
+  document.getElementById('vidFrame').src = '';
+  document.getElementById('vidModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('vidModal').addEventListener('click', function(e) { if (e.target === this) closeVid(); });
+</script>
+</body>
+</html>
