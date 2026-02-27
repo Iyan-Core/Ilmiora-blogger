@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taman Musik — Ilmiora</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=IBM+Plex+Mono:wght@300;400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   DESIGN: "Midnight Jazz"
+   Charcoal black · Warm amber gold
+   Like a jazz club at 11PM — intimate,
+   warm, atmospheric, deeply musical.
+════════════════════════════════════════ */
+:root {
+  --noir:    #080808;
+  --deep:    #0f0f0f;
+  --surface: #161616;
+  --card:    #1c1c1c;
+  --lift:    #242424;
+  --amber:   #f59e0b;
+  --gold:    #fbbf24;
+  --warm:    #fde68a;
+  --rose:    #fb7185;
+  --sage:    #6ee7b7;
+  --mist:    #c4b5a0;
+  --muted:   #5a5248;
+  --border:  rgba(245,158,11,0.1);
+  --glow:    rgba(245,158,11,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--noir);
+  color: var(--mist);
+  overflow-x: hidden;
+}
+
+/* SCROLL BAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--noir); }
+::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 2px; }
+
+/* SCROLL PROGRESS */
+#scrollBar {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: linear-gradient(90deg, var(--amber), var(--gold));
+  z-index: 1000; width: 0%; transition: width 0.1s;
+}
+
+/* ═══ CANVAS VISUALIZER ═══ */
+#vizCanvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+.page { position: relative; z-index: 1; }
+
+/* ═══ NAVBAR ═══ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(8,8,8,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--amber); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.nav-back {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  text-decoration: none; letter-spacing: 1px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--amber); }
+
+/* ═══ HERO ═══ */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 100px 32px 72px;
+  position: relative; overflow: hidden;
+}
+
+.hero-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%,
+    rgba(245,158,11,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Animated music notes */
+.note {
+  position: absolute;
+  font-size: 24px;
+  opacity: 0;
+  animation: noteRise 6s ease-in infinite;
+  pointer-events: none;
+  filter: blur(0.5px);
+}
+
+@keyframes noteRise {
+  0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+  15%  { opacity: 0.18; }
+  85%  { opacity: 0.08; }
+  100% { opacity: 0; transform: translateY(-120px) rotate(20deg); }
+}
+
+.hero-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--amber);
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 100px; padding: 7px 20px;
+  margin-bottom: 32px;
+  display: inline-flex; align-items: center; gap: 8px;
+  animation: fadeUp 0.7s ease both;
+}
+
+.hero-tag-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--amber);
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+.hero-h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(56px, 10vw, 120px);
+  font-weight: 700; line-height: 0.9;
+  margin-bottom: 16px; letter-spacing: -2px;
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+
+.hero-h1 .t-amber {
+  color: var(--amber); font-style: italic;
+}
+
+.hero-h1 .t-dim { color: rgba(196,181,160,0.3); }
+
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(22px, 3vw, 36px);
+  font-style: italic; font-weight: 300;
+  color: rgba(196,181,160,0.45);
+  margin-bottom: 28px;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+.hero-desc {
+  max-width: 500px; font-size: 15px;
+  color: var(--muted); line-height: 1.85;
+  margin-bottom: 44px;
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+
+.hero-cta {
+  display: flex; gap: 14px; justify-content: center;
+  flex-wrap: wrap; margin-bottom: 60px;
+  animation: fadeUp 0.7s 0.4s ease both;
+}
+
+.btn-gold {
+  padding: 14px 38px;
+  background: var(--amber); color: var(--noir);
+  border: none; border-radius: 3px;
+  font-size: 13px; font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer; text-decoration: none;
+  display: inline-block; letter-spacing: 0.5px;
+  transition: all 0.25s;
+}
+.btn-gold:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,158,11,0.35); }
+
+.btn-outline-gold {
+  padding: 14px 38px; background: transparent;
+  border: 1px solid rgba(245,158,11,0.3); color: var(--amber);
+  border-radius: 3px; font-size: 13px; font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer; text-decoration: none; display: inline-block;
+  transition: all 0.25s;
+}
+.btn-outline-gold:hover { background: rgba(245,158,11,0.08); border-color: var(--amber); }
+
+/* HERO STATS */
+.hero-stats {
+  display: flex; gap: 56px; justify-content: center;
+  border-top: 1px solid var(--border); padding-top: 44px;
+  animation: fadeUp 0.7s 0.5s ease both; flex-wrap: wrap;
+}
+
+.hs { text-align: center; }
+.hs-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; font-weight: 700;
+  color: var(--amber); display: block; line-height: 1;
+}
+.hs-lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-top: 6px; display: block;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ═══ SECTIONS ═══ */
+.section { max-width: 1200px; margin: 0 auto; padding: 80px 40px; }
+
+.sec-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--amber);
+  text-transform: uppercase; letter-spacing: 3px; margin-bottom: 14px;
+}
+
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px, 4vw, 50px); font-weight: 700;
+  line-height: 1.1; margin-bottom: 48px;
+}
+
+.sec-title em { font-style: italic; color: var(--amber); }
+
+/* ═══ TEORI MUSIK ═══ */
+.teori-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
+}
+
+.teori-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 28px 24px;
+  transition: all 0.3s; cursor: pointer;
+  position: relative; overflow: hidden;
+  text-decoration: none; color: inherit; display: block;
+}
+
+.teori-card::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+}
+
+.teori-card:hover { transform: translateY(-4px); border-color: rgba(245,158,11,0.25); background: var(--lift); }
+.teori-card:hover::before { transform: scaleX(1); }
+
+.tc-icon { font-size: 34px; margin-bottom: 16px; display: block; }
+
+.tc-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: rgba(245,158,11,0.3);
+  margin-bottom: 10px; letter-spacing: 1px;
+}
+
+.tc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 700; margin-bottom: 10px; color: var(--warm);
+}
+
+.tc-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
+
+.tc-tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  padding: 3px 9px; border-radius: 2px; text-transform: uppercase; letter-spacing: 1px;
+}
+.tag-dasar   { background: rgba(110,231,183,0.1); color: var(--sage); }
+.tag-tengah  { background: rgba(245,158,11,0.1);  color: var(--amber); }
+.tag-lanjut  { background: rgba(251,113,133,0.1); color: var(--rose); }
+
+/* NOTASI VISUAL */
+.notasi-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 32px; margin-top: 40px;
+}
+
+.notasi-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--amber);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 20px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.notasi-row {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;
+}
+
+.notasi-item {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 12px 16px; cursor: pointer;
+  transition: all 0.2s; min-width: 64px;
+}
+
+.notasi-item:hover { background: rgba(245,158,11,0.08); border-color: var(--amber); }
+
+.notasi-sym { font-size: 28px; line-height: 1; }
+.notasi-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.notasi-val { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--amber); }
+
+/* ═══ PIANO VIRTUAL ═══ */
+.piano-section {
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 80px 0;
+}
+
+.piano-wrap {
+  max-width: 1000px; margin: 0 auto; padding: 0 40px;
+}
+
+.piano-header {
+  text-align: center; margin-bottom: 40px;
+}
+
+.piano-controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; margin-bottom: 32px; flex-wrap: wrap;
+}
+
+.piano-ctrl-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--muted); letter-spacing: 1px;
+}
+
+.piano-select {
+  padding: 8px 14px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 4px;
+  color: var(--mist); font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; outline: none; cursor: pointer;
+}
+
+.piano-oct-btn {
+  width: 32px; height: 32px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 4px; color: var(--amber);
+  font-size: 16px; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.piano-oct-btn:hover { background: rgba(245,158,11,0.1); }
+
+.oct-display {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px; color: var(--amber); min-width: 24px; text-align: center;
+}
+
+/* PIANO KEYBOARD */
+.piano-keyboard {
+  position: relative; display: flex; justify-content: center;
+  user-select: none; margin-bottom: 28px;
+}
+
+.piano-keys {
+  display: flex; position: relative;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 2px var(--border);
+}
+
+.key-white {
+  width: 48px; height: 180px;
+  background: linear-gradient(180deg, #f0ece4 0%, #fff 60%);
+  border: 1px solid #c8bfb0;
+  border-bottom: none;
+  border-radius: 0 0 6px 6px;
+  cursor: pointer; position: relative;
+  transition: background 0.08s;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 8px; flex-shrink: 0;
+}
+
+.key-white:hover { background: linear-gradient(180deg, #ffe8a0 0%, #fff9e6 60%); }
+.key-white.active { background: linear-gradient(180deg, #fbbf24 0%, #fde68a 60%); }
+
+.key-white .key-note {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: #8a7a60; letter-spacing: 0;
+}
+
+.key-black {
+  width: 30px; height: 110px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #111 60%);
+  border: 1px solid #000;
+  border-radius: 0 0 4px 4px;
+  cursor: pointer; position: absolute;
+  top: 0; z-index: 2;
+  transition: background 0.08s;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.6);
+}
+
+.key-black:hover { background: linear-gradient(180deg, #555 0%, #222 60%); }
+.key-black.active { background: linear-gradient(180deg, #f59e0b 0%, #92400e 60%); }
+
+/* NOTE DISPLAY */
+.piano-note-display {
+  text-align: center; margin-bottom: 16px;
+  min-height: 32px;
+}
+
+.piano-note-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px; font-weight: 700; color: var(--amber);
+  display: inline-block; min-width: 80px;
+  transition: all 0.2s;
+}
+
+.piano-freq {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; color: var(--muted); margin-top: 4px;
+}
+
+.key-hint {
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* CHORD LABEL ON PIANO */
+.chord-highlight { outline: 3px solid var(--amber) !important; }
+
+/* ═══ CHORD FINDER ═══ */
+.chord-section { background: var(--noir); }
+
+.chord-layout {
+  display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start;
+}
+
+/* GUITAR SVG NECK */
+.guitar-neck {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 24px; margin-bottom: 20px;
+}
+
+.neck-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--amber);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.fretboard {
+  position: relative; width: 100%;
+  background: linear-gradient(90deg, #3d2b1f 0%, #5c3d28 100%);
+  border-radius: 6px; overflow: hidden;
+  border: 2px solid #2a1f15;
+}
+
+.fret-row {
+  display: flex; position: relative; height: 44px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.fret-row:last-child { border-bottom: none; }
+
+.string-line {
+  position: absolute; left: 0; right: 0;
+  top: 50%; transform: translateY(-50%);
+  height: 1.5px;
+  background: linear-gradient(90deg, rgba(255,220,100,0.6), rgba(255,220,100,0.2));
+}
+
+.fret-line {
+  flex: 1; border-right: 2px solid rgba(200,180,150,0.35);
+  position: relative; display: flex;
+  align-items: center; justify-content: center;
+}
+
+.fret-line:last-child { border-right: none; }
+
+.fret-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  font-weight: 700; position: relative; z-index: 2;
+  transition: all 0.2s; cursor: default;
+}
+
+.fd-muted { background: rgba(90,82,72,0.4); color: var(--muted); font-size: 14px; }
+.fd-open  { background: rgba(245,158,11,0.2); color: var(--amber); border: 1px solid rgba(245,158,11,0.4); font-size: 14px; }
+.fd-fret  { background: var(--amber); color: var(--noir); font-size: 9px; font-weight: 700; }
+.fd-root  { background: var(--gold); color: var(--noir); box-shadow: 0 0 12px rgba(245,158,11,0.5); }
+
+.fret-numbers {
+  display: flex; padding: 6px 0 0; margin-left: 32px;
+}
+
+.fret-num {
+  flex: 1; text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--muted); letter-spacing: 0;
+}
+
+/* CHORD CONTROLS */
+.chord-panel {
+  position: sticky; top: 80px;
+}
+
+.chord-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 24px; margin-bottom: 16px;
+}
+
+.chord-box-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--amber);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 16px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chord-root-grid {
+  display: grid; grid-template-columns: repeat(6,1fr); gap: 6px; margin-bottom: 14px;
+}
+
+.chord-root-btn {
+  padding: 9px 4px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 4px;
+  color: var(--mist); font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; cursor: pointer; text-align: center;
+  transition: all 0.2s;
+}
+
+.chord-root-btn:hover,
+.chord-root-btn.active { background: rgba(245,158,11,0.15); border-color: var(--amber); color: var(--amber); }
+
+.chord-type-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+}
+
+.chord-type-btn {
+  padding: 9px 8px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 4px;
+  color: var(--mist); font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; cursor: pointer; text-align: center;
+  transition: all 0.2s;
+}
+
+.chord-type-btn:hover,
+.chord-type-btn.active { background: rgba(245,158,11,0.12); border-color: var(--amber); color: var(--amber); }
+
+.chord-name-display {
+  text-align: center; padding: 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; font-weight: 700; color: var(--amber);
+}
+
+.chord-notes-display {
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.btn-play-chord {
+  width: 100%; padding: 12px;
+  background: rgba(245,158,11,0.12);
+  border: 1px solid rgba(245,158,11,0.25);
+  border-radius: 4px; color: var(--amber);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; cursor: pointer; letter-spacing: 2px;
+  text-transform: uppercase; transition: all 0.2s;
+}
+
+.btn-play-chord:hover { background: rgba(245,158,11,0.2); }
+
+/* ═══ VIDEO ═══ */
+.video-grid {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 18px;
+}
+
+.vid-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden; transition: all 0.3s; cursor: pointer;
+}
+
+.vid-card:hover { transform: translateY(-3px); border-color: rgba(245,158,11,0.3); }
+
+.vid-thumb {
+  aspect-ratio: 16/9; background: var(--deep);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 10px; transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+
+.vid-bg-note {
+  position: absolute; font-size: 80px;
+  opacity: 0.04; pointer-events: none;
+}
+
+.vid-thumb:hover .vid-play { transform: scale(1.1); background: var(--amber); color: var(--noir); }
+
+.vid-play {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(245,158,11,0.15); border: 2px solid var(--amber);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--amber); transition: all 0.3s; z-index: 1;
+}
+
+.vid-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px; color: rgba(245,158,11,0.35); z-index: 1;
+}
+
+.vid-info { padding: 16px 18px; }
+
+.vi-badge {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--amber); background: rgba(245,158,11,0.08);
+  padding: 3px 8px; border-radius: 2px; display: inline-block; margin-bottom: 8px;
+}
+
+.vi-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 700; line-height: 1.3;
+  color: var(--warm); margin-bottom: 6px;
+}
+
+.vi-meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); }
+
+/* VIDEO MODAL */
+.vid-modal {
+  display: none; position: fixed; inset: 0; z-index: 8000;
+  background: rgba(0,0,0,0.96);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.vid-modal.open { display: flex; }
+
+.vid-modal-inner { width: 100%; max-width: 880px; }
+
+.vid-modal-top { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+
+.vid-close {
+  background: rgba(255,255,255,0.06); border: none;
+  color: var(--mist); width: 36px; height: 36px;
+  border-radius: 50%; font-size: 18px; cursor: pointer; transition: all 0.2s;
+}
+.vid-close:hover { background: rgba(251,113,133,0.15); color: var(--rose); }
+
+.vid-embed { aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; background: #000; }
+.vid-embed iframe { width: 100%; height: 100%; border: none; }
+
+/* ═══ ARTIKEL MUSIK ═══ */
+.artikel-grid { display: flex; flex-direction: column; gap: 14px; }
+
+.art-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 6px; padding: 22px 26px;
+  transition: all 0.25s; text-decoration: none; color: inherit;
+  display: block; position: relative; overflow: hidden;
+}
+
+.art-item::after {
+  content: '→'; position: absolute; right: 22px; top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  opacity: 0; color: var(--amber); font-size: 16px; transition: all 0.25s;
+}
+
+.art-item:hover { border-color: rgba(245,158,11,0.2); transform: translateX(4px); background: var(--lift); }
+.art-item:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+
+.art-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+
+.art-cat {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  text-transform: uppercase; letter-spacing: 1px;
+  padding: 3px 8px; border-radius: 2px;
+  background: rgba(245,158,11,0.1); color: var(--amber);
+}
+
+.art-date { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--muted); }
+
+.art-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 700; line-height: 1.25; margin-bottom: 6px; color: var(--warm);
+}
+
+.art-excerpt { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  border-top: 1px solid var(--border); padding: 32px 48px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+}
+
+.footer-back { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); text-decoration: none; }
+.footer-back:hover { color: var(--amber); }
+.footer-copy { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: rgba(90,82,72,0.5); }
+
+/* ═══ DIVIDER ═══ */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 40px; max-width: 1200px; margin: 0 auto; opacity: 0.25;
+}
+.divider::before, .divider::after {
+  content:''; flex:1; height:1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+}
+.divider span { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--amber); white-space:nowrap; }
+
+/* ═══ REVEAL ═══ */
+.reveal { opacity:0; transform:translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  .teori-grid { grid-template-columns:1fr 1fr; }
+  .chord-layout { grid-template-columns:1fr; }
+  .chord-panel { position:static; }
+  .video-grid { grid-template-columns:1fr; }
+  .nav { padding:0 24px; }
+  .section { padding:60px 24px; }
+}
+@media(max-width:600px){
+  .teori-grid { grid-template-columns:1fr; }
+  .hero { padding:90px 20px 60px; }
+  .hero-stats { gap:28px; }
+  .piano-keys .key-white { width:36px; }
+  .piano-keys .key-black { width:22px; }
+}
+</style>
+</head>
+<body>
+
+<div id="scrollBar"></div>
+<canvas id="vizCanvas"></canvas>
+
+<div class="page">
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <a class="nav-logo" href="/">🎵 Ilmiora</a>
+  <a class="nav-back" href="/">← kembali ke beranda</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-vignette"></div>
+
+  <!-- Floating notes (inserted by JS) -->
+
+  <div class="hero-tag">
+    <span class="hero-tag-dot"></span>
+    Taman Bacaan &bull; Musik
+  </div>
+
+  <h1 class="hero-h1">
+    <span class="t-dim">Seni</span><br>
+    <span class="t-amber">Bermusik</span>
+  </h1>
+  <p class="hero-sub">— dari Jiwa ke Telinga</p>
+
+  <p class="hero-desc">
+    Pelajari teori musik, mainkan piano virtual, temukan chord gitar, dan tonton tutorial dari musisi terbaik. Musik bukan bakat — musik adalah <em>bahasa</em> yang bisa dipelajari siapa saja.
+  </p>
+
+  <div class="hero-cta">
+    <a class="btn-gold" href="#piano">Mainkan Piano →</a>
+    <a class="btn-outline-gold" href="#chord">Cari Chord Gitar</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hs">
+      <span class="hs-num" data-target="180">0</span>
+      <span class="hs-lbl">Artikel</span>
+    </div>
+    <div class="hs">
+      <span class="hs-num" data-target="88">0</span>
+      <span class="hs-lbl">Chord</span>
+    </div>
+    <div class="hs">
+      <span class="hs-num" data-target="24">0</span>
+      <span class="hs-lbl">Video</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TEORI MUSIK ══ -->
+<div class="section reveal" id="teori">
+  <p class="sec-eyebrow">// 01 — Teori Musik</p>
+  <h2 class="sec-title">Fondasi <em>Ilmu Musik</em></h2>
+
+  <div class="teori-grid">
+    <a class="teori-card" href="#">
+      <div class="tc-num">// T-001</div>
+      <span class="tc-icon">🎼</span>
+      <h3 class="tc-title">Not & Tangga Nada</h3>
+      <p class="tc-desc">Do Re Mi sampai penanda nada, nilai not, birama, dan cara membaca partitur dengan benar dari nol.</p>
+      <span class="tc-tag tag-dasar">● Dasar</span>
+    </a>
+
+    <a class="teori-card" href="#">
+      <div class="tc-num">// T-002</div>
+      <span class="tc-icon">🎹</span>
+      <h3 class="tc-title">Interval & Harmoni</h3>
+      <p class="tc-desc">Jarak antar nada, konsonan-disonan, triad mayor-minor, dan dasar harmoni yang membuat musik terasa indah.</p>
+      <span class="tc-tag tag-tengah">● Menengah</span>
+    </a>
+
+    <a class="teori-card" href="#">
+      <div class="tc-num">// T-003</div>
+      <span class="tc-icon">🥁</span>
+      <h3 class="tc-title">Ritme & Birama</h3>
+      <p class="tc-desc">Ketukan, tempo, tanda birama 4/4, 3/4, 6/8, sinkopasi, dan cara merasakan groove yang natural.</p>
+      <span class="tc-tag tag-dasar">● Dasar</span>
+    </a>
+
+    <a class="teori-card" href="#">
+      <div class="tc-num">// T-004</div>
+      <span class="tc-icon">🎸</span>
+      <h3 class="tc-title">Chord & Progresi</h3>
+      <p class="tc-desc">Chord mayor, minor, dominant 7th, progresi I-IV-V-I, circle of fifth, dan mengapa progresi tertentu terasa emosional.</p>
+      <span class="tc-tag tag-tengah">● Menengah</span>
+    </a>
+
+    <a class="teori-card" href="#">
+      <div class="tc-num">// T-005</div>
+      <span class="tc-icon">🎷</span>
+      <h3 class="tc-title">Melodi & Frasa</h3>
+      <p class="tc-desc">Cara membangun melodi yang berkesan, contour melodis, sekuens, dan teknik improvisasi dasar.</p>
+      <span class="tc-tag tag-tengah">● Menengah</span>
+    </a>
+
+    <a class="teori-card" href="#">
+      <div class="tc-num">// T-006</div>
+      <span class="tc-icon">🎻</span>
+      <h3 class="tc-title">Aransemen & Orkestrasi</h3>
+      <p class="tc-desc">Menyusun lapisan instrumen, voicing, dinamika, dan teknik aransemen dari solo hingga orkestra penuh.</p>
+      <span class="tc-tag tag-lanjut">● Lanjut</span>
+    </a>
+  </div>
+
+  <!-- NOTASI REFERENSI -->
+  <div class="notasi-box">
+    <div class="notasi-title">// Referensi Simbol Notasi — klik untuk dengarkan</div>
+    <div class="notasi-row">
+      <div class="notasi-item" onclick="playBeep(523.25, 1.0)">
+        <span class="notasi-sym">♩</span>
+        <span class="notasi-lbl">Quarter</span>
+        <span class="notasi-val">1 ketuk</span>
+      </div>
+      <div class="notasi-item" onclick="playBeep(523.25, 2.0)">
+        <span class="notasi-sym">♪</span>
+        <span class="notasi-lbl">Eighth</span>
+        <span class="notasi-val">½ ketuk</span>
+      </div>
+      <div class="notasi-item" onclick="playBeep(523.25, 0.5)">
+        <span class="notasi-sym">𝅗𝅥</span>
+        <span class="notasi-lbl">Half</span>
+        <span class="notasi-val">2 ketuk</span>
+      </div>
+      <div class="notasi-item" onclick="playBeep(523.25, 4.0)">
+        <span class="notasi-sym">𝅝</span>
+        <span class="notasi-lbl">Whole</span>
+        <span class="notasi-val">4 ketuk</span>
+      </div>
+      <div class="notasi-item">
+        <span class="notasi-sym">𝄞</span>
+        <span class="notasi-lbl">Treble</span>
+        <span class="notasi-val">Clef</span>
+      </div>
+      <div class="notasi-item">
+        <span class="notasi-sym">𝄢</span>
+        <span class="notasi-lbl">Bass</span>
+        <span class="notasi-val">Clef</span>
+      </div>
+      <div class="notasi-item">
+        <span class="notasi-sym">𝄐</span>
+        <span class="notasi-lbl">Fermata</span>
+        <span class="notasi-val">Tahan</span>
+      </div>
+      <div class="notasi-item">
+        <span class="notasi-sym">♯</span>
+        <span class="notasi-lbl">Sharp</span>
+        <span class="notasi-val">½ naik</span>
+      </div>
+      <div class="notasi-item">
+        <span class="notasi-sym">♭</span>
+        <span class="notasi-lbl">Flat</span>
+        <span class="notasi-val">½ turun</span>
+      </div>
+      <div class="notasi-item">
+        <span class="notasi-sym">𝄽</span>
+        <span class="notasi-lbl">Rest</span>
+        <span class="notasi-val">Diam</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><span>// piano virtual</span></div>
+
+<!-- ══ PIANO VIRTUAL ══ -->
+<div class="piano-section reveal" id="piano">
+  <div class="piano-wrap">
+    <div class="piano-header">
+      <p class="sec-eyebrow" style="justify-content:center;display:flex;">// 02 — Piano Virtual</p>
+      <h2 class="sec-title" style="text-align:center;margin-bottom:28px;">Mainkan <em>Piano</em></h2>
+    </div>
+
+    <div class="piano-controls">
+      <span class="piano-ctrl-label">Oktaf:</span>
+      <button class="piano-oct-btn" onclick="changeOctave(-1)">−</button>
+      <span class="oct-display" id="octDisplay">4</span>
+      <button class="piano-oct-btn" onclick="changeOctave(1)">+</button>
+
+      <span class="piano-ctrl-label" style="margin-left:16px;">Suara:</span>
+      <select class="piano-select" id="waveSelect">
+        <option value="sine">Piano (Sine)</option>
+        <option value="triangle">Organ (Triangle)</option>
+        <option value="square">Synth (Square)</option>
+        <option value="sawtooth">Gitar (Sawtooth)</option>
+      </select>
+    </div>
+
+    <div class="piano-note-display">
+      <span class="piano-note-name" id="pianoNoteName">—</span>
+      <div class="piano-freq" id="pianoFreq"></div>
+    </div>
+
+    <div class="piano-keyboard">
+      <div class="piano-keys" id="pianoKeys"></div>
+    </div>
+
+    <p class="key-hint">Gunakan keyboard: A S D F G H J K (nada putih) · W E T Y U (nada hitam)</p>
+  </div>
+</div>
+
+<div class="divider"><span>// chord finder gitar</span></div>
+
+<!-- ══ CHORD FINDER ══ -->
+<div class="section reveal" id="chord">
+  <p class="sec-eyebrow">// 03 — Chord Finder Gitar</p>
+  <h2 class="sec-title">Temukan <em>Chord</em>-mu</h2>
+
+  <div class="chord-layout">
+    <!-- FRETBOARD -->
+    <div>
+      <div class="guitar-neck">
+        <div class="neck-title">// Diagram Chord — <span id="chordDiagramTitle" style="color:var(--amber)">Pilih chord →</span></div>
+        <div class="fretboard" id="fretboard"></div>
+        <div class="fret-numbers" id="fretNumbers"></div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;">
+        <div class="chord-box-title" style="margin-bottom:12px;">// Artikel Chord</div>
+        <div class="artikel-grid">
+          <a class="art-item" href="#">
+            <div class="art-meta"><span class="art-cat">Gitar</span><span class="art-date">// 19 Feb 2026</span></div>
+            <h3 class="art-title">7 Chord Gitar Wajib untuk Pemula</h3>
+            <p class="art-excerpt">Dengan hanya 7 chord ini, kamu bisa memainkan lebih dari 500 lagu populer. Panduan lengkap dengan foto posisi jari...</p>
+          </a>
+          <a class="art-item" href="#">
+            <div class="art-meta"><span class="art-cat">Teori</span><span class="art-date">// 12 Feb 2026</span></div>
+            <h3 class="art-title">Circle of Fifth: Peta Harta Karun para Musisi</h3>
+            <p class="art-excerpt">Memahami circle of fifth akan mengubah cara kamu melihat musik selamanya. Ini adalah kunci dari semua progresi chord...</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHORD PANEL -->
+    <div class="chord-panel">
+      <div class="chord-box">
+        <div class="chord-box-title">// Pilih Root Note</div>
+        <div class="chord-root-grid" id="chordRoots"></div>
+      </div>
+
+      <div class="chord-box">
+        <div class="chord-box-title">// Tipe Chord</div>
+        <div class="chord-type-grid" id="chordTypes"></div>
+      </div>
+
+      <div class="chord-box">
+        <div class="chord-box-title">// Chord Terpilih</div>
+        <div class="chord-name-display" id="chordNameDisplay">—</div>
+        <div class="chord-notes-display" id="chordNotesDisplay">Pilih root dan tipe chord</div>
+        <button class="btn-play-chord" onclick="playChord()">▶ Mainkan Chord</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><span>// video tutorial</span></div>
+
+<!-- ══ VIDEO ══ -->
+<div class="section reveal" id="video">
+  <p class="sec-eyebrow">// 04 — Video Tutorial</p>
+  <h2 class="sec-title">Tonton &amp; <em>Praktikkan</em></h2>
+
+  <div class="video-grid">
+    <div class="vid-card" onclick="openVid('https://www.youtube.com/embed/ZqsM_oJv4dg')">
+      <div class="vid-thumb">
+        <div class="vid-bg-note">🎹</div>
+        <div class="vid-play">▶</div>
+        <div class="vid-label">DO RE MI</div>
+      </div>
+      <div class="vid-info">
+        <span class="vi-badge">Piano Dasar</span>
+        <h4 class="vi-title">Belajar Piano dari Nol — Panduan Lengkap Pemula</h4>
+        <p class="vi-meta">// 24 menit · Dasar</p>
+      </div>
+    </div>
+
+    <div class="vid-card" onclick="openVid('https://www.youtube.com/embed/fEDQVKEWOPM')">
+      <div class="vid-thumb">
+        <div class="vid-bg-note">🎸</div>
+        <div class="vid-play">▶</div>
+        <div class="vid-label">Am G C F</div>
+      </div>
+      <div class="vid-info">
+        <span class="vi-badge">Gitar</span>
+        <h4 class="vi-title">Chord Dasar Gitar: Am, G, C, F dalam 20 Menit</h4>
+        <p class="vi-meta">// 20 menit · Dasar</p>
+      </div>
+    </div>
+
+    <div class="vid-card" onclick="openVid('https://www.youtube.com/embed/rgaTLrZGlk0')">
+      <div class="vid-thumb">
+        <div class="vid-bg-note">🎼</div>
+        <div class="vid-play">▶</div>
+        <div class="vid-label">♩ ♪ ♫</div>
+      </div>
+      <div class="vid-info">
+        <span class="vi-badge">Teori Musik</span>
+        <h4 class="vi-title">Cara Membaca Not Balok dengan Mudah &amp; Cepat</h4>
+        <p class="vi-meta">// 16 menit · Menengah</p>
+      </div>
+    </div>
+
+    <div class="vid-card" onclick="openVid('https://www.youtube.com/embed/nPHIZw7HZq4')">
+      <div class="vid-thumb">
+        <div class="vid-bg-note">🥁</div>
+        <div class="vid-play">▶</div>
+        <div class="vid-label">1 2 3 4</div>
+      </div>
+      <div class="vid-info">
+        <span class="vi-badge">Ritme</span>
+        <h4 class="vi-title">Dasar Ritme &amp; Ketukan: Fondasi Bermain Musik</h4>
+        <p class="vi-meta">// 12 menit · Dasar</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="vid-modal" id="vidModal">
+  <div class="vid-modal-inner">
+    <div class="vid-modal-top">
+      <button class="vid-close" onclick="closeVid()">✕</button>
+    </div>
+    <div class="vid-embed">
+      <iframe id="vidFrame" allowfullscreen src="" allow="autoplay; encrypted-media"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <a class="footer-back" href="/">← Kembali ke Ilmiora</a>
+  <span class="footer-copy">// Taman Bacaan Musik · Ilmiora 2026</span>
+</footer>
+
+</div><!-- .page -->
+
+<script>
+/* ══════════════════════════════════════
+   SCROLL BAR
+══════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('scrollBar').style.width = pct + '%';
+});
+
+/* ══════════════════════════════════════
+   FLOATING NOTES
+══════════════════════════════════════ */
+const noteSyms = ['♩','♪','♫','♬','𝄞','𝄢','♯','♭'];
+const hero = document.querySelector('.hero');
+for (let i = 0; i < 14; i++) {
+  const n = document.createElement('span');
+  n.className = 'note';
+  n.textContent = noteSyms[i % noteSyms.length];
+  n.style.cssText = `left:${Math.random()*90+5}%;top:${Math.random()*70+15}%;color:rgba(245,158,11,0.12);animation-delay:${Math.random()*6}s;animation-duration:${5+Math.random()*5}s;`;
+  hero.appendChild(n);
+}
+
+/* ══════════════════════════════════════
+   CANVAS VISUALIZER (waveform ambient)
+══════════════════════════════════════ */
+const canvas = document.getElementById('vizCanvas');
+const ctx    = canvas.getContext('2d');
+let W, H;
+
+function resizeCanvas() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+let phase = 0;
+function drawViz() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(245,158,11,0.04)';
+  ctx.lineWidth = 1.5;
+
+  for (let wave = 0; wave < 3; wave++) {
+    ctx.beginPath();
+    for (let x = 0; x <= W; x += 2) {
+      const freq = 0.003 + wave * 0.001;
+      const amp  = 30 + wave * 15;
+      const y    = H * (0.3 + wave * 0.2) + Math.sin(x * freq + phase + wave) * amp
+                  + Math.sin(x * freq * 2 + phase) * (amp * 0.3);
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  phase += 0.008;
+  requestAnimationFrame(drawViz);
+}
+drawViz();
+
+/* ══════════════════════════════════════
+   COUNTER ANIMATION
+══════════════════════════════════════ */
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('[data-target]').forEach(el => {
+        const target = parseInt(el.dataset.target);
+        let cur = 0;
+        const step = target / 50;
+        const t = setInterval(() => {
+          cur += step;
+          if (cur >= target) { cur = target; clearInterval(t); }
+          el.textContent = Math.floor(cur);
+        }, 30);
+      });
+      counterObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.hero-stats').forEach(el => counterObs.observe(el));
+
+/* ══════════════════════════════════════
+   REVEAL ON SCROLL
+══════════════════════════════════════ */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ══════════════════════════════════════
+   WEB AUDIO CONTEXT
+══════════════════════════════════════ */
+let audioCtx = null;
+
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playTone(freq, duration = 0.8, wave = 'sine', vol = 0.3) {
+  try {
+    const ac  = getAudio();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.type = wave;
+    osc.frequency.setValueAtTime(freq, ac.currentTime);
+    gain.gain.setValueAtTime(vol, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + duration);
+    osc.start(ac.currentTime);
+    osc.stop(ac.currentTime + duration);
+  } catch(e) {}
+}
+
+function playBeep(freq, dur) { playTone(freq, dur); }
+
+/* ══════════════════════════════════════
+   PIANO VIRTUAL
+══════════════════════════════════════ */
+const noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const noteFreqs = {
+  'C4':261.63,'C#4':277.18,'D4':293.66,'D#4':311.13,'E4':329.63,
+  'F4':349.23,'F#4':369.99,'G4':392.00,'G#4':415.30,'A4':440.00,
+  'A#4':466.16,'B4':493.88,
+  'C5':523.25,'C#5':554.37,'D5':587.33,'D#5':622.25,'E5':659.25,
+  'F5':698.46,'F#5':739.99,'G5':783.99,'G#5':830.61,'A5':880.00,
+  'A#5':932.33,'B5':987.77,
+  'C3':130.81,'C#3':138.59,'D3':146.83,'D#3':155.56,'E3':164.81,
+  'F3':174.61,'F#3':185.00,'G3':196.00,'G#3':207.65,'A3':220.00,
+  'A#3':233.08,'B3':246.94,
+};
+
+let pianoOct = 4;
+const whiteKeys = ['C','D','E','F','G','A','B'];
+const blackKeys = { 'C':'C#','D':'D#','F':'F#','G':'G#','A':'A#' };
+const keyboardMap = {
+  'a':'C','w':'C#','s':'D','e':'D#','d':'E','f':'F',
+  't':'F#','g':'G','y':'G#','h':'A','u':'A#','j':'B','k':'C'
+};
+
+function buildPiano() {
+  const container = document.getElementById('pianoKeys');
+  container.innerHTML = '';
+
+  const whites = ['C','D','E','F','G','A','B'];
+  const blackMap = { 0:'C#', 1:'D#', 3:'F#', 4:'G#', 5:'A#' };
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:relative;display:flex;';
+
+  whites.forEach((note, wi) => {
+    const key = document.createElement('div');
+    key.className = 'key-white';
+    key.dataset.note = note + pianoOct;
+    key.innerHTML = `<span class="key-note">${note}</span>`;
+    key.addEventListener('mousedown', () => pressKey(note + pianoOct, key));
+    key.addEventListener('mouseup',   () => releaseKey(key));
+    key.addEventListener('mouseleave',() => releaseKey(key));
+    key.addEventListener('touchstart', e => { e.preventDefault(); pressKey(note + pianoOct, key); });
+    key.addEventListener('touchend',   () => releaseKey(key));
+    wrap.appendChild(key);
+  });
+
+  // Black keys overlay
+  const blackPos = [0,1,3,4,5]; // after index of white keys
+  const offsets  = [30, 78, 174, 222, 270]; // pixel positions
+
+  blackPos.forEach((wi, bi) => {
+    const note = blackMap[wi];
+    const key = document.createElement('div');
+    key.className = 'key-black';
+    key.dataset.note = note + pianoOct;
+    key.style.left = (offsets[bi] + 34) + 'px';
+    key.addEventListener('mousedown', () => pressKey(note + pianoOct, key));
+    key.addEventListener('mouseup',   () => releaseKey(key));
+    key.addEventListener('mouseleave',() => releaseKey(key));
+    key.addEventListener('touchstart', e => { e.preventDefault(); pressKey(note + pianoOct, key); });
+    key.addEventListener('touchend',   () => releaseKey(key));
+    wrap.appendChild(key);
+  });
+
+  container.appendChild(wrap);
+}
+
+function pressKey(noteStr, keyEl) {
+  const freq = getNoteFreq(noteStr);
+  if (freq) {
+    const waveType = document.getElementById('waveSelect').value;
+    playTone(freq, 1.2, waveType, 0.25);
+    keyEl.classList.add('active');
+    document.getElementById('pianoNoteName').textContent = noteStr;
+    document.getElementById('pianoFreq').textContent = freq.toFixed(2) + ' Hz';
+  }
+}
+
+function releaseKey(keyEl) { keyEl.classList.remove('active'); }
+
+function getNoteFreq(noteStr) {
+  if (noteFreqs[noteStr]) return noteFreqs[noteStr];
+  // Calculate dynamically for other octaves
+  const match = noteStr.match(/^([A-G]#?)(\d)$/);
+  if (!match) return null;
+  const [,note, oct] = match;
+  const semitone = noteNames.indexOf(note);
+  const a4 = 440;
+  const halfSteps = (parseInt(oct) - 4) * 12 + semitone - 9;
+  return a4 * Math.pow(2, halfSteps / 12);
+}
+
+function changeOctave(dir) {
+  pianoOct = Math.max(2, Math.min(6, pianoOct + dir));
+  document.getElementById('octDisplay').textContent = pianoOct;
+  buildPiano();
+}
+
+// Keyboard control
+const activeKbKeys = {};
+document.addEventListener('keydown', e => {
+  if (activeKbKeys[e.key]) return;
+  activeKbKeys[e.key] = true;
+  const map = {...keyboardMap};
+  if (map[e.key.toLowerCase()]) {
+    let note = map[e.key.toLowerCase()];
+    if (note === 'C' && e.key === 'k') note = 'C' + (pianoOct + 1);
+    else note = note + pianoOct;
+    const el = document.querySelector(`.key-white[data-note="${note}"], .key-black[data-note="${note}"]`);
+    if (el) pressKey(note, el);
+  }
+});
+
+document.addEventListener('keyup', e => {
+  activeKbKeys[e.key] = false;
+  const map = {...keyboardMap};
+  if (map[e.key.toLowerCase()]) {
+    let note = map[e.key.toLowerCase()] + pianoOct;
+    document.querySelectorAll('.key-white,.key-black').forEach(k => k.classList.remove('active'));
+    document.getElementById('pianoNoteName').textContent = '—';
+    document.getElementById('pianoFreq').textContent = '';
+  }
+});
+
+buildPiano();
+
+/* ══════════════════════════════════════
+   CHORD FINDER
+══════════════════════════════════════ */
+const roots = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const chordTypes = {
+  'Mayor':    [0,4,7],
+  'Minor':    [0,3,7],
+  'Dom 7':    [0,4,7,10],
+  'Maj 7':    [0,4,7,11],
+  'Min 7':    [0,3,7,10],
+  'Sus2':     [0,2,7],
+  'Sus4':     [0,5,7],
+  'Dim':      [0,3,6],
+  'Aug':      [0,4,8],
+  'Add9':     [0,4,7,14],
+};
+
+// Guitar chord fingerings (simplified, string order: E A D G B e)
+const guitarChords = {
+  'C-Mayor':   { fingers: ['x','3','2','0','1','0'], fret: 1 },
+  'D-Mayor':   { fingers: ['x','x','0','2','3','2'], fret: 1 },
+  'E-Mayor':   { fingers: ['0','2','2','1','0','0'], fret: 1 },
+  'F-Mayor':   { fingers: ['1','1','2','3','3','1'], fret: 1 },
+  'G-Mayor':   { fingers: ['3','2','0','0','0','3'], fret: 1 },
+  'A-Mayor':   { fingers: ['x','0','2','2','2','0'], fret: 1 },
+  'B-Mayor':   { fingers: ['x','2','4','4','4','2'], fret: 2 },
+  'C-Minor':   { fingers: ['x','3','5','5','4','3'], fret: 3 },
+  'D-Minor':   { fingers: ['x','x','0','2','3','1'], fret: 1 },
+  'E-Minor':   { fingers: ['0','2','2','0','0','0'], fret: 1 },
+  'A-Minor':   { fingers: ['x','0','2','2','1','0'], fret: 1 },
+  'G-Minor':   { fingers: ['3','5','5','3','3','3'], fret: 3 },
+};
+
+let selectedRoot = 'C', selectedType = 'Mayor';
+
+// Build root buttons
+const rootGrid = document.getElementById('chordRoots');
+roots.forEach(r => {
+  const btn = document.createElement('button');
+  btn.className = 'chord-root-btn' + (r === 'C' ? ' active' : '');
+  btn.textContent = r;
+  btn.onclick = () => {
+    document.querySelectorAll('.chord-root-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedRoot = r;
+    updateChord();
+  };
+  rootGrid.appendChild(btn);
+});
+
+// Build type buttons
+const typeGrid = document.getElementById('chordTypes');
+Object.keys(chordTypes).forEach(t => {
+  const btn = document.createElement('button');
+  btn.className = 'chord-type-btn' + (t === 'Mayor' ? ' active' : '');
+  btn.textContent = t;
+  btn.onclick = () => {
+    document.querySelectorAll('.chord-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedType = t;
+    updateChord();
+  };
+  typeGrid.appendChild(btn);
+});
+
+function updateChord() {
+  const intervals = chordTypes[selectedType];
+  const rootIdx   = roots.indexOf(selectedRoot);
+  const chordNotes = intervals.map(i => roots[(rootIdx + i) % 12]);
+  const chordKey   = `${selectedRoot}-${selectedType}`;
+
+  document.getElementById('chordNameDisplay').textContent = selectedRoot + ' ' + selectedType;
+  document.getElementById('chordNotesDisplay').textContent = chordNotes.join(' — ');
+  document.getElementById('chordDiagramTitle').textContent = selectedRoot + ' ' + selectedType;
+
+  renderFretboard(guitarChords[chordKey]);
+}
+
+function renderFretboard(chord) {
+  const fb = document.getElementById('fretboard');
+  const fn = document.getElementById('fretNumbers');
+  const strings = ['E','A','D','G','B','e'];
+  const frets = 5;
+
+  if (!chord) {
+    // Generic display when no fingering available
+    fb.innerHTML = '<div style="padding:20px;text-align:center;font-family:IBM Plex Mono,monospace;font-size:11px;color:var(--muted);">Diagram chord tidak tersedia — gunakan piano untuk mendengar nada</div>';
+    fn.innerHTML = '';
+    return;
+  }
+
+  fb.innerHTML = '';
+  strings.forEach((str, si) => {
+    const row = document.createElement('div');
+    row.className = 'fret-row';
+
+    // String label
+    const lbl = document.createElement('div');
+    lbl.style.cssText = 'width:28px;display:flex;align-items:center;justify-content:center;font-family:IBM Plex Mono,monospace;font-size:10px;color:var(--muted);flex-shrink:0;';
+    lbl.textContent = str;
+    row.appendChild(lbl);
+
+    // String line
+    const sl = document.createElement('div');
+    sl.className = 'string-line';
+    sl.style.left = '28px';
+    row.appendChild(sl);
+
+    // Frets
+    const fingerVal = chord.fingers[si];
+    for (let f = 0; f < frets; f++) {
+      const fretDiv = document.createElement('div');
+      fretDiv.className = 'fret-line';
+
+      const dot = document.createElement('div');
+      dot.className = 'fret-dot';
+
+      if (fingerVal === 'x' && f === 0) {
+        dot.className += ' fd-muted'; dot.textContent = '✕';
+        fretDiv.appendChild(dot);
+      } else if (fingerVal === '0' && f === 0) {
+        dot.className += ' fd-open'; dot.textContent = 'O';
+        fretDiv.appendChild(dot);
+      } else if (parseInt(fingerVal) === (f + chord.fret) || (chord.fret === 1 && parseInt(fingerVal) === f + 1)) {
+        const fNum = parseInt(fingerVal);
+        if (fNum > 0 && fNum === f + chord.fret) {
+          dot.className += (si === 0 || si === strings.length-1) ? ' fd-root' : ' fd-fret';
+          dot.textContent = fNum;
+          fretDiv.appendChild(dot);
+        }
+      }
+
+      row.appendChild(fretDiv);
+    }
+
+    fb.appendChild(row);
+  });
+
+  // Fret numbers
+  fn.innerHTML = '';
+  for (let f = 0; f < frets; f++) {
+    const n = document.createElement('div');
+    n.className = 'fret-num';
+    n.textContent = f + chord.fret;
+    fn.appendChild(n);
+  }
+}
+
+function playChord() {
+  const intervals = chordTypes[selectedType];
+  const rootIdx   = roots.indexOf(selectedRoot);
+  const baseFreq  = getNoteFreq(selectedRoot + '3');
+  if (!baseFreq) return;
+
+  intervals.forEach((interval, i) => {
+    const freq = baseFreq * Math.pow(2, interval / 12);
+    setTimeout(() => playTone(freq, 1.5, 'sine', 0.18), i * 60);
+  });
+}
+
+// Init
+updateChord();
+
+/* ══════════════════════════════════════
+   VIDEO MODAL
+══════════════════════════════════════ */
+function openVid(url) {
+  document.getElementById('vidFrame').src = url + '?autoplay=1';
+  document.getElementById('vidModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVid() {
+  document.getElementById('vidFrame').src = '';
+  document.getElementById('vidModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('vidModal').addEventListener('click', function(e) {
+  if (e.target === this) closeVid();
+});
+</script>
+</body>
+</html>
