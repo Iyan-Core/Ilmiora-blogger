@@ -336,7 +336,7 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
 <b:section class='sidebar' id='sidebar' showaddelement='yes'/>
 
 <script type='text/javascript'>//<![CDATA[
-const firebaseConfig={apiKey:"AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",authDomain:"ilmiora-auth.firebaseapp.com",projectId:"ilmiora-auth",storageBucket:"ilmiora-auth.firebasestorage.app",messagingSenderId:"945061456781",appId:"1:945061456781:web:222e641bdef891dfe2abc4"};
+const firebaseConfig={apiKey:"_",authDomain:"ilmiora-auth.com",projectId:"ilmiora-auth",storageBucket:"ilmiora-auth.firebasestorage.app",messagingSenderId:"_",appId:"1:_:web:_"};
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth();
 
