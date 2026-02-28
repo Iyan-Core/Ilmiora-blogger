@@ -413,6 +413,18 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       Dari DNA hingga ekosistem — biologi mengungkap mekanisme kehidupan di setiap skala.
     </div>
 
+    <!-- ═══════════════════════════════════════════════
+         TOMBOL GALERI ARTIKEL PILIHAN
+         URL galeri per bidang — ganti jika nama file berubah:
+         📌 bio → galeri-biologi.html
+         📌 fis → galeri-fisika.html
+         📌 tek → galeri-teknologi.html
+         📌 ast → galeri-astronomi.html
+         📌 kim → galeri-kimia.html
+         Base URL: https://iyan-core.github.io/Ilmiora-blogger/
+    ════════════════════════════════════════════════ -->
+    <div id="galeriBtn" style="margin-bottom:20px;"></div>
+
     <!-- SEARCH -->
     <div class="art-search">
       <input id="searchInput" type="text" placeholder="Cari artikel biologi..." oninput="filterArts()"/>
@@ -464,6 +476,48 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 /* ═══ CONFIG SUB MENU ═══ */
 const BLOG='https://ilmiora.blogspot.com';
 const PER_PAGE=10;
+
+/* ════════════════════════════════════════════════════
+   URL GALERI ARTIKEL PILIHAN — GANTI SESUAI KEBUTUHAN
+   Format: https://iyan-core.github.io/Ilmiora-blogger/[nama-file]
+   📌 Ganti bagian BASE_GITHUB jika username/repo berubah
+════════════════════════════════════════════════════ */
+const BASE_GITHUB='https://iyan-core.github.io/Ilmiora-blogger/'; // 📌 GANTI jika repo berubah
+
+const GALERI_URLS={
+  bio: BASE_GITHUB+'/galeri-biologi.html',    // 📌 URL galeri Biologi
+  fis: BASE_GITHUB+'/galeri-fisika.html',     // 📌 URL galeri Fisika
+  tek: BASE_GITHUB+'/galeri-teknologi.html',  // 📌 URL galeri Teknologi
+  ast: BASE_GITHUB+'/galeri-astronomi.html',  // 📌 URL galeri Astronomi
+  kim: BASE_GITHUB+'/galeri-kimia.html',      // 📌 URL galeri Kimia
+};
+
+function renderGaleriBtn(key){
+  const m=MENUS[key];
+  const url=GALERI_URLS[key];
+  document.getElementById('galeriBtn').innerHTML=`
+    <a href="${url}" target="_blank" style="
+      display:flex;align-items:center;justify-content:space-between;
+      padding:13px 18px;
+      background:rgba(255,255,255,0.03);
+      border:1px dashed rgba(255,255,255,0.1);
+      border-radius:8px;
+      text-decoration:none;
+      transition:all 0.3s;
+      gap:12px;
+    "
+    onmouseover="this.style.borderColor='${m.color}';this.style.background='${m.bgColor}';"
+    onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.background='rgba(255,255,255,0.03)';">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">${m.icon}</span>
+        <div>
+          <div style="font-family:'Fira Code',monospace;font-size:9px;color:${m.color};text-transform:uppercase;letter-spacing:2px;margin-bottom:3px;">// Artikel Pilihan</div>
+          <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--chalk);">Lihat Galeri ${m.name} →</div>
+        </div>
+      </div>
+      <span style="font-family:'Fira Code',monospace;font-size:10px;color:${m.color};white-space:nowrap;">2 artikel kurasi</span>
+    </a>`;
+}
 
 const MENUS={
   bio:{
@@ -577,6 +631,7 @@ function switchMenu(key){
 
     // Update animasi
     renderAnim(key);
+    renderGaleriBtn(key);
 
     // Update CSS variable warna aktif
     document.documentElement.style.setProperty('--active-c',m.color);
@@ -840,6 +895,7 @@ heroObs.observe(document.querySelector('.hero'));
 // Set warna aktif awal
 document.documentElement.style.setProperty('--active-c',MENUS.bio.color);
 renderAnim('bio');
+renderGaleriBtn('bio');
 fetchMenu('bio');
 // Fetch semua untuk dapat count
 Object.keys(MENUS).forEach(k=>{
