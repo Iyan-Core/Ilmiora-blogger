@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Large Language Models: Ketika Statistik Mulai Terlihat Seperti Pemahaman — ILMIORA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050208;--card:#0d0d0d;--lift:#141414;
+  --c:#a855f7;--c2:#ec4899;
+  --glow:rgba(168,85,247,0.15);
+  --chalk:#f0f0ea;--muted:#555;--border:rgba(255,255,255,0.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--chalk);overflow-x:hidden;line-height:1.7;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--c);border-radius:2px;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.008) 2px,rgba(255,255,255,0.008) 4px);pointer-events:none;z-index:9998;}
+#scrollBar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--c),var(--c2));z-index:9999;width:0%;transition:width 0.1s;}
+#bgCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.page{position:relative;z-index:1;}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(0,0,0,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-brand{font-family:'Fira Code',monospace;font-size:13px;color:var(--c);text-decoration:none;display:flex;align-items:center;gap:8px;}
+.nav-brand span{color:#444;}
+.nav-center{display:flex;align-items:center;gap:6px;}
+.nav-crumb{font-family:'Fira Code',monospace;font-size:10px;color:#444;}
+.nav-crumb a{color:#666;text-decoration:none;transition:color 0.2s;}
+.nav-crumb a:hover{color:var(--c);}
+.nav-back{font-family:'Fira Code',monospace;font-size:10px;color:#555;text-decoration:none;padding:5px 12px;border:1px solid rgba(255,255,255,0.07);border-radius:3px;transition:all 0.2s;}
+.nav-back:hover{color:var(--c);border-color:var(--c);}
+
+/* HERO ARTIKEL */
+.art-hero{
+  min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:100px 32px 60px;position:relative;overflow:hidden;
+}
+.art-hero-bg{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(168,85,247,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.04) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);
+}
+.art-hero-glow{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(168,85,247,0.15),transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none;
+}
+.art-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;animation:fadeUp 0.6s ease both;}
+.art-tag{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:2px;border:1px solid;}
+.art-tag-main{color:var(--c);border-color:rgba(168,85,247,0.4);background:rgba(168,85,247,0.1);}
+.art-tag-sec{color:#888;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);}
+.art-year{font-family:'Fira Code',monospace;font-size:9px;color:#444;border:1px solid rgba(255,255,255,0.06);padding:4px 12px;border-radius:2px;}
+.art-title{
+  font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,64px);
+  font-weight:800;line-height:1.05;margin-bottom:24px;
+  letter-spacing:-1.5px;
+  animation:fadeUp 0.6s 0.1s ease both;
+}
+.art-title .hl{color:var(--c);text-shadow:0 0 40px var(--glow);}
+.art-intro{
+  max-width:640px;font-family:'Libre Baskerville',serif;
+  font-size:clamp(16px,2vw,20px);font-style:italic;
+  color:rgba(240,240,234,0.5);line-height:1.75;
+  margin-bottom:40px;animation:fadeUp 0.6s 0.2s ease both;
+}
+.art-meta{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;
+  font-family:'Fira Code',monospace;font-size:11px;color:#555;
+  animation:fadeUp 0.6s 0.3s ease both;
+}
+.author-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:6px 14px;color:var(--chalk);}
+.author-av{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--c),var(--c2));display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#000;flex-shrink:0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+/* ARTIKEL BODY */
+.art-body-wrap{max-width:760px;margin:0 auto;padding:60px 32px 80px;}
+.art-body{font-family:'Libre Baskerville',serif;font-size:17px;line-height:1.9;color:rgba(240,240,234,0.82);}
+.art-body h2{
+  font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
+  color:var(--c);margin:48px 0 18px;padding-left:16px;
+  border-left:3px solid var(--c);
+  text-shadow:0 0 24px var(--glow);
+}
+.art-body p{margin-bottom:22px;}
+.art-body strong{color:var(--chalk);font-weight:700;}
+.art-body em{color:rgba(240,240,234,0.65);}
+
+/* HIGHLIGHT BOX */
+.highlight-box{
+  background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.08);
+  border-left:3px solid var(--c);
+  border-radius:0 8px 8px 0;
+  padding:24px 28px;margin:32px 0;
+  font-family:'Fira Code',monospace;font-size:13px;
+  color:rgba(240,240,234,0.75);line-height:1.75;
+}
+.hb-label{
+  font-size:9px;color:var(--c);text-transform:uppercase;
+  letter-spacing:2.5px;margin-bottom:10px;display:block;
+}
+.highlight-box p{font-family:'Fira Code',monospace;font-size:13px;margin:0;}
+
+/* FACT GRID */
+.fact-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  margin:32px 0;
+}
+.fact-item{
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--border);
+  border-radius:8px;padding:20px 16px;text-align:center;
+  transition:all 0.3s;
+}
+.fact-item:hover{border-color:var(--c);background:rgba(255,255,255,0.04);}
+.fact-icon{font-size:24px;margin-bottom:10px;display:block;}
+.fact-label{font-family:'Fira Code',monospace;font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}
+.fact-val{font-family:'Fira Code',monospace;font-size:24px;font-weight:700;color:var(--c);display:block;margin-bottom:6px;text-shadow:0 0 16px var(--glow);}
+.fact-desc{font-family:'Fira Code',monospace;font-size:10px;color:#555;line-height:1.5;}
+
+/* CONCLUSION */
+.conclusion-box{
+  background:linear-gradient(135deg,var(--glow),rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.1);border-radius:12px;
+  padding:32px;margin-top:48px;position:relative;overflow:hidden;
+}
+.conclusion-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--c),var(--c2),transparent);
+}
+.conclusion-icon{font-size:32px;margin-bottom:16px;display:block;}
+.conclusion-box p{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:600;
+  color:var(--chalk);line-height:1.75;font-style:italic;margin:0;
+}
+
+/* DIVIDER */
+.art-divider{display:flex;align-items:center;gap:16px;margin:40px 0;opacity:0.15;}
+.art-divider::before,.art-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--c),transparent);}
+.art-divider span{font-family:'Fira Code',monospace;font-size:10px;color:var(--c);white-space:nowrap;}
+
+/* NAV ARTIKEL */
+.art-nav{
+  max-width:760px;margin:0 auto;padding:0 32px 60px;
+  display:flex;gap:14px;flex-wrap:wrap;
+}
+.art-nav-btn{
+  flex:1;min-width:200px;
+  background:rgba(255,255,255,0.02);border:1px solid var(--border);
+  border-radius:8px;padding:18px 22px;text-decoration:none;color:inherit;
+  transition:all 0.3s;display:block;
+}
+.art-nav-btn:hover{border-color:var(--c);background:rgba(255,255,255,0.04);}
+.art-nav-label{font-family:'Fira Code',monospace;font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.art-nav-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--chalk);line-height:1.3;}
+.art-nav-btn.back-to-taman{text-align:center;}
+.art-nav-btn.back-to-taman .art-nav-title{color:var(--c);}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer a{font-family:'Fira Code',monospace;font-size:10px;color:#555;text-decoration:none;transition:color 0.2s;}
+.footer a:hover{color:var(--c);}
+
+@media(max-width:700px){.fact-grid{grid-template-columns:1fr 1fr;}.art-body-wrap{padding:40px 20px 60px;}.art-hero{padding:90px 20px 50px;}.nav{padding:0 18px;}.art-nav{padding:0 20px 48px;}.footer{padding:20px 18px;}}
+@media(max-width:460px){.fact-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="scrollBar"></div>
+<canvas id="bgCanvas"></canvas>
+<div class="page">
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-brand" href="https://ilmiora.blogspot.com"><span>~/</span>ILMIORA</a>
+  <div class="nav-crumb">
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">taman-sains</a>
+    <span style="margin:0 6px;">/</span>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html#tek">teknologi</a>
+    <span style="margin:0 6px;">/</span>
+    <span style="color:#888;">artikel</span>
+  </div>
+  <a class="nav-back" href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">← Taman Sains</a>
+</nav>
+
+<!-- HERO -->
+<section class="art-hero">
+  <div class="art-hero-bg"></div>
+  <div class="art-hero-glow"></div>
+  <div class="art-tags">
+    <span class="art-tag art-tag-main">Teknologi</span>
+    <span class="art-tag art-tag-sec">Kecerdasan Buatan</span>
+    <span class="art-tag art-tag-sec">LLM</span>
+    <span class="art-year">2024</span>
+  </div>
+  <h1 class="art-title">Large Language Models: Ketika Statistik Mulai Terlihat Seperti Pemahaman</h1>
+  <p class="art-intro">GPT-4, Claude, Gemini. Model-model ini menghasilkan teks yang terasa seperti ditulis manusia — menjelaskan konsep fisika, menulis puisi, men-debug kode, menjawab pertanyaan medis. Tapi apakah mereka benar-benar 'memahami' sesuatu? Atau ini adalah ilusi terkompleks yang pernah diciptakan manusia?</p>
+  <div class="art-meta">
+    <div class="author-chip">
+      <div class="author-av" id="authorAv"></div>
+      <span>Anisa Putri, MSc</span>
+    </div>
+    <span>AI Research, Universitas Gadjah Mada</span>
+    <span>·</span>
+    <span>10 menit baca</span>
+  </div>
+</section>
+
+<!-- ARTIKEL BODY -->
+<div class="art-body-wrap">
+  <article class="art-body">
+
+      <h2>// Cara Kerja: Prediksi Token yang Sangat Canggih</h2>
+      <p>Di level teknis yang paling dasar, Large Language Models (LLM) melakukan satu hal: memprediksi token (kata atau sub-kata) berikutnya berdasarkan konteks sebelumnya. Dilatih pada triliunan kata dari internet, buku, kode, dan dokumen ilmiah, model ini belajar distribusi statistik kompleks tentang bagaimana bahasa bekerja.</p>
+      <p>Arsitektur Transformer yang diperkenalkan Google pada 2017 memungkinkan model untuk "memperhatikan" bagian berbeda dari teks input secara bersamaan — mechanism yang disebut self-attention. Ini memungkinkan model menangkap hubungan jangka panjang dalam teks dengan cara yang tidak bisa dilakukan arsitektur sebelumnya.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Skala yang Membuat Perbedaan</span>
+        <p>GPT-3 (2020): 175 miliar parameter. GPT-4 (2023): tidak diungkap, estimasi 1 triliun+. Dilatih pada dataset yang, jika dibaca manusia 24/7, membutuhkan lebih dari 100.000 tahun. Biaya training: puluhan hingga ratusan juta dolar. Apa yang muncul dari skala ini — kemampuan penalaran yang tidak secara eksplisit diprogram — inilah yang mengejutkan bahkan para penelitinya.</p>
+      </div>
+
+      <h2>// Emergent Abilities: Kemampuan yang Tidak Diprogram</h2>
+      <p>Saat model mencapai skala tertentu, kemampuan yang tidak ada di model yang lebih kecil tiba-tiba muncul. Few-shot learning (belajar dari beberapa contoh tanpa fine-tuning). Chain-of-thought reasoning (menyelesaikan masalah langkah demi langkah). Kemampuan aritmetika multi-digit. Pemecahan analogi kompleks. Tidak ada yang secara eksplisit memasukkan kemampuan ini — mereka muncul dari skala dan data.</p>
+      <p>Ini disebut <em>emergent abilities</em> dan masih diperdebatkan: apakah ini fenomena nyata atau artefak dari cara kita mengukur kemampuan model? Jawabannya penting karena menentukan apakah pendekatan scale-up saat ini akan terus menghasilkan kemajuan atau membutuhkan terobosan arsitektur baru.</p>
+
+      <div class="fact-grid">
+        <div class="fact-item">
+          <div class="fact-icon">📊</div>
+          <div class="fact-label">Parameter GPT-4</div>
+          <div class="fact-val">~1T</div>
+          <div class="fact-desc">estimasi — OpenAI tidak mengungkap angka resmi</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon">⚡</div>
+          <div class="fact-label">Token per Detik</div>
+          <div class="fact-val">50-100</div>
+          <div class="fact-desc">kecepatan generasi teks model frontier terbaru</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon">🌍</div>
+          <div class="fact-label">Pengguna ChatGPT</div>
+          <div class="fact-val">180M+</div>
+          <div class="fact-desc">pengguna aktif mingguan per awal 2024</div>
+        </div>
+      </div>
+
+      <h2>// Batas Nyata yang Sering Diabaikan</h2>
+      <p>LLM tidak memiliki memori jangka panjang — setiap percakapan dimulai dari nol. Mereka halusinasi dengan percaya diri — menghasilkan fakta yang salah dengan gaya yang meyakinkan. Mereka tidak memiliki pemahaman tentang dunia fisik — semua pengetahuan mereka berasal dari teks, bukan pengalaman. Penalaran matematis formal masih menjadi kelemahan yang signifikan untuk masalah yang membutuhkan langkah-langkah tepat.</p>
+
+      <div class="conclusion-box">
+        <div class="conclusion-icon">🤖</div>
+        <p>Apakah LLM "memahami" bahasa? Pertanyaan ini mungkin salah dirumuskan. Pemahaman bukan properti biner — ada spektrum. Yang jelas: sesuatu yang menarik terjadi di dalam jaringan saraf berparameter triliunan ini. Sesuatu yang melampaui pencarian pola sederhana, tapi mungkin belum mencapai pemahaman mendalam seperti manusia. Di antara keduanya terdapat wilayah yang fascinasi dan mengkhawatirkan sekaligus.</p>
+      </div>
+  
+  </article>
+
+  <div class="art-divider"><span>// end.of.article</span></div>
+</div>
+
+<!-- NAV ARTIKEL -->
+<div class="art-nav">
+  <a class="art-nav-btn back-to-taman" href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">
+    <div class="art-nav-label">← Kembali ke</div>
+    <div class="art-nav-title">Taman Sains — Pilih Artikel Lain</div>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="https://ilmiora.blogspot.com">← ILMIORA</a>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:#333;">ILMIORA © 2025 — Where Knowledge Becomes Light</span>
+</footer>
+</div>
+
+<script>
+/* CANVAS */
+const cvs=document.getElementById('bgCanvas'),ctx=cvs.getContext('2d');
+function rsz(){cvs.width=innerWidth;cvs.height=innerHeight;}rsz();window.addEventListener('resize',rsz);
+const C='#a855f7';
+const pts=Array.from({length:40},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5+.3,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,a:Math.random()}));
+(function draw(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  pts.forEach(p=>{
+    p.x=(p.x+p.vx+cvs.width)%cvs.width;
+    p.y=(p.y+p.vy+cvs.height)%cvs.height;
+    p.a+=0.01;
+    const alpha=0.15+Math.abs(Math.sin(p.a))*0.25;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`${C}${Math.round(alpha*255).toString(16).padStart(2,'0')}`;
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+})();
+
+/* SCROLL */
+window.addEventListener('scroll',()=>{document.getElementById('scrollBar').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';});
+
+/* AUTHOR AVATAR */
+const av='Anisa Putri, MSc';
+const initials=(av.match(/\b\w/g)||[]).slice(0,2).join('').toUpperCase();
+document.getElementById('authorAv').textContent=initials;
+</script>
+</body>
+</html>
