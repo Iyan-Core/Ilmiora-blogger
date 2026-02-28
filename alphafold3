@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlphaFold 3: AI yang Memecahkan Misteri Terbesar Biologi — ILMIORA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#020a06;--card:#0d0d0d;--lift:#141414;
+  --c:#10b981;--c2:#84cc16;
+  --glow:rgba(16,185,129,0.15);
+  --chalk:#f0f0ea;--muted:#555;--border:rgba(255,255,255,0.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--chalk);overflow-x:hidden;line-height:1.7;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--c);border-radius:2px;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.008) 2px,rgba(255,255,255,0.008) 4px);pointer-events:none;z-index:9998;}
+#scrollBar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--c),var(--c2));z-index:9999;width:0%;transition:width 0.1s;}
+#bgCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.page{position:relative;z-index:1;}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(0,0,0,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-brand{font-family:'Fira Code',monospace;font-size:13px;color:var(--c);text-decoration:none;display:flex;align-items:center;gap:8px;}
+.nav-brand span{color:#444;}
+.nav-center{display:flex;align-items:center;gap:6px;}
+.nav-crumb{font-family:'Fira Code',monospace;font-size:10px;color:#444;}
+.nav-crumb a{color:#666;text-decoration:none;transition:color 0.2s;}
+.nav-crumb a:hover{color:var(--c);}
+.nav-back{font-family:'Fira Code',monospace;font-size:10px;color:#555;text-decoration:none;padding:5px 12px;border:1px solid rgba(255,255,255,0.07);border-radius:3px;transition:all 0.2s;}
+.nav-back:hover{color:var(--c);border-color:var(--c);}
+
+/* HERO ARTIKEL */
+.art-hero{
+  min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:100px 32px 60px;position:relative;overflow:hidden;
+}
+.art-hero-bg{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(16,185,129,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,0.04) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);
+}
+.art-hero-glow{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(16,185,129,0.15),transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none;
+}
+.art-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;animation:fadeUp 0.6s ease both;}
+.art-tag{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:2px;border:1px solid;}
+.art-tag-main{color:var(--c);border-color:rgba(16,185,129,0.4);background:rgba(16,185,129,0.1);}
+.art-tag-sec{color:#888;border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);}
+.art-year{font-family:'Fira Code',monospace;font-size:9px;color:#444;border:1px solid rgba(255,255,255,0.06);padding:4px 12px;border-radius:2px;}
+.art-title{
+  font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,64px);
+  font-weight:800;line-height:1.05;margin-bottom:24px;
+  letter-spacing:-1.5px;
+  animation:fadeUp 0.6s 0.1s ease both;
+}
+.art-title .hl{color:var(--c);text-shadow:0 0 40px var(--glow);}
+.art-intro{
+  max-width:640px;font-family:'Libre Baskerville',serif;
+  font-size:clamp(16px,2vw,20px);font-style:italic;
+  color:rgba(240,240,234,0.5);line-height:1.75;
+  margin-bottom:40px;animation:fadeUp 0.6s 0.2s ease both;
+}
+.art-meta{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;
+  font-family:'Fira Code',monospace;font-size:11px;color:#555;
+  animation:fadeUp 0.6s 0.3s ease both;
+}
+.author-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:6px 14px;color:var(--chalk);}
+.author-av{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--c),var(--c2));display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#000;flex-shrink:0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+/* ARTIKEL BODY */
+.art-body-wrap{max-width:760px;margin:0 auto;padding:60px 32px 80px;}
+.art-body{font-family:'Libre Baskerville',serif;font-size:17px;line-height:1.9;color:rgba(240,240,234,0.82);}
+.art-body h2{
+  font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
+  color:var(--c);margin:48px 0 18px;padding-left:16px;
+  border-left:3px solid var(--c);
+  text-shadow:0 0 24px var(--glow);
+}
+.art-body p{margin-bottom:22px;}
+.art-body strong{color:var(--chalk);font-weight:700;}
+.art-body em{color:rgba(240,240,234,0.65);}
+
+/* HIGHLIGHT BOX */
+.highlight-box{
+  background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.08);
+  border-left:3px solid var(--c);
+  border-radius:0 8px 8px 0;
+  padding:24px 28px;margin:32px 0;
+  font-family:'Fira Code',monospace;font-size:13px;
+  color:rgba(240,240,234,0.75);line-height:1.75;
+}
+.hb-label{
+  font-size:9px;color:var(--c);text-transform:uppercase;
+  letter-spacing:2.5px;margin-bottom:10px;display:block;
+}
+.highlight-box p{font-family:'Fira Code',monospace;font-size:13px;margin:0;}
+
+/* FACT GRID */
+.fact-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  margin:32px 0;
+}
+.fact-item{
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--border);
+  border-radius:8px;padding:20px 16px;text-align:center;
+  transition:all 0.3s;
+}
+.fact-item:hover{border-color:var(--c);background:rgba(255,255,255,0.04);}
+.fact-icon{font-size:24px;margin-bottom:10px;display:block;}
+.fact-label{font-family:'Fira Code',monospace;font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}
+.fact-val{font-family:'Fira Code',monospace;font-size:24px;font-weight:700;color:var(--c);display:block;margin-bottom:6px;text-shadow:0 0 16px var(--glow);}
+.fact-desc{font-family:'Fira Code',monospace;font-size:10px;color:#555;line-height:1.5;}
+
+/* CONCLUSION */
+.conclusion-box{
+  background:linear-gradient(135deg,var(--glow),rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.1);border-radius:12px;
+  padding:32px;margin-top:48px;position:relative;overflow:hidden;
+}
+.conclusion-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--c),var(--c2),transparent);
+}
+.conclusion-icon{font-size:32px;margin-bottom:16px;display:block;}
+.conclusion-box p{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:600;
+  color:var(--chalk);line-height:1.75;font-style:italic;margin:0;
+}
+
+/* DIVIDER */
+.art-divider{display:flex;align-items:center;gap:16px;margin:40px 0;opacity:0.15;}
+.art-divider::before,.art-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--c),transparent);}
+.art-divider span{font-family:'Fira Code',monospace;font-size:10px;color:var(--c);white-space:nowrap;}
+
+/* NAV ARTIKEL */
+.art-nav{
+  max-width:760px;margin:0 auto;padding:0 32px 60px;
+  display:flex;gap:14px;flex-wrap:wrap;
+}
+.art-nav-btn{
+  flex:1;min-width:200px;
+  background:rgba(255,255,255,0.02);border:1px solid var(--border);
+  border-radius:8px;padding:18px 22px;text-decoration:none;color:inherit;
+  transition:all 0.3s;display:block;
+}
+.art-nav-btn:hover{border-color:var(--c);background:rgba(255,255,255,0.04);}
+.art-nav-label{font-family:'Fira Code',monospace;font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.art-nav-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--chalk);line-height:1.3;}
+.art-nav-btn.back-to-taman{text-align:center;}
+.art-nav-btn.back-to-taman .art-nav-title{color:var(--c);}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer a{font-family:'Fira Code',monospace;font-size:10px;color:#555;text-decoration:none;transition:color 0.2s;}
+.footer a:hover{color:var(--c);}
+
+@media(max-width:700px){.fact-grid{grid-template-columns:1fr 1fr;}.art-body-wrap{padding:40px 20px 60px;}.art-hero{padding:90px 20px 50px;}.nav{padding:0 18px;}.art-nav{padding:0 20px 48px;}.footer{padding:20px 18px;}}
+@media(max-width:460px){.fact-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="scrollBar"></div>
+<canvas id="bgCanvas"></canvas>
+<div class="page">
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-brand" href="https://ilmiora.blogspot.com"><span>~/</span>ILMIORA</a>
+  <div class="nav-crumb">
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">taman-sains</a>
+    <span style="margin:0 6px;">/</span>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html#bio">biologi</a>
+    <span style="margin:0 6px;">/</span>
+    <span style="color:#888;">artikel</span>
+  </div>
+  <a class="nav-back" href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">← Taman Sains</a>
+</nav>
+
+<!-- HERO -->
+<section class="art-hero">
+  <div class="art-hero-bg"></div>
+  <div class="art-hero-glow"></div>
+  <div class="art-tags">
+    <span class="art-tag art-tag-main">Biologi</span>
+    <span class="art-tag art-tag-sec">Biologi Molekuler</span>
+    <span class="art-tag art-tag-sec">AI</span>
+    <span class="art-year">2024</span>
+  </div>
+  <h1 class="art-title">AlphaFold 3: AI yang Memecahkan Misteri Terbesar Biologi</h1>
+  <p class="art-intro">Selama 50 tahun, ilmuwan berjuang memecahkan satu teka-teki: bagaimana rantai asam amino melipat menjadi protein tiga dimensi yang bekerja seperti mesin kehidupan? Pada 2024, DeepMind menjawabnya dengan cara yang tidak pernah dibayangkan siapapun.</p>
+  <div class="art-meta">
+    <div class="author-chip">
+      <div class="author-av" id="authorAv"></div>
+      <span>Dr. Rina Dewi</span>
+    </div>
+    <span>Bioinformatika, Universitas Indonesia</span>
+    <span>·</span>
+    <span>9 menit baca</span>
+  </div>
+</section>
+
+<!-- ARTIKEL BODY -->
+<div class="art-body-wrap">
+  <article class="art-body">
+
+      <h2>// Masalah yang Memakan 50 Tahun</h2>
+      <p>Protein adalah fondasi kehidupan. Setiap enzim yang mencerna makananmu, setiap antibodi yang melawan infeksi, setiap sinyal kimia di otakmu — semuanya adalah protein. Dan fungsi setiap protein ditentukan oleh satu hal: <em>bentuk tiga dimensinya</em>.</p>
+      <p>Masalahnya? Menentukan bentuk itu secara eksperimental membutuhkan berbulan-bulan atau bertahun-tahun kerja laboratorium per protein. Dengan lebih dari 200 juta protein yang diketahui, itu secara praktis mustahil. Inilah yang disebut "protein folding problem" — salah satu tantangan terbesar biologi komputasional.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Skala Masalahnya</span>
+        <p>Tubuh manusia mengandung sekitar 20.000 jenis protein berbeda. Sebelum AlphaFold, hanya ~170.000 struktur protein yang berhasil ditentukan dalam 50 tahun penelitian global. AlphaFold 2 memprediksi lebih dari 200 juta struktur dalam hitungan bulan.</p>
+      </div>
+
+      <h2>// AlphaFold 3: Melampaui Protein</h2>
+      <p>AlphaFold 2 (2020) sudah revolusioner. Tapi ia hanya memprediksi struktur protein sendirian. AlphaFold 3, dirilis Mei 2024, melangkah jauh lebih jauh: ia memodelkan <em>interaksi</em> antara protein, DNA, RNA, dan molekul kecil seperti obat-obatan — sekaligus.</p>
+      <p>Ini bukan peningkatan bertahap. Ini lompatan kuantum. Karena di dalam sel, tidak ada yang bekerja sendiri. Semua berinteraksi dalam jaringan kompleks yang selama ini sangat sulit dipelajari.</p>
+
+      <div class="fact-grid">
+        <div class="fact-item">
+          <div class="fact-icon">🎯</div>
+          <div class="fact-label">Akurasi Protein-Ligan</div>
+          <div class="fact-val">+50%</div>
+          <div class="fact-desc">dibanding AlphaFold 2 untuk prediksi interaksi obat-protein</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon">🧬</div>
+          <div class="fact-label">Tipe Molekul</div>
+          <div class="fact-val">Semua</div>
+          <div class="fact-desc">protein, DNA, RNA, ligan, ion logam — dalam satu model</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon">💊</div>
+          <div class="fact-label">Kandidat Obat Baru</div>
+          <div class="fact-val">200M+</div>
+          <div class="fact-desc">struktur tersedia gratis untuk peneliti global</div>
+        </div>
+      </div>
+
+      <h2>// Dampak Nyata: Dari Lab ke Pasien</h2>
+      <p>Bukan hanya tentang kecepatan. AlphaFold 3 memungkinkan jenis penelitian yang sebelumnya tidak mungkin dilakukan. Tim di Wellcome Sanger Institute menggunakan prediksi AlphaFold untuk mengidentifikasi target obat baru untuk malaria yang resistan — penyakit yang membunuh 600.000 orang per tahun — dalam waktu minggu, bukan dekade.</p>
+      <p>Startup biotech seperti Isomorphic Labs (juga dari DeepMind) sedang merancang molekul obat baru sepenuhnya secara komputasional menggunakan AlphaFold 3 sebagai mesin prediksi. Beberapa kandidat sudah memasuki uji praklinis.</p>
+
+      <div class="highlight-box">
+        <span class="hb-label">// Terobosan yang Sedang Berjalan</span>
+        <p>Peneliti UC San Francisco menggunakan AlphaFold 3 untuk memetakan interaksi protein virus Dengue dengan sel manusia — sesuatu yang butuh 10 tahun secara eksperimental, diselesaikan dalam 3 minggu. Target vaksin generasi baru kini sedang diuji.</p>
+      </div>
+
+      <h2>// Kritik yang Perlu Didengar</h2>
+      <p>Tidak semua ilmuwan euforia. Beberapa struktur yang diprediksi AlphaFold memiliki tingkat kepercayaan rendah untuk wilayah protein yang "tidak terstruktur" — bagian yang justru sering paling penting untuk regulasi biologis. AlphaFold juga tidak memprediksi bagaimana protein <em>bergerak</em> secara dinamis, hanya struktur statisnya.</p>
+      <p>Ada juga kekhawatiran akses: meskipun database terbuka, algoritma lengkapnya dimiliki oleh perusahaan komersial. Pertanyaan tentang siapa yang mengontrol infrastruktur ilmu pengetahuan mendasar ini tetap relevan.</p>
+
+      <div class="conclusion-box">
+        <div class="conclusion-icon">🔬</div>
+        <p>AlphaFold bukan hanya alat — ia adalah momen di mana komputer mulai "membaca" bahasa tiga dimensi kehidupan. Kita baru memasuki era di mana desain obat, terapi gen, dan pemahaman penyakit tidak lagi dibatasi oleh seberapa cepat kita bisa mengkristalkan protein di laboratorium. Batasnya kini ada di imajinasi pertanyaan yang kita ajukan.</p>
+      </div>
+  
+  </article>
+
+  <div class="art-divider"><span>// end.of.article</span></div>
+</div>
+
+<!-- NAV ARTIKEL -->
+<div class="art-nav">
+  <a class="art-nav-btn back-to-taman" href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">
+    <div class="art-nav-label">← Kembali ke</div>
+    <div class="art-nav-title">Taman Sains — Pilih Artikel Lain</div>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="https://ilmiora.blogspot.com">← ILMIORA</a>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:#333;">ILMIORA © 2025 — Where Knowledge Becomes Light</span>
+</footer>
+</div>
+
+<script>
+/* CANVAS */
+const cvs=document.getElementById('bgCanvas'),ctx=cvs.getContext('2d');
+function rsz(){cvs.width=innerWidth;cvs.height=innerHeight;}rsz();window.addEventListener('resize',rsz);
+const C='#10b981';
+const pts=Array.from({length:40},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5+.3,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,a:Math.random()}));
+(function draw(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  pts.forEach(p=>{
+    p.x=(p.x+p.vx+cvs.width)%cvs.width;
+    p.y=(p.y+p.vy+cvs.height)%cvs.height;
+    p.a+=0.01;
+    const alpha=0.15+Math.abs(Math.sin(p.a))*0.25;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`${C}${Math.round(alpha*255).toString(16).padStart(2,'0')}`;
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+})();
+
+/* SCROLL */
+window.addEventListener('scroll',()=>{document.getElementById('scrollBar').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';});
+
+/* AUTHOR AVATAR */
+const av='Dr. Rina Dewi';
+const initials=(av.match(/\b\w/g)||[]).slice(0,2).join('').toUpperCase();
+document.getElementById('authorAv').textContent=initials;
+</script>
+</body>
+</html>
