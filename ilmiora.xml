@@ -269,11 +269,11 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
       <p class='ilm-sec-tag'>// Eksplorasi</p>
       <h2 class='ilm-sec-h'>Pilih <em>Taman Ilmu</em> Favoritmu</h2>
       <div class='ilm-tgrid'>
-        <a class='ilm-tc tc-m' href='https://ilmiora.blogspot.com/search/label/Matematika'><div class='ilm-tc-ico'>🔢</div><div class='ilm-tc-name'>Taman Matematika</div><div class='ilm-tc-sub'>Aljabar · Kalkulus<br/>Geometri · Statistika</div><span class='ilm-tc-arr'>↗</span></a>
-        <a class='ilm-tc tc-s' href='https://ilmiora.blogspot.com/search/label/Sains'><div class='ilm-tc-ico'>🔬</div><div class='ilm-tc-name'>Taman Sains</div><div class='ilm-tc-sub'>Fisika · Kimia<br/>Biologi · Astronomi</div><span class='ilm-tc-arr'>↗</span></a>
-        <a class='ilm-tc tc-h' href='https://ilmiora.blogspot.com/search/label/Sejarah'><div class='ilm-tc-ico'>🏛️</div><div class='ilm-tc-name'>Taman Sejarah</div><div class='ilm-tc-sub'>Nusantara · Islam<br/>Dunia · Peradaban</div><span class='ilm-tc-arr'>↗</span></a>
-        <a class='ilm-tc tc-mu' href='https://ilmiora.blogspot.com/search/label/Musik'><div class='ilm-tc-ico'>🎵</div><div class='ilm-tc-name'>Taman Musik</div><div class='ilm-tc-sub'>Teori · Piano<br/>Gitar · Vokal</div><span class='ilm-tc-arr'>↗</span></a>
-        <a class='ilm-tc tc-sp' href='https://ilmiora.blogspot.com/search/label/Spiritual'><div class='ilm-tc-ico'>🕌</div><div class='ilm-tc-name'>Taman Spiritual</div><div class='ilm-tc-sub'>Hikmah · Tafsir<br/>Akhlak · Renungan</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-m' href='https://iyan-core.github.io/Ilmiora-blogger/matematika.html'><div class='ilm-tc-ico'>🔢</div><div class='ilm-tc-name'>Taman Matematika</div><div class='ilm-tc-sub'>Aljabar · Kalkulus<br/>Geometri · Statistika</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-s' href='https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html'><div class='ilm-tc-ico'>🔬</div><div class='ilm-tc-name'>Taman Sains</div><div class='ilm-tc-sub'>Fisika · Kimia<br/>Biologi · Astronomi</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-h' href='https://iyan-core.github.io/Ilmiora-blogger/sejarah.html'><div class='ilm-tc-ico'>🏛️</div><div class='ilm-tc-name'>Taman Sejarah</div><div class='ilm-tc-sub'>Nusantara · Islam<br/>Dunia · Peradaban</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-mu' href='https://iyan-core.github.io/Ilmiora-blogger/musik.html'><div class='ilm-tc-ico'>🎵</div><div class='ilm-tc-name'>Taman Musik</div><div class='ilm-tc-sub'>Teori · Piano<br/>Gitar · Vokal</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-sp' href='https://iyan-core.github.io/Ilmiora-blogger/spiritual.html'><div class='ilm-tc-ico'>🕌</div><div class='ilm-tc-name'>Taman Spiritual</div><div class='ilm-tc-sub'>Hikmah · Tafsir<br/>Akhlak · Renungan</div><span class='ilm-tc-arr'>↗</span></a>
       </div>
     </div>
     <footer class='ilm-footer'>
