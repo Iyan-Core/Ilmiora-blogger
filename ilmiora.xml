@@ -251,7 +251,7 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
       <p class='ilm-hero-sl'>// Where Knowledge Becomes Light</p>
       <p class='ilm-hero-p'>Jelajahi artikel berkualitas dari matematika, sains, sejarah, musik, hingga spiritual.</p>
       <div class='ilm-cta'>
-        <a class='ilm-cta-p' href='https://ilmiora.blogspot.com/search/label/Sains'>Mulai Membaca →</a>
+        <a class='ilm-cta-p' href='https://iyan-core.github.io/Ilmiora-blogger/mulai-membaca.html'>Mulai Membaca →</a>
         <a class='ilm-cta-g' href='#ilm-taman'>Jelajahi Taman</a>
       </div>
       <div class='ilm-stats'>
