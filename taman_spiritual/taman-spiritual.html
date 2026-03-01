@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taman Spiritual — ILMIORA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+
+/* ════════════════════════════════════════
+   DARK MODE
+════════════════════════════════════════ */
+[data-theme="dark"]{
+  --bg:#07060a;
+  --bg2:#0d0b12;
+  --card:#110f18;
+  --lift:#18151f;
+  --chalk:#f0eaf8;
+  --body-txt:rgba(240,234,248,0.68);
+  --muted:#6b5f8a;
+  --dim:#1e1929;
+  --border:rgba(180,140,255,0.08);
+  --border2:rgba(255,255,255,0.06);
+  --input-bg:rgba(0,0,0,0.45);
+  --shadow:rgba(0,0,0,0.55);
+  --scanline:rgba(180,140,255,0.007);
+  --gold:#d4af60;
+  --gold-glow:rgba(212,175,96,0.15);
+  --accent:#b48cff;
+  --accent2:#e8c97a;
+}
+
+/* ════════════════════════════════════════
+   LIGHT MODE — Bold, Dinamis, Tegas
+════════════════════════════════════════ */
+[data-theme="light"]{
+  --bg:#faf8f5;
+  --bg2:#f2efe9;
+  --card:#ffffff;
+  --lift:#ffffff;
+  --chalk:#12080f;
+  --body-txt:#4a3d5c;
+  --muted:#7a6a99;
+  --dim:#e8e0f0;
+  --border:rgba(120,80,180,0.15);
+  --border2:rgba(18,8,15,0.08);
+  --input-bg:#ffffff;
+  --shadow:rgba(18,8,15,0.10);
+  --scanline:transparent;
+  --gold:#9a7a20;
+  --gold-glow:rgba(154,122,32,0.10);
+  --accent:#7040d0;
+  --accent2:#9a7a20;
+}
+
+/* ════════════════════════════════════════
+   GLOBAL
+════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Cormorant Garamond',serif;
+  background:var(--bg);color:var(--chalk);
+  overflow-x:hidden;min-height:100vh;
+  transition:background 0.5s,color 0.5s;
+}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,var(--scanline) 2px,var(--scanline) 4px);
+  pointer-events:none;z-index:9997;
+}
+#scrollBar{
+  position:fixed;top:0;left:0;height:2px;z-index:9999;width:0%;
+  background:linear-gradient(90deg,var(--gold),var(--accent),var(--gold));
+}
+canvas#bgCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.35;}
+.page{position:relative;z-index:1;}
+
+/* ════ NAV ════ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:62px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 44px;
+  backdrop-filter:blur(28px);
+  border-bottom:1px solid var(--border);
+  transition:background 0.5s,border-color 0.5s;
+}
+[data-theme="dark"] .nav{background:rgba(7,6,10,0.96);}
+[data-theme="light"] .nav{background:rgba(250,248,245,0.97);box-shadow:0 1px 16px rgba(18,8,15,0.06);}
+
+.nav-brand{
+  font-family:'Fira Code',monospace;font-size:13px;
+  color:var(--accent);text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-brand-sep{color:var(--muted);}
+.nav-bidang{font-size:11px;color:var(--gold);letter-spacing:1px;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+
+/* Theme Toggle */
+.theme-toggle{
+  display:flex;align-items:center;gap:8px;padding:6px 14px;
+  border:1px solid var(--border);border-radius:100px;
+  cursor:pointer;font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--muted);background:var(--card);transition:all 0.3s;
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+.toggle-track{width:30px;height:15px;border-radius:100px;position:relative;flex-shrink:0;transition:background 0.3s;}
+[data-theme="dark"] .toggle-track{background:rgba(180,140,255,0.2);}
+[data-theme="light"] .toggle-track{background:rgba(112,64,208,0.25);}
+.toggle-thumb{width:11px;height:11px;border-radius:50%;position:absolute;top:2px;transition:left 0.3s,background 0.3s;}
+[data-theme="dark"] .toggle-thumb{left:2px;background:var(--accent);}
+[data-theme="light"] .toggle-thumb{left:17px;background:var(--accent);}
+.nav-back{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--muted);text-decoration:none;padding:5px 12px;
+  border:1px solid var(--border);border-radius:3px;transition:all 0.2s;
+}
+.nav-back:hover{color:var(--accent);border-color:var(--accent);}
+
+/* ════ HERO ════ */
+.hero{
+  min-height:88vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:100px 32px 60px;position:relative;overflow:hidden;
+}
+.hero-mandala{
+  position:absolute;width:700px;height:700px;
+  border-radius:50%;
+  border:1px solid rgba(212,175,96,0.06);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:rotateSlow 60s linear infinite;
+}
+.hero-mandala::before{
+  content:'';position:absolute;inset:40px;border-radius:50%;
+  border:1px solid rgba(180,140,255,0.05);
+  animation:rotateSlow 40s linear infinite reverse;
+}
+.hero-mandala::after{
+  content:'';position:absolute;inset:80px;border-radius:50%;
+  border:1px solid rgba(212,175,96,0.04);
+  animation:rotateSlow 25s linear infinite;
+}
+@keyframes rotateSlow{to{transform:rotate(360deg);}}
+
+.hero-glow{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(180,140,255,0.07),transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none;
+}
+.hero-glow2{
+  position:absolute;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,175,96,0.05),transparent 70%);
+  top:55%;left:55%;transform:translate(-50%,-50%);pointer-events:none;
+}
+
+.hero-badge{
+  font-family:'Fira Code',monospace;font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);
+  background:var(--gold-glow);border:1px solid rgba(212,175,96,0.2);
+  border-radius:2px;padding:6px 20px;margin-bottom:28px;
+  display:inline-flex;align-items:center;gap:12px;
+  animation:fadeUp 0.8s ease both;
+}
+.badge-ornament{color:var(--gold);font-size:14px;}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,10vw,120px);
+  font-weight:700;line-height:0.9;
+  letter-spacing:-2px;margin-bottom:18px;
+  animation:fadeUp 0.8s 0.1s ease both;
+}
+.title-top{
+  font-style:italic;color:var(--body-txt);
+  font-size:clamp(22px,4vw,48px);font-weight:400;
+  display:block;letter-spacing:2px;
+}
+.title-main{
+  color:var(--chalk);display:block;
+  text-shadow:0 0 60px rgba(212,175,96,0.15);
+}
+[data-theme="light"] .title-main{text-shadow:none;}
+.title-accent{color:var(--gold);}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(14px,2.2vw,20px);font-style:italic;
+  color:var(--body-txt);margin-bottom:10px;letter-spacing:1px;
+  animation:fadeUp 0.8s 0.2s ease both;
+}
+.hero-desc{
+  max-width:540px;font-size:clamp(14px,1.8vw,17px);
+  color:var(--muted);line-height:1.85;
+  animation:fadeUp 0.8s 0.3s ease both;
+  margin-bottom:36px;
+}
+.hero-line{
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:0 auto;animation:fadeUp 0.8s 0.35s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ════ AGAMA CARDS ════ */
+.agama-section{
+  max-width:1100px;margin:0 auto;
+  padding:72px 40px 0;
+}
+.sec-eye{
+  font-family:'Fira Code',monospace;font-size:10px;
+  color:var(--gold);text-transform:uppercase;letter-spacing:3px;
+  margin-bottom:10px;display:flex;align-items:center;gap:10px;
+}
+.sec-eye::before{content:'';width:22px;height:1px;background:var(--gold);}
+.sec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(28px,4vw,52px);font-weight:700;
+  line-height:1.05;margin-bottom:36px;
+}
+.sec-title em{font-style:italic;color:var(--gold);}
+
+.agama-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;margin-bottom:0;
+}
+.agama-card{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:12px;padding:24px 16px;text-align:center;
+  cursor:pointer;transition:all 0.35s cubic-bezier(0.22,1,0.36,1);
+  position:relative;overflow:hidden;
+}
+.agama-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  opacity:0;transition:opacity 0.3s;
+}
+.agama-card:hover,.agama-card.active{transform:translateY(-4px);}
+.agama-card.active{border-width:1px;}
+.agama-card::after{
+  content:'';position:absolute;inset:0;border-radius:12px;
+  background:radial-gradient(circle at 50% 0%,currentColor,transparent 65%);
+  opacity:0;transition:opacity 0.35s;pointer-events:none;
+}
+.agama-card:hover::after,.agama-card.active::after{opacity:0.06;}
+
+/* Per-agama colors */
+.agama-islam{--ag:#d4af60;--ag-glow:rgba(212,175,96,0.12);}
+.agama-kristen{--ag:#60a8d4;--ag-glow:rgba(96,168,212,0.12);}
+.agama-hindu{--ag:#e07850;--ag-glow:rgba(224,120,80,0.12);}
+.agama-buddha{--ag:#c8a020;--ag-glow:rgba(200,160,32,0.12);}
+.agama-konghucu{--ag:#d46060;--ag-glow:rgba(212,96,96,0.12);}
+
+.agama-card:hover,.agama-card.active{
+  border-color:var(--ag);
+  box-shadow:0 12px 36px -8px var(--ag-glow);
+  color:var(--ag);
+}
+.agama-card::before{background:var(--ag);}
+.agama-card:hover::before,.agama-card.active::before{opacity:1;}
+
+.agama-symbol{font-size:36px;margin-bottom:12px;display:block;line-height:1;transition:transform 0.3s;}
+.agama-card:hover .agama-symbol,.agama-card.active .agama-symbol{transform:scale(1.15);}
+.agama-name{
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:800;
+  color:var(--chalk);margin-bottom:4px;transition:color 0.3s;letter-spacing:0.5px;
+}
+.agama-card:hover .agama-name,.agama-card.active .agama-name{color:var(--ag);}
+.agama-count{
+  font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);
+  transition:color 0.3s;
+}
+.agama-card.active .agama-count{color:var(--ag);opacity:0.7;}
+.active-bar{
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--ag);transform:scaleX(0);
+  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.agama-card.active .active-bar{transform:scaleX(1);}
+
+/* ════ ARTIKEL AREA ════ */
+.art-area{
+  max-width:1100px;margin:0 auto;
+  padding:32px 40px 80px;
+}
+.art-area-header{
+  padding:28px 0 20px;
+  border-bottom:1px solid var(--border2);
+  margin-bottom:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.aah-left{display:flex;align-items:center;gap:14px;}
+.aah-symbol{font-size:32px;line-height:1;}
+.aah-name{
+  font-family:'Syne',sans-serif;font-size:clamp(20px,2.5vw,28px);font-weight:800;
+  color:var(--chalk);
+}
+.aah-badge{
+  font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;
+  letter-spacing:2px;padding:4px 12px;border-radius:2px;border:1px solid;
+  transition:all 0.3s;
+}
+.aah-live{display:flex;align-items:center;gap:7px;font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.live-dot{width:5px;height:5px;border-radius:50%;animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.2;}}
+
+/* Search */
+.search-bar{
+  display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;
+}
+.search-wrap{flex:1;min-width:200px;position:relative;}
+.search-input{
+  width:100%;padding:10px 14px 10px 40px;
+  background:var(--input-bg);border:1px solid var(--border2);
+  border-radius:6px;color:var(--chalk);
+  font-family:'Fira Code',monospace;font-size:12px;outline:none;transition:all 0.2s;
+}
+.search-input:focus{border-color:var(--accent);}
+[data-theme="light"] .search-input{color:#12080f;}
+[data-theme="light"] .search-input::placeholder{color:#9a8ab0;}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;}
+.sort-btn{
+  padding:10px 14px;background:var(--card);border:1px solid var(--border2);
+  border-radius:6px;color:var(--muted);font-family:'Fira Code',monospace;
+  font-size:10px;cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.sort-btn.active,.sort-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(180,140,255,0.07);}
+[data-theme="light"] .sort-btn.active,[data-theme="light"] .sort-btn:hover{background:rgba(112,64,208,0.08);}
+
+/* Grid artikel */
+.art-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
+}
+.art-card{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:12px;overflow:hidden;display:flex;flex-direction:column;
+  animation:cardIn 0.45s ease both;
+  transition:transform 0.32s cubic-bezier(0.22,1,0.36,1),box-shadow 0.32s,border-color 0.32s;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.art-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px var(--shadow);}
+
+.card-strip{height:3px;width:100%;flex-shrink:0;}
+.card-body{padding:22px;flex:1;display:flex;flex-direction:column;}
+.card-meta{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.card-label{
+  font-family:'Fira Code',monospace;font-size:8px;text-transform:uppercase;
+  letter-spacing:1.5px;padding:3px 8px;border-radius:2px;border:1px solid;
+}
+.card-date{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
+.card-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(16px,2vw,20px);font-weight:700;
+  line-height:1.3;margin-bottom:10px;color:var(--chalk);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  transition:color 0.25s;
+}
+.art-card:hover .card-title{color:var(--gold);}
+.card-snippet{
+  font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;
+  color:var(--body-txt);line-height:1.75;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  flex:1;margin-bottom:14px;
+}
+.card-cta{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px;border-radius:6px;border:1px solid;
+  text-decoration:none;font-family:'Fira Code',monospace;font-size:10px;
+  transition:all 0.22s;
+}
+.cta-arrow{transition:transform 0.22s;}
+.art-card:hover .cta-arrow{transform:translateX(4px);}
+
+/* Loading */
+.loading{grid-column:1/-1;padding:80px 20px;text-align:center;}
+.ld-dots{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
+.ld{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:ldp 1.4s infinite;}
+.ld:nth-child(2){animation-delay:.2s;}.ld:nth-child(3){animation-delay:.4s;}
+@keyframes ldp{0%,80%,100%{transform:scale(0.5);opacity:0.3;}40%{transform:scale(1);opacity:1;}}
+.ld-txt{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);}
+
+/* Empty */
+.empty{grid-column:1/-1;padding:72px 20px;text-align:center;}
+.empty-icon{font-size:40px;margin-bottom:14px;display:block;}
+.empty-txt{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);line-height:1.8;}
+.empty-txt strong{color:var(--gold);}
+
+/* Pager */
+.pager{display:none;justify-content:space-between;align-items:center;padding:20px 0 0;border-top:1px solid var(--border2);margin-top:8px;}
+.pager.show{display:flex;}
+.pager-btn{padding:8px 18px;background:var(--card);border:1px solid var(--border2);border-radius:4px;color:var(--muted);cursor:pointer;font-family:'Fira Code',monospace;font-size:10px;transition:all 0.2s;}
+.pager-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+.pager-btn:disabled{opacity:0.2;cursor:not-allowed;}
+.pager-info{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+
+/* ════ KUTIPAN BIJAK ════ */
+.wisdom-section{
+  max-width:1100px;margin:0 auto;padding:0 40px 80px;
+}
+.wisdom-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+.wisdom-card{
+  background:var(--card);border:1px solid var(--border2);border-radius:10px;
+  padding:22px 18px;text-align:center;position:relative;overflow:hidden;
+  transition:all 0.3s;
+}
+.wisdom-card:hover{transform:translateY(-3px);border-color:var(--ag);}
+.wisdom-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ag);opacity:0;transition:opacity 0.3s;}
+.wisdom-card:hover::before{opacity:1;}
+.wisdom-sym{font-size:24px;margin-bottom:10px;display:block;}
+.wisdom-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:var(--chalk);margin-bottom:10px;letter-spacing:0.5px;}
+.wisdom-quote{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--body-txt);line-height:1.7;}
+.wisdom-src{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);margin-top:8px;display:block;}
+
+/* ════ FOOTER ════ */
+.footer{border-top:1px solid var(--border2);padding:22px 44px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;transition:background 0.5s;}
+[data-theme="light"] .footer{background:var(--bg2);}
+.footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.footer a:hover{color:var(--gold);}
+
+/* ════ LIGHT MODE OVERRIDES ════ */
+[data-theme="light"] .agama-card{box-shadow:0 2px 10px rgba(18,8,15,0.06);}
+[data-theme="light"] .art-card{box-shadow:0 2px 12px rgba(18,8,15,0.06);}
+[data-theme="light"] .art-card:hover{box-shadow:0 14px 40px rgba(18,8,15,0.12);}
+[data-theme="light"] .art-card:hover .card-title{color:var(--gold);}
+[data-theme="light"] .wisdom-card{box-shadow:0 2px 8px rgba(18,8,15,0.05);}
+[data-theme="light"] .sort-btn.active,[data-theme="light"] .sort-btn:hover{color:var(--accent);border-color:var(--accent);}
+[data-theme="light"] .search-input:focus{border-color:var(--accent);}
+
+/* ════ RESPONSIVE ════ */
+@media(max-width:900px){
+  .agama-grid{grid-template-columns:repeat(3,1fr);}
+  .wisdom-grid{grid-template-columns:repeat(3,1fr);}
+  .art-grid{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .agama-grid{grid-template-columns:repeat(3,1fr);}
+  .wisdom-grid{grid-template-columns:1fr 1fr;}
+  .nav{padding:0 18px;}
+  .agama-section,.art-area,.wisdom-section{padding-left:18px;padding-right:18px;}
+  .hero{padding:90px 18px 52px;}
+  .footer{padding:18px;}
+  .art-area-header{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<div id="scrollBar"></div>
+<canvas id="bgCanvas"></canvas>
+<div class="page">
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-brand" href="https://ilmiora.blogspot.com">
+    ~/ILMIORA <span class="nav-brand-sep">/</span>
+    <span class="nav-bidang">spiritual</span>
+  </a>
+  <div class="nav-right">
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span id="themeIcon">🌙</span>
+      <div class="toggle-track"><div class="toggle-thumb" id="toggleThumb"></div></div>
+      <span id="themeLabel">Gelap</span>
+    </div>
+    <a class="nav-back" href="https://ilmiora.blogspot.com">← Beranda</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-mandala"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-badge">
+    <span class="badge-ornament">✦</span>
+    Taman Bacaan · Spiritualitas & Agama
+    <span class="badge-ornament">✦</span>
+  </div>
+
+  <h1 class="hero-title">
+    <span class="title-top">— Cahaya dari —</span>
+    <span class="title-main">Taman <span class="title-accent">Spiritual</span></span>
+  </h1>
+
+  <p class="hero-sub">Lima Tradisi Kebijaksanaan Dunia</p>
+  <p class="hero-desc">Dari ayat-ayat suci hingga filsafat kuno — setiap agama menyimpan pertanyaan yang sama tentang keberadaan, tujuan, dan bagaimana seharusnya kita hidup. Jelajahi dan temukan kebijaksanaannya.</p>
+  <div class="hero-line"></div>
+</section>
+
+<!-- PILIH AGAMA -->
+<div class="agama-section">
+  <p class="sec-eye">// Pilih Tradisi</p>
+  <h2 class="sec-title">Lima <em>Jalan Kebijaksanaan</em></h2>
+
+  <div class="agama-grid">
+
+    <div class="agama-card agama-islam active" onclick="switchAgama('islam')" id="card-islam">
+      <span class="agama-symbol">☪️</span>
+      <div class="agama-name">Islam</div>
+      <div class="agama-count" id="count-islam">memuat...</div>
+      <div class="active-bar"></div>
+    </div>
+
+    <div class="agama-card agama-kristen" onclick="switchAgama('kristen')" id="card-kristen">
+      <span class="agama-symbol">✝️</span>
+      <div class="agama-name">Kristen</div>
+      <div class="agama-count" id="count-kristen">memuat...</div>
+      <div class="active-bar"></div>
+    </div>
+
+    <div class="agama-card agama-hindu" onclick="switchAgama('hindu')" id="card-hindu">
+      <span class="agama-symbol">🕉️</span>
+      <div class="agama-name">Hindu</div>
+      <div class="agama-count" id="count-hindu">memuat...</div>
+      <div class="active-bar"></div>
+    </div>
+
+    <div class="agama-card agama-buddha" onclick="switchAgama('buddha')" id="card-buddha">
+      <span class="agama-symbol">☸️</span>
+      <div class="agama-name">Buddha</div>
+      <div class="agama-count" id="count-buddha">memuat...</div>
+      <div class="active-bar"></div>
+    </div>
+
+    <div class="agama-card agama-konghucu" onclick="switchAgama('konghucu')" id="card-konghucu">
+      <span class="agama-symbol">☯️</span>
+      <div class="agama-name">Konghucu</div>
+      <div class="agama-count" id="count-konghucu">memuat...</div>
+      <div class="active-bar"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ARTIKEL AREA -->
+<div class="art-area">
+
+  <!-- Header bidang aktif -->
+  <div class="art-area-header">
+    <div class="aah-left">
+      <span class="aah-symbol" id="aaSymbol">☪️</span>
+      <div>
+        <div class="aah-name" id="aaName">Islam</div>
+      </div>
+      <span class="aah-badge" id="aaBadge"
+        style="color:#d4af60;border-color:rgba(212,175,96,0.3);background:rgba(212,175,96,0.07);">
+        Tauhid · Fiqh · Tasawuf
+      </span>
+    </div>
+    <div class="aah-live">
+      <span class="live-dot" id="liveDot" style="background:#d4af60;box-shadow:0 0 6px #d4af60;"></span>
+      Sinkron dari Blogger
+    </div>
+  </div>
+
+  <!-- Search & Sort -->
+  <div class="search-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="text"
+        placeholder="Cari artikel spiritual..."
+        oninput="filterAndRender()"/>
+    </div>
+    <button class="sort-btn active" id="sortNew" onclick="setSort('new')">Terbaru</button>
+    <button class="sort-btn" id="sortOld" onclick="setSort('old')">Terlama</button>
+    <button class="sort-btn" id="sortAZ"  onclick="setSort('az')">A–Z</button>
+  </div>
+
+  <!-- Grid -->
+  <div class="art-grid" id="artGrid">
+    <div class="loading">
+      <div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>
+      <div class="ld-txt">Memuat artikel Islam...</div>
+    </div>
+  </div>
+
+  <!-- Pager -->
+  <div class="pager" id="pager">
+    <button class="pager-btn" id="btnPrev" onclick="changePage(-1)">← Sebelumnya</button>
+    <span class="pager-info" id="pagerInfo"></span>
+    <button class="pager-btn" id="btnNext" onclick="changePage(1)">Selanjutnya →</button>
+  </div>
+
+</div>
+
+<!-- KUTIPAN BIJAK -->
+<div class="wisdom-section">
+  <p class="sec-eye">// Kebijaksanaan Lintas Iman</p>
+  <h2 class="sec-title">Satu <em>Pertanyaan</em>, Lima Jawaban</h2>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--muted);margin-bottom:28px;line-height:1.7;max-width:560px;">
+    "Bagaimana seharusnya manusia hidup?" — Lima tradisi terbesar dunia masing-masing memiliki jawabannya.
+  </p>
+
+  <div class="wisdom-grid">
+
+    <div class="wisdom-card agama-islam" style="--ag:#d4af60;--ag-glow:rgba(212,175,96,0.12);">
+      <span class="wisdom-sym">☪️</span>
+      <div class="wisdom-name">Islam</div>
+      <div class="wisdom-quote">"Sebaik-baik manusia adalah yang paling bermanfaat bagi sesama manusia."</div>
+      <span class="wisdom-src">// HR. Ahmad & Thabrani</span>
+    </div>
+
+    <div class="wisdom-card agama-kristen" style="--ag:#60a8d4;--ag-glow:rgba(96,168,212,0.12);">
+      <span class="wisdom-sym">✝️</span>
+      <div class="wisdom-name">Kristen</div>
+      <div class="wisdom-quote">"Kasihilah sesamamu manusia seperti dirimu sendiri."</div>
+      <span class="wisdom-src">// Markus 12:31</span>
+    </div>
+
+    <div class="wisdom-card agama-hindu" style="--ag:#e07850;--ag-glow:rgba(224,120,80,0.12);">
+      <span class="wisdom-sym">🕉️</span>
+      <div class="wisdom-name">Hindu</div>
+      <div class="wisdom-quote">"Ahimsa paramo dharma — tidak menyakiti adalah kewajiban tertinggi."</div>
+      <span class="wisdom-src">// Mahabharata</span>
+    </div>
+
+    <div class="wisdom-card agama-buddha" style="--ag:#c8a020;--ag-glow:rgba(200,160,32,0.12);">
+      <span class="wisdom-sym">☸️</span>
+      <div class="wisdom-name">Buddha</div>
+      <div class="wisdom-quote">"Pikiran adalah segalanya. Kamu menjadi apa yang kamu pikirkan."</div>
+      <span class="wisdom-src">// Dhammapada</span>
+    </div>
+
+    <div class="wisdom-card agama-konghucu" style="--ag:#d46060;--ag-glow:rgba(212,96,96,0.12);">
+      <span class="wisdom-sym">☯️</span>
+      <div class="wisdom-name">Konghucu</div>
+      <div class="wisdom-quote">"Apa yang tidak kamu inginkan terjadi padamu, jangan lakukan pada orang lain."</div>
+      <span class="wisdom-src">// Lunyu 12:2</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="https://ilmiora.blogspot.com">← ILMIORA Beranda</a>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:0.4;">ILMIORA © 2025 — Taman Spiritual</span>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">Taman Sains →</a>
+</footer>
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   📌 KONFIGURASI — GANTI SESUAI KEBUTUHAN
+════════════════════════════════════════ */
+const BLOG     = 'https://ilmiora.blogspot.com'; // 📌 URL Blogger
+
+// 📌 Label Blogger per agama — harus sama persis dengan label postingan
+const AGAMA = {
+  islam   : { name:'Islam',    symbol:'☪️',  badge:'Tauhid · Fiqh · Tasawuf',    color:'#d4af60', glow:'rgba(212,175,96,0.12)',  label:'Islam'    },
+  kristen : { name:'Kristen',  symbol:'✝️',  badge:'Iman · Kasih · Injil',       color:'#60a8d4', glow:'rgba(96,168,212,0.12)',  label:'Kristen'  },
+  hindu   : { name:'Hindu',    symbol:'🕉️', badge:'Dharma · Karma · Moksha',    color:'#e07850', glow:'rgba(224,120,80,0.12)',  label:'Hindu'    },
+  buddha  : { name:'Buddha',   symbol:'☸️',  badge:'Dhamma · Meditasi · Nirvana',color:'#c8a020', glow:'rgba(200,160,32,0.12)', label:'Buddha'   },
+  konghucu: { name:'Konghucu', symbol:'☯️',  badge:'Ren · Yi · Li · Zhi · Xin', color:'#d46060', glow:'rgba(212,96,96,0.12)',   label:'Konghucu' },
+};
+const PER_PAGE = 8; // 📌 artikel per halaman
+
+/* ════ STATE ════ */
+let cache     = {};   // cache per agama
+let current   = 'islam';
+let filtered  = [];
+let page      = 1;
+let sortMode  = 'new';
+
+/* ════ CANVAS BACKGROUND ════ */
+(function(){
+  const cvs=document.getElementById('bgCanvas'),ctx=cvs.getContext('2d');
+  function rsz(){cvs.width=innerWidth;cvs.height=innerHeight;}rsz();
+  window.addEventListener('resize',rsz);
+  const particles=Array.from({length:50},()=>({
+    x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+    r:Math.random()*1.4+0.3,
+    vx:(Math.random()-.5)*.15, vy:(Math.random()-.5)*.15,
+    p:Math.random()*Math.PI*2,
+    c:['#d4af60','#b48cff','#60a8d4','#e07850','#c8a020'][Math.floor(Math.random()*5)]
+  }));
+  (function draw(){
+    ctx.clearRect(0,0,cvs.width,cvs.height);
+    particles.forEach(p=>{
+      p.x=(p.x+p.vx+cvs.width)%cvs.width;
+      p.y=(p.y+p.vy+cvs.height)%cvs.height;
+      p.p+=0.015;
+      const al=0.08+Math.abs(Math.sin(p.p))*0.18;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.c+(Math.round(al*255).toString(16).padStart(2,'0'));
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  })();
+})();
+
+/* ════ SCROLL BAR ════ */
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollBar').style.width=
+    (scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+});
+
+/* ════ THEME TOGGLE ════ */
+function toggleTheme(){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('themeIcon').textContent  = isDark?'☀️':'🌙';
+  document.getElementById('themeLabel').textContent = isDark?'Terang':'Gelap';
+  localStorage.setItem('ilmiora-theme-spiritual',isDark?'light':'dark');
+}
+(function(){
+  const saved=localStorage.getItem('ilmiora-theme-spiritual');
+  if(saved==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeIcon').textContent='☀️';
+    document.getElementById('themeLabel').textContent='Terang';
+  }
+})();
+
+/* ════ FETCH ════ */
+function fetchAgama(key, cb){
+  if(cache[key]){ cb(cache[key]); return; }
+  const ag=AGAMA[key];
+  const fnName='_spcb_'+key;
+  window[fnName]=function(data){
+    const entries=(data.feed.entry||[]).map(e=>{
+      const link=(e.link||[]).find(l=>l.rel==='alternate');
+      const dateObj=new Date(e.published.$t);
+      const dateStr=dateObj.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+      const snippet=((e.summary?e.summary.$t:e.title.$t)||'')
+        .replace(/<[^>]+>/g,'').substring(0,160)+'…';
+      return{title:e.title.$t,url:link?link.href:'#',date:dateStr,dateObj,snippet};
+    });
+    cache[key]=entries;
+    document.getElementById('count-'+key).textContent=entries.length+' artikel';
+    cb(entries);
+  };
+  const s=document.createElement('script');
+  s.onerror=()=>{cache[key]=[];document.getElementById('count-'+key).textContent='0 artikel';cb([]);};
+  s.src=`${BLOG}/feeds/posts/default/-/${encodeURIComponent(ag.label)}?alt=json-in-script&max-results=50&callback=${fnName}`;
+  document.head.appendChild(s);
+}
+
+/* ════ SWITCH AGAMA ════ */
+function switchAgama(key){
+  current=key;page=1;
+  document.getElementById('searchInput').value='';
+  sortMode='new';
+  ['sortNew','sortOld','sortAZ'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('sortNew').classList.add('active');
+
+  // Update active card
+  document.querySelectorAll('.agama-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('card-'+key).classList.add('active');
+
+  // Update header
+  const ag=AGAMA[key];
+  document.getElementById('aaSymbol').textContent=ag.symbol;
+  document.getElementById('aaName').textContent=ag.name;
+  const badge=document.getElementById('aaBadge');
+  badge.textContent=ag.badge;
+  badge.style.color=ag.color;
+  badge.style.borderColor=ag.color.replace(')',',0.3)').replace('rgb','rgba');
+  badge.style.background=ag.glow;
+  document.getElementById('liveDot').style.background=ag.color;
+  document.getElementById('liveDot').style.boxShadow='0 0 6px '+ag.color;
+
+  // Show loading
+  document.getElementById('artGrid').innerHTML=`
+    <div class="loading">
+      <div class="ld-dots"><div class="ld" style="background:${ag.color}"></div>
+      <div class="ld" style="background:${ag.color}"></div>
+      <div class="ld" style="background:${ag.color}"></div></div>
+      <div class="ld-txt">Memuat artikel ${ag.name}...</div>
+    </div>`;
+  document.getElementById('pager').classList.remove('show');
+
+  fetchAgama(key, entries=>{
+    filtered=[...entries];
+    sortFiltered();
+    renderPage();
+  });
+}
+
+/* ════ SORT & FILTER ════ */
+function setSort(mode){
+  sortMode=mode;
+  ['sortNew','sortOld','sortAZ'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById(mode==='new'?'sortNew':mode==='old'?'sortOld':'sortAZ').classList.add('active');
+  page=1;filterAndRender();
+}
+function filterAndRender(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const base=cache[current]||[];
+  filtered=q?base.filter(a=>a.title.toLowerCase().includes(q)||a.snippet.toLowerCase().includes(q)):[...base];
+  sortFiltered();page=1;renderPage();
+}
+function sortFiltered(){
+  if(sortMode==='new') filtered.sort((a,b)=>b.dateObj-a.dateObj);
+  else if(sortMode==='old') filtered.sort((a,b)=>a.dateObj-b.dateObj);
+  else filtered.sort((a,b)=>a.title.localeCompare(b.title,'id'));
+}
+
+/* ════ RENDER ════ */
+function renderPage(){
+  const ag=AGAMA[current];
+  const grid=document.getElementById('artGrid');
+  const pager=document.getElementById('pager');
+  const total=Math.ceil(filtered.length/PER_PAGE);
+  const start=(page-1)*PER_PAGE;
+  const items=filtered.slice(start,start+PER_PAGE);
+
+  if(!items.length){
+    grid.innerHTML=`<div class="empty">
+      <span class="empty-icon">${ag.symbol}</span>
+      <div class="empty-txt">Belum ada artikel ${ag.name}.<br>
+      Tambahkan postingan berlabel <strong>${ag.label}</strong> di Blogger.</div>
+    </div>`;
+    pager.classList.remove('show');return;
+  }
+
+  grid.innerHTML=items.map((a,i)=>`
+    <article class="art-card" style="animation-delay:${i*0.06}s;">
+      <div class="card-strip" style="background:linear-gradient(90deg,${ag.color},transparent);"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-label" style="color:${ag.color};border-color:${ag.color}44;background:${ag.glow};">${ag.symbol} ${ag.name}</span>
+          <span class="card-date">${a.date}</span>
+        </div>
+        <h2 class="card-title">${a.title}</h2>
+        <p class="card-snippet">${a.snippet}</p>
+        <a class="card-cta" href="${a.url}" target="_blank"
+          style="color:${ag.color};border-color:${ag.color}33;background:${ag.glow};">
+          <span>Baca Selengkapnya</span>
+          <span class="cta-arrow">→</span>
+        </a>
+      </div>
+    </article>`).join('');
+
+  if(total>1){
+    pager.classList.add('show');
+    document.getElementById('pagerInfo').textContent=`${page} / ${total}`;
+    document.getElementById('btnPrev').disabled=page===1;
+    document.getElementById('btnNext').disabled=page===total;
+  } else {
+    pager.classList.remove('show');
+  }
+}
+function changePage(d){
+  const total=Math.ceil(filtered.length/PER_PAGE);
+  page=Math.max(1,Math.min(total,page+d));
+  renderPage();
+  document.querySelector('.art-area').scrollIntoView({behavior:'smooth'});
+}
+
+/* ════ INIT ════ */
+// Pre-fetch semua agama untuk count
+Object.keys(AGAMA).forEach(k=>fetchAgama(k,()=>{}));
+// Load default
+switchAgama('islam');
+</script>
+</body>
+</html>
