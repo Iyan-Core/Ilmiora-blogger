@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sunnah Nabi sebagai Panduan Hidup: Relevansi Abadi di Tengah Perubahan Zaman — ILMIORA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07060a;--card:#110f18;--chalk:#f0eaf8;--body:rgba(240,234,248,0.72);--muted:#6b5f8a;--border:rgba(212,175,96,0.1);--gold:#d4af60;--goldx:rgba(212,175,96,0.07);}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.85;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),#b48cff);z-index:999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(7,6,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--gold);text-decoration:none;}
+.ns{color:var(--muted);margin:0 4px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--border);border-radius:3px;transition:all 0.2s;}
+.nback:hover{color:var(--gold);border-color:var(--gold);}
+.wrap{max-width:760px;margin:0 auto;padding:0 32px;}
+.hero{padding:96px 0 56px;position:relative;}
+.hero-orb{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,96,0.05),transparent 70%);top:-60px;right:-160px;pointer-events:none;}
+.h-kj{font-family:'Fira Code',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.h-kj::before{content:'';width:20px;height:1px;background:var(--gold);}
+.h-title{font-size:clamp(30px,5vw,54px);font-weight:700;line-height:1.05;letter-spacing:-1px;margin-bottom:16px;}
+.h-title em{font-style:italic;color:var(--gold);}
+.h-sub{font-style:italic;color:var(--body);font-size:clamp(14px,2vw,18px);margin-bottom:22px;line-height:1.65;}
+.h-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.hmt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:3px 10px;border-radius:2px;border:1px solid rgba(212,175,96,0.25);background:var(--goldx);color:var(--gold);}
+.hmd{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.body-content{padding:56px 0 100px;}
+.body-content h2{font-family:'Syne',sans-serif;font-size:clamp(19px,2.6vw,26px);font-weight:800;color:var(--chalk);margin:52px 0 14px;letter-spacing:-0.3px;}
+.body-content h3{font-family:'Cormorant Garamond',serif;font-size:clamp(17px,2.2vw,22px);font-weight:700;font-style:italic;color:var(--gold);margin:34px 0 10px;}
+.body-content p{color:var(--body);margin-bottom:20px;line-height:1.9;}
+.body-content p strong{color:var(--chalk);}
+.ayat{background:var(--goldx);border:1px solid rgba(212,175,96,0.14);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:22px 26px;margin:28px 0;}
+.ayat-ar{font-size:clamp(18px,2.5vw,25px);color:var(--chalk);text-align:right;direction:rtl;line-height:2.1;margin-bottom:10px;font-weight:600;}
+.ayat-tr{font-style:italic;color:var(--body);font-size:15px;line-height:1.65;margin-bottom:6px;}
+.ayat-src{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.highlight{background:rgba(180,140,255,0.05);border:1px solid rgba(180,140,255,0.1);border-radius:10px;padding:22px 26px;margin:26px 0;}
+.highlight p{margin:0;color:rgba(240,234,248,0.78);}
+.databox{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:30px 0;}
+.db{background:var(--card);border:1px solid rgba(212,175,96,0.1);border-radius:10px;padding:18px;text-align:center;}
+.db-n{font-family:'Fira Code',monospace;font-size:24px;font-weight:700;color:var(--gold);display:block;margin-bottom:4px;}
+.db-l{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
+.divider{display:flex;align-items:center;gap:14px;margin:44px 0;opacity:0.18;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.divider span{font-family:'Fira Code',monospace;font-size:9px;color:var(--gold);}
+.cta-box{background:var(--goldx);border:1px solid rgba(212,175,96,0.14);border-radius:12px;padding:28px;margin-top:56px;text-align:center;}
+.cta-box p{font-style:italic;color:var(--body);margin-bottom:18px;}
+.cta-btn{display:inline-block;padding:12px 28px;background:var(--gold);color:#07060a;border-radius:4px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-decoration:none;transition:all 0.25s;}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,175,96,0.3);}
+footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+footer a:hover{color:var(--gold);}
+@media(max-width:680px){nav{padding:0 16px;}.wrap{padding:0 18px;}.hero{padding:84px 0 44px;}.body-content{padding:40px 0 72px;}.databox{grid-template-columns:1fr 1fr;}footer{padding:18px;}}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>spiritual<span class="ns">/</span>islam<span class="ns">/</span>al-hadist</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-islam.html">← Taman Islam</a>
+</nav>
+<div class="wrap">
+<div class="hero">
+  <div class="hero-orb"></div>
+  <div class="h-kj">📜 Al-Hadist</div>
+  <h1 class="h-title">Sunnah Nabi sebagai Panduan Hidup: Relevansi Abadi di Tengah Perubahan Zaman</h1>
+  <p class="h-sub">Lebih dari 1.400 tahun setelah wafatnya, mengapa panduan hidup seorang manusia masih relevan untuk menjawab tantangan abad ke-21?</p>
+  <div class="h-meta">
+    <span class="hmt">📜 Al-Hadist</span><span class="hmt">☪️ Islam</span><span class="hmt">Sunnah</span>
+    <span class="hmd">ILMIORA · 2025</span>
+    <span class="hmd">⏱ 10 menit baca</span>
+  </div>
+</div>
+</div>
+<div class="wrap">
+<div class="body-content">
+
+<p>Di abad di mana teknologi berubah setiap dekade dan norma sosial bergeser setiap generasi, ada pertanyaan yang layak diajukan dengan jujur: <strong>Mengapa panduan hidup seorang manusia yang wafat 14 abad lalu masih relevan?</strong></p>
+<p>Bagi seorang Muslim, jawabannya bermula dari keyakinan teologis: Nabi Muhammad ﷺ bukan sekadar pemimpin sejarah, ia adalah utusan yang kata-kata dan tindakannya terinspirasi oleh wahyu. Tetapi ada juga dimensi lain yang layak dieksplorasi secara intelektual.</p>
+
+<h2>Apa itu Sunnah?</h2>
+<p><em>Sunnah</em> secara harfiah berarti "jalan" atau "cara". Dalam konteks Islam, ia merujuk pada segala sesuatu yang berasal dari Nabi Muhammad ﷺ: ucapannya (<em>qawl</em>), perbuatannya (<em>fi'l</em>), dan persetujuan diamnya atas sesuatu yang terjadi di hadapannya (<em>taqrir</em>). Sunnah adalah operasionalisasi Al-Quran — ia menunjukkan <em>bagaimana</em> perintah-perintah Al-Quran dijalankan dalam kehidupan nyata.</p>
+
+<div class="ayat">
+<div class="ayat-ar">لَّقَدْ كَانَ لَكُمْ فِي رَسُولِ اللَّهِ أُسْوَةٌ حَسَنَةٌ</div>
+<div class="ayat-tr">"Sungguh, pada diri Rasulullah terdapat teladan yang baik bagimu..."</div>
+<div class="ayat-src">// QS. Al-Ahzab: 21</div>
+</div>
+
+<h2>Tiga Kategori Sunnah yang Perlu Dipahami</h2>
+<h3>1. Sunnah Tasyri'iyah — Sunnah yang Mengandung Hukum</h3>
+<p>Ini adalah bagian sunnah yang menjadi landasan hukum Islam. Cara shalat, zakat, haji — semua detail teknisnya tidak ada dalam Al-Quran secara terperinci, melainkan dalam sunnah. Kategori ini mengikat semua Muslim di sepanjang zaman, karena ia adalah implementasi dari perintah Al-Quran.</p>
+
+<h3>2. Sunnah Ghayr Tasyri'iyah — Sunnah Kontekstual</h3>
+<p>Ini adalah tindakan Nabi yang bersifat kontekstual: strategi militer, preferensi makanan, cara berpakaian khas Arab. Para ulama sepakat bahwa meniru aspek ini hukumnya sunnah atau mubah, bukan wajib — karena ia berkaitan dengan konteks budaya Arab abad ke-7, bukan dengan pesan universal Islam.</p>
+
+<div class="databox">
+<div class="db"><span class="db-n">63</span><span class="db-l">Usia Nabi SAW</span></div>
+<div class="db"><span class="db-n">23 thn</span><span class="db-l">Masa Kenabian</span></div>
+<div class="db"><span class="db-n">6 Kutub</span><span class="db-l">Kitab Hadits Utama</span></div>
+</div>
+
+<h3>3. Sunnah Fithriyah — Sunnah tentang Fitrah Manusia</h3>
+<p>Ini adalah bagian sunnah yang paling universal: kebersihan, kejujuran, kasih sayang kepada yang lemah, menghormati orang tua, menjaga alam. Aspek-aspek ini tidak hanya relevan lintas zaman, tetapi juga lintas budaya — karena ia berbicara tentang fitrah manusia yang tidak berubah.</p>
+
+<div class="highlight">
+<p>Michael Hart, dalam bukunya <em>The 100: A Ranking of the Most Influential Persons in History</em>, menempatkan Nabi Muhammad ﷺ di posisi pertama. Alasannya bukan teologis, melainkan historis: tidak ada figur lain dalam sejarah yang berhasil mengintegrasikan panduan spiritual dan tatanan sosial-politik secara bersamaan, dengan dampak yang bertahan selama 14 abad.</p>
+</div>
+
+<h2>Sunnah Menjawab Krisis Modern</h2>
+<p>Sejumlah kajian menunjukkan bahwa berbagai aspek sunnah yang dianggap "kuno" justru bersesuaian dengan temuan penelitian modern. Tentang kesehatan mental: sunnah tentang shalat lima waktu menciptakan ritme harian yang stabil — sesuatu yang para psikolog kini rekomendasikan untuk menangani kecemasan. Tentang ekologi: hadits "Jangan membuang kotoran di jalan, di bawah pohon yang berbuah, dan di tepi sumber air" adalah prinsip sanitasi lingkungan yang baru dipahami secara sistematis oleh sains modern di abad ke-20.</p>
+<p>Ini bukan klaim bahwa sunnah adalah "buku sains". Ini adalah observasi bahwa panduan yang berasal dari wahyu tentang fitrah manusia — ketika dipahami dengan benar — cenderung selaras dengan apa yang akhirnya ditemukan sains tentang kebutuhan dasar manusia.</p>
+
+<div class="divider"><span>// refleksi</span></div>
+
+<h2>Memahami, Bukan Sekadar Meniru</h2>
+<p>Tantangan terbesar dalam mengamalkan sunnah di era modern bukan pada willingness, tetapi pada pemahaman. Membedakan antara sunnah yang universal dan yang kontekstual, antara yang wajib dan yang sunnah, antara substansi dan bentuk — ini adalah tugas intelektual yang tidak bisa dihindari oleh seorang Muslim yang hidup di abad ke-21.</p>
+<p>Dan itulah mengapa tradisi keilmuan hadits tidak pernah berhenti. Ia terus berkembang, terus mempertanyakan, terus memperdalam — bukan untuk meragukan, tetapi untuk memahami lebih baik.</p>
+
+<div class="ayat">
+<div class="ayat-ar">مَنْ يُرِدِ اللَّهُ بِهِ خَيْرًا يُفَقِّهْهُ فِي الدِّينِ</div>
+<div class="ayat-tr">"Barangsiapa yang Allah kehendaki kebaikan baginya, maka Allah akan memberikannya pemahaman mendalam tentang agama."</div>
+<div class="ayat-src">// HR. Bukhari & Muslim</div>
+</div>
+
+<div class="cta-box">
+  <p>Jelajahi lebih dalam kajian Al-Hadist dan ilmu-ilmu Islam lainnya di Taman Islam ILMIORA.</p>
+  <a class="cta-btn" href="https://iyan-core.github.io/Ilmiora-blogger/taman-islam.html">Kembali ke Taman Islam →</a>
+</div>
+</div>
+</div>
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-islam.html">← Taman Islam</a>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);">ILMIORA © 2025 · Al-Hadist</span>
+  <a href="https://ilmiora.blogspot.com">ILMIORA Home →</a>
+</footer>
+<script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';});</script>
+</body>
+</html>
