@@ -205,12 +205,12 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
     <li>
       <a href='#'>Taman Ilmu <span class='arr'>▾</span></a>
       <div class='ilm-drop'>
-        <a href='https://ilmiora.blogspot.com/search/label/Matematika'><span class='d-ico dm'>🔢</span>Taman Matematika</a>
-        <a href='https://ilmiora.blogspot.com/search/label/Sains'><span class='d-ico ds'>🔬</span>Taman Sains</a>
-        <a href='https://ilmiora.blogspot.com/search/label/Sejarah'><span class='d-ico dh'>🏛️</span>Taman Sejarah</a>
-        <a href='https://ilmiora.blogspot.com/search/label/Musik'><span class='d-ico dmu'>🎵</span>Taman Musik</a>
+        <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-matematika.html'><span class='d-ico dm'>🔢</span>Taman Matematika</a>
+        <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html'><span class='d-ico ds'>🔬</span>Taman Sains</a>
+        <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-sejarah.html'><span class='d-ico dh'>🏛️</span>Taman Sejarah</a>
+        <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-musik.html'><span class='d-ico dmu'>🎵</span>Taman Musik</a>
         <div class='d-hr'></div>
-        <a href='https://ilmiora.blogspot.com/search/label/Spiritual'><span class='d-ico dsp'>🕌</span>Taman Spiritual</a>
+        <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-spiritual.html'><span class='d-ico dsp'>🕌</span>Taman Spiritual</a>
       </div>
     </li>
     <li><a href='https://ilmiora.blogspot.com/search'>Semua Artikel</a></li>
@@ -232,7 +232,7 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
   <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-matematika.html'>🔢 Taman Matematika</a>
   <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html'>🔬 Taman Sains</a>
   <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-sejarah.html'>🏛️ Taman Sejarah</a>
-  <a href='https://ilmiora.blogspot.com/search/label/Musik'>🎵 Taman Musik</a>
+  <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-musik.html'>🎵 Taman Musik</a>
   <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-spiritual.html'>🕌 Taman Spiritual</a>
   <div class='ilm-mob-sec'>Lainnya</div>
   <a href='https://ilmiora.blogspot.com/p/tentang.html'>ℹ️ Tentang</a>
