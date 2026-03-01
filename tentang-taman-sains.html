@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tentang Taman Sains — ILMIORA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#020405;--deep:#050a08;--card:#0c110e;--lift:#121a15;
+  --neon:#00ff88;--green:#10b981;--plasma:#22d3ee;--violet:#a855f7;
+  --warn:#f59e0b;--danger:#ef4444;--lime:#84cc16;
+  --chalk:#d4f0e0;--muted:#3d6b4f;--dim:#1a2e20;
+  --border:rgba(0,255,136,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Syne',sans-serif;background:var(--void);color:var(--chalk);overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--neon);border-radius:2px;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.01) 2px,rgba(0,255,136,0.01) 4px);pointer-events:none;z-index:9998;}
+#scrollBar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--neon),var(--plasma),var(--violet));z-index:9999;width:0%;}
+#bgCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.4;}
+.page{position:relative;z-index:1;}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(2,4,5,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-brand{font-family:'Fira Code',monospace;font-size:13px;color:var(--neon);text-decoration:none;}
+.nav-crumb{font-family:'Fira Code',monospace;font-size:10px;color:#444;display:flex;align-items:center;gap:6px;}
+.nav-crumb a{color:#666;text-decoration:none;transition:color 0.2s;}
+.nav-crumb a:hover{color:var(--neon);}
+.nav-back{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--border);border-radius:3px;transition:all 0.2s;}
+.nav-back:hover{color:var(--neon);border-color:rgba(0,255,136,0.3);}
+
+/* ── HERO ── */
+.hero{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 32px 60px;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,136,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.04) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black,transparent);}
+.hero-orb{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,136,0.06),transparent 70%);top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none;}
+.badge{font-family:'Fira Code',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--neon);background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);border-radius:3px;padding:6px 18px;margin-bottom:24px;display:inline-flex;align-items:center;gap:10px;animation:fadeUp 0.7s ease both;}
+.badge-line{width:18px;height:1px;background:var(--neon);}
+.hero-h1{font-family:'Syne',sans-serif;font-size:clamp(40px,9vw,100px);font-weight:800;line-height:0.92;letter-spacing:-3px;margin-bottom:20px;animation:fadeUp 0.7s 0.1s ease both;}
+.t-neon{color:var(--neon);text-shadow:0 0 40px rgba(0,255,136,0.3);}
+.t-dim{color:rgba(212,240,224,0.12);}
+.hero-sub{font-family:'Libre Baskerville',serif;font-size:clamp(14px,2.2vw,20px);font-style:italic;color:rgba(212,240,224,0.35);margin-bottom:18px;animation:fadeUp 0.7s 0.2s ease both;}
+.hero-desc{max-width:560px;font-size:15px;color:var(--muted);line-height:1.85;animation:fadeUp 0.7s 0.3s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── SECTION WRAPPER ── */
+.wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+.sec-eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);text-transform:uppercase;letter-spacing:3px;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.sec-eye::before{content:'';width:22px;height:1px;background:var(--neon);}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,48px);font-weight:800;line-height:1.1;margin-bottom:36px;}
+.sec-title em{font-style:italic;color:var(--neon);font-family:'Libre Baskerville',serif;font-weight:400;}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 0.6s,transform 0.6s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── MISI VISI ── */
+.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:16px;}
+.mv-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px;position:relative;overflow:hidden;transition:all 0.3s;}
+.mv-card:hover{border-color:rgba(0,255,136,0.2);transform:translateY(-3px);}
+.mv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.mv-card.misi::before{background:linear-gradient(90deg,var(--neon),transparent);}
+.mv-card.visi::before{background:linear-gradient(90deg,var(--plasma),transparent);}
+.mv-icon{font-size:32px;margin-bottom:14px;display:block;}
+.mv-label{font-family:'Fira Code',monospace;font-size:9px;color:var(--neon);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.mv-card.visi .mv-label{color:var(--plasma);}
+.mv-h{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:12px;color:var(--chalk);}
+.mv-p{font-family:'Libre Baskerville',serif;font-size:13px;color:rgba(212,240,224,0.55);line-height:1.85;font-style:italic;}
+
+/* ── 3 PILAR ── */
+.pilar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:72px;}
+.pilar{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:28px 22px;text-align:center;transition:all 0.35s;cursor:default;}
+.pilar:hover{border-color:rgba(0,255,136,0.25);background:var(--lift);transform:translateY(-4px);box-shadow:0 16px 40px -10px rgba(0,0,0,0.5);}
+.pilar-icon{font-size:30px;margin-bottom:14px;display:block;}
+.pilar-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--chalk);margin-bottom:8px;}
+.pilar-desc{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);line-height:1.7;}
+
+/* ── QUOTE ── */
+.quote-box{background:linear-gradient(135deg,rgba(0,255,136,0.03),rgba(34,211,238,0.03));border:1px solid rgba(0,255,136,0.1);border-left:3px solid var(--neon);border-radius:0 12px 12px 0;padding:36px 44px;margin-bottom:72px;position:relative;}
+.quote-box::after{content:'❝';position:absolute;top:16px;right:24px;font-size:60px;color:rgba(0,255,136,0.06);line-height:1;font-family:serif;}
+.quote-text{font-family:'Libre Baskerville',serif;font-size:clamp(16px,2.5vw,22px);font-style:italic;color:rgba(212,240,224,0.72);line-height:1.75;margin-bottom:14px;}
+.quote-src{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+
+/* ── STATS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:72px;}
+.stat-box{text-align:center;padding:28px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;transition:all 0.3s;}
+.stat-box:hover{border-color:rgba(0,255,136,0.2);}
+.stat-n{font-family:'Fira Code',monospace;font-size:38px;font-weight:700;color:var(--neon);display:block;line-height:1;text-shadow:0 0 18px rgba(0,255,136,0.3);}
+.stat-l{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-top:8px;display:block;}
+
+/* ════════════════════════════════════
+   HIBURAN SAINS — INTERAKTIF
+════════════════════════════════════ */
+
+/* ── FAKTA ACAK ── */
+.fun-section{padding:80px 0;}
+.fun-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+
+/* Kartu fakta acak */
+.fact-machine{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;position:relative;overflow:hidden;}
+.fact-machine::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon),var(--plasma));}
+.fm-label{font-family:'Fira Code',monospace;font-size:9px;color:var(--neon);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.fm-dot{width:6px;height:6px;border-radius:50%;background:var(--neon);animation:pulse 1.5s infinite;box-shadow:0 0 6px var(--neon);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.2;}}
+.fm-text{font-family:'Libre Baskerville',serif;font-size:clamp(14px,1.8vw,17px);font-style:italic;color:rgba(212,240,224,0.75);line-height:1.8;min-height:100px;margin-bottom:20px;transition:opacity 0.4s;}
+.fm-text.fade{opacity:0;}
+.fm-category{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);margin-bottom:18px;}
+.fm-btn{width:100%;padding:12px;background:rgba(0,255,136,0.07);border:1px solid rgba(0,255,136,0.2);border-radius:6px;color:var(--neon);font-family:'Fira Code',monospace;font-size:11px;cursor:pointer;transition:all 0.25s;letter-spacing:1px;}
+.fm-btn:hover{background:rgba(0,255,136,0.14);transform:translateY(-1px);}
+.fm-count{font-family:'Fira Code',monospace;font-size:9px;color:#333;margin-top:10px;text-align:center;}
+
+/* ── KUIS SAINS ── */
+.quiz-machine{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;position:relative;overflow:hidden;}
+.quiz-machine::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet),var(--danger));}
+.qm-label{font-family:'Fira Code',monospace;font-size:9px;color:var(--violet);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.qm-dot{width:6px;height:6px;border-radius:50%;background:var(--violet);box-shadow:0 0 6px var(--violet);}
+.qm-q{font-family:'Syne',sans-serif;font-size:clamp(13px,1.8vw,16px);font-weight:700;color:var(--chalk);line-height:1.5;min-height:60px;margin-bottom:18px;}
+.qm-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.qm-opt{padding:10px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:6px;font-family:'Fira Code',monospace;font-size:11px;color:#888;cursor:pointer;transition:all 0.2s;text-align:left;}
+.qm-opt:hover:not(.disabled){border-color:rgba(168,85,247,0.4);color:var(--chalk);background:rgba(168,85,247,0.08);}
+.qm-opt.correct{border-color:var(--neon);background:rgba(0,255,136,0.1);color:var(--neon);}
+.qm-opt.wrong{border-color:var(--danger);background:rgba(239,68,68,0.1);color:var(--danger);}
+.qm-opt.disabled{cursor:not-allowed;opacity:0.6;}
+.qm-feedback{font-family:'Fira Code',monospace;font-size:11px;line-height:1.6;padding:12px;border-radius:6px;margin-bottom:14px;display:none;}
+.qm-feedback.show{display:block;}
+.qm-feedback.ok{background:rgba(0,255,136,0.07);border:1px solid rgba(0,255,136,0.2);color:rgba(212,240,224,0.7);}
+.qm-feedback.no{background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);color:rgba(212,240,224,0.7);}
+.qm-next{width:100%;padding:11px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);border-radius:6px;color:var(--violet);font-family:'Fira Code',monospace;font-size:11px;cursor:pointer;transition:all 0.25s;display:none;}
+.qm-next.show{display:block;}
+.qm-next:hover{background:rgba(168,85,247,0.16);}
+.qm-score{font-family:'Fira Code',monospace;font-size:9px;color:#444;margin-top:10px;text-align:center;}
+
+/* ── KALKULATOR SAINS ── */
+.calc-section{padding:0 0 80px;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+
+/* Kalkulator umur bintang */
+.calc-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;position:relative;overflow:hidden;}
+.calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.calc-card.ast::before{background:linear-gradient(90deg,var(--warn),transparent);}
+.calc-card.phy::before{background:linear-gradient(90deg,var(--plasma),transparent);}
+.cc-label{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:16px;}
+.cc-label.ast{color:var(--warn);}
+.cc-label.phy{color:var(--plasma);}
+.cc-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--chalk);margin-bottom:6px;}
+.cc-sub{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+.cc-input-wrap{margin-bottom:12px;}
+.cc-input-label{font-family:'Fira Code',monospace;font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;display:block;}
+.cc-input{width:100%;padding:10px 12px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.07);border-radius:5px;color:var(--chalk);font-family:'Fira Code',monospace;font-size:13px;outline:none;transition:border-color 0.2s;}
+.cc-input:focus{border-color:rgba(0,255,136,0.3);}
+.cc-btn{width:100%;padding:11px;border-radius:5px;font-family:'Fira Code',monospace;font-size:11px;cursor:pointer;transition:all 0.25s;margin-bottom:14px;border:1px solid;}
+.cc-btn.ast{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.25);color:var(--warn);}
+.cc-btn.ast:hover{background:rgba(245,158,11,0.16);}
+.cc-btn.phy{background:rgba(34,211,238,0.08);border-color:rgba(34,211,238,0.25);color:var(--plasma);}
+.cc-btn.phy:hover{background:rgba(34,211,238,0.16);}
+.cc-result{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:16px;display:none;}
+.cc-result.show{display:block;}
+.cc-result-val{font-family:'Fira Code',monospace;font-size:22px;font-weight:700;color:var(--neon);text-shadow:0 0 12px rgba(0,255,136,0.3);margin-bottom:6px;}
+.cc-result-desc{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);line-height:1.6;}
+
+/* ── TIMELINE PENEMUAN ── */
+.timeline-section{padding:0 0 80px;}
+.timeline{position:relative;padding-left:32px;}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--neon),var(--plasma),var(--violet),transparent);}
+.tl-item{position:relative;margin-bottom:28px;}
+.tl-dot{position:absolute;left:-28px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid;}
+.tl-item:nth-child(1) .tl-dot{background:var(--neon);border-color:var(--neon);box-shadow:0 0 8px var(--neon);}
+.tl-item:nth-child(2) .tl-dot{background:var(--plasma);border-color:var(--plasma);box-shadow:0 0 8px var(--plasma);}
+.tl-item:nth-child(3) .tl-dot{background:var(--violet);border-color:var(--violet);box-shadow:0 0 8px var(--violet);}
+.tl-item:nth-child(4) .tl-dot{background:var(--warn);border-color:var(--warn);box-shadow:0 0 8px var(--warn);}
+.tl-item:nth-child(5) .tl-dot{background:var(--danger);border-color:var(--danger);box-shadow:0 0 8px var(--danger);}
+.tl-item:nth-child(6) .tl-dot{background:var(--lime);border-color:var(--lime);box-shadow:0 0 8px var(--lime);}
+.tl-year{font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);margin-bottom:4px;}
+.tl-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--chalk);margin-bottom:4px;}
+.tl-desc{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);line-height:1.65;}
+.tl-tag{display:inline-block;font-family:'Fira Code',monospace;font-size:8px;text-transform:uppercase;letter-spacing:1.5px;padding:2px 8px;border-radius:2px;margin-top:6px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.12);color:var(--muted);}
+
+/* ── DIVIDER ── */
+.divider{display:flex;align-items:center;gap:16px;margin:0 0 72px;opacity:0.12;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--neon),transparent);}
+.divider span{font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);white-space:nowrap;}
+
+/* ── CTA FOOTER ── */
+.cta-section{padding:72px 0 80px;text-align:center;}
+.cta-btn{display:inline-block;padding:15px 40px;background:var(--neon);color:var(--void);border-radius:4px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;text-decoration:none;transition:all 0.25s;margin:0 8px;}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,255,136,0.35);}
+.cta-btn.outline{background:transparent;border:1px solid rgba(0,255,136,0.3);color:var(--neon);}
+.cta-btn.outline:hover{background:rgba(0,255,136,0.06);}
+
+/* ── FOOTER ── */
+.footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.footer a:hover{color:var(--neon);}
+
+@media(max-width:800px){
+  .mv-grid,.fun-grid,.calc-grid{grid-template-columns:1fr;}
+  .pilar-grid{grid-template-columns:1fr 1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .nav{padding:0 18px;}
+  .hero{padding:90px 18px 56px;}
+  .wrap{padding:0 18px;}
+  .quote-box{padding:24px 22px;}
+  .footer{padding:20px 18px;}
+}
+@media(max-width:460px){
+  .pilar-grid,.stats-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div id="scrollBar"></div>
+<canvas id="bgCanvas"></canvas>
+<div class="page">
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-brand" href="https://ilmiora.blogspot.com">~/ILMIORA</a>
+  <div class="nav-crumb">
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">taman-sains</a>
+    <span>/</span>
+    <span style="color:#888;">tentang</span>
+  </div>
+  <a class="nav-back" href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">← Taman Sains</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+  <div class="badge"><span class="badge-line"></span>Tentang Taman Ini<span class="badge-line"></span></div>
+  <h1 class="hero-h1">
+    <span class="t-dim">Di Balik</span><br>
+    <span class="t-neon">Taman</span><br>
+    <span class="t-dim">Sains</span>
+  </h1>
+  <p class="hero-sub">— Sebuah Ruang untuk Bertanya</p>
+  <p class="hero-desc">Taman Sains bukan ensiklopedia. Bukan buku teks. Ia adalah undangan untuk masuk lebih dalam ke pertanyaan-pertanyaan yang belum selesai dijawab oleh sains modern.</p>
+</section>
+
+<!-- MISI VISI -->
+<div class="wrap" style="padding-top:72px;padding-bottom:48px;">
+  <div class="reveal">
+    <p class="sec-eye">// Mengapa Ada</p>
+    <h2 class="sec-title">Bukan Sekadar <em>Kumpulan Artikel</em></h2>
+  </div>
+  <div class="mv-grid reveal">
+    <div class="mv-card misi">
+      <span class="mv-icon">🎯</span>
+      <div class="mv-label">Misi</div>
+      <h3 class="mv-h">Menghadirkan Sains yang Sesungguhnya</h3>
+      <p class="mv-p">Bukan ringkasan dangkal, bukan viral bait — tapi eksplorasi mendalam yang membuat kamu benar-benar mengerti <em>mengapa</em> sesuatu penting dan <em>apa</em> yang akan berubah karenanya dalam 20 hingga 50 tahun ke depan.</p>
+    </div>
+    <div class="mv-card visi">
+      <span class="mv-icon">🔭</span>
+      <div class="mv-label" style="color:var(--plasma);">Visi</div>
+      <h3 class="mv-h">Jendela Sains Masa Depan</h3>
+      <p class="mv-p">Menjadi rujukan terpercaya bagi pembaca Indonesia yang ingin memahami sains yang <em>sedang</em> membentuk dunia — sebelum hal itu menjadi berita utama di televisi.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 3 PILAR -->
+<div class="wrap" style="padding-bottom:72px;">
+  <div class="pilar-grid reveal">
+    <div class="pilar">
+      <span class="pilar-icon">📐</span>
+      <div class="pilar-name">Berbobot</div>
+      <div class="pilar-desc">Setiap artikel ditulis dengan kedalaman. Data, konteks, dan implikasi — bukan hanya fakta permukaan.</div>
+    </div>
+    <div class="pilar">
+      <span class="pilar-icon">⚡</span>
+      <div class="pilar-name">Visioner</div>
+      <div class="pilar-desc">Fokus pada sains yang relevan 20–50 tahun ke depan. Hari ini kamu membaca, besok kamu saksi sejarahnya.</div>
+    </div>
+    <div class="pilar">
+      <span class="pilar-icon">🌏</span>
+      <div class="pilar-name">Terbuka</div>
+      <div class="pilar-desc">Gratis, bebas iklan, tanpa paywall. Pengetahuan adalah hak — bukan produk yang dijual.</div>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTE -->
+<div class="wrap reveal">
+  <div class="quote-box">
+    <p class="quote-text">"Sains bukan hanya milik para ilmuwan. Ia adalah cara berpikir terbaik yang pernah ditemukan manusia untuk memahami realitas — dan setiap orang berhak mengaksesnya, dalam bahasa yang mereka mengerti."</p>
+    <div class="quote-src">// ILMIORA · Taman Sains · ilmiora.blogspot.com</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="wrap" style="padding-bottom:72px;">
+  <div class="stats-grid reveal">
+    <div class="stat-box">
+      <span class="stat-n" id="sn1">0</span>
+      <span class="stat-l">Total Artikel</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-n">5</span>
+      <span class="stat-l">Bidang Ilmu</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-n">50thn</span>
+      <span class="stat-l">Jangkauan Visi</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-n">∞</span>
+      <span class="stat-l">Rasa Ingin Tahu</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap"><div class="divider"><span>// hiburan.sains</span></div></div>
+
+<!-- ════════════════════════════════════
+     HIBURAN SAINS
+════════════════════════════════════ -->
+<div class="wrap fun-section">
+  <div class="reveal">
+    <p class="sec-eye">// Hiburan Sains</p>
+    <h2 class="sec-title">Main Sambil <em>Belajar</em></h2>
+  </div>
+
+  <div class="fun-grid">
+
+    <!-- FAKTA ACAK -->
+    <div class="fact-machine reveal">
+      <div class="fm-label"><span class="fm-dot"></span>Fakta Sains Acak</div>
+      <div class="fm-text" id="fmText">Tekan tombol untuk memuat fakta sains yang menakjubkan...</div>
+      <div class="fm-category" id="fmCat">// —</div>
+      <button class="fm-btn" onclick="nextFact()">⟳ Fakta Berikutnya</button>
+      <div class="fm-count" id="fmCount"></div>
+    </div>
+
+    <!-- KUIS SAINS -->
+    <div class="quiz-machine reveal">
+      <div class="qm-label"><span class="qm-dot"></span>Kuis Sains Kilat</div>
+      <div class="qm-q" id="qmQ">Memuat pertanyaan...</div>
+      <div class="qm-opts" id="qmOpts"></div>
+      <div class="qm-feedback" id="qmFeedback"></div>
+      <button class="qm-next show" id="qmNext" onclick="nextQuiz()">Pertanyaan Berikutnya →</button>
+      <div class="qm-score" id="qmScore">Skor: 0 / 0</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- KALKULATOR SAINS -->
+<div class="wrap calc-section">
+  <div class="reveal">
+    <p class="sec-eye">// Kalkulator Sains</p>
+    <h2 class="sec-title">Hitung yang <em>Tidak Biasa</em></h2>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- Kalkulator berat di planet lain -->
+    <div class="calc-card ast reveal">
+      <div class="cc-label ast">🪐 Kalkulator Berat Antarplanet</div>
+      <div class="cc-title">Berapa Beratmu di Planet Lain?</div>
+      <div class="cc-sub">Gravitasi setiap planet berbeda. Beratmu di Mars hanya 38% dari beratmu di Bumi.</div>
+      <div class="cc-input-wrap">
+        <span class="cc-input-label">Berat di Bumi (kg)</span>
+        <input class="cc-input" id="weightInput" type="number" placeholder="contoh: 65" min="1" max="500"/>
+      </div>
+      <div class="cc-input-wrap">
+        <span class="cc-input-label">Pilih Planet</span>
+        <select class="cc-input" id="planetSelect">
+          <option value="0.38">🔴 Mars (38% gravitasi Bumi)</option>
+          <option value="0.91">♀️ Venus (91% gravitasi Bumi)</option>
+          <option value="2.36">🪐 Jupiter (236% gravitasi Bumi)</option>
+          <option value="0.92">🔵 Neptunus (92% gravitasi Bumi)</option>
+          <option value="0.38">⚫ Merkurius (38% gravitasi Bumi)</option>
+          <option value="0.16">🌕 Bulan (16% gravitasi Bumi)</option>
+          <option value="1.07">⛢ Saturnus (107% gravitasi Bumi)</option>
+          <option value="0.89">🔵 Uranus (89% gravitasi Bumi)</option>
+        </select>
+      </div>
+      <button class="cc-btn ast" onclick="calcPlanet()">Hitung Sekarang →</button>
+      <div class="cc-result" id="planetResult">
+        <div class="cc-result-val" id="planetVal"></div>
+        <div class="cc-result-desc" id="planetDesc"></div>
+      </div>
+    </div>
+
+    <!-- Kalkulator kecepatan cahaya -->
+    <div class="calc-card phy reveal">
+      <div class="cc-label phy">⚡ Kalkulator Relativitas</div>
+      <div class="cc-title">Berapa Lama Cahaya Menempuh Jarakmu?</div>
+      <div class="cc-sub">Cahaya bergerak 299.792 km/detik. Tapi bahkan cahaya butuh waktu untuk menempuh jarak kosmik.</div>
+      <div class="cc-input-wrap">
+        <span class="cc-input-label">Masukkan Jarak</span>
+        <input class="cc-input" id="distInput" type="number" placeholder="contoh: 1000" min="0"/>
+      </div>
+      <div class="cc-input-wrap">
+        <span class="cc-input-label">Satuan Jarak</span>
+        <select class="cc-input" id="distUnit">
+          <option value="1">Kilometer (km)</option>
+          <option value="1000">Meter (m) → km</option>
+          <option value="149597870.7">Satuan Astronomi (AU)</option>
+          <option value="9460730472580.8">Tahun Cahaya (ly)</option>
+        </select>
+      </div>
+      <button class="cc-btn phy" onclick="calcLight()">Hitung Waktu Tempuh →</button>
+      <div class="cc-result" id="lightResult">
+        <div class="cc-result-val" id="lightVal"></div>
+        <div class="cc-result-desc" id="lightDesc"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TIMELINE PENEMUAN -->
+<div class="wrap timeline-section">
+  <div class="reveal">
+    <p class="sec-eye">// Linimasa</p>
+    <h2 class="sec-title">Momen Sains yang <em>Mengubah Segalanya</em></h2>
+  </div>
+  <div class="timeline reveal">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">1905</div>
+      <div class="tl-title">Einstein Mempublikasikan Teori Relativitas Khusus</div>
+      <div class="tl-desc">E=mc² — persamaan paling terkenal dalam sejarah sains. Energi dan massa adalah hal yang sama. Ini mengubah cara kita memahami ruang, waktu, dan materi selamanya.</div>
+      <span class="tl-tag">Fisika</span>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">1953</div>
+      <div class="tl-title">Watson & Crick Menemukan Struktur DNA</div>
+      <div class="tl-desc">Heliks ganda. Empat huruf kimia. Tiga miliar pasang basa. Dalam satu makalah dua halaman, mereka membuka era biologi molekuler yang masih kita jalani hingga kini.</div>
+      <span class="tl-tag">Biologi</span>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">1969</div>
+      <div class="tl-title">Manusia Pertama Menginjakkan Kaki di Bulan</div>
+      <div class="tl-desc">Neil Armstrong. 600 juta orang menyaksikannya di televisi. Untuk pertama kali dalam sejarah, manusia meninggalkan jejak di dunia lain. Perjalanan itu dimulai dengan pertanyaan sederhana: bisakah kita?</div>
+      <span class="tl-tag">Astronomi</span>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">1991</div>
+      <div class="tl-title">World Wide Web Lahir</div>
+      <div class="tl-desc">Tim Berners-Lee. Sebuah proposal yang berjudul "Information Management: A Proposal." Atasannya menuliskan "Vague but exciting" di atasnya. Dari satu halaman HTML pertama, lahirlah infrastruktur yang mengubah peradaban.</div>
+      <span class="tl-tag">Teknologi</span>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2012</div>
+      <div class="tl-title">Boson Higgs Dikonfirmasi di CERN</div>
+      <div class="tl-desc">Partikel yang diprediksi sejak 1964 akhirnya ditemukan setelah 50 tahun pencarian. "Partikel Tuhan" — julukan yang dibenci fisikawan — melengkapi Model Standar dan menjelaskan mengapa materi memiliki massa.</div>
+      <span class="tl-tag">Fisika</span>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2022</div>
+      <div class="tl-title">James Webb Space Telescope Mengirim Foto Pertama</div>
+      <div class="tl-desc">Gambar yang memperlihatkan galaksi-galaksi yang terbentuk hanya 300 juta tahun setelah Big Bang — jauh lebih awal dan lebih besar dari yang diprediksi model kosmologi mana pun. Alam semesta, sekali lagi, mengejutkan kita.</div>
+      <span class="tl-tag">Astronomi</span>
+    </div>
+
+  </div>
+</div>
+
+<div class="wrap"><div class="divider"><span>// end.tentang</span></div></div>
+
+<!-- CTA -->
+<div class="wrap cta-section reveal">
+  <p class="sec-eye" style="justify-content:center;">// Siap Menjelajah?</p>
+  <h2 class="sec-title" style="text-align:center;margin-bottom:12px;">Mulai dari <em>Bidang yang Kamu Suka</em></h2>
+  <p style="font-family:'Libre Baskerville',serif;font-size:15px;font-style:italic;color:var(--muted);text-align:center;margin-bottom:36px;line-height:1.8;">Lima bidang, ratusan pertanyaan, satu tujuan — membuat sains terasa nyata dan relevan untuk hidupmu.</p>
+  <div>
+    <a class="cta-btn" href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">Kembali ke Taman Sains →</a>
+    <a class="cta-btn outline" href="https://ilmiora.blogspot.com">Beranda ILMIORA</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">← Taman Sains</a>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:rgba(61,107,79,0.3);">ILMIORA © 2025 — Tentang Taman Sains</span>
+  <a href="https://ilmiora.blogspot.com">ILMIORA Home →</a>
+</footer>
+</div>
+
+<script>
+/* ═══ CANVAS ═══ */
+const cvs=document.getElementById('bgCanvas'),ctx=cvs.getContext('2d');
+function rsz(){cvs.width=innerWidth;cvs.height=innerHeight;}rsz();window.addEventListener('resize',rsz);
+const pts=Array.from({length:55},()=>({
+  x:Math.random()*innerWidth,y:Math.random()*innerHeight,
+  r:Math.random()*1.5+.3,
+  vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,
+  p:Math.random()*Math.PI*2,
+  c:['#00ff88','#22d3ee','#a855f7','#f59e0b'][Math.floor(Math.random()*4)]
+}));
+(function draw(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  pts.forEach(p=>{
+    p.x=(p.x+p.vx+cvs.width)%cvs.width;
+    p.y=(p.y+p.vy+cvs.height)%cvs.height;
+    p.p+=0.015;
+    const al=0.1+Math.abs(Math.sin(p.p))*0.2;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.c+(Math.round(al*255).toString(16).padStart(2,'0'));
+    ctx.fill();
+  });requestAnimationFrame(draw);
+})();
+
+/* ═══ SCROLL ═══ */
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollBar').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting)e.target.classList.add('visible');
+}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ═══ COUNTER ANIMASI ═══ */
+function animCount(id,target,dur=2000){
+  const el=document.getElementById(id);if(!el)return;
+  const start=performance.now();
+  (function upd(now){
+    const p=Math.min((now-start)/dur,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.floor(ease*target)+(p<1?'':'+');
+    if(p<1)requestAnimationFrame(upd);
+  })(start);
+}
+const cntObs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){animCount('sn1',25);cntObs.disconnect();}
+}),{threshold:0.5});
+const sn=document.getElementById('sn1');
+if(sn)cntObs.observe(sn.closest('.stat-box')||sn);
+
+/* ═══════════════════════════════
+   FAKTA SAINS ACAK
+═══════════════════════════════ */
+const FACTS=[
+  {t:"Jika kamu bisa melipat selembar kertas sebanyak 42 kali, ketebalannya akan melampaui jarak dari Bumi ke Bulan.",c:"// Matematika & Fisika"},
+  {t:"Oksigen di atmosfer Bumi hampir seluruhnya diproduksi oleh organisme fotosintetik — sebagian besar fitoplankton laut, bukan pohon.",c:"// Biologi · Ekosistem"},
+  {t:"Otak manusia menghasilkan sekitar 70.000 pikiran per hari dan menggunakan 20% dari total energi tubuh meskipun hanya 2% dari massa tubuh.",c:"// Neurosains"},
+  {t:"Bintang neutron berputar bisa mencapai 716 kali per detik — lebih cepat dari blender dapur. Jika lebih cepat lagi, ia akan hancur oleh gaya sentrifugal.",c:"// Astronomi · Fisika Ekstrem"},
+  {t:"Ada lebih banyak kombinasi susunan kartu remi dalam satu deck daripada jumlah atom di Bumi yang bisa kamu hitung dalam waktu hidupmu.",c:"// Matematika"},
+  {t:"DNA dalam satu sel manusia, jika direntangkan lurus, panjangnya sekitar 2 meter. Jika semua DNA dalam tubuhmu direntangkan, panjangnya bisa mencapai 16 kali jarak dari Bumi ke Pluto.",c:"// Biologi Molekuler"},
+  {t:"Waktu yang dibutuhkan sinyal saraf untuk berpindah dari otak ke ujung jari adalah sekitar 0,1 detik — lebih lama dari satu frame video 60fps.",c:"// Neurosains · Fisika"},
+  {t:"Air panas bisa membeku lebih cepat dari air dingin dalam kondisi tertentu — fenomena yang disebut Efek Mpemba, pertama kali dilaporkan Aristoteles dan masih diperdebatkan ilmuwan modern.",c:"// Kimia · Fisika"},
+  {t:"Galaksi Andromeda sedang menuju Bima Sakti dengan kecepatan 110 km/detik. Dalam 4,5 miliar tahun, keduanya akan bergabung. Tapi karena bintang sangat berjauhan, kemungkinan tidak ada yang akan bertabrakan.",c:"// Astronomi"},
+  {t:"Kuantum entanglement memungkinkan dua partikel saling terpengaruh secara instan tanpa peduli jarak. Ini bukan komunikasi lebih cepat dari cahaya — karena tidak ada informasi yang bisa dikirimkan. Tapi itu nyata dan telah dibuktikan.",c:"// Fisika Kuantum"},
+  {t:"Tubuh manusia mengandung sekitar 37 triliun sel. Tapi jumlah bakteri yang hidup di dalam dan pada tubuhmu hampir sama — sekitar 38 triliun. Kamu adalah ekosistem berjalan.",c:"// Biologi · Mikrobiologi"},
+  {t:"Matahari kehilangan sekitar 4 juta ton massa per detik yang dikonversi menjadi energi melalui fusi nuklir. Meski begitu, ia masih memiliki cukup bahan bakar untuk 5 miliar tahun ke depan.",c:"// Astronomi · Fisika Nuklir"},
+  {t:"Dalam mekanika kuantum, partikel bisa 'menembus' penghalang yang secara klasik tidak bisa ditembus — disebut quantum tunneling. Tanpa efek ini, Matahari tidak akan bersinar dan reaksi kimia di sel hidupmu tidak akan berjalan.",c:"// Fisika Kuantum"},
+  {t:"Atmosfer Venus mengandung awan asam sulfat padat dan suhu permukaannya mencapai 465°C — lebih panas dari Merkurius meskipun dua kali lebih jauh dari Matahari, karena efek rumah kaca yang ekstrem.",c:"// Astronomi · Kimia"},
+  {t:"Graphene — lapisan karbon setebal satu atom — 200 kali lebih kuat dari baja. Selembar graphene seluas lapangan sepak bola hanya seberat kurang dari satu gram.",c:"// Kimia Material"},
+];
+
+let factIdx=-1,factSeen=[];
+function nextFact(){
+  const btn=document.querySelector('.fm-btn');
+  btn.style.opacity='0.5';btn.disabled=true;
+  const el=document.getElementById('fmText');
+  el.classList.add('fade');
+  setTimeout(()=>{
+    factIdx=(factIdx+1)%FACTS.length;
+    if(!factSeen.includes(factIdx))factSeen.push(factIdx);
+    el.textContent=FACTS[factIdx].t;
+    document.getElementById('fmCat').textContent=FACTS[factIdx].c;
+    document.getElementById('fmCount').textContent=`fakta ${factSeen.length} dari ${FACTS.length} tersedia`;
+    el.classList.remove('fade');
+    btn.style.opacity='';btn.disabled=false;
+  },350);
+}
+nextFact();
+
+/* ═══════════════════════════════
+   KUIS SAINS
+═══════════════════════════════ */
+const QUIZZES=[
+  {q:"Berapa kecepatan cahaya di ruang hampa?",opts:["150.000 km/detik","299.792 km/detik","500.000 km/detik","1.000.000 km/detik"],ans:1,exp:"Tepat! 299.792 km/detik adalah kecepatan cahaya — konstan di ruang hampa dan merupakan batas kecepatan alam semesta menurut relativitas khusus Einstein."},
+  {q:"Unsur paling berlimpah di alam semesta adalah?",opts:["Helium","Oksigen","Hidrogen","Karbon"],ans:2,exp:"Benar! Hidrogen menyumbang sekitar 75% dari semua materi di alam semesta. Helium sekitar 24%, dan semua unsur lainnya hanya ~1%."},
+  {q:"Berapa lama waktu yang dibutuhkan cahaya untuk perjalanan dari Matahari ke Bumi?",opts:["1 menit 20 detik","8 menit 20 detik","24 menit","1 jam"],ans:1,exp:"Tepat! Sekitar 8 menit 20 detik — artinya sinar Matahari yang kamu rasakan sekarang sebenarnya meninggalkan Matahari lebih dari 8 menit yang lalu."},
+  {q:"Partikel subatomik yang memberikan massa pada partikel lain disebut?",opts:["Quark","Boson Higgs","Neutrino","Positron"],ans:1,exp:"Benar! Boson Higgs, dikonfirmasi di CERN pada 2012 setelah 50 tahun pencarian, memberikan massa pada partikel fundamental lainnya melalui interaksi dengan Medan Higgs."},
+  {q:"DNA manusia memiliki berapa persen kesamaan dengan DNA simpanse?",opts:["72%","85%","98,7%","100%"],ans:2,exp:"Tepat! 98,7% — perbedaan 1,3% itu adalah apa yang membuat kita berbeda. Kesamaan genetik ini mengkonfirmasi nenek moyang bersama yang hidup sekitar 6 juta tahun lalu."},
+  {q:"Proses apa yang menghasilkan energi di dalam inti Matahari?",opts:["Fisi nuklir","Fusi nuklir","Pembakaran kimia","Reaksi elektromagnetik"],ans:1,exp:"Benar! Fusi nuklir — inti hidrogen bergabung membentuk helium, melepaskan energi masif. Setiap detik, 600 juta ton hidrogen diubah menjadi energi di Matahari."},
+  {q:"Teori Big Bang memprediksi alam semesta berusia sekitar?",opts:["4,5 miliar tahun","13,8 miliar tahun","100 miliar tahun","Tak terbatas"],ans:1,exp:"Tepat! 13,8 miliar tahun — ditentukan dari pengukuran radiasi latar belakang kosmik (CMB) dan ekspansi alam semesta. Bumi sendiri baru terbentuk 4,5 miliar tahun lalu."},
+  {q:"Manakah yang BUKAN termasuk gaya fundamental dalam fisika?",opts:["Gravitasi","Gaya Nuklir Kuat","Gaya Sentrifugal","Gaya Elektromagnetik"],ans:2,exp:"Benar! Gaya sentrifugal adalah gaya semu — efek yang muncul dalam kerangka acuan yang berputar, bukan gaya fundamental. Empat gaya fundamental: gravitasi, elektromagnetik, nuklir kuat, dan nuklir lemah."},
+];
+let qi=-1,score=0,total=0,answered=false;
+function nextQuiz(){
+  answered=false;
+  qi=(qi+1)%QUIZZES.length;
+  const q=QUIZZES[qi];
+  document.getElementById('qmQ').textContent=q.q;
+  document.getElementById('qmFeedback').className='qm-feedback';
+  document.getElementById('qmNext').className='qm-next';
+  document.getElementById('qmOpts').innerHTML=q.opts.map((o,i)=>
+    `<button class="qm-opt" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</button>`
+  ).join('');
+}
+function answerQuiz(i){
+  if(answered)return;
+  answered=true;total++;
+  const q=QUIZZES[qi];
+  const opts=document.querySelectorAll('.qm-opt');
+  opts.forEach((o,j)=>{
+    o.classList.add('disabled');
+    if(j===q.ans)o.classList.add('correct');
+    if(j===i&&i!==q.ans)o.classList.add('wrong');
+  });
+  const fb=document.getElementById('qmFeedback');
+  const isCorrect=i===q.ans;
+  if(isCorrect)score++;
+  fb.textContent=(isCorrect?'✅ Benar! ':'❌ Belum tepat. ')+q.exp;
+  fb.className='qm-feedback show '+(isCorrect?'ok':'no');
+  document.getElementById('qmNext').className='qm-next show';
+  document.getElementById('qmScore').textContent=`Skor: ${score} / ${total} (${Math.round(score/total*100)}%)`;
+}
+nextQuiz();
+
+/* ═══════════════════════════════
+   KALKULATOR PLANET
+═══════════════════════════════ */
+const PLANET_NAMES={
+  "0.38":"Mars / Merkurius","0.91":"Venus","2.36":"Jupiter",
+  "0.92":"Neptunus","0.16":"Bulan","1.07":"Saturnus","0.89":"Uranus"
+};
+function calcPlanet(){
+  const w=parseFloat(document.getElementById('weightInput').value);
+  const g=parseFloat(document.getElementById('planetSelect').value);
+  const sel=document.getElementById('planetSelect');
+  const pname=sel.options[sel.selectedIndex].text.split('(')[0].trim();
+  if(!w||w<=0){alert('Masukkan berat yang valid!');return;}
+  const result=(w*g).toFixed(1);
+  const diff=((g-1)*100).toFixed(0);
+  const dir=g>1?'lebih berat':'lebih ringan';
+  document.getElementById('planetVal').textContent=result+' kg';
+  document.getElementById('planetDesc').textContent=
+    `Di ${pname}, kamu akan terasa ${Math.abs(diff)}% ${dir} dari di Bumi.\n`+
+    (g<1?`Kamu bisa melompat ${(1/g).toFixed(1)}× lebih tinggi dari di Bumi!`:`Berjalan pun akan terasa sangat berat.`);
+  document.getElementById('planetResult').className='cc-result show';
+}
+
+/* ═══════════════════════════════
+   KALKULATOR CAHAYA
+═══════════════════════════════ */
+const SPEED_OF_LIGHT=299792.458; // km/s
+function calcLight(){
+  const d=parseFloat(document.getElementById('distInput').value);
+  const unit=parseFloat(document.getElementById('distUnit').value);
+  if(!d||d<=0){alert('Masukkan jarak yang valid!');return;}
+  const distKm=d*unit;
+  const seconds=distKm/SPEED_OF_LIGHT;
+  let timeStr='',desc='';
+  if(seconds<1){timeStr=(seconds*1000).toFixed(2)+' milidetik';desc='Sangat dekat — cahaya hampir instan!';}
+  else if(seconds<60){timeStr=seconds.toFixed(2)+' detik';desc='Dalam hitungan detik, cahaya sudah sampai.';}
+  else if(seconds<3600){timeStr=(seconds/60).toFixed(2)+' menit';desc='Lebih lama dari yang kamu bayangkan.';}
+  else if(seconds<86400){timeStr=(seconds/3600).toFixed(2)+' jam';desc='Jarak antar planet dalam tata surya.';}
+  else if(seconds<31536000){timeStr=(seconds/86400).toFixed(1)+' hari';desc='Melampaui batas tata surya kita.';}
+  else{const ly=seconds/31557600;timeStr=ly.toFixed(2)+' tahun cahaya';desc=ly<4.24?'Lebih dekat dari bintang terdekat (4.24 ly)!':ly<100000?'Di dalam galaksi Bima Sakti (100.000 ly).':'Melampaui galaksi kita sendiri.';}
+  document.getElementById('lightVal').textContent=timeStr;
+  document.getElementById('lightDesc').textContent=
+    `Cahaya membutuhkan ${timeStr} untuk menempuh ${d.toLocaleString('id')} ${document.getElementById('distUnit').options[document.getElementById('distUnit').selectedIndex].text.split('→')[0].trim()}.\n${desc}`;
+  document.getElementById('lightResult').className='cc-result show';
+}
+</script>
+</body>
+</html>
