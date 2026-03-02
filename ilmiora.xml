@@ -214,7 +214,7 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
       </div>
     </li>
     <li><a href='https://ilmiora.blogspot.com/search'>Semua Artikel</a></li>
-    <li><a href='https://ilmiora.blogspot.com/p/tentang.html'>Tentang</a></li>
+    <li><a href='https://iyan-core.github.io/Ilmiora-blogger/tentang.html'>Tentang</a></li>
   </ul>
   <div class='ilm-nav-r'>
     <div class='ilm-av' id='ilm-av'>?</div>
@@ -279,9 +279,9 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
     <footer class='ilm-footer'>
       <div><div class='ilm-ft-brand'>ILMIORA</div><div class='ilm-ft-sl'>// Where Knowledge Becomes Light</div></div>
       <div class='ilm-ft-links'>
-        <a href='https://ilmiora.blogspot.com/p/tentang.html'>Tentang</a>
-        <a href='https://ilmiora.blogspot.com/p/kebijakan.html'>Kebijakan</a>
-        <a href='https://ilmiora.blogspot.com/p/kontak.html'>Kontak</a>
+        <a href='https://iyan-core.github.io/Ilmiora-blogger/tentang.html'>Tentang</a>
+        <a href='https://iyan-core.github.io/Ilmiora-blogger/kebijakan.html'>Kebijakan</a>
+        <a href='https://iyan-core.github.io/Ilmiora-blogger/kontak.html'>Kontak</a>
       </div>
     </footer>
   </b:if>
