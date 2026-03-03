@@ -10,60 +10,12 @@
   <script src='https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js'></script>
   <b:skin><![CDATA[
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-:root{
---ink:#07070f;--surface:#11111e;--card:#161625;--cream:#ede8db;--cream-dim:rgba(237,232,219,0.65);
---gold:#e8b84b;--teal:#1a9b8a;--coral:#e85d4a;--lavender:#7c6aff;--muted:#5a5a72;
---border:rgba(255,255,255,0.06);--border-h:rgba(255,255,255,0.12);
---toggle-bg:#1e1e30;--toggle-icon:'🌙';
-}
-html.light{
---ink:#f5f3ef;--surface:#edeae3;--card:#ffffff;--cream:#1a1a2e;--cream-dim:rgba(26,26,46,0.70);
---gold:#c0860a;--teal:#0d7a6b;--coral:#c0392b;--lavender:#5b46e0;--muted:#6b6880;
---border:rgba(0,0,0,0.09);--border-h:rgba(0,0,0,0.16);
---toggle-bg:#e8e4f0;--toggle-icon:'☀️';
-}
+:root{--ink:#07070f;--surface:#11111e;--card:#161625;--cream:#ede8db;--cream-dim:rgba(237,232,219,0.65);--gold:#e8b84b;--teal:#1a9b8a;--coral:#e85d4a;--lavender:#7c6aff;--muted:#5a5a72;--border:rgba(255,255,255,0.06);--border-h:rgba(255,255,255,0.12);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--cream);overflow-x:hidden;}
 .navbar,.quickedit,.widget-item-control,.b-navbar,#b-navbar,.bloggerPinButton,.widget.Attribution,.feed-links,.blog-pager{display:none!important;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--lavender);border-radius:2px;}
-/* ── THEME TRANSITION ── */
-*{transition:background-color .25s ease,color .2s ease,border-color .2s ease;}
-a,button,.ilm-tc,.ilm-btn,.ilm-btn-g{transition:all .25s ease!important;}
-/* ── DARK/LIGHT TOGGLE ── */
-#ilm-theme-btn{
-  display:flex;align-items:center;justify-content:center;
-  width:36px;height:36px;border-radius:50%;border:1px solid var(--border-h);
-  background:var(--toggle-bg);cursor:pointer;font-size:16px;
-  transition:all .3s;margin-right:4px;flex-shrink:0;
-}
-#ilm-theme-btn:hover{transform:rotate(20deg) scale(1.1);border-color:var(--lavender);}
-/* ── LIGHT MODE FIXES ── */
-html.light body{background:var(--ink);}
-html.light #ilm-nav{background:rgba(245,243,239,0.97);}
-html.light .ilm-mob{background:#f0ede6;}
-html.light .ilm-drop{background:#fff;border-color:rgba(0,0,0,0.1);box-shadow:0 12px 40px rgba(0,0,0,0.12);}
-html.light .ilm-drop a{color:var(--cream);}
-html.light .ilm-drop a:hover{background:rgba(91,70,224,0.07);}
-html.light .ilm-menu li a{color:var(--cream);}
-html.light .ilm-nav-name{color:var(--cream);}
-html.light .ilm-auth,.html.light #ilm-auth{background:var(--ink);}
-html.light .ilm-card{background:rgba(255,255,255,0.92);box-shadow:0 24px 64px rgba(0,0,0,0.12);}
-html.light .ilm-inp{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.12);color:var(--cream);}
-html.light .ilm-inp:focus{background:rgba(91,70,224,0.05);border-color:var(--lavender);}
-html.light .ilm-inp::placeholder{color:rgba(0,0,0,0.3);}
-html.light .ilm-hero{background:linear-gradient(160deg,#f0ece3 0%,#e8e3f5 100%);}
-html.light .ilm-hero-bg{opacity:.04;}
-html.light .ilm-tc{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.07);}
-html.light .ilm-tc:hover{box-shadow:0 12px 36px rgba(0,0,0,0.14);}
-html.light .ilm-card-w{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.06);}
-html.light .ilm-footer{background:#1a1a2e;color:#ede8db;}
-html.light .ilm-mq{background:#e8e3f5;}
-html.light .ilm-mob-sec{color:var(--lavender);}
-html.light .ilm-mob a{color:var(--cream);}
-html.light .ilm-av{background:rgba(0,0,0,0.08);color:var(--cream);}
-html.light .ilm-lo-btn{color:var(--coral);border-color:rgba(192,57,43,0.25);}
-html.light #ilm-auth{background:var(--ink);}
 #ilm-auth{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:var(--ink);overflow:hidden;}
 .ilm-orb1{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(124,106,255,0.14),transparent 70%);top:-150px;left:-100px;animation:orbF 9s ease-in-out infinite;pointer-events:none;}
 .ilm-orb2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(26,155,138,0.11),transparent 70%);bottom:-100px;right:-80px;animation:orbF 11s ease-in-out infinite reverse;pointer-events:none;}
@@ -151,7 +103,7 @@ html.light #ilm-auth{background:var(--ink);}
 .ilm-sec-h{font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,40px);font-weight:700;margin-bottom:36px;line-height:1.15;}
 .ilm-sec-h em{font-style:italic;color:var(--gold);}
 .ilm-tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.ilm-tc{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px 22px;transition:all 0.3s;position:relative;overflow:hidden;cursor:pointer;}
+.ilm-tc{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px 22px;transition:all 0.3s;position:relative;overflow:hidden;}
 .ilm-tc::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;border-radius:20px;}
 .ilm-tc:hover{transform:translateY(-5px);border-color:var(--border-h);box-shadow:0 24px 60px rgba(0,0,0,0.35);}
 .ilm-tc:hover::before{opacity:1;}
@@ -265,7 +217,6 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
     <li><a href='https://iyan-core.github.io/Ilmiora-blogger/tentang.html'>Tentang</a></li>
   </ul>
   <div class='ilm-nav-r'>
-    <button id='ilm-theme-btn' title='Ganti Tema' onclick='toggleTheme()'>🌙</button>
     <div class='ilm-av' id='ilm-av'>?</div>
     <button class='ilm-lo-btn' id='ilm-lo'>Keluar</button>
     <button class='ilm-ham' id='ilm-hm'><span></span><span></span><span></span></button>
@@ -276,7 +227,7 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
 <div class='ilm-mob' id='ilm-mob'>
   <div class='ilm-mob-sec'>Navigasi</div>
   <a href='https://ilmiora.blogspot.com'>🏠 Beranda</a>
-  <a href='https://ilmiora.blogspot.com/search'>📰 Semua Artikel</a>
+  <a href='https://ilmiora..com/search'>📰 Semua Artikel</a>
   <div class='ilm-mob-sec'>Taman Ilmu</div>
   <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-matematika.html'>🔢 Taman Matematika</a>
   <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html'>🔬 Taman Sains</a>
@@ -318,11 +269,11 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
       <p class='ilm-sec-tag'>// Eksplorasi</p>
       <h2 class='ilm-sec-h'>Pilih <em>Taman Ilmu</em> Favoritmu</h2>
       <div class='ilm-tgrid'>
-        <div class='ilm-tc tc-m' onclick="goTaman('https://iyan-core.github.io/Ilmiora-blogger/taman-matematika.html')"><div class='ilm-tc-ico'>🔢</div><div class='ilm-tc-name'>Taman Matematika</div><div class='ilm-tc-sub'>Aljabar · Kalkulus<br/>Geometri · Statistika</div><span class='ilm-tc-arr'>↗</span></div>
-        <div class='ilm-tc tc-s' onclick="goTaman('https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html')"><div class='ilm-tc-ico'>🔬</div><div class='ilm-tc-name'>Taman Sains</div><div class='ilm-tc-sub'>Fisika · Kimia<br/>Biologi · Astronomi</div><span class='ilm-tc-arr'>↗</span></div>
-        <div class='ilm-tc tc-h' onclick="goTaman('https://iyan-core.github.io/Ilmiora-blogger/taman-sejarah.html')"><div class='ilm-tc-ico'>🏛️</div><div class='ilm-tc-name'>Taman Sejarah</div><div class='ilm-tc-sub'>Nusantara · Islam<br/>Dunia · Peradaban</div><span class='ilm-tc-arr'>↗</span></div>
-        <div class='ilm-tc tc-mu' onclick="goTaman('https://iyan-core.github.io/Ilmiora-blogger/taman-musik.html')"><div class='ilm-tc-ico'>🎵</div><div class='ilm-tc-name'>Taman Musik</div><div class='ilm-tc-sub'>Teori · Piano<br/>Gitar · Vokal</div><span class='ilm-tc-arr'>↗</span></div>
-        <div class='ilm-tc tc-sp' onclick="goTaman('https://iyan-core.github.io/Ilmiora-blogger/taman-spiritual.html')"><div class='ilm-tc-ico'>🕌</div><div class='ilm-tc-name'>Taman Spiritual</div><div class='ilm-tc-sub'>Hikmah · Tafsir<br/>Akhlak · Renungan</div><span class='ilm-tc-arr'>↗</span></div>
+        <a class='ilm-tc tc-m' href='https://Iyan-Core.github.io/Ilmiora-blogger/taman-matematika.html'><div class='ilm-tc-ico'>🔢</div><div class='ilm-tc-name'>Taman Matematika</div><div class='ilm-tc-sub'>Aljabar · Kalkulus<br/>Geometri · Statistika</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-s' href='https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html'><div class='ilm-tc-ico'>🔬</div><div class='ilm-tc-name'>Taman Sains</div><div class='ilm-tc-sub'>Fisika · Kimia<br/>Biologi · Astronomi</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-h' href='https://iyan-core.github.io/Ilmiora-blogger/taman-sejarah.html'><div class='ilm-tc-ico'>🏛️</div><div class='ilm-tc-name'>Taman Sejarah</div><div class='ilm-tc-sub'>Nusantara · Islam<br/>Dunia · Peradaban</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-mu' href='https://iyan-core.github.io/Ilmiora-blogger/taman-musik.html'><div class='ilm-tc-ico'>🎵</div><div class='ilm-tc-name'>Taman Musik</div><div class='ilm-tc-sub'>Teori · Piano<br/>Gitar · Vokal</div><span class='ilm-tc-arr'>↗</span></a>
+        <a class='ilm-tc tc-sp' href='https://iyan-core.github.io/Ilmiora-blogger/taman-spiritual.html'><div class='ilm-tc-ico'>🕌</div><div class='ilm-tc-name'>Taman Spiritual</div><div class='ilm-tc-sub'>Hikmah · Tafsir<br/>Akhlak · Renungan</div><span class='ilm-tc-arr'>↗</span></a>
       </div>
     </div>
     <footer class='ilm-footer'>
@@ -450,32 +401,6 @@ function doGoogle(){
 }
 function showErr(el,msg){el.textContent=msg;el.style.display='block';}
 function errMsg(c){var m={'auth/user-not-found':'Email tidak terdaftar.','auth/wrong-password':'Password salah.','auth/invalid-credential':'Email atau password salah.','auth/email-already-in-use':'Email sudah digunakan.','auth/weak-password':'Password minimal 6 karakter.','auth/invalid-email':'Format email tidak valid.','auth/too-many-requests':'Terlalu banyak percobaan.'};return m[c]||'Terjadi kesalahan.';}
-
-/* ── NAVIGATE TAMAN (bypass Blogger widget interception) ── */
-function goTaman(url){window.location.href=url;}
-
-/* ── DARK / LIGHT THEME TOGGLE ── */
-(function(){
-  var saved=localStorage.getItem('ilm-theme');
-  if(saved==='light'){
-    document.documentElement.classList.add('light');
-    var btn=document.getElementById('ilm-theme-btn');
-    if(btn)btn.textContent='☀️';
-  }
-})();
-function toggleTheme(){
-  var html=document.documentElement;
-  var btn=document.getElementById('ilm-theme-btn');
-  if(html.classList.contains('light')){
-    html.classList.remove('light');
-    localStorage.setItem('ilm-theme','dark');
-    btn.textContent='🌙';
-  }else{
-    html.classList.add('light');
-    localStorage.setItem('ilm-theme','light');
-    btn.textContent='☀️';
-  }
-}
 //]]></script>
 </body>
 </html>
