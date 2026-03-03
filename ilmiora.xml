@@ -210,7 +210,7 @@ footer.ilm-footer{border-top:1px solid var(--border);padding:34px 36px;display:f
         <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-sejarah.html'><span class='d-ico dh'>🏛️</span>Taman Sejarah</a>
         <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-musik.html'><span class='d-ico dmu'>🎵</span>Taman Musik</a>
         <div class='d-hr'></div>
-        <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-spiritual.html'><span class='d-ico dsp'>🕌</span>Taman Spiritual</a>
+        <a href='https://iyan-core.github.io/Ilmiora-blogger/taman-spiritual/taman_spiritual.html'><span class='d-ico dsp'>🕌</span>Taman Spiritual</a>
       </div>
     </li>
     <li><a href='https://ilmiora.blogspot.com/search'>Semua Artikel</a></li>
