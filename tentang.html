@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tentang — ILMIORA</title>
+<meta name="description" content="Platform belajar digital ILMIORA — misi, visi, dan kisah di balik ruang pengetahuan ini.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#07070f;--surface:#11111e;--card:#161625;
+  --cream:#ede8db;--cream-dim:rgba(237,232,219,0.65);
+  --gold:#e8b84b;--teal:#1a9b8a;--coral:#e85d4a;
+  --lavender:#7c6aff;--muted:#5a5a72;
+  --border:rgba(255,255,255,0.06);--border-h:rgba(255,255,255,0.14);
+}
+html.light{
+  --ink:#f5f3ef;--surface:#edeae3;--card:#ffffff;
+  --cream:#1a1a2e;--cream-dim:rgba(26,26,46,0.70);
+  --gold:#c0860a;--teal:#0d7a6b;--coral:#c0392b;
+  --lavender:#5b46e0;--muted:#6b6880;
+  --border:rgba(0,0,0,0.09);--border-h:rgba(0,0,0,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--cream);overflow-x:hidden;line-height:1.7;transition:background .25s,color .2s;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--lavender);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--lavender),var(--teal));z-index:9999;width:0%;transition:width .1s;}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 40px;
+  background:rgba(7,7,15,0.93);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:background .25s;}
+html.light nav{background:rgba(245,243,239,0.95);}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--lavender),var(--teal));
+  display:flex;align-items:center;justify-content:center;font-size:16px;}
+.nav-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;
+  background:linear-gradient(90deg,var(--gold),var(--lavender));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-r{display:flex;align-items:center;gap:12px;}
+.nav-back{font-family:'Space Mono',monospace;font-size:11px;color:var(--cream-dim);
+  text-decoration:none;padding:6px 14px;border:1px solid var(--border-h);
+  border-radius:8px;transition:all .2s;}
+.nav-back:hover{border-color:var(--lavender);color:var(--lavender);}
+.theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border-h);
+  background:transparent;cursor:pointer;font-size:15px;display:flex;align-items:center;
+  justify-content:center;transition:all .3s;color:var(--cream);}
+.theme-btn:hover{transform:rotate(20deg) scale(1.1);border-color:var(--gold);}
+/* WRAP */
+.wrap{max-width:820px;margin:0 auto;padding:0 32px;}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s,transform .65s;}
+.reveal.in{opacity:1;transform:translateY(0);}
+/* FOOTER */
+.pg-footer{border-top:1px solid var(--border);padding:32px 40px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;margin-top:80px;}
+.pf-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;
+  background:linear-gradient(90deg,var(--gold),var(--lavender));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.pf-links{display:flex;gap:16px;flex-wrap:wrap;}
+.pf-links a{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);
+  text-decoration:none;transition:color .2s;}
+.pf-links a:hover{color:var(--gold);}
+@media(max-width:640px){nav{padding:0 18px;}.wrap{padding:0 18px;}.pg-footer{padding:24px 18px;}}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+<style>
+/* HERO */
+.t-hero{padding:120px 0 72px;position:relative;overflow:hidden;}
+.t-orb1{position:absolute;width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,106,255,0.12),transparent 70%);
+  top:-160px;right:-180px;pointer-events:none;animation:orb 12s ease-in-out infinite;}
+.t-orb2{position:absolute;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(26,155,138,0.09),transparent 70%);
+  bottom:-80px;left:-120px;pointer-events:none;animation:orb 9s ease-in-out infinite reverse;}
+@keyframes orb{0%,100%{transform:translate(0,0);}50%{transform:translate(20px,-20px);}}
+.t-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;}
+.t-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold);}
+.t-h1{font-family:'Playfair Display',serif;font-size:clamp(38px,6vw,72px);font-weight:900;
+  line-height:1;letter-spacing:-2px;margin-bottom:20px;}
+.t-h1 em{font-style:italic;background:linear-gradient(90deg,var(--gold),var(--lavender));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.t-lead{font-size:17px;color:var(--cream-dim);max-width:580px;line-height:1.75;margin-bottom:36px;}
+/* DIVIDER ORN */
+.orn{display:flex;align-items:center;gap:14px;margin:56px 0 40px;}
+.orn-line{flex:1;height:1px;background:var(--border);}
+.orn-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+/* SECTION HEADER */
+.sh{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--lavender);margin-bottom:10px;}
+.sec-h{font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,36px);font-weight:700;
+  margin-bottom:18px;line-height:1.2;}
+.sec-h em{font-style:italic;color:var(--gold);}
+.sec-p{color:var(--cream-dim);font-size:15px;line-height:1.8;margin-bottom:16px;}
+/* NILAI CARDS */
+.nilai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0 48px;}
+.nilai-card{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:24px;transition:all .3s;}
+.nilai-card:hover{border-color:var(--border-h);transform:translateY(-3px);}
+.nilai-ico{font-size:28px;margin-bottom:12px;display:block;}
+.nilai-n{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:6px;}
+.nilai-p{font-size:13px;color:var(--muted);line-height:1.65;}
+/* QUOTE */
+.big-quote{background:linear-gradient(135deg,rgba(124,106,255,0.08),rgba(26,155,138,0.05));
+  border:1px solid var(--border-h);border-left:3px solid var(--lavender);
+  border-radius:0 16px 16px 0;padding:28px 32px;margin:40px 0;}
+.bq-text{font-family:'Playfair Display',serif;font-size:clamp(17px,2.5vw,22px);
+  font-style:italic;line-height:1.6;color:var(--cream);margin-bottom:10px;}
+.bq-src{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
+/* TIMELINE */
+.timeline{position:relative;padding-left:28px;margin:32px 0 48px;}
+.timeline::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;
+  width:1px;background:linear-gradient(to bottom,var(--lavender),var(--teal),transparent);}
+.tl-item{position:relative;margin-bottom:32px;}
+.tl-dot{position:absolute;left:-25px;top:4px;width:12px;height:12px;border-radius:50%;
+  background:linear-gradient(135deg,var(--lavender),var(--teal));
+  box-shadow:0 0 12px rgba(124,106,255,0.4);}
+.tl-year{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);
+  letter-spacing:2px;margin-bottom:4px;}
+.tl-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:4px;}
+.tl-desc{font-size:13px;color:var(--muted);line-height:1.65;}
+/* TAMAN GRID */
+.taman-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:24px 0 48px;}
+.taman-item{display:flex;align-items:center;gap:14px;padding:16px;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  text-decoration:none;color:inherit;transition:all .25s;}
+.taman-item:hover{border-color:var(--lavender);transform:translateX(4px);}
+.ti-ico{font-size:22px;width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ti-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;}
+.ti-sub{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;}
+@media(max-width:640px){.nilai-grid{grid-template-columns:1fr;}.taman-grid{grid-template-columns:1fr;}}
+</style>
+<nav>
+  <a class="nav-brand" href="https://ilmiora.blogspot.com">
+    <div class="nav-icon">📚</div>
+    <span class="nav-name">ILMIORA</span>
+  </a>
+  <div class="nav-r">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Ganti tema">🌙</button>
+    <a class="nav-back" href="https://ilmiora.blogspot.com">← Beranda</a>
+  </div>
+</nav>
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="t-hero reveal">
+    <div class="t-orb1"></div><div class="t-orb2"></div>
+    <div class="t-eyebrow">Tentang Kami</div>
+    <h1 class="t-h1">Ruang untuk<br><em>Tumbuh & Belajar</em></h1>
+    <p class="t-lead">ILMIORA adalah platform belajar digital yang lahir dari keyakinan sederhana — bahwa setiap orang berhak atas pengetahuan yang dalam, jujur, dan menyenangkan untuk dijelajahi.</p>
+  </section>
+
+  <div class="orn reveal"><div class="orn-line"></div><div class="orn-dot"></div><div class="orn-line"></div></div>
+
+  <!-- MISI -->
+  <section class="reveal">
+    <div class="sh">// Misi & Visi</div>
+    <h2 class="sec-h">Kami percaya ilmu<br>adalah <em>cahaya</em></h2>
+    <p class="sec-p">ILMIORA hadir sebagai ruang belajar yang merangkul kedalaman — bukan sekadar ringkasan, bukan sekadar daftar poin. Kami menulis artikel yang mengajak pembaca untuk berpikir, merasakan, dan memahami.</p>
+    <p class="sec-p">Dari matematika yang elegan hingga spiritualitas yang menenangkan, dari sejarah yang membuka mata hingga musik yang menggetarkan jiwa — semua tersedia dalam satu ruang yang nyaman dan indah.</p>
+
+    <div class="big-quote">
+      <div class="bq-text">"Ilmu tanpa amal seperti pohon tanpa buah. Tapi ilmu yang dinyalakan dengan cinta — itulah yang mengubah dunia."</div>
+      <div class="bq-src">— Filosofi ILMIORA</div>
+    </div>
+  </section>
+
+  <!-- NILAI -->
+  <section class="reveal">
+    <div class="sh">// Nilai Kami</div>
+    <h2 class="sec-h">Tiga <em>Prinsip</em> Utama</h2>
+    <div class="nilai-grid">
+      <div class="nilai-card">
+        <span class="nilai-ico">🔍</span>
+        <div class="nilai-n">Kedalaman</div>
+        <p class="nilai-p">Setiap artikel ditulis dengan riset mendalam, bukan sekadar merangkum Wikipedia. Kami menghargai pembaca yang haus akan substansi.</p>
+      </div>
+      <div class="nilai-card">
+        <span class="nilai-ico">🌿</span>
+        <div class="nilai-n">Kejujuran</div>
+        <p class="nilai-p">Kami menyajikan fakta apa adanya — mengakui keterbatasan, menghindari sensasi, dan selalu membedakan opini dari kenyataan.</p>
+      </div>
+      <div class="nilai-card">
+        <span class="nilai-ico">✨</span>
+        <div class="nilai-n">Keindahan</div>
+        <p class="nilai-p">Belajar seharusnya menyenangkan. Kami merawat estetika — dalam tulisan, tampilan, dan cara menyampaikan gagasan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERJALANAN -->
+  <section class="reveal">
+    <div class="sh">// Perjalanan</div>
+    <h2 class="sec-h">Kisah <em>ILMIORA</em></h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">AWAL MULA</div>
+        <div class="tl-title">Sebuah Catatan Kecil</div>
+        <div class="tl-desc">Dimulai dari kebiasaan mencatat — artikel-artikel pertama ILMIORA lahir dari rasa penasaran yang tak terpuaskan tentang dunia dan isinya.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">BERKEMBANG</div>
+        <div class="tl-title">Lima Taman Ilmu</div>
+        <div class="tl-desc">Konten berkembang ke lima bidang utama — Matematika, Sains, Sejarah, Musik, dan Spiritual — masing-masing dengan kedalaman dan karakternya sendiri.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">KINI</div>
+        <div class="tl-title">Platform Digital Penuh</div>
+        <div class="tl-desc">ILMIORA kini hadir sebagai platform belajar digital lengkap dengan artikel, download center, dan komunitas pembaca yang terus bertumbuh.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">MENDATANG</div>
+        <div class="tl-title">Lebih Banyak Cahaya</div>
+        <div class="tl-desc">Video, podcast, kelas interaktif, dan komunitas diskusi — perjalanan ILMIORA baru saja dimulai.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAMAN -->
+  <section class="reveal">
+    <div class="sh">// Eksplorasi</div>
+    <h2 class="sec-h">Jelajahi <em>Taman Ilmu</em></h2>
+    <div class="taman-grid">
+      <a class="taman-item" href="https://iyan-core.github.io/Ilmiora-blogger/taman-matematika.html">
+        <div class="ti-ico" style="background:rgba(124,106,255,0.15);">🔢</div>
+        <div><div class="ti-name">Taman Matematika</div><div class="ti-sub">Aljabar · Kalkulus · Statistika</div></div>
+      </a>
+      <a class="taman-item" href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">
+        <div class="ti-ico" style="background:rgba(26,155,138,0.15);">🔬</div>
+        <div><div class="ti-name">Taman Sains</div><div class="ti-sub">Fisika · Kimia · Biologi</div></div>
+      </a>
+      <a class="taman-item" href="https://iyan-core.github.io/Ilmiora-blogger/taman-sejarah.html">
+        <div class="ti-ico" style="background:rgba(232,184,75,0.15);">🏛️</div>
+        <div><div class="ti-name">Taman Sejarah</div><div class="ti-sub">Nusantara · Islam · Dunia</div></div>
+      </a>
+      <a class="taman-item" href="https://iyan-core.github.io/Ilmiora-blogger/taman-musik.html">
+        <div class="ti-ico" style="background:rgba(168,85,247,0.15);">🎵</div>
+        <div><div class="ti-name">Taman Musik</div><div class="ti-sub">Teori · Piano · Gitar</div></div>
+      </a>
+      <a class="taman-item" href="https://iyan-core.github.io/Ilmiora-blogger/taman-spiritual.html">
+        <div class="ti-ico" style="background:rgba(251,191,36,0.15);">🕌</div>
+        <div><div class="ti-name">Taman Spiritual</div><div class="ti-sub">Hikmah · Tafsir · Akhlak</div></div>
+      </a>
+    </div>
+  </section>
+
+</div>
+<footer class="pg-footer">
+  <div>
+    <div class="pf-brand">ILMIORA</div>
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-top:3px;">// Where Knowledge Becomes Light</div>
+  </div>
+  <div class="pf-links">
+    <a href="https://ilmiora.blogspot.com">Beranda</a>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/tentang.html">Tentang</a>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/kontak.html">Kontak</a>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/kebijakan.html">Kebijakan</a>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/disclaimer.html">Disclaimer</a>
+  </div>
+</footer><script>
+window.addEventListener('scroll',()=>{
+  document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+(function(){
+  if(localStorage.getItem('ilm-theme')==='light'){
+    document.getElementById('html-root').classList.add('light');
+    var b=document.getElementById('themeBtn');if(b)b.textContent='☀️';
+  }
+})();
+function toggleTheme(){
+  var h=document.getElementById('html-root'),b=document.getElementById('themeBtn');
+  if(h.classList.contains('light')){h.classList.remove('light');localStorage.setItem('ilm-theme','dark');b.textContent='🌙';}
+  else{h.classList.add('light');localStorage.setItem('ilm-theme','light');b.textContent='☀️';}
+}
+</script>
+</body>
+</html>
