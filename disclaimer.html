@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Disclaimer — ILMIORA</title>
+<meta name="description" content="Pernyataan penyangkalan dan batas tanggung jawab konten ILMIORA.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#07070f;--surface:#11111e;--card:#161625;
+  --cream:#ede8db;--cream-dim:rgba(237,232,219,0.65);
+  --gold:#e8b84b;--teal:#1a9b8a;--coral:#e85d4a;
+  --lavender:#7c6aff;--muted:#5a5a72;
+  --border:rgba(255,255,255,0.06);--border-h:rgba(255,255,255,0.14);
+}
+html.light{
+  --ink:#f5f3ef;--surface:#edeae3;--card:#ffffff;
+  --cream:#1a1a2e;--cream-dim:rgba(26,26,46,0.70);
+  --gold:#c0860a;--teal:#0d7a6b;--coral:#c0392b;
+  --lavender:#5b46e0;--muted:#6b6880;
+  --border:rgba(0,0,0,0.09);--border-h:rgba(0,0,0,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--cream);overflow-x:hidden;line-height:1.7;transition:background .25s,color .2s;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--lavender);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--lavender),var(--teal));z-index:9999;width:0%;transition:width .1s;}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 40px;
+  background:rgba(7,7,15,0.93);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:background .25s;}
+html.light nav{background:rgba(245,243,239,0.95);}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--lavender),var(--teal));
+  display:flex;align-items:center;justify-content:center;font-size:16px;}
+.nav-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;
+  background:linear-gradient(90deg,var(--gold),var(--lavender));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-r{display:flex;align-items:center;gap:12px;}
+.nav-back{font-family:'Space Mono',monospace;font-size:11px;color:var(--cream-dim);
+  text-decoration:none;padding:6px 14px;border:1px solid var(--border-h);
+  border-radius:8px;transition:all .2s;}
+.nav-back:hover{border-color:var(--lavender);color:var(--lavender);}
+.theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border-h);
+  background:transparent;cursor:pointer;font-size:15px;display:flex;align-items:center;
+  justify-content:center;transition:all .3s;color:var(--cream);}
+.theme-btn:hover{transform:rotate(20deg) scale(1.1);border-color:var(--gold);}
+/* WRAP */
+.wrap{max-width:820px;margin:0 auto;padding:0 32px;}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s,transform .65s;}
+.reveal.in{opacity:1;transform:translateY(0);}
+/* FOOTER */
+.pg-footer{border-top:1px solid var(--border);padding:32px 40px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;margin-top:80px;}
+.pf-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;
+  background:linear-gradient(90deg,var(--gold),var(--lavender));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.pf-links{display:flex;gap:16px;flex-wrap:wrap;}
+.pf-links a{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);
+  text-decoration:none;transition:color .2s;}
+.pf-links a:hover{color:var(--gold);}
+@media(max-width:640px){nav{padding:0 18px;}.wrap{padding:0 18px;}.pg-footer{padding:24px 18px;}}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+<style>
+.d-hero{padding:120px 0 56px;position:relative;overflow:hidden;}
+.d-orb1{position:absolute;width:480px;height:480px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,184,75,0.09),transparent 70%);
+  top:-120px;right:-120px;pointer-events:none;animation:dorb 13s ease-in-out infinite;}
+.d-orb2{position:absolute;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,106,255,0.07),transparent 70%);
+  bottom:-60px;left:-80px;pointer-events:none;animation:dorb 9s ease-in-out infinite reverse;}
+@keyframes dorb{0%,100%{transform:translate(0,0);}50%{transform:translate(15px,-15px);}}
+.d-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;}
+.d-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold);}
+.d-h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,62px);
+  font-weight:900;line-height:1.05;letter-spacing:-1.5px;margin-bottom:16px;}
+.d-h1 em{font-style:italic;color:var(--gold);}
+.d-lead{font-size:16px;color:var(--cream-dim);max-width:560px;line-height:1.75;margin-bottom:32px;}
+.d-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);
+  padding:10px 16px;background:var(--card);border:1px solid var(--border);
+  border-radius:8px;display:inline-flex;gap:20px;flex-wrap:wrap;margin-bottom:48px;}
+/* ALERT BOX */
+.alert-box{background:rgba(232,184,75,0.07);border:1px solid rgba(232,184,75,0.2);
+  border-radius:14px;padding:22px 26px;margin-bottom:48px;
+  display:flex;gap:16px;align-items:flex-start;}
+.ab-ico{font-size:24px;flex-shrink:0;margin-top:2px;}
+.ab-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;
+  color:var(--gold);margin-bottom:6px;}
+.ab-text{font-size:13px;color:var(--cream-dim);line-height:1.75;}
+/* SECTIONS */
+.d-sec{margin-bottom:48px;scroll-margin-top:80px;}
+.ds-num{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;}
+.ds-h{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,26px);font-weight:700;margin-bottom:14px;}
+.ds-p{font-size:14px;color:var(--cream-dim);line-height:1.85;margin-bottom:14px;}
+.ds-list{list-style:none;margin:14px 0 20px;display:flex;flex-direction:column;gap:8px;}
+.ds-list li{font-size:14px;color:var(--cream-dim);padding-left:18px;position:relative;line-height:1.7;}
+.ds-list li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:8px;top:5px;}
+.d-card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:22px 26px;margin:20px 0;}
+.d-card-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;
+  color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.d-card p{font-size:13px;color:var(--muted);line-height:1.75;}
+.div-orn{height:1px;background:var(--border);margin:44px 0;}
+.ds-cta{background:linear-gradient(135deg,rgba(232,184,75,0.08),rgba(124,106,255,0.06));
+  border:1px solid rgba(232,184,75,0.15);border-radius:16px;padding:32px;
+  text-align:center;margin:48px 0;}
+.ds-cta-h{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:8px;}
+.ds-cta-p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.7;}
+.ds-cta-btn{display:inline-block;padding:12px 28px;
+  background:linear-gradient(135deg,var(--gold),var(--lavender));
+  color:#07070f;border-radius:10px;font-weight:700;font-size:13px;
+  text-decoration:none;transition:all .25s;font-family:'DM Sans',sans-serif;}
+.ds-cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,184,75,0.3);}
+</style>
+<nav>
+  <a class="nav-brand" href="https://ilmiora.blogspot.com">
+    <div class="nav-icon">📚</div>
+    <span class="nav-name">ILMIORA</span>
+  </a>
+  <div class="nav-r">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Ganti tema">🌙</button>
+    <a class="nav-back" href="https://ilmiora.blogspot.com">← Beranda</a>
+  </div>
+</nav>
+<div class="wrap">
+
+  <section class="d-hero reveal">
+    <div class="d-orb1"></div><div class="d-orb2"></div>
+    <div class="d-eyebrow">Legal</div>
+    <h1 class="d-h1">Disclaimer &<br><em>Batas Tanggung Jawab</em></h1>
+    <p class="d-lead">Halaman ini menjelaskan batas tanggung jawab ILMIORA atas konten yang tersedia di platform ini. Harap dibaca dengan saksama.</p>
+    <div class="d-meta">
+      <span>📅 Berlaku sejak: 2025</span>
+      <span>🌐 Domain: ilmiora.blogspot.com</span>
+    </div>
+  </section>
+
+  <div class="alert-box reveal">
+    <span class="ab-ico">⚠️</span>
+    <div>
+      <div class="ab-title">Perhatian Penting</div>
+      <div class="ab-text">Konten di ILMIORA disajikan untuk tujuan edukatif dan informasi umum semata. Konten ini bukan pengganti nasihat profesional di bidang medis, hukum, keuangan, atau agama. Selalu konsultasikan keputusan penting dengan ahli yang berkualifikasi.</div>
+    </div>
+  </div>
+
+  <section class="d-sec reveal">
+    <div class="ds-num">01 //</div>
+    <h2 class="ds-h">Akurasi Informasi</h2>
+    <p class="ds-p">ILMIORA berusaha sebaik mungkin untuk menyajikan informasi yang akurat, terkini, dan bermanfaat. Namun kami tidak memberikan jaminan — tersurat maupun tersirat — mengenai kelengkapan, keakuratan, keandalan, atau kesesuaian informasi yang tersedia di platform ini untuk tujuan tertentu.</p>
+    <p class="ds-p">Kesalahan manusia dalam penulisan, perubahan informasi seiring waktu, atau perbedaan interpretasi dapat terjadi. Jika kamu menemukan ketidakakuratan, kami sangat mengapresiasi laporan melalui halaman Kontak.</p>
+  </section>
+
+  <div class="div-orn"></div>
+
+  <section class="d-sec reveal">
+    <div class="ds-num">02 //</div>
+    <h2 class="ds-h">Konten per Bidang</h2>
+    <div class="d-card">
+      <div class="d-card-title">🔬 Sains & Matematika</div>
+      <p>Konten saintifik di ILMIORA disajikan berdasarkan pemahaman ilmiah yang berlaku. Ilmu pengetahuan terus berkembang — beberapa informasi mungkin sudah diperbarui oleh penelitian terbaru. Selalu rujuk sumber akademik primer untuk keperluan riset.</p>
+    </div>
+    <div class="d-card">
+      <div class="d-card-title">🕌 Konten Keagamaan & Spiritual</div>
+      <p>Konten keagamaan di ILMIORA bersifat informatif dan edukatif, bukan fatwa atau keputusan hukum Islam. Perbedaan pendapat di antara ulama adalah hal yang wajar. Untuk keputusan ibadah dan hukum agama, konsultasikan dengan ulama atau lembaga keagamaan terpercaya.</p>
+    </div>
+    <div class="d-card">
+      <div class="d-card-title">🏛️ Sejarah</div>
+      <p>Konten sejarah di ILMIORA didasarkan pada sumber-sumber yang tersedia. Interpretasi sejarah dapat berbeda-beda di antara sejarawan. Kami menyajikan perspektif yang seimbang sebisa mungkin, namun pembaca didorong untuk membaca sumber primer dan referensi tambahan.</p>
+    </div>
+    <div class="d-card">
+      <div class="d-card-title">🎵 Musik</div>
+      <p>Konten musik bersifat edukatif dan tidak dimaksudkan sebagai kursus profesional pengganti instruktur musik bersertifikat. Latihan mandiri sebaiknya dikombinasikan dengan bimbingan profesional untuk hasil terbaik.</p>
+    </div>
+  </section>
+
+  <div class="div-orn"></div>
+
+  <section class="d-sec reveal">
+    <div class="ds-num">03 //</div>
+    <h2 class="ds-h">File Download (PDF & MP3)</h2>
+    <p class="ds-p">File PDF dan MP3 yang tersedia di ILMIORA dikumpulkan dari sumber-sumber yang dipercaya bersifat bebas digunakan untuk keperluan non-komersial. Kami berupaya memastikan legalitas setiap file yang disediakan, namun:</p>
+    <ul class="ds-list">
+      <li>ILMIORA tidak mengklaim kepemilikan atas konten Al-Quran, murottal, atau karya ulama yang tersedia untuk diunduh</li>
+      <li>File disediakan semata-mata untuk kemudahan akses belajar dan ibadah</li>
+      <li>Pengguna dilarang menggunakan file untuk keperluan komersial tanpa izin pemegang hak</li>
+      <li>Jika ada keberatan terkait file tertentu, hubungi kami untuk penghapusan segera</li>
+    </ul>
+  </section>
+
+  <div class="div-orn"></div>
+
+  <section class="d-sec reveal">
+    <div class="ds-num">04 //</div>
+    <h2 class="ds-h">Tautan Eksternal</h2>
+    <p class="ds-p">ILMIORA menyertakan tautan ke website pihak ketiga seperti Quran.com, Spotify, YouTube, dan lainnya. Kami tidak memiliki kendali atas konten, kebijakan, atau praktik website tersebut, dan tidak bertanggung jawab atas konten yang ada di dalamnya.</p>
+    <p class="ds-p">Kehadiran tautan eksternal tidak berarti ILMIORA mendukung atau merekomendasikan website tersebut secara keseluruhan.</p>
+  </section>
+
+  <div class="div-orn"></div>
+
+  <section class="d-sec reveal">
+    <div class="ds-num">05 //</div>
+    <h2 class="ds-h">Batasan Tanggung Jawab</h2>
+    <p class="ds-p">Sejauh diizinkan oleh hukum yang berlaku, ILMIORA tidak bertanggung jawab atas:</p>
+    <ul class="ds-list">
+      <li>Kerugian langsung atau tidak langsung akibat penggunaan informasi di platform ini</li>
+      <li>Gangguan layanan atau ketidaktersediaan platform</li>
+      <li>Keputusan yang diambil berdasarkan konten yang tersedia di ILMIORA</li>
+      <li>Konten yang dihasilkan atau dikirimkan oleh pengguna platform</li>
+    </ul>
+  </section>
+
+  <div class="div-orn"></div>
+
+  <section class="d-sec reveal">
+    <div class="ds-num">06 //</div>
+    <h2 class="ds-h">Hak Kekayaan Intelektual</h2>
+    <p class="ds-p">Seluruh konten asli ILMIORA — termasuk tulisan, desain, kode, dan elemen visual — dilindungi hak cipta. Pengutipan sebagian konten untuk keperluan non-komersial diperbolehkan dengan menyertakan sumber dan tautan asli.</p>
+    <p class="ds-p">Reproduksi massal, penggunaan komersial, atau penggandaan tanpa izin tertulis dari ILMIORA adalah pelanggaran hak cipta.</p>
+  </section>
+
+  <div class="ds-cta reveal">
+    <div class="ds-cta-h">Ada Pertanyaan tentang Disclaimer ini?</div>
+    <p class="ds-cta-p">Kami terbuka untuk klarifikasi dan diskusi. Hubungi tim ILMIORA kapan saja.</p>
+    <a class="ds-cta-btn" href="https://iyan-core.github.io/Ilmiora-blogger/kontak.html">Hubungi Kami →</a>
+  </div>
+
+</div>
+<footer class="pg-footer">
+  <div>
+    <div class="pf-brand">ILMIORA</div>
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-top:3px;">// Where Knowledge Becomes Light</div>
+  </div>
+  <div class="pf-links">
+    <a href="https://ilmiora.blogspot.com">Beranda</a>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/tentang.html">Tentang</a>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/kontak.html">Kontak</a>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/kebijakan.html">Kebijakan</a>
+    <a href="https://iyan-core.github.io/Ilmiora-blogger/disclaimer.html">Disclaimer</a>
+  </div>
+</footer><script>
+window.addEventListener('scroll',()=>{
+  document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+(function(){
+  if(localStorage.getItem('ilm-theme')==='light'){
+    document.getElementById('html-root').classList.add('light');
+    var b=document.getElementById('themeBtn');if(b)b.textContent='☀️';
+  }
+})();
+function toggleTheme(){
+  var h=document.getElementById('html-root'),b=document.getElementById('themeBtn');
+  if(h.classList.contains('light')){h.classList.remove('light');localStorage.setItem('ilm-theme','dark');b.textContent='🌙';}
+  else{h.classList.add('light');localStorage.setItem('ilm-theme','light');b.textContent='☀️';}
+}
+</script>
+</body>
+</html>
