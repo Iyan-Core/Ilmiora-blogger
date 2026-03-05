@@ -166,7 +166,38 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.3;}
 
 /* Responsive */
 @media(max-width:860px){.kajian-grid{grid-template-columns:repeat(3,1fr);}  .art-grid{grid-template-columns:1fr;}}
-@media(max-width:600px){.kajian-grid{grid-template-columns:repeat(3,1fr);}.nav{padding:0 16px;}.kajian-section,.art-area{padding-left:18px;padding-right:18px;}.quote-box{margin:0 18px 48px;}.hero{padding:90px 18px 48px;}.footer{padding:18px;}}
+@media(max-width:600px){.kajian-grid{grid-template-columns:repeat(3,1fr);}.nav{padding:0 16px;}.kajian-section,.art-area{padding-left:18px;padding-right:18px;}.quote-box{margin:0 18px 48px;}.hero{padding:90px 18px 48px;}.footer{padding:18px;}
+.dl-banner-btns{flex-direction:column;}.dl-banner-btns a{width:100%;justify-content:center;}}
+
+/* ── DOWNLOAD BANNER ── */
+.dl-banner{
+  margin-bottom:22px;
+  background:linear-gradient(135deg,rgba(212,175,96,0.06) 0%,rgba(180,140,255,0.05) 100%);
+  border:1px solid rgba(212,175,96,0.15);
+  border-left:3px solid #d4af60;
+  border-radius:0 12px 12px 0;
+  padding:18px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+  animation:bannerIn .4s ease both;
+}
+@keyframes bannerIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.dl-banner-left{display:flex;align-items:center;gap:12px;}
+.dl-banner-icon{font-size:26px;line-height:1;flex-shrink:0;}
+.dl-banner-text{}
+.dl-banner-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;
+  color:#f0eaf8;margin-bottom:3px;}
+.dl-banner-sub{font-family:'Fira Code',monospace;font-size:10px;color:#6b5f8a;line-height:1.5;}
+.dl-banner-btns{display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0;}
+.dl-banner-btn{
+  display:flex;align-items:center;gap:7px;padding:9px 16px;
+  border-radius:5px;text-decoration:none;font-family:'Fira Code',monospace;
+  font-size:10px;border:1px solid;transition:all .22s;white-space:nowrap;
+}
+.dl-bb-gold{color:#d4af60;border-color:rgba(212,175,96,0.3);background:rgba(212,175,96,0.08);}
+.dl-bb-gold:hover{background:rgba(212,175,96,0.18);transform:translateY(-1px);}
+.dl-bb-violet{color:#b48cff;border-color:rgba(180,140,255,0.25);background:rgba(180,140,255,0.07);}
+.dl-bb-violet:hover{background:rgba(180,140,255,0.15);transform:translateY(-1px);}
 </style>
 </head>
 <body>
@@ -249,6 +280,26 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.3;}
     <div class="ah-live"><span class="live-dot"></span>Live dari Blogger</div>
   </div>
   <div class="kajian-desc" id="kajianDesc">Kitab suci umat Islam — wahyu Allah yang diturunkan kepada Nabi Muhammad ﷺ sebagai petunjuk bagi seluruh umat manusia.</div>
+
+  <!-- DOWNLOAD BANNER — dinamis per kajian -->
+  <div class="dl-banner" id="dlBanner">
+    <div class="dl-banner-left">
+      <div class="dl-banner-icon" id="dlIcon">📥</div>
+      <div class="dl-banner-text">
+        <div class="dl-banner-title" id="dlTitle">Download File Al-Quran</div>
+        <div class="dl-banner-sub" id="dlSub">PDF 30 Juz · Surah Pilihan · Murottal MP3</div>
+      </div>
+    </div>
+    <div class="dl-banner-btns">
+      <a class="dl-banner-btn dl-bb-gold" id="dlBtnMain" href="https://Iyan-Core.github.io/Ilmiora-blogger/spiritual/galeri-islam.html">
+        ⬇ Download PDF
+      </a>
+      <a class="dl-banner-btn dl-bb-violet" href="https://Iyan-Core.github.io/Ilmiora-blogger/download-center/download.html">
+        📦 Semua File
+      </a>
+    </div>
+  </div>
+
   <div class="search-bar">
     <div class="search-wrap">
       <span class="s-icon">🔍</span>
@@ -300,12 +351,53 @@ function toggleTheme(){
 }
 (function(){const s=localStorage.getItem('ilmiora-islam');if(s==='light'){document.documentElement.setAttribute('data-theme','light');document.getElementById('ti').textContent='☀️';document.getElementById('tl').textContent='Terang';}})();
 
-const BLOG='https://ilmiora.blogspot.com';
+const BLOG='https://Ilmiora-blogspot.com/';
 const COLOR='#d4af60';
 const GLOW='rgba(212,175,96,0.12)';
 const AGAMA_NAME='Islam';
 const PER_PAGE=8;
 const SUBS=[{"key": "al-quran", "label": "Al-Quran", "icon": "📖", "desc": "Kitab suci umat Islam — wahyu Allah yang diturunkan kepada Nabi Muhammad ﷺ sebagai petunjuk bagi seluruh umat manusia."}, {"key": "al-hadist", "label": "Al-Hadist", "icon": "📜", "desc": "Sabda, perbuatan, dan ketetapan Nabi Muhammad ﷺ yang menjadi sumber hukum Islam kedua setelah Al-Quran."}, {"key": "tauhid", "label": "Tauhid", "icon": "🌙", "desc": "Ilmu tentang keesaan Allah — fondasi akidah Islam yang menjadi dasar seluruh keyakinan seorang Muslim."}, {"key": "fiqh", "label": "Fiqh", "icon": "⚖️", "desc": "Ilmu hukum Islam yang mengatur tata cara ibadah, muamalah, dan kehidupan sehari-hari umat Muslim."}, {"key": "tasawuf", "label": "Tasawuf", "icon": "✨", "desc": "Dimensi spiritual Islam yang berfokus pada pembersihan jiwa dan kedekatan hamba kepada Allah SWT."}];
+
+const BASE_URL = 'https://Iyan-Core.github.io/Ilmiora-blogger/spiritual/galeri-islam/download-center.html';
+
+// Config banner download per kajian
+const DL_CONFIG = {
+  'al-quran': {
+    icon: '📖',
+    title: 'Download File Al-Quran',
+    sub: 'PDF 30 Juz lengkap · 10 Surah Pilihan · Murottal MP3',
+    btnLabel: '⬇ Download PDF & MP3',
+    btnUrl: `${BASE_URL}/artikel-alquran-3.html`,
+  },
+  'al-hadist': {
+    icon: '📜',
+    title: 'Download Koleksi Hadits',
+    sub: 'PDF Shahih Bukhari · Muslim · Riyadhus Shalihin · Arbain Nawawi',
+    btnLabel: '⬇ Download PDF Hadits',
+    btnUrl: `${BASE_URL}/download-islam.html`,
+  },
+  'tauhid': {
+    icon: '🌙',
+    title: 'Download Kitab Tauhid',
+    sub: 'PDF Kitab At-Tauhid · Aqidah Wasithiyah · Ushulutstsalatsah',
+    btnLabel: '⬇ Download PDF Tauhid',
+    btnUrl: `${BASE_URL}/download-islam.html`,
+  },
+  'fiqh': {
+    icon: '⚖️',
+    title: 'Download Kitab Fiqh',
+    sub: 'PDF Fiqh Sunnah · Minhajul Muslim · Matan Abi Syuja',
+    btnLabel: '⬇ Download PDF Fiqh',
+    btnUrl: `${BASE_URL}/download-islam.html`,
+  },
+  'tasawuf': {
+    icon: '✨',
+    title: 'Download Kitab Tasawuf',
+    sub: 'PDF Ihya Ulumuddin · Minhajul Abidin · Risalah Al-Qusyairiyah',
+    btnLabel: '⬇ Download PDF Tasawuf',
+    btnUrl: `${BASE_URL}/download-islam.html`,
+  },
+};
 let cache={};
 let current=SUBS[0].key;
 let filtered=[];
@@ -345,6 +437,20 @@ function switchKajian(key){
   document.getElementById('ahName').textContent=sub.label;
   document.getElementById('ahTag').textContent=AGAMA_NAME+' · '+sub.label;
   document.getElementById('kajianDesc').textContent=sub.desc;
+  // Update download banner dinamis
+  const dl=DL_CONFIG[key];
+  if(dl){
+    document.getElementById('dlIcon').textContent=dl.icon;
+    document.getElementById('dlTitle').textContent=dl.title;
+    document.getElementById('dlSub').textContent=dl.sub;
+    const btn=document.getElementById('dlBtnMain');
+    btn.textContent=dl.btnLabel;
+    btn.href=dl.btnUrl;
+    const banner=document.getElementById('dlBanner');
+    banner.style.animation='none';
+    banner.offsetHeight;
+    banner.style.animation='';
+  }
   document.getElementById('artGrid').innerHTML=`<div class="loading"><div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div><div class="ld-txt">Memuat ${sub.label}...</div></div>`;
   document.getElementById('pager').classList.remove('show');
   fetchKajian(key,entries=>{filtered=[...entries];sortF();renderPage();});
