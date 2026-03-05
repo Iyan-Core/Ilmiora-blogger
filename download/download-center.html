@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Download Center Islam — PDF & MP3 — ILMIORA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#07060a;--card:#110f18;--lift:#18151f;
+  --chalk:#f0eaf8;--body:rgba(240,234,248,0.70);--muted:#6b5f8a;
+  --border:rgba(212,175,96,0.10);--gold:#d4af60;--goldx:rgba(212,175,96,0.07);
+  --violet:#b48cff;--plasma:#22d3ee;--green:#10b981;--red:#fc3c44;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--violet));z-index:999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 40px;background:rgba(7,6,10,0.97);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--gold);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;
+  padding:5px 12px;border:1px solid var(--border);border-radius:3px;transition:all .2s;}
+.nback:hover{color:var(--gold);border-color:var(--gold);}
+.wrap{max-width:1060px;margin:0 auto;padding:0 32px;}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .55s,transform .55s;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+/* DL BUTTONS SHARED */
+.dl-btn{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;
+  border-radius:5px;text-decoration:none;font-family:'Fira Code',monospace;font-size:10px;
+  transition:all .22s;border:1px solid;cursor:pointer;width:100%;}
+.dl-pdf{color:var(--gold);border-color:rgba(212,175,96,0.25);background:rgba(212,175,96,0.07);}
+.dl-pdf:hover{background:rgba(212,175,96,0.18);transform:translateY(-1px);}
+.dl-mp3{color:var(--plasma);border-color:rgba(34,211,238,0.25);background:rgba(34,211,238,0.07);}
+.dl-mp3:hover{background:rgba(34,211,238,0.18);transform:translateY(-1px);}
+.dl-spotify{color:#1db954;border-color:rgba(29,185,84,0.25);background:rgba(29,185,84,0.07);}
+.dl-spotify:hover{background:rgba(29,185,84,0.16);}
+.dl-apple{color:#fc3c44;border-color:rgba(252,60,68,0.25);background:rgba(252,60,68,0.07);}
+.dl-apple:hover{background:rgba(252,60,68,0.16);}
+.dl-yt{color:#ff4444;border-color:rgba(255,68,68,0.25);background:rgba(255,68,68,0.07);}
+.dl-yt:hover{background:rgba(255,68,68,0.16);}
+.dl-size{font-size:8px;opacity:.6;}
+.badge-free{font-family:'Fira Code',monospace;font-size:8px;text-transform:uppercase;letter-spacing:1px;
+  padding:2px 8px;border-radius:2px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:var(--green);}
+.badge-prem{font-family:'Fira Code',monospace;font-size:8px;text-transform:uppercase;letter-spacing:1px;
+  padding:2px 8px;border-radius:2px;background:rgba(212,175,96,0.1);border:1px solid rgba(212,175,96,0.3);color:var(--gold);}
+footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:12px;margin-top:80px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--gold);}
+@media(max-width:680px){nav{padding:0 16px;}.wrap{padding:0 18px;}footer{padding:18px;}}
+
+/* PAGE HEADER */
+.ph{padding:90px 0 48px;}
+.ph-eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;
+  text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.ph-eye::before{content:'';width:20px;height:1px;background:var(--gold);}
+.ph-title{font-family:'Syne',sans-serif;font-size:clamp(30px,5.5vw,60px);font-weight:800;
+  line-height:.95;letter-spacing:-2px;margin-bottom:14px;}
+.ph-title em{color:var(--gold);font-family:'Cormorant Garamond',serif;font-weight:400;font-style:italic;}
+.ph-sub{font-style:italic;color:var(--body);font-size:16px;margin-bottom:28px;
+  line-height:1.7;max-width:520px;}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px;}
+.stat{background:var(--card);border:1px solid rgba(212,175,96,0.1);border-radius:8px;padding:14px 18px;}
+.stat-n{font-family:'Fira Code',monospace;font-size:22px;font-weight:700;color:var(--gold);
+  display:block;line-height:1;}
+.stat-l{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;
+  letter-spacing:2px;margin-top:5px;display:block;}
+/* INFO BOX */
+.info-box{background:rgba(212,175,96,0.05);border:1px solid rgba(212,175,96,0.12);
+  border-left:3px solid var(--gold);border-radius:0 10px 10px 0;
+  padding:18px 22px;margin-bottom:32px;}
+.info-box p{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);line-height:1.8;}
+.info-box strong{color:var(--gold);} .info-box code{color:var(--violet);}
+/* SEARCH + FILTER */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:28px;}
+.search-wrap{position:relative;flex:1;min-width:220px;}
+.s-input{width:100%;padding:10px 14px 10px 44px;background:rgba(0,0,0,0.35);
+  border:1px solid rgba(255,255,255,0.08);border-radius:6px;color:var(--chalk);
+  font-family:'Fira Code',monospace;font-size:12px;outline:none;transition:border-color .2s;}
+.s-input:focus{border-color:rgba(212,175,96,0.35);}
+.si{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;}
+.filter-pills{display:flex;gap:7px;flex-wrap:wrap;}
+.pill{padding:8px 14px;background:var(--card);border:1px solid rgba(255,255,255,0.07);
+  border-radius:100px;color:var(--muted);font-family:'Fira Code',monospace;font-size:10px;
+  cursor:pointer;transition:all .22s;white-space:nowrap;}
+.pill.active,.pill:hover{border-color:var(--gold);color:var(--gold);background:var(--goldx);}
+/* SECTION */
+.dl-sec{margin-bottom:52px;}
+.ds-hd{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.ds-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--chalk);
+  display:flex;align-items:center;gap:8px;}
+.ds-link{font-family:'Fira Code',monospace;font-size:10px;color:var(--gold);text-decoration:none;}
+.ds-link:hover{opacity:.7;}
+/* FILE CARDS */
+.fc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;}
+.fc{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:12px;
+  padding:18px;display:flex;flex-direction:column;gap:7px;transition:all .32s;}
+.fc:hover{border-color:rgba(212,175,96,0.22);transform:translateY(-3px);
+  box-shadow:0 12px 36px rgba(0,0,0,0.45);}
+.fc.hidden{display:none;}
+.fc-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.fc-icon{font-size:22px;line-height:1;}
+.fc-cat{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1.5px;}
+.fc-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--chalk);
+  line-height:1.3;}
+.fc-sub{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--muted);}
+.fc-actions{display:flex;flex-direction:column;gap:6px;margin-top:auto;padding-top:4px;}
+/* PREMIUM CTA */
+.prem-box{background:linear-gradient(135deg,rgba(212,175,96,0.06),rgba(180,140,255,0.06));
+  border:1px solid rgba(212,175,96,0.14);border-radius:14px;padding:44px;
+  text-align:center;margin-top:20px;margin-bottom:64px;}
+.pb-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;
+  color:var(--chalk);margin-bottom:10px;}
+.pb-sub{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;
+  color:var(--body);margin-bottom:24px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto;}
+.pb-features{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
+.pb-feat{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+  background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:8px 14px;}
+.pb-btn{display:inline-block;padding:14px 36px;background:var(--gold);color:#07060a;
+  border-radius:4px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;
+  text-decoration:none;transition:all .25s;}
+.pb-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(212,175,96,0.35);}
+.no-result{grid-column:1/-1;padding:52px;text-align:center;}
+.no-result-icon{font-size:36px;display:block;margin-bottom:12px;}
+.no-result-txt{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);}
+@media(max-width:900px){.fc-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.fc-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">
+    ~/ILMIORA<span class="ns">/</span>islam<span class="ns">/</span>download
+  </a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-islam.html">← Taman Islam</a>
+</nav>
+
+<div class="wrap">
+
+  <div class="ph reveal">
+    <div class="ph-eye">// Download Center</div>
+    <h1 class="ph-title">Islam<br><em>Download Center</em></h1>
+    <p class="ph-sub">Al-Quran PDF per juz, murottal MP3, buku Islam klasik, dan kajian audio — semua gratis, langsung tersimpan di folder Downloads perangkatmu.</p>
+    <div class="stats">
+      <div class="stat"><span class="stat-n">30</span><span class="stat-l">Juz Al-Quran</span></div>
+      <div class="stat"><span class="stat-n">10+</span><span class="stat-l">Surah Pilihan</span></div>
+      <div class="stat"><span class="stat-n">8</span><span class="stat-l">File Murottal</span></div>
+      <div class="stat"><span class="stat-n">6</span><span class="stat-l">Buku Klasik</span></div>
+      <div class="stat"><span class="stat-n">4</span><span class="stat-l">Kajian Audio</span></div>
+    </div>
+  </div>
+
+  <div class="info-box reveal">
+    <p>
+      📥 <strong>Download otomatis:</strong> Klik tombol → file langsung tersimpan di folder <strong>Downloads</strong> perangkatmu.<br>
+      🎵 <strong>Murottal MP3:</strong> Pilih download langsung dari GitHub <strong>atau</strong> streaming via Spotify · Apple Music · YouTube.<br>
+      📁 <strong>Admin:</strong> Upload file ke <code>/downloads/pdf/juz/</code>, <code>/mp3/</code>, <code>/pdf/buku/</code> di GitHub repo.
+    </p>
+  </div>
+
+  <div class="toolbar reveal">
+    <div class="search-wrap">
+      <span class="si">🔍</span>
+      <input class="s-input" id="gSearch" placeholder="Cari file, judul, penulis..." oninput="doFilter()">
+    </div>
+    <div class="filter-pills">
+      <div class="pill active" onclick="setFilter('all',this)">🌐 Semua</div>
+      <div class="pill" onclick="setFilter('pdf',this)">📄 PDF Al-Quran</div>
+      <div class="pill" onclick="setFilter('mp3',this)">🎧 Murottal</div>
+      <div class="pill" onclick="setFilter('buku',this)">📚 Buku</div>
+      <div class="pill" onclick="setFilter('kajian',this)">🎙️ Kajian</div>
+    </div>
+  </div>
+
+  <!-- PDF SECTION -->
+  <div class="dl-sec reveal" id="sec-pdf">
+    <div class="ds-hd">
+      <div class="ds-title">📄 Al-Quran PDF per Juz</div>
+      <a class="ds-link" href="https://iyan-core.github.io/Ilmiora-blogger/artikel-alquran-3.html">30 Juz lengkap →</a>
+    </div>
+    <div class="fc-grid" id="grid-pdf">
+<div class="fc" data-cat="pdf" data-search="juz 1 Al-Fatihah Pembukaan">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 1</div>
+  <div class="fc-title">Al-Fatihah الفاتحة</div>
+  <div class="fc-sub">Al-Fatihah – Al-Baqarah 141</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-01.pdf" download="Al-Quran-Juz-01.pdf">
+      <span>⬇ PDF Juz 1</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="pdf" data-search="juz 2 Al-Baqarah Sapi Betina">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 2</div>
+  <div class="fc-title">Al-Baqarah البقرة</div>
+  <div class="fc-sub">Al-Baqarah 142–252</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-02.pdf" download="Al-Quran-Juz-02.pdf">
+      <span>⬇ PDF Juz 2</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="pdf" data-search="juz 3 Ali Imran Keluarga Imran">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 3</div>
+  <div class="fc-title">Ali Imran آل عمران</div>
+  <div class="fc-sub">Al-Baqarah 253 – Ali Imran 92</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-03.pdf" download="Al-Quran-Juz-03.pdf">
+      <span>⬇ PDF Juz 3</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="pdf" data-search="juz 4 An-Nisa Wanita">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 4</div>
+  <div class="fc-title">An-Nisa النساء</div>
+  <div class="fc-sub">Ali Imran 93 – An-Nisa 23</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-04.pdf" download="Al-Quran-Juz-04.pdf">
+      <span>⬇ PDF Juz 4</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="pdf" data-search="juz 5 Al-Maidah Hidangan">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 5</div>
+  <div class="fc-title">Al-Maidah المائدة</div>
+  <div class="fc-sub">An-Nisa 24 – Al-Maidah 82</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-05.pdf" download="Al-Quran-Juz-05.pdf">
+      <span>⬇ PDF Juz 5</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="pdf" data-search="juz 6 Al-An'am Binatang Ternak">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 6</div>
+  <div class="fc-title">Al-An'am الأنعام</div>
+  <div class="fc-sub">Al-Maidah 83 – Al-An'am 110</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-06.pdf" download="Al-Quran-Juz-06.pdf">
+      <span>⬇ PDF Juz 6</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="pdf" data-search="juz 7 Al-A'raf Tempat Tertinggi">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 7</div>
+  <div class="fc-title">Al-A'raf الأعراف</div>
+  <div class="fc-sub">Al-An'am 111 – Al-A'raf 87</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-07.pdf" download="Al-Quran-Juz-07.pdf">
+      <span>⬇ PDF Juz 7</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="pdf" data-search="juz 8 Al-Anfal Rampasan Perang">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 8</div>
+  <div class="fc-title">Al-Anfal الأنفال</div>
+  <div class="fc-sub">Al-A'raf 88 – Al-Anfal 40</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-08.pdf" download="Al-Quran-Juz-08.pdf">
+      <span>⬇ PDF Juz 8</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="pdf" data-search="juz 9 At-Tawbah Pengampunan">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 9</div>
+  <div class="fc-title">At-Tawbah التوبة</div>
+  <div class="fc-sub">Al-Anfal 41 – At-Tawbah 92</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-09.pdf" download="Al-Quran-Juz-09.pdf">
+      <span>⬇ PDF Juz 9</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="pdf" data-search="juz 10 Yunus Nabi Yunus">
+  <div class="fc-top"><span class="fc-icon">📄</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Al-Quran · Juz 10</div>
+  <div class="fc-title">Yunus يونس</div>
+  <div class="fc-sub">At-Tawbah 93 – Hud 5</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/juz/juz-10.pdf" download="Al-Quran-Juz-10.pdf">
+      <span>⬇ PDF Juz 10</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+      <div class="no-result hidden" id="nr-pdf">
+        <span class="no-result-icon">🔍</span>
+        <div class="no-result-txt">Tidak ditemukan. Coba kata kunci lain.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUROTTAL SECTION -->
+  <div class="dl-sec reveal" id="sec-mp3">
+    <div class="ds-hd">
+      <div class="ds-title">🎧 Murottal MP3</div>
+      <span style="font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);">8 file · Download + Streaming</span>
+    </div>
+    <div class="fc-grid" id="grid-mp3">
+<div class="fc" data-cat="mp3" data-search="Mishary Rashid Al-Afasy Al-Fatihah murottal">
+  <div class="fc-top"><span class="fc-icon">🎧</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Murottal · Al-Fatihah</div>
+  <div class="fc-title">Al-Fatihah</div>
+  <div class="fc-sub">Mishary Rashid Al-Afasy</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/mishary-fatihah.mp3" download="Mishary Rashid Al-Afasy-Al-Fatihah.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~5MB</span>
+    </a>
+    <a class="dl-btn dl-spotify" href="https://open.spotify.com/artist/mishary-rashid-alafasy" target="_blank" rel="noopener">
+      <span>🎵 Spotify</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-apple" href="https://music.apple.com/search?term=Mishary+Rashid+Al-Afasy" target="_blank" rel="noopener">
+      <span>🍎 Apple Music</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/results?search_query=Mishary+Rashid+Al-Afasy+Al-Fatihah" target="_blank" rel="noopener">
+      <span>▶ YouTube</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="mp3" data-search="Mishary Rashid Al-Afasy Yasin murottal">
+  <div class="fc-top"><span class="fc-icon">🎧</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Murottal · Yasin</div>
+  <div class="fc-title">Yasin</div>
+  <div class="fc-sub">Mishary Rashid Al-Afasy</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/mishary-yasin.mp3" download="Mishary Rashid Al-Afasy-Yasin.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~5MB</span>
+    </a>
+    <a class="dl-btn dl-spotify" href="https://open.spotify.com/artist/mishary-rashid-alafasy" target="_blank" rel="noopener">
+      <span>🎵 Spotify</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-apple" href="https://music.apple.com/search?term=Mishary+Rashid+Al-Afasy" target="_blank" rel="noopener">
+      <span>🍎 Apple Music</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/results?search_query=Mishary+Rashid+Al-Afasy+Yasin" target="_blank" rel="noopener">
+      <span>▶ YouTube</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="mp3" data-search="Mishary Rashid Al-Afasy Al-Mulk murottal">
+  <div class="fc-top"><span class="fc-icon">🎧</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Murottal · Al-Mulk</div>
+  <div class="fc-title">Al-Mulk</div>
+  <div class="fc-sub">Mishary Rashid Al-Afasy</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/mishary-al-mulk.mp3" download="Mishary Rashid Al-Afasy-Al-Mulk.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~5MB</span>
+    </a>
+    <a class="dl-btn dl-spotify" href="https://open.spotify.com/artist/mishary-rashid-alafasy" target="_blank" rel="noopener">
+      <span>🎵 Spotify</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-apple" href="https://music.apple.com/search?term=Mishary+Rashid+Al-Afasy" target="_blank" rel="noopener">
+      <span>🍎 Apple Music</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/results?search_query=Mishary+Rashid+Al-Afasy+Al-Mulk" target="_blank" rel="noopener">
+      <span>▶ YouTube</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="mp3" data-search="Mishary Rashid Al-Afasy Ar-Rahman murottal">
+  <div class="fc-top"><span class="fc-icon">🎧</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Murottal · Ar-Rahman</div>
+  <div class="fc-title">Ar-Rahman</div>
+  <div class="fc-sub">Mishary Rashid Al-Afasy</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/mishary-ar-rahman.mp3" download="Mishary Rashid Al-Afasy-Ar-Rahman.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~5MB</span>
+    </a>
+    <a class="dl-btn dl-spotify" href="https://open.spotify.com/artist/mishary-rashid-alafasy" target="_blank" rel="noopener">
+      <span>🎵 Spotify</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-apple" href="https://music.apple.com/search?term=Mishary+Rashid+Al-Afasy" target="_blank" rel="noopener">
+      <span>🍎 Apple Music</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/results?search_query=Mishary+Rashid+Al-Afasy+Ar-Rahman" target="_blank" rel="noopener">
+      <span>▶ YouTube</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="mp3" data-search="Abdul Rahman Al-Sudais Yasin murottal">
+  <div class="fc-top"><span class="fc-icon">🎧</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Murottal · Yasin</div>
+  <div class="fc-title">Yasin</div>
+  <div class="fc-sub">Abdul Rahman Al-Sudais</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/sudais-yasin.mp3" download="Abdul Rahman Al-Sudais-Yasin.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~5MB</span>
+    </a>
+    <a class="dl-btn dl-spotify" href="https://open.spotify.com/artist/3jTJtjKAGLfPl0G4BNVVMA" target="_blank" rel="noopener">
+      <span>🎵 Spotify</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-apple" href="https://music.apple.com/search?term=Abdul+Rahman+Al-Sudais" target="_blank" rel="noopener">
+      <span>🍎 Apple Music</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/results?search_query=Abdul+Rahman+Al-Sudais+Yasin" target="_blank" rel="noopener">
+      <span>▶ YouTube</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="mp3" data-search="Abdul Rahman Al-Sudais Al-Kahf murottal">
+  <div class="fc-top"><span class="fc-icon">🎧</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Murottal · Al-Kahf</div>
+  <div class="fc-title">Al-Kahf</div>
+  <div class="fc-sub">Abdul Rahman Al-Sudais</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/sudais-al-kahf.mp3" download="Abdul Rahman Al-Sudais-Al-Kahf.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~5MB</span>
+    </a>
+    <a class="dl-btn dl-spotify" href="https://open.spotify.com/artist/3jTJtjKAGLfPl0G4BNVVMA" target="_blank" rel="noopener">
+      <span>🎵 Spotify</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-apple" href="https://music.apple.com/search?term=Abdul+Rahman+Al-Sudais" target="_blank" rel="noopener">
+      <span>🍎 Apple Music</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/results?search_query=Abdul+Rahman+Al-Sudais+Al-Kahf" target="_blank" rel="noopener">
+      <span>▶ YouTube</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="mp3" data-search="Maher Al-Muaiqly Al-Baqarah murottal">
+  <div class="fc-top"><span class="fc-icon">🎧</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Murottal · Al-Baqarah</div>
+  <div class="fc-title">Al-Baqarah</div>
+  <div class="fc-sub">Maher Al-Muaiqly</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/maher-al-baqarah.mp3" download="Maher Al-Muaiqly-Al-Baqarah.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~5MB</span>
+    </a>
+    <a class="dl-btn dl-spotify" href="https://open.spotify.com/artist/3JQmgGHBBVfVKl5Mxf0jYY" target="_blank" rel="noopener">
+      <span>🎵 Spotify</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-apple" href="https://music.apple.com/search?term=Maher+Al-Muaiqly" target="_blank" rel="noopener">
+      <span>🍎 Apple Music</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/results?search_query=Maher+Al-Muaiqly+Al-Baqarah" target="_blank" rel="noopener">
+      <span>▶ YouTube</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="mp3" data-search="Saad Al-Ghamidi Al-Waqi'ah murottal">
+  <div class="fc-top"><span class="fc-icon">🎧</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Murottal · Al-Waqi'ah</div>
+  <div class="fc-title">Al-Waqi'ah</div>
+  <div class="fc-sub">Saad Al-Ghamidi</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/saad-al-waqiah.mp3" download="Saad Al-Ghamidi-Al-Waqi'ah.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~5MB</span>
+    </a>
+    <a class="dl-btn dl-spotify" href="https://open.spotify.com/artist/2jVvKBCL2tJHoTM0WQFNQG" target="_blank" rel="noopener">
+      <span>🎵 Spotify</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-apple" href="https://music.apple.com/search?term=Saad+Al-Ghamidi" target="_blank" rel="noopener">
+      <span>🍎 Apple Music</span><span class="dl-size">Stream</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/results?search_query=Saad+Al-Ghamidi+Al-Waqi'ah" target="_blank" rel="noopener">
+      <span>▶ YouTube</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+      <div class="no-result hidden" id="nr-mp3">
+        <span class="no-result-icon">🎧</span>
+        <div class="no-result-txt">Tidak ditemukan.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUKU SECTION -->
+  <div class="dl-sec reveal" id="sec-buku">
+    <div class="ds-hd">
+      <div class="ds-title">📚 Buku Islam Klasik</div>
+      <span style="font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);">6 judul tersedia</span>
+    </div>
+    <div class="fc-grid" id="grid-buku">
+<div class="fc" data-cat="buku" data-search="Ihya Ulumuddin — Ringkasan Imam Al-Ghazali Tasawuf">
+  <div class="fc-top"><span class="fc-icon">📚</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Tasawuf</div>
+  <div class="fc-title">Ihya Ulumuddin — Ringkasan</div>
+  <div class="fc-sub">Imam Al-Ghazali</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/buku/ihya-ringkasan.pdf" download="Ihya Ulumuddin — Ringkasan.pdf">
+      <span>⬇ Download PDF</span><span class="dl-size">~8MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="buku" data-search="Riyadhus Shalihin Imam An-Nawawi Hadits">
+  <div class="fc-top"><span class="fc-icon">📚</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Hadits</div>
+  <div class="fc-title">Riyadhus Shalihin</div>
+  <div class="fc-sub">Imam An-Nawawi</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/buku/riyadhus-shalihin.pdf" download="Riyadhus Shalihin.pdf">
+      <span>⬇ Download PDF</span><span class="dl-size">~6MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="buku" data-search="Fiqh Sunnah Jilid 1 Sayyid Sabiq Fiqh">
+  <div class="fc-top"><span class="fc-icon">📚</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Fiqh</div>
+  <div class="fc-title">Fiqh Sunnah Jilid 1</div>
+  <div class="fc-sub">Sayyid Sabiq</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/buku/fiqh-sunnah-1.pdf" download="Fiqh Sunnah Jilid 1.pdf">
+      <span>⬇ Download PDF</span><span class="dl-size">~7MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="buku" data-search="Tafsir Ibnu Katsir Jilid 1 Ibnu Katsir Tafsir">
+  <div class="fc-top"><span class="fc-icon">📚</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Tafsir</div>
+  <div class="fc-title">Tafsir Ibnu Katsir Jilid 1</div>
+  <div class="fc-sub">Ibnu Katsir</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/buku/tafsir-ibnu-katsir-1.pdf" download="Tafsir Ibnu Katsir Jilid 1.pdf">
+      <span>⬇ Download PDF</span><span class="dl-size">~10MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="buku" data-search="Kitab At-Tauhid Syaikh At-Tamimi Tauhid">
+  <div class="fc-top"><span class="fc-icon">📚</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Tauhid</div>
+  <div class="fc-title">Kitab At-Tauhid</div>
+  <div class="fc-sub">Syaikh At-Tamimi</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/buku/kitab-tauhid.pdf" download="Kitab At-Tauhid.pdf">
+      <span>⬇ Download PDF</span><span class="dl-size">~3MB</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="buku" data-search="Matan Al-Jurumiyah Ibnu Ajurrum Bahasa Arab">
+  <div class="fc-top"><span class="fc-icon">📚</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Bahasa Arab</div>
+  <div class="fc-title">Matan Al-Jurumiyah</div>
+  <div class="fc-sub">Ibnu Ajurrum</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-pdf" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/pdf/buku/matan-jurumiyah.pdf" download="Matan Al-Jurumiyah.pdf">
+      <span>⬇ Download PDF</span><span class="dl-size">~2MB</span>
+    </a>
+  </div>
+</div>
+      <div class="no-result hidden" id="nr-buku">
+        <span class="no-result-icon">📚</span>
+        <div class="no-result-txt">Tidak ditemukan.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KAJIAN SECTION -->
+  <div class="dl-sec reveal" id="sec-kajian">
+    <div class="ds-hd">
+      <div class="ds-title">🎙️ Kajian & Ceramah</div>
+      <span style="font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);">4 kajian tersedia</span>
+    </div>
+    <div class="fc-grid" id="grid-kajian">
+<div class="fc" data-cat="kajian" data-search="Ust. Adi Hidayat Makna La Ilaha Illallah kajian ceramah">
+  <div class="fc-top"><span class="fc-icon">🎙️</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Kajian · Ceramah</div>
+  <div class="fc-title">Makna La Ilaha Illallah</div>
+  <div class="fc-sub">Ust. Adi Hidayat</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/kajian/adi-hidayat-tauhid.mp3" download="Makna La Ilaha Illallah.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~15MB</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/@adihidayatofficial" target="_blank" rel="noopener">
+      <span>▶ YouTube Channel</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="kajian" data-search="Ust. Abdul Somad Keutamaan Shalat Fardhu kajian ceramah">
+  <div class="fc-top"><span class="fc-icon">🎙️</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Kajian · Ceramah</div>
+  <div class="fc-title">Keutamaan Shalat Fardhu</div>
+  <div class="fc-sub">Ust. Abdul Somad</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/kajian/uas-shalat.mp3" download="Keutamaan Shalat Fardhu.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~15MB</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/@ustadzabdulsomad" target="_blank" rel="noopener">
+      <span>▶ YouTube Channel</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="kajian" data-search="Ust. Khalid Basalamah Akhlak Muslim Sejati kajian ceramah">
+  <div class="fc-top"><span class="fc-icon">🎙️</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Kajian · Ceramah</div>
+  <div class="fc-title">Akhlak Muslim Sejati</div>
+  <div class="fc-sub">Ust. Khalid Basalamah</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/kajian/khalid-akhlak.mp3" download="Akhlak Muslim Sejati.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~15MB</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/@KhalidBasalamah" target="_blank" rel="noopener">
+      <span>▶ YouTube Channel</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+<div class="fc" data-cat="kajian" data-search="Ust. Hanan Attaki Istiqomah di Jalan Allah kajian ceramah">
+  <div class="fc-top"><span class="fc-icon">🎙️</span><span class="badge-free">GRATIS</span></div>
+  <div class="fc-cat">Kajian · Ceramah</div>
+  <div class="fc-title">Istiqomah di Jalan Allah</div>
+  <div class="fc-sub">Ust. Hanan Attaki</div>
+  <div class="fc-actions">
+    <a class="dl-btn dl-mp3" href="https://raw.githubusercontent.com/iyan-core/Ilmiora-blogger/main/downloads/mp3/kajian/hanan-istiqomah.mp3" download="Istiqomah di Jalan Allah.mp3">
+      <span>⬇ Download MP3</span><span class="dl-size">~15MB</span>
+    </a>
+    <a class="dl-btn dl-yt" href="https://www.youtube.com/@hananattaki" target="_blank" rel="noopener">
+      <span>▶ YouTube Channel</span><span class="dl-size">Gratis</span>
+    </a>
+  </div>
+</div>
+      <div class="no-result hidden" id="nr-kajian">
+        <span class="no-result-icon">🎙️</span>
+        <div class="no-result-txt">Tidak ditemukan.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREMIUM CTA -->
+  <div class="prem-box reveal">
+    <div class="pb-title">✨ Akses Premium</div>
+    <p class="pb-sub">Konten eksklusif — tafsir lengkap, koleksi kitab langka, dan kajian premium dari ulama terpilih. Bayar sekali, akses selamanya.</p>
+    <div class="pb-features">
+      <span class="pb-feat">📖 Tafsir Lengkap 30 Juz</span>
+      <span class="pb-feat">🎧 100+ File Murottal HQ</span>
+      <span class="pb-feat">📚 Kitab Langka Digital</span>
+      <span class="pb-feat">♾️ Akses Selamanya</span>
+    </div>
+    <a class="pb-btn" href="https://iyan-core.github.io/Ilmiora-blogger/download-premium.html">Bayar dengan QRIS →</a>
+  </div>
+
+</div>
+
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-islam.html">← Taman Islam</a>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);">ILMIORA © 2025 · Download Center</span>
+  <a href="https://ilmiora.blogspot.com">ILMIORA Home →</a>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{
+  document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting)e.target.classList.add('vis');
+}),{threshold:.05});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+let activeFilter='all';
+const SECS={pdf:'sec-pdf',mp3:'sec-mp3',buku:'sec-buku',kajian:'sec-kajian'};
+
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  Object.entries(SECS).forEach(([k,id])=>{
+    document.getElementById(id).style.display=(f==='all'||f===k)?'':'none';
+  });
+  doFilter();
+}
+
+function doFilter(){
+  const q=document.getElementById('gSearch').value.toLowerCase().trim();
+  ['pdf','mp3','buku','kajian'].forEach(cat=>{
+    if(activeFilter!=='all'&&activeFilter!==cat)return;
+    const cards=document.querySelectorAll(`#grid-${cat} .fc`);
+    let visible=0;
+    cards.forEach(c=>{
+      const match=!q||c.dataset.search.toLowerCase().includes(q);
+      c.classList.toggle('hidden',!match);
+      if(match)visible++;
+    });
+    const nr=document.getElementById(`nr-${cat}`);
+    if(nr)nr.classList.toggle('hidden',visible>0);
+  });
+}
+</script>
+</body>
+</html>
