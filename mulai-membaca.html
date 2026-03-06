@@ -3,522 +3,335 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mulai Membaca — ILMIORA Taman Sains</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<title>Mulai Membaca &mdash; ILMIORA</title>
+<link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;600;700;800&family=Open+Sans:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-/* ════════════════════════════════════
-   CSS VARIABLES — DARK & LIGHT MODE
-════════════════════════════════════ */
+/* ═══════════════════════════
+   VARIABLES
+═══════════════════════════ */
 [data-theme="dark"]{
-  --bg:#020405;
-  --bg2:#050a08;
-  --card:#0c110e;
-  --lift:#141c16;
-  --chalk:#d4f0e0;
-  --body-txt:rgba(212,240,224,0.75);
-  --muted:#3d6b4f;
-  --dim:#1a2e20;
-  --border:rgba(0,255,136,0.08);
-  --border2:rgba(255,255,255,0.06);
-  --input-bg:rgba(0,0,0,0.4);
-  --tag-bg:rgba(0,0,0,0.3);
-  --shadow:rgba(0,0,0,0.5);
-  --scanline:rgba(0,255,136,0.008);
+  --bg:#020405;--bg2:#050a08;--card:#0c110e;
+  --chalk:#d4f0e0;--body-txt:rgba(212,240,224,.75);
+  --muted:#3d6b4f;--dim:#1a2e20;
+  --border:rgba(0,255,136,.08);--border2:rgba(255,255,255,.06);
+  --input-bg:rgba(0,0,0,.4);--shadow:rgba(0,0,0,.5);
+  --scanline:rgba(0,255,136,.008);
 }
 [data-theme="light"]{
-  /* ── Background: putih bersih dengan aksen abu hangat ── */
-  --bg:#f7f8fa;
-  --bg2:#eef0f4;
-  --card:#ffffff;
-  --lift:#ffffff;
-
-  /* ── Teks: hitam tegas, bukan cokelat/hijau ── */
-  --chalk:#0a0e14;          /* judul — hitam pekat, tegas */
-  --body-txt:#3d4a5c;       /* body text — abu biru, nyaman dibaca */
-  --muted:#6b7a99;          /* teks sekunder — abu medium */
-
-  /* ── Aksen & border ── */
-  --dim:#dde3f0;            /* divider, bg subtle */
-  --border:rgba(0,200,100,0.18);
-  --border2:rgba(10,14,20,0.08);
-  --input-bg:#ffffff;
-  --tag-bg:#f0f2f8;
-  --shadow:rgba(10,14,20,0.10);
-  --scanline:transparent;
+  --bg:#f7f8fa;--bg2:#eef0f4;--card:#fff;
+  --chalk:#0a0e14;--body-txt:#3d4a5c;
+  --muted:#6b7a99;--dim:#dde3f0;
+  --border:rgba(0,200,100,.18);--border2:rgba(10,14,20,.08);
+  --input-bg:#fff;--shadow:rgba(10,14,20,.10);--scanline:transparent;
 }
-
-/* ════════════════════════════════════════════
-   LIGHT MODE OVERRIDES — Bold & Dinamis
-════════════════════════════════════════════ */
-
-/* Scrollbar terang */
-[data-theme="light"]::-webkit-scrollbar-thumb{background:var(--green);}
-
-/* Nav terang — putih solid dengan shadow halus */
-[data-theme="light"] .nav{
-  background:rgba(247,248,250,0.97);
-  border-bottom:1px solid rgba(10,14,20,0.08);
-  box-shadow:0 1px 12px rgba(10,14,20,0.06);
-}
-
-/* Brand tetap hijau neon tapi lebih gelap agar terbaca */
-[data-theme="light"] .nav-brand{color:#008a4a;}
-
-/* Header — teks hitam bold di bg terang */
-[data-theme="light"] .page-title .hl{
-  color:#008a4a;
-  text-shadow:none;
-}
-
-/* Live badge terang */
-[data-theme="light"] .live-badge{
-  background:rgba(0,138,74,0.07);
-  border-color:rgba(0,138,74,0.2);
-  color:#008a4a;
-}
-[data-theme="light"] .live-dot{background:#008a4a;box-shadow:0 0 6px rgba(0,138,74,0.4);}
-
-/* Stat chips terang */
-[data-theme="light"] .stat-chip{
-  background:#ffffff;
-  border:1px solid rgba(10,14,20,0.1);
-  box-shadow:0 2px 8px rgba(10,14,20,0.05);
-}
-
-/* Search input terang */
-[data-theme="light"] .search-input{
-  color:#0a0e14;
-  background:#ffffff;
-  border:1px solid rgba(10,14,20,0.12);
-  box-shadow:0 1px 4px rgba(10,14,20,0.05);
-}
-[data-theme="light"] .search-input::placeholder{color:#9aa3b5;}
-[data-theme="light"] .search-input:focus{border-color:rgba(0,138,74,0.4);box-shadow:0 0 0 3px rgba(0,138,74,0.08);}
-
-/* Sort & filter pills terang */
-[data-theme="light"] .sort-btn{
-  background:#ffffff;
-  border:1px solid rgba(10,14,20,0.1);
-  color:#6b7a99;
-  box-shadow:0 1px 4px rgba(10,14,20,0.05);
-}
-[data-theme="light"] .sort-btn.active,
-[data-theme="light"] .sort-btn:hover{
-  background:#008a4a;
-  color:#ffffff;
-  border-color:#008a4a;
-}
-
-/* Art card terang — shadow kuat untuk kesan tegas */
-[data-theme="light"] .art-card{
-  background:#ffffff;
-  border:1px solid rgba(10,14,20,0.08);
-  box-shadow:0 4px 16px rgba(10,14,20,0.07);
-}
-[data-theme="light"] .art-card:hover{
-  box-shadow:0 12px 40px rgba(10,14,20,0.14);
-  border-color:rgba(10,14,20,0.14);
-}
-[data-theme="light"] .art-card:hover .card-title{color:#008a4a;}
-
-/* Snippet text terang */
-[data-theme="light"] .card-snippet{color:#3d4a5c;}
-
-/* Pager terang */
-[data-theme="light"] .pager{border-color:rgba(10,14,20,0.08);}
-[data-theme="light"] .pager-btn{background:#ffffff;border-color:rgba(10,14,20,0.1);color:#6b7a99;box-shadow:0 1px 4px rgba(10,14,20,0.05);}
-[data-theme="light"] .pager-btn:hover:not(:disabled){border-color:#008a4a;color:#008a4a;}
-[data-theme="light"] .pg-num{background:#ffffff;border-color:rgba(10,14,20,0.1);color:#6b7a99;}
-[data-theme="light"] .pg-num.active{background:#008a4a;color:#ffffff;border-color:#008a4a;}
-[data-theme="light"] .pg-num:hover:not(.active){border-color:#008a4a;color:#008a4a;}
-
-/* Progress bar terang */
-[data-theme="light"] .fp-bar-wrap{background:rgba(10,14,20,0.08);}
-
-/* Footer terang */
-[data-theme="light"] .footer{
-  background:#eef0f4;
-  border-color:rgba(10,14,20,0.08);
-}
-
-/* Scrollbar terang */
-[data-theme="light"] body::-webkit-scrollbar-thumb{background:#008a4a;}
-
-/* Toggle button di mode terang */
-[data-theme="light"] .theme-toggle{
-  background:#ffffff;
-  border-color:rgba(10,14,20,0.1);
-  color:#6b7a99;
-  box-shadow:0 1px 4px rgba(10,14,20,0.06);
-}
-[data-theme="light"] .theme-toggle:hover{border-color:#008a4a;color:#008a4a;}
-[data-theme="light"] .toggle-track{background:rgba(0,138,74,0.25);}
-[data-theme="light"] .nav-back{border-color:rgba(10,14,20,0.1);color:#6b7a99;}
-[data-theme="light"] .nav-back:hover{color:#008a4a;border-color:#008a4a;}
-
-/* Header eye & section labels di mode terang */
-[data-theme="light"] .header-eye{color:#008a4a;}
-[data-theme="light"] .header-eye::before{background:#008a4a;}
-[data-theme="light"] .live-badge .live-dot{background:#008a4a;}
-[data-theme="light"] #scrollBar{background:linear-gradient(90deg,#008a4a,#22d3ee,#a855f7);}
-
-/* Filter pills terang — warna bidang tetap tapi lebih solid */
-[data-theme="light"] .pill{box-shadow:0 1px 4px rgba(10,14,20,0.06);}
-[data-theme="light"] .pill-all{background:rgba(0,138,74,0.07);border-color:rgba(0,138,74,0.2);color:#008a4a;}
-[data-theme="light"] .pill-all.active{background:#008a4a;color:#fff;}
-[data-theme="light"] .pill-all:hover:not(.active){background:rgba(0,138,74,0.14);}
 :root{
-  --neon:#00ff88;--green:#10b981;--plasma:#22d3ee;
-  --violet:#a855f7;--warn:#f59e0b;--danger:#ef4444;--lime:#84cc16;
+  --neon:#00ff88;--green:#10b981;--plasma:#22d3ee;--violet:#a855f7;
 }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{
   font-family:'Syne',sans-serif;
-  background:var(--bg);
-  color:var(--chalk);
-  overflow-x:hidden;
-  min-height:100vh;
-  transition:background 0.4s,color 0.4s;
+  background:var(--bg);color:var(--chalk);
+  overflow-x:hidden;min-height:100vh;transition:background .4s,color .4s;
 }
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:var(--neon);border-radius:2px;}
-
-/* scanline hanya dark mode */
 body::before{
-  content:'';position:fixed;inset:0;
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,var(--scanline) 2px,var(--scanline) 4px);
-  pointer-events:none;z-index:9997;
-  transition:background 0.4s;
+}
+#scrollBar{
+  position:fixed;top:0;left:0;height:2px;z-index:9999;width:0%;
+  background:linear-gradient(90deg,var(--neon),var(--plasma),var(--violet));
 }
 
-#scrollBar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--neon),var(--plasma),var(--violet));z-index:9999;width:0%;}
+/* ── LIGHT OVERRIDES ── */
+[data-theme="light"] .nav{background:rgba(247,248,250,.97);border-bottom:1px solid rgba(10,14,20,.08);box-shadow:0 1px 12px rgba(10,14,20,.06);}
+[data-theme="light"] .nav-brand{color:#008a4a;}
+[data-theme="light"] .page-title .hl{color:#008a4a;text-shadow:none;}
+[data-theme="light"] .live-badge{background:rgba(0,138,74,.07);border-color:rgba(0,138,74,.2);color:#008a4a;}
+[data-theme="light"] .live-dot{background:#008a4a;box-shadow:0 0 6px rgba(0,138,74,.4);}
+[data-theme="light"] .stat-chip{background:#fff;border:1px solid rgba(10,14,20,.1);box-shadow:0 2px 8px rgba(10,14,20,.05);}
+[data-theme="light"] .search-input{color:#0a0e14;background:#fff;border:1px solid rgba(10,14,20,.12);}
+[data-theme="light"] .search-input:focus{border-color:rgba(0,138,74,.4);}
+[data-theme="light"] .sort-btn{background:#fff;border:1px solid rgba(10,14,20,.1);color:#6b7a99;}
+[data-theme="light"] .sort-btn.active,[data-theme="light"] .sort-btn:hover{background:#008a4a;color:#fff;border-color:#008a4a;}
+[data-theme="light"] .art-card{background:#fff;border:1px solid rgba(10,14,20,.08);box-shadow:0 4px 16px rgba(10,14,20,.07);}
+[data-theme="light"] .art-card:hover{box-shadow:0 12px 40px rgba(10,14,20,.14);}
+[data-theme="light"] .art-card:hover .card-title{color:#008a4a;}
+[data-theme="light"] .card-snippet{color:#3d4a5c;}
+[data-theme="light"] .pager-btn{background:#fff;border-color:rgba(10,14,20,.1);color:#6b7a99;}
+[data-theme="light"] .pager-btn:hover:not(:disabled){border-color:#008a4a;color:#008a4a;}
+[data-theme="light"] .pg-num{background:#fff;border-color:rgba(10,14,20,.1);color:#6b7a99;}
+[data-theme="light"] .pg-num.active{background:#008a4a;color:#fff;border-color:#008a4a;}
+[data-theme="light"] .footer{background:#eef0f4;border-color:rgba(10,14,20,.08);}
+[data-theme="light"] .theme-toggle{background:#fff;border-color:rgba(10,14,20,.1);color:#6b7a99;}
+[data-theme="light"] .theme-toggle:hover{border-color:#008a4a;color:#008a4a;}
+[data-theme="light"] .nav-back{border-color:rgba(10,14,20,.1);color:#6b7a99;}
+[data-theme="light"] .nav-back:hover{color:#008a4a;border-color:#008a4a;}
+[data-theme="light"] .header-eye{color:#008a4a;}
+[data-theme="light"] #scrollBar{background:linear-gradient(90deg,#008a4a,#22d3ee,#a855f7);}
+[data-theme="light"] .tab-btn{background:#fff;border:1px solid rgba(10,14,20,.1);color:#6b7a99;}
+[data-theme="light"] .tab-btn.active{background:#008a4a;color:#fff;border-color:#008a4a;}
+[data-theme="light"] .tab-btn:hover:not(.active){border-color:#008a4a;color:#008a4a;}
+[data-theme="light"] .pill-panel{background:#f0f5f0;border-color:rgba(10,14,20,.08);}
+[data-theme="light"] .fp-bar-wrap{background:rgba(10,14,20,.08);}
 
-/* ── NAV ── */
+/* ══ NAV ══ */
 .nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  height:60px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 40px;
-  backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--border);
-  transition:background 0.4s,border-color 0.4s;
+  position:fixed;top:0;left:0;right:0;z-index:500;height:60px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 40px;
+  backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:background .4s;
 }
-[data-theme="dark"] .nav{background:rgba(2,4,5,0.95);}
-[data-theme="light"] .nav{background:rgba(240,247,243,0.96);}
-
+[data-theme="dark"] .nav{background:rgba(2,4,5,.95);}
 .nav-left{display:flex;align-items:center;gap:16px;}
 .nav-brand{font-family:'Fira Code',monospace;font-size:13px;color:var(--neon);text-decoration:none;white-space:nowrap;}
 .nav-crumb{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);display:flex;align-items:center;gap:6px;}
-.nav-crumb a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.nav-crumb a{color:var(--muted);text-decoration:none;transition:color .2s;}
 .nav-crumb a:hover{color:var(--neon);}
-
 .nav-right{display:flex;align-items:center;gap:12px;}
-
-/* ── TOGGLE DARK/LIGHT ── */
 .theme-toggle{
-  display:flex;align-items:center;gap:8px;
-  padding:6px 14px;
-  border:1px solid var(--border);
-  border-radius:100px;
-  cursor:pointer;
-  font-family:'Fira Code',monospace;font-size:10px;
-  color:var(--muted);
-  background:var(--card);
-  transition:all 0.3s;
-  white-space:nowrap;
+  display:flex;align-items:center;gap:8px;padding:6px 14px;
+  border:1px solid var(--border);border-radius:100px;cursor:pointer;
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+  background:var(--card);transition:all .3s;white-space:nowrap;
 }
-.theme-toggle:hover{border-color:rgba(0,255,136,0.3);color:var(--neon);}
-.toggle-track{
-  width:32px;height:16px;
-  border-radius:100px;
-  background:var(--dim);
-  position:relative;
-  transition:background 0.3s;
-  flex-shrink:0;
-}
-[data-theme="dark"] .toggle-track{background:rgba(0,255,136,0.2);}
-[data-theme="light"] .toggle-track{background:rgba(16,185,129,0.3);}
-.toggle-thumb{
-  width:12px;height:12px;
-  border-radius:50%;
-  position:absolute;top:2px;
-  transition:left 0.3s,background 0.3s;
-  box-shadow:0 1px 4px rgba(0,0,0,0.3);
-}
+.theme-toggle:hover{border-color:rgba(0,255,136,.3);color:var(--neon);}
+.toggle-track{width:32px;height:16px;border-radius:100px;position:relative;transition:background .3s;flex-shrink:0;}
+[data-theme="dark"] .toggle-track{background:rgba(0,255,136,.2);}
+[data-theme="light"] .toggle-track{background:rgba(16,185,129,.3);}
+.toggle-thumb{width:12px;height:12px;border-radius:50%;position:absolute;top:2px;transition:left .3s,background .3s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
 [data-theme="dark"] .toggle-thumb{left:2px;background:var(--neon);}
 [data-theme="light"] .toggle-thumb{left:18px;background:var(--green);}
-.toggle-icon{font-size:13px;}
-
 .nav-back{
-  font-family:'Fira Code',monospace;font-size:10px;
-  color:var(--muted);text-decoration:none;
-  padding:5px 12px;border:1px solid var(--border);border-radius:3px;
-  transition:all 0.2s;white-space:nowrap;
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+  text-decoration:none;padding:5px 12px;border:1px solid var(--border);border-radius:3px;transition:all .2s;
 }
-.nav-back:hover{color:var(--neon);border-color:rgba(0,255,136,0.3);}
+.nav-back:hover{color:var(--neon);border-color:rgba(0,255,136,.3);}
 
-/* ── HERO HEADER ── */
-.page-header{
-  padding:90px 40px 48px;
-  max-width:1100px;margin:0 auto;
-}
+/* ══ HEADER ══ */
+.page-header{padding:90px 40px 32px;max-width:1100px;margin:0 auto;}
 .header-eye{
-  font-family:'Fira Code',monospace;font-size:10px;
-  color:var(--neon);text-transform:uppercase;letter-spacing:3px;
-  margin-bottom:12px;display:flex;align-items:center;gap:10px;
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);
+  text-transform:uppercase;letter-spacing:3px;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
 }
 .header-eye::before{content:'';width:22px;height:1px;background:var(--neon);}
-.page-title{
-  font-family:'Syne',sans-serif;
-  font-size:clamp(32px,6vw,72px);
-  font-weight:800;line-height:1;letter-spacing:-2px;
-  margin-bottom:14px;
-}
-.page-title .hl{color:var(--neon);text-shadow:0 0 30px rgba(0,255,136,0.25);}
-.page-desc{
-  font-family:'Libre Baskerville',serif;
-  font-size:clamp(14px,1.8vw,17px);
-  font-style:italic;color:var(--body-txt);
-  line-height:1.75;max-width:560px;
-  margin-bottom:28px;
-}
-/* Live badge */
-.live-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:'Fira Code',monospace;font-size:10px;
-  color:var(--neon);
-  background:rgba(0,255,136,0.06);
-  border:1px solid rgba(0,255,136,0.15);
-  padding:5px 14px;border-radius:3px;
-}
+.page-title{font-family:'Syne',sans-serif;font-size:clamp(32px,6vw,72px);font-weight:800;line-height:1;letter-spacing:-2px;margin-bottom:14px;}
+.page-title .hl{color:var(--neon);text-shadow:0 0 30px rgba(0,255,136,.25);}
+.page-desc{font-family:'Libre Baskerville',serif;font-size:clamp(14px,1.8vw,17px);font-style:italic;color:var(--body-txt);line-height:1.75;max-width:560px;margin-bottom:28px;}
+.live-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15);padding:5px 14px;border-radius:3px;}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--neon);box-shadow:0 0 6px var(--neon);animation:blink 1.5s infinite;}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
 
-/* ── STATS ROW ── */
-.stats-row{
-  display:flex;gap:16px;flex-wrap:wrap;
-  padding:0 40px;max-width:1100px;margin:0 auto 32px;
-}
+/* ══ STATS — horizontal scroll ══ */
+.stats-outer{overflow-x:auto;padding:0 40px 4px;max-width:1100px;margin:0 auto 28px;scrollbar-width:none;}
+.stats-outer::-webkit-scrollbar{display:none;}
+.stats-row{display:flex;gap:10px;width:max-content;}
 .stat-chip{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 18px;
-  background:var(--card);
-  border:1px solid var(--border2);
-  border-radius:8px;flex:1;min-width:120px;
-  transition:all 0.3s;
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px 16px;background:var(--card);border:1px solid var(--border2);
+  border-radius:8px;min-width:76px;transition:all .3s;flex-shrink:0;
 }
 .stat-chip:hover{border-color:var(--border);}
-.stat-chip-n{
-  font-family:'Fira Code',monospace;font-size:22px;font-weight:700;
-  line-height:1;
-}
-.stat-chip-l{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px;}
+.stat-chip-n{font-family:'Fira Code',monospace;font-size:20px;font-weight:700;line-height:1;}
+.stat-chip-l{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;white-space:nowrap;}
 
-/* ── FILTER BAR ── */
-.filter-bar{
-  max-width:1100px;margin:0 auto;
-  padding:0 40px 24px;
-  display:flex;flex-direction:column;gap:14px;
-}
+/* ══ PROGRESS ══ */
+.fetch-progress{max-width:1100px;margin:0 auto;padding:0 40px 16px;font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);display:flex;align-items:center;gap:10px;}
+.fp-bar-wrap{flex:1;height:2px;background:var(--dim);border-radius:2px;overflow:hidden;}
+.fp-bar{height:100%;background:linear-gradient(90deg,var(--neon),var(--plasma));width:0%;transition:width .4s;}
+
+/* ══ FILTER BAR ══ */
+.filter-bar{max-width:1100px;margin:0 auto;padding:0 40px 24px;display:flex;flex-direction:column;gap:12px;}
+
+/* Search + Sort */
 .search-row{display:flex;gap:10px;align-items:center;}
 .search-wrap{flex:1;position:relative;}
-.search-input{
-  width:100%;padding:11px 14px 11px 42px;
-  background:var(--input-bg);
-  border:1px solid var(--border2);
-  border-radius:6px;
-  color:var(--chalk);
-  font-family:'Fira Code',monospace;font-size:12px;
-  outline:none;transition:all 0.2s;
-}
-.search-input:focus{border-color:rgba(0,255,136,0.3);}
+.search-input{width:100%;padding:11px 14px 11px 42px;background:var(--input-bg);border:1px solid var(--border2);border-radius:6px;color:var(--chalk);font-family:'Fira Code',monospace;font-size:12px;outline:none;transition:all .2s;}
+.search-input:focus{border-color:rgba(0,255,136,.3);}
 [data-theme="light"] .search-input{color:#0d1f15;}
 .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;}
-
 .sort-wrap{display:flex;gap:6px;}
-.sort-btn{
-  padding:10px 14px;
-  background:var(--card);
-  border:1px solid var(--border2);border-radius:6px;
-  color:var(--muted);font-family:'Fira Code',monospace;font-size:10px;
-  cursor:pointer;transition:all 0.2s;white-space:nowrap;
-}
-.sort-btn.active,.sort-btn:hover{border-color:rgba(0,255,136,0.3);color:var(--neon);background:rgba(0,255,136,0.06);}
+.sort-btn{padding:10px 14px;background:var(--card);border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.sort-btn.active,.sort-btn:hover{border-color:rgba(0,255,136,.3);color:var(--neon);background:rgba(0,255,136,.06);}
 
-/* Bidang filter pills */
-.filter-pills{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-.filter-label{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;white-space:nowrap;}
-.pill{
-  padding:6px 14px;border-radius:100px;
-  font-family:'Fira Code',monospace;font-size:10px;
-  cursor:pointer;border:1px solid;
-  transition:all 0.2s;white-space:nowrap;
+/* ── SLIDE TABS ── */
+.filter-tabs{
+  display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;
 }
-.pill-all{color:var(--neon);border-color:rgba(0,255,136,0.2);background:rgba(0,255,136,0.06);}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.tab-btn{
+  padding:7px 16px;border-radius:100px;
+  font-family:'Fira Code',monospace;font-size:10px;letter-spacing:.3px;
+  cursor:pointer;border:1px solid var(--border2);background:var(--card);
+  color:var(--muted);white-space:nowrap;flex-shrink:0;transition:all .2s;
+}
+.tab-btn:hover{border-color:rgba(0,255,136,.3);color:var(--neon);}
+.tab-btn.active{background:var(--neon);color:#000;border-color:var(--neon);}
+
+/* ── PILL PANEL (muncul di bawah tabs) ── */
+.pill-panel{
+  display:none;flex-wrap:wrap;gap:8px;align-items:center;
+  padding:12px 16px;border-radius:10px;
+  background:var(--card);border:1px solid var(--border2);
+  animation:panelSlide .2s ease;
+}
+.pill-panel.show{display:flex;}
+@keyframes panelSlide{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+/* Pills */
+.pill{padding:6px 14px;border-radius:100px;font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;border:1px solid;transition:all .2s;white-space:nowrap;}
+
+/* ── semua warna pill ── */
+.pill-all{color:var(--neon);border-color:rgba(0,255,136,.2);background:rgba(0,255,136,.06);}
 .pill-all.active,.pill-all:hover{background:var(--neon);color:#000;border-color:var(--neon);}
-.pill-bio{color:#10b981;border-color:rgba(16,185,129,0.2);background:rgba(16,185,129,0.04);}
+.pill-bio{color:#10b981;border-color:rgba(16,185,129,.25);}
 .pill-bio.active,.pill-bio:hover{background:#10b981;color:#000;border-color:#10b981;}
-.pill-fis{color:#22d3ee;border-color:rgba(34,211,238,0.2);background:rgba(34,211,238,0.04);}
+.pill-fis{color:#22d3ee;border-color:rgba(34,211,238,.25);}
 .pill-fis.active,.pill-fis:hover{background:#22d3ee;color:#000;border-color:#22d3ee;}
-.pill-tek{color:#a855f7;border-color:rgba(168,85,247,0.2);background:rgba(168,85,247,0.04);}
+.pill-tek{color:#a855f7;border-color:rgba(168,85,247,.25);}
 .pill-tek.active,.pill-tek:hover{background:#a855f7;color:#fff;border-color:#a855f7;}
-.pill-ast{color:#f59e0b;border-color:rgba(245,158,11,0.2);background:rgba(245,158,11,0.04);}
+.pill-ast{color:#f59e0b;border-color:rgba(245,158,11,.25);}
 .pill-ast.active,.pill-ast:hover{background:#f59e0b;color:#000;border-color:#f59e0b;}
-.pill-kim{color:#ef4444;border-color:rgba(239,68,68,0.2);background:rgba(239,68,68,0.04);}
+.pill-kim{color:#ef4444;border-color:rgba(239,68,68,.25);}
 .pill-kim.active,.pill-kim:hover{background:#ef4444;color:#fff;border-color:#ef4444;}
+.pill-mat{color:#f472b6;border-color:rgba(244,114,182,.25);}
+.pill-mat.active,.pill-mat:hover{background:#f472b6;color:#000;border-color:#f472b6;}
+.pill-sej{color:#c8924a;border-color:rgba(200,146,74,.25);}
+.pill-sej.active,.pill-sej:hover{background:#c8924a;color:#000;border-color:#c8924a;}
+.pill-mus{color:#34d399;border-color:rgba(52,211,153,.25);}
+.pill-mus.active,.pill-mus:hover{background:#34d399;color:#000;border-color:#34d399;}
+/* spiritual */
+.pill-isl{color:#818cf8;border-color:rgba(129,140,248,.25);}
+.pill-isl.active,.pill-isl:hover{background:#818cf8;color:#000;border-color:#818cf8;}
+.pill-krs{color:#60a8d4;border-color:rgba(96,168,212,.25);}
+.pill-krs.active,.pill-krs:hover{background:#60a8d4;color:#000;border-color:#60a8d4;}
+.pill-bud{color:#c8a020;border-color:rgba(200,160,32,.25);}
+.pill-bud.active,.pill-bud:hover{background:#c8a020;color:#000;border-color:#c8a020;}
+.pill-hin{color:#e07850;border-color:rgba(224,120,80,.25);}
+.pill-hin.active,.pill-hin:hover{background:#e07850;color:#000;border-color:#e07850;}
+.pill-kon{color:#d46060;border-color:rgba(212,96,96,.25);}
+.pill-kon.active,.pill-kon:hover{background:#d46060;color:#000;border-color:#d46060;}
 
-/* ── ARTIKEL LIST ── */
+/* ══ ARTIKEL ══ */
 .art-wrap{max-width:1100px;margin:0 auto;padding:0 40px 80px;}
-
-/* Loading */
 .loading{padding:80px 20px;text-align:center;}
 .ld-dots{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
 .ld{width:8px;height:8px;border-radius:50%;background:var(--neon);animation:ldp 1.4s infinite;}
 .ld:nth-child(2){animation-delay:.2s;}.ld:nth-child(3){animation-delay:.4s;}
-@keyframes ldp{0%,80%,100%{transform:scale(0.5);opacity:0.3;}40%{transform:scale(1);opacity:1;}}
+@keyframes ldp{0%,80%,100%{transform:scale(.5);opacity:.3;}40%{transform:scale(1);opacity:1;}}
 .ld-txt{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);}
-
-/* Artikel grid */
 .art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
-
-/* Art Card */
 .art-card{
-  background:var(--card);
-  border:1px solid var(--border2);
-  border-radius:12px;overflow:hidden;
-  display:flex;flex-direction:column;
-  animation:cardIn 0.45s ease both;
-  transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),
-             box-shadow 0.3s,border-color 0.3s;
+  background:var(--card);border:1px solid var(--border2);border-radius:12px;
+  overflow:hidden;display:flex;flex-direction:column;
+  animation:cardIn .45s ease both;
+  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s;
   box-shadow:0 2px 12px var(--shadow);
 }
 @keyframes cardIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 .art-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px var(--shadow);}
-
-/* Bidang color strip */
 .card-strip{height:3px;width:100%;flex-shrink:0;}
+
+/* strip semua bidang */
 .card-strip.bio{background:linear-gradient(90deg,#10b981,transparent);}
 .card-strip.fis{background:linear-gradient(90deg,#22d3ee,transparent);}
 .card-strip.tek{background:linear-gradient(90deg,#a855f7,transparent);}
 .card-strip.ast{background:linear-gradient(90deg,#f59e0b,transparent);}
 .card-strip.kim{background:linear-gradient(90deg,#ef4444,transparent);}
+.card-strip.mat{background:linear-gradient(90deg,#f472b6,#ec4899);}
+.card-strip.sej{background:linear-gradient(90deg,#c8924a,#a87030);}
+.card-strip.mus{background:linear-gradient(90deg,#34d399,#10b981);}
+.card-strip.isl{background:linear-gradient(90deg,#818cf8,#6366f1);}
+.card-strip.krs{background:linear-gradient(90deg,#60a8d4,#3b82f6);}
+.card-strip.bud{background:linear-gradient(90deg,#c8a020,#d97706);}
+.card-strip.hin{background:linear-gradient(90deg,#e07850,#dc2626);}
+.card-strip.kon{background:linear-gradient(90deg,#d46060,#b91c1c);}
 
 .card-body{padding:20px;flex:1;display:flex;flex-direction:column;}
 .card-meta{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
-.card-bidang{
-  font-family:'Fira Code',monospace;font-size:8px;
-  text-transform:uppercase;letter-spacing:1.5px;
-  padding:3px 8px;border-radius:2px;border:1px solid;
-  white-space:nowrap;
-}
-.card-bidang.bio{color:#10b981;border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.07);}
-.card-bidang.fis{color:#22d3ee;border-color:rgba(34,211,238,0.3);background:rgba(34,211,238,0.07);}
-.card-bidang.tek{color:#a855f7;border-color:rgba(168,85,247,0.3);background:rgba(168,85,247,0.07);}
-.card-bidang.ast{color:#f59e0b;border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.07);}
-.card-bidang.kim{color:#ef4444;border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.07);}
+.card-bidang{font-family:'Fira Code',monospace;font-size:8px;text-transform:uppercase;letter-spacing:1.5px;padding:3px 8px;border-radius:2px;border:1px solid;white-space:nowrap;}
+
+/* badge semua bidang */
+.card-bidang.bio{color:#10b981;border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.07);}
+.card-bidang.fis{color:#22d3ee;border-color:rgba(34,211,238,.3);background:rgba(34,211,238,.07);}
+.card-bidang.tek{color:#a855f7;border-color:rgba(168,85,247,.3);background:rgba(168,85,247,.07);}
+.card-bidang.ast{color:#f59e0b;border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.07);}
+.card-bidang.kim{color:#ef4444;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.07);}
+.card-bidang.mat{color:#f472b6;border-color:rgba(244,114,182,.3);background:rgba(244,114,182,.07);}
+.card-bidang.sej{color:#c8924a;border-color:rgba(200,146,74,.3);background:rgba(200,146,74,.07);}
+.card-bidang.mus{color:#34d399;border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.07);}
+.card-bidang.isl{color:#818cf8;border-color:rgba(129,140,248,.3);background:rgba(129,140,248,.07);}
+.card-bidang.krs{color:#60a8d4;border-color:rgba(96,168,212,.3);background:rgba(96,168,212,.07);}
+.card-bidang.bud{color:#c8a020;border-color:rgba(200,160,32,.3);background:rgba(200,160,32,.07);}
+.card-bidang.hin{color:#e07850;border-color:rgba(224,120,80,.3);background:rgba(224,120,80,.07);}
+.card-bidang.kon{color:#d46060;border-color:rgba(212,96,96,.3);background:rgba(212,96,96,.07);}
+
 .card-date{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
-
-.card-title{
-  font-family:'Syne',sans-serif;
-  font-size:clamp(13px,1.4vw,16px);font-weight:800;
-  line-height:1.3;margin-bottom:10px;
-  color:var(--chalk);
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
-  transition:color 0.2s;
-}
+.card-title{font-family:'Syne',sans-serif;font-size:clamp(13px,1.4vw,16px);font-weight:800;line-height:1.3;margin-bottom:10px;color:var(--chalk);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:color .2s;}
 .art-card:hover .card-title{color:var(--neon);}
+.card-snippet{font-family:'Libre Baskerville',serif;font-size:12px;font-style:italic;color:var(--body-txt);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1;margin-bottom:14px;}
+.card-cta{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-radius:6px;border:1px solid;text-decoration:none;font-family:'Fira Code',monospace;font-size:10px;transition:all .2s;}
 
-.card-snippet{
-  font-family:'Libre Baskerville',serif;
-  font-size:12px;font-style:italic;
-  color:var(--body-txt);line-height:1.7;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-  flex:1;margin-bottom:14px;
-}
-
-.card-cta{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:9px 14px;
-  border-radius:6px;border:1px solid;
-  text-decoration:none;
-  font-family:'Fira Code',monospace;font-size:10px;
-  letter-spacing:0.5px;
-  transition:all 0.2s;position:relative;overflow:hidden;
-}
-.card-cta.bio{color:#10b981;border-color:rgba(16,185,129,0.2);background:rgba(16,185,129,0.05);}
-.card-cta.bio:hover{background:rgba(16,185,129,0.12);}
-.card-cta.fis{color:#22d3ee;border-color:rgba(34,211,238,0.2);background:rgba(34,211,238,0.05);}
-.card-cta.fis:hover{background:rgba(34,211,238,0.12);}
-.card-cta.tek{color:#a855f7;border-color:rgba(168,85,247,0.2);background:rgba(168,85,247,0.05);}
-.card-cta.tek:hover{background:rgba(168,85,247,0.12);}
-.card-cta.ast{color:#f59e0b;border-color:rgba(245,158,11,0.2);background:rgba(245,158,11,0.05);}
-.card-cta.ast:hover{background:rgba(245,158,11,0.12);}
-.card-cta.kim{color:#ef4444;border-color:rgba(239,68,68,0.2);background:rgba(239,68,68,0.05);}
-.card-cta.kim:hover{background:rgba(239,68,68,0.12);}
-.cta-arrow{transition:transform 0.2s;}
+/* cta semua bidang */
+.card-cta.bio{color:#10b981;border-color:rgba(16,185,129,.2);background:rgba(16,185,129,.05);}
+.card-cta.bio:hover{background:rgba(16,185,129,.12);}
+.card-cta.fis{color:#22d3ee;border-color:rgba(34,211,238,.2);background:rgba(34,211,238,.05);}
+.card-cta.fis:hover{background:rgba(34,211,238,.12);}
+.card-cta.tek{color:#a855f7;border-color:rgba(168,85,247,.2);background:rgba(168,85,247,.05);}
+.card-cta.tek:hover{background:rgba(168,85,247,.12);}
+.card-cta.ast{color:#f59e0b;border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.05);}
+.card-cta.ast:hover{background:rgba(245,158,11,.12);}
+.card-cta.kim{color:#ef4444;border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.05);}
+.card-cta.kim:hover{background:rgba(239,68,68,.12);}
+.card-cta.mat{color:#f472b6;border-color:rgba(244,114,182,.2);background:rgba(244,114,182,.05);}
+.card-cta.mat:hover{background:rgba(244,114,182,.12);}
+.card-cta.sej{color:#c8924a;border-color:rgba(200,146,74,.2);background:rgba(200,146,74,.05);}
+.card-cta.sej:hover{background:rgba(200,146,74,.12);}
+.card-cta.mus{color:#34d399;border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.05);}
+.card-cta.mus:hover{background:rgba(52,211,153,.12);}
+.card-cta.isl{color:#818cf8;border-color:rgba(129,140,248,.2);background:rgba(129,140,248,.05);}
+.card-cta.isl:hover{background:rgba(129,140,248,.12);}
+.card-cta.krs{color:#60a8d4;border-color:rgba(96,168,212,.2);background:rgba(96,168,212,.05);}
+.card-cta.krs:hover{background:rgba(96,168,212,.12);}
+.card-cta.bud{color:#c8a020;border-color:rgba(200,160,32,.2);background:rgba(200,160,32,.05);}
+.card-cta.bud:hover{background:rgba(200,160,32,.12);}
+.card-cta.hin{color:#e07850;border-color:rgba(224,120,80,.2);background:rgba(224,120,80,.05);}
+.card-cta.hin:hover{background:rgba(224,120,80,.12);}
+.card-cta.kon{color:#d46060;border-color:rgba(212,96,96,.2);background:rgba(212,96,96,.05);}
+.card-cta.kon:hover{background:rgba(212,96,96,.12);}
+.cta-arrow{transition:transform .2s;}
 .art-card:hover .cta-arrow{transform:translateX(4px);}
 
-/* Empty state */
 .empty{padding:80px 20px;text-align:center;grid-column:1/-1;}
 .empty-icon{font-size:40px;margin-bottom:16px;display:block;}
 .empty-txt{font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);line-height:1.8;}
-.empty-txt strong{color:var(--neon);}
 
-/* ── PAGER ── */
-.pager{
-  display:none;justify-content:space-between;align-items:center;
-  padding:20px 0 0;border-top:1px solid var(--border2);
-}
+/* ══ PAGER ══ */
+.pager{display:none;justify-content:space-between;align-items:center;padding:20px 0 0;border-top:1px solid var(--border2);}
 .pager.show{display:flex;}
-.pager-btn{
-  padding:9px 20px;
-  background:var(--card);border:1px solid var(--border2);
-  border-radius:5px;color:var(--muted);
-  cursor:pointer;font-family:'Fira Code',monospace;font-size:10px;
-  transition:all 0.2s;
-}
-.pager-btn:hover:not(:disabled){border-color:rgba(0,255,136,0.3);color:var(--neon);}
-.pager-btn:disabled{opacity:0.25;cursor:not-allowed;}
-.pager-info{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);}
+.pager-btn{padding:9px 20px;background:var(--card);border:1px solid var(--border2);border-radius:5px;color:var(--muted);cursor:pointer;font-family:'Fira Code',monospace;font-size:10px;transition:all .2s;}
+.pager-btn:hover:not(:disabled){border-color:rgba(0,255,136,.3);color:var(--neon);}
+.pager-btn:disabled{opacity:.25;cursor:not-allowed;}
 .pager-nums{display:flex;gap:6px;}
-.pg-num{
-  width:28px;height:28px;border-radius:4px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Fira Code',monospace;font-size:10px;
-  cursor:pointer;border:1px solid var(--border2);
-  color:var(--muted);background:var(--card);transition:all 0.2s;
-}
-.pg-num.active{border-color:var(--neon);color:var(--neon);background:rgba(0,255,136,0.08);}
-.pg-num:hover:not(.active){border-color:rgba(0,255,136,0.2);color:var(--chalk);}
+.pg-num{width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;border:1px solid var(--border2);color:var(--muted);background:var(--card);transition:all .2s;}
+.pg-num.active{border-color:var(--neon);color:var(--neon);background:rgba(0,255,136,.08);}
+.pg-num:hover:not(.active){border-color:rgba(0,255,136,.2);color:var(--chalk);}
 
-/* ── PROGRESS FETCH ── */
-.fetch-progress{
-  max-width:1100px;margin:0 auto;padding:0 40px 16px;
-  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
-  display:flex;align-items:center;gap:10px;
-}
-.fp-bar-wrap{flex:1;height:2px;background:var(--dim);border-radius:2px;overflow:hidden;}
-.fp-bar{height:100%;background:linear-gradient(90deg,var(--neon),var(--plasma));width:0%;transition:width 0.4s;}
-
-/* ── FOOTER ── */
-.footer{
-  border-top:1px solid var(--border2);padding:22px 40px;
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
-  background:var(--bg2);transition:background 0.4s;
-}
-.footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+/* ══ FOOTER ══ */
+.footer{border-top:1px solid var(--border2);padding:22px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:var(--bg2);}
+.footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
 .footer a:hover{color:var(--neon);}
 
-/* ── RESPONSIVE ── */
+/* ══ RESPONSIVE ══ */
 @media(max-width:900px){.art-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:600px){
   .art-grid{grid-template-columns:1fr;}
   .nav{padding:0 16px;}
-  .page-header{padding:80px 18px 36px;}
-  .stats-row{padding:0 18px 0;}
-  .filter-bar{padding:0 18px 20px;}
-  .art-wrap{padding:0 18px 60px;}
+  .page-header{padding:80px 18px 28px;}
+  .stats-outer,.filter-bar,.art-wrap{padding-left:18px;padding-right:18px;}
+  .art-wrap{padding-bottom:60px;}
   .footer{padding:18px;}
   .sort-wrap{flex-wrap:wrap;}
   .nav-crumb{display:none;}
@@ -533,79 +346,95 @@ body::before{
   <div class="nav-left">
     <a class="nav-brand" href="https://ilmiora.blogspot.com">~/ILMIORA</a>
     <div class="nav-crumb">
-      <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">taman-sains</a>
+      <a href="https://ilmiora.blogspot.com">home</a>
       <span>/</span>
       <span style="color:var(--neon);">mulai-membaca</span>
     </div>
   </div>
-
   <div class="nav-right">
-    <!-- ════ TOGGLE DARK / LIGHT ════ -->
-    <div class="theme-toggle" onclick="toggleTheme()" title="Ganti tema">
-      <span class="toggle-icon" id="themeIcon">🌙</span>
-      <div class="toggle-track">
-        <div class="toggle-thumb" id="toggleThumb"></div>
-      </div>
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span id="themeIcon">&#x1F319;</span>
+      <div class="toggle-track"><div class="toggle-thumb" id="toggleThumb"></div></div>
       <span id="themeLabel" style="font-size:10px;">Gelap</span>
     </div>
-    <a class="nav-back" href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">← Taman Sains</a>
+    <a class="nav-back" href="https://ilmiora.blogspot.com">&#8592; ILMIORA Home</a>
   </div>
 </nav>
 
 <!-- HEADER -->
 <div class="page-header">
   <p class="header-eye">// Mulai Membaca</p>
-  <h1 class="page-title">
-    Semua <span class="hl">Artikel</span><br>Taman Sains
-  </h1>
-  <p class="page-desc">Koleksi lengkap dari 5 bidang ilmu — Biologi, Fisika, Teknologi, Astronomi, dan Kimia — dalam satu halaman. Diperbarui otomatis setiap ada artikel baru.</p>
+  <h1 class="page-title">Semua <span class="hl">Artikel</span><br>ILMIORA</h1>
+  <p class="page-desc">Koleksi lengkap dari seluruh bidang ILMIORA &mdash; Sains, Matematika, Sejarah, Musik, dan Spiritual &mdash; dalam satu halaman. Diperbarui otomatis setiap ada artikel baru.</p>
   <div class="live-badge">
     <span class="live-dot"></span>
-    <span>Sistem Aktif · 5 Bidang Ilmu</span>
+    <span>Sistem Hidup &middot; 13 bidang ilmu</span>
   </div>
 </div>
 
-<!-- STATS ROW -->
-<div class="stats-row">
-  <div class="stat-chip">
-    <div>
-      <div class="stat-chip-n" id="totalArtikel" style="color:var(--neon);">—</div>
-      <div class="stat-chip-l">Total Artikel</div>
+<!-- STATS — scrollable horizontal -->
+<div class="stats-outer">
+  <div class="stats-row">
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalArtikel" style="color:var(--neon);">&mdash;</div>
+      <div class="stat-chip-l">&#127758; Total</div>
     </div>
-  </div>
-  <div class="stat-chip">
-    <div>
-      <div class="stat-chip-n" id="totalBio" style="color:#10b981;">—</div>
-      <div class="stat-chip-l">🧬 Biologi</div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalBio" style="color:#10b981;">&mdash;</div>
+      <div class="stat-chip-l">&#x1F9EC; Biologi</div>
     </div>
-  </div>
-  <div class="stat-chip">
-    <div>
-      <div class="stat-chip-n" id="totalFis" style="color:#22d3ee;">—</div>
-      <div class="stat-chip-l">⚛️ Fisika</div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalFis" style="color:#22d3ee;">&mdash;</div>
+      <div class="stat-chip-l">&#9883; Fisika</div>
     </div>
-  </div>
-  <div class="stat-chip">
-    <div>
-      <div class="stat-chip-n" id="totalTek" style="color:#a855f7;">—</div>
-      <div class="stat-chip-l">💻 Teknologi</div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalTek" style="color:#a855f7;">&mdash;</div>
+      <div class="stat-chip-l">&#x1F4BB; Teknologi</div>
     </div>
-  </div>
-  <div class="stat-chip">
-    <div>
-      <div class="stat-chip-n" id="totalAst" style="color:#f59e0b;">—</div>
-      <div class="stat-chip-l">🔭 Astronomi</div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalAst" style="color:#f59e0b;">&mdash;</div>
+      <div class="stat-chip-l">&#x1F52D; Astronomi</div>
     </div>
-  </div>
-  <div class="stat-chip">
-    <div>
-      <div class="stat-chip-n" id="totalKim" style="color:#ef4444;">—</div>
-      <div class="stat-chip-l">🧪 Kimia</div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalKim" style="color:#ef4444;">&mdash;</div>
+      <div class="stat-chip-l">&#x1F9EA; Kimia</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalMat" style="color:#f472b6;">&mdash;</div>
+      <div class="stat-chip-l">&#x1F4D0; Matematika</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalSej" style="color:#c8924a;">&mdash;</div>
+      <div class="stat-chip-l">&#x1F4DC; Sejarah</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalMus" style="color:#34d399;">&mdash;</div>
+      <div class="stat-chip-l">&#x1F3B5; Musik</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalIsl" style="color:#818cf8;">&mdash;</div>
+      <div class="stat-chip-l">&#9764; Islam</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalKrs" style="color:#60a8d4;">&mdash;</div>
+      <div class="stat-chip-l">&#10013; Kristen</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalBud" style="color:#c8a020;">&mdash;</div>
+      <div class="stat-chip-l">&#9784; Buddha</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalHin" style="color:#e07850;">&mdash;</div>
+      <div class="stat-chip-l">&#x1F549; Hindu</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-n" id="totalKon" style="color:#d46060;">&mdash;</div>
+      <div class="stat-chip-l">&#9775; Konghucu</div>
     </div>
   </div>
 </div>
 
-<!-- FETCH PROGRESS -->
+<!-- PROGRESS -->
 <div class="fetch-progress" id="fetchProgress">
   <span id="fetchTxt">Memuat dari Blogger...</span>
   <div class="fp-bar-wrap"><div class="fp-bar" id="fpBar"></div></div>
@@ -614,29 +443,69 @@ body::before{
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
+
+  <!-- Search + Sort -->
   <div class="search-row">
     <div class="search-wrap">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon">&#128269;</span>
       <input class="search-input" id="searchInput" type="text"
-        placeholder="Cari artikel dari semua bidang..."
-        oninput="applyFilter()"/>
+        placeholder="Cari judul, bidang, atau topik..." oninput="applyFilter()"/>
     </div>
     <div class="sort-wrap">
       <button class="sort-btn active" id="sortNew" onclick="setSort('new')">Terbaru</button>
       <button class="sort-btn" id="sortOld" onclick="setSort('old')">Terlama</button>
-      <button class="sort-btn" id="sortAZ"  onclick="setSort('az')">A–Z</button>
+      <button class="sort-btn" id="sortAZ"  onclick="setSort('az')">A&ndash;Z</button>
     </div>
   </div>
 
-  <div class="filter-pills">
-    <span class="filter-label">Bidang:</span>
-    <span class="pill pill-all active" onclick="setFilter('all')">🌐 Semua</span>
-    <span class="pill pill-bio" onclick="setFilter('bio')">🧬 Biologi</span>
-    <span class="pill pill-fis" onclick="setFilter('fis')">⚛️ Fisika</span>
-    <span class="pill pill-tek" onclick="setFilter('tek')">💻 Teknologi</span>
-    <span class="pill pill-ast" onclick="setFilter('ast')">🔭 Astronomi</span>
-    <span class="pill pill-kim" onclick="setFilter('kim')">🧪 Kimia</span>
+  <!-- SLIDE TABS — satu baris scrollable -->
+  <div class="filter-tabs">
+    <button class="tab-btn active" data-tab="semua"    onclick="switchTab(this)">&#127758; Semua</button>
+    <button class="tab-btn"        data-tab="sains"    onclick="switchTab(this)">&#x1F52C; Sains</button>
+    <button class="tab-btn"        data-tab="mat"      onclick="switchTab(this)">&#x1F4D0; Matematika</button>
+    <button class="tab-btn"        data-tab="sej"      onclick="switchTab(this)">&#x1F4DC; Sejarah</button>
+    <button class="tab-btn"        data-tab="mus"      onclick="switchTab(this)">&#x1F3B5; Musik</button>
+    <button class="tab-btn"        data-tab="spiritual" onclick="switchTab(this)">&#10024; Spiritual</button>
   </div>
+
+  <!-- PANEL: Semua -->
+  <div class="pill-panel show" id="panel-semua">
+    <span class="pill pill-all active" onclick="setFilter('all')">&#127758; Semua Artikel</span>
+  </div>
+
+  <!-- PANEL: Sains -->
+  <div class="pill-panel" id="panel-sains">
+    <span class="pill pill-bio" onclick="setFilter('bio')">&#x1F9EC; Biologi</span>
+    <span class="pill pill-fis" onclick="setFilter('fis')">&#9883; Fisika</span>
+    <span class="pill pill-tek" onclick="setFilter('tek')">&#x1F4BB; Teknologi</span>
+    <span class="pill pill-ast" onclick="setFilter('ast')">&#x1F52D; Astronomi</span>
+    <span class="pill pill-kim" onclick="setFilter('kim')">&#x1F9EA; Kimia</span>
+  </div>
+
+  <!-- PANEL: Matematika -->
+  <div class="pill-panel" id="panel-mat">
+    <span class="pill pill-mat" onclick="setFilter('mat')">&#x1F4D0; Matematika</span>
+  </div>
+
+  <!-- PANEL: Sejarah -->
+  <div class="pill-panel" id="panel-sej">
+    <span class="pill pill-sej" onclick="setFilter('sej')">&#x1F4DC; Semua Sejarah</span>
+  </div>
+
+  <!-- PANEL: Musik -->
+  <div class="pill-panel" id="panel-mus">
+    <span class="pill pill-mus" onclick="setFilter('mus')">&#x1F3B5; Musik</span>
+  </div>
+
+  <!-- PANEL: Spiritual — semua agama -->
+  <div class="pill-panel" id="panel-spiritual">
+    <span class="pill pill-isl" onclick="setFilter('isl')">&#9764; Islam</span>
+    <span class="pill pill-krs" onclick="setFilter('krs')">&#10013; Kristen</span>
+    <span class="pill pill-bud" onclick="setFilter('bud')">&#9784; Buddha</span>
+    <span class="pill pill-hin" onclick="setFilter('hin')">&#x1F549; Hindu</span>
+    <span class="pill pill-kon" onclick="setFilter('kon')">&#9775; Konghucu</span>
+  </div>
+
 </div>
 
 <!-- ARTIKEL -->
@@ -644,197 +513,269 @@ body::before{
   <div class="art-grid" id="artGrid">
     <div class="loading" style="grid-column:1/-1;">
       <div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>
-      <div class="ld-txt">Memuat artikel dari 5 bidang...</div>
+      <div class="ld-txt">Memuat artikel dari semua bidang...</div>
     </div>
   </div>
   <div class="pager" id="pager">
-    <button class="pager-btn" id="btnPrev" onclick="changePage(-1)">← Sebelumnya</button>
+    <button class="pager-btn" id="btnPrev" onclick="changePage(-1)">&#8592; Sebelumnya</button>
     <div class="pager-nums" id="pagerNums"></div>
-    <button class="pager-btn" id="btnNext" onclick="changePage(1)">Selanjutnya →</button>
+    <button class="pager-btn" id="btnNext" onclick="changePage(1)">Selanjutnya &#8594;</button>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="footer">
-  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-sains.html">← Taman Sains</a>
-  <span style="font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:0.5;">ILMIORA © 2025 — Semua Artikel · Live Feed</span>
-  <a href="https://ilmiora.blogspot.com">ILMIORA Home →</a>
+  <a href="https://ilmiora.blogspot.com">&#8592; ILMIORA Home</a>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.5;">ILMIORA &copy; 2025 &mdash; Semua Artikel &middot; Live Feed</span>
+  <a href="https://ilmiora.blogspot.com">ILMIORA Home &#8594;</a>
 </footer>
 
 <script>
-/* ══════════════════════════════════════════
-   📌 KONFIGURASI — GANTI SESUAI KEBUTUHAN
-══════════════════════════════════════════ */
-const BLOG = 'https://ilmiora.blogspot.com'; // 📌 URL Blogger kamu
+/* ═══════════════════════════════════════════════════════
+   KONFIGURASI BIDANG
+   PENTING: Setiap key HARUS UNIK. Tidak boleh duplikat.
+   Label harus SAMA PERSIS dengan label di Blogger.
+═══════════════════════════════════════════════════════ */
+const BLOG = 'https://ilmiora.blogspot.com';
 
-// 📌 Label Blogger per bidang — harus sama persis dengan label di postingan
 const BIDANG = [
-  { key:'bio', label:'Biologi',   icon:'🧬', color:'#10b981' },
-  { key:'fis', label:'Fisika',    icon:'⚛️', color:'#22d3ee' },
-  { key:'tek', label:'Teknologi', icon:'💻', color:'#a855f7' },
-  { key:'ast', label:'Astronomi', icon:'🔭', color:'#f59e0b' },
-  { key:'kim', label:'Kimia',     icon:'🧪', color:'#ef4444' },
+  /* ── Sains ── */
+  { key:'bio', label:'Biologi',    icon:'&#x1F9EC;', labels:['Biologi'] },
+  { key:'fis', label:'Fisika',     icon:'&#9883;',   labels:['Fisika'] },
+  { key:'tek', label:'Teknologi',  icon:'&#x1F4BB;', labels:['Teknologi'] },
+  { key:'ast', label:'Astronomi',  icon:'&#x1F52D;', labels:['Astronomi'] },
+  { key:'kim', label:'Kimia',      icon:'&#x1F9EA;', labels:['Kimia'] },
+  /* ── Matematika ── */
+  { key:'mat', label:'Matematika', icon:'&#x1F4D0;', labels:['Matematika'] },
+  /* ── Sejarah — semua sub-kajian ── */
+  { key:'sej', label:'Sejarah',    icon:'&#x1F4DC;',
+    labels:['Sejarah Islam','Sejarah Nusantara','Tokoh & Biografi','Sejarah Dunia','Sejarah Sains','Kronik Umum'] },
+  /* ── Musik ── */
+  { key:'mus', label:'Musik',      icon:'&#x1F3B5;', labels:['Musik'] },
+  /* ── Islam — semua label kajian Taman Islam ──
+     Tambah label baru di sini jika ada kajian baru di Taman Islam */
+  { key:'isl', label:'Islam',      icon:'&#9764;',
+    labels:[
+      'Al-Quran','Hadits','Tauhid','Fiqh','Tasawuf',
+      'Sejarah Islam','Sirah Nabawiyah','Akhlak','Muamalah',
+      'Al-quran','Al-hadist','Kajian Islam'
+    ]},
+  /* ── Kristen ── */
+  { key:'krs', label:'Kristen',    icon:'&#10013;',
+    labels:['Alkitab','Teologi','Doa & Ibadah','Sejarah Gereja','Etika Kristen'] },
+  /* ── Buddha ── */
+  { key:'bud', label:'Buddha',     icon:'&#9784;',
+    labels:['Dhamma','Meditasi','Tripitaka','Nirvana','Etika Buddha'] },
+  /* ── Hindu ── */
+  { key:'hin', label:'Hindu',      icon:'&#x1F549;',
+    labels:['Veda','Dharma','Karma & Moksha','Yoga','Puja & Ritual'] },
+  /* ── Konghucu ── */
+  { key:'kon', label:'Konghucu',   icon:'&#9775;',
+    labels:['Lunyu','Ren (\u4EC1)','Yi (\u4E49)','Li (\u793C)','Zhi (\u667A)'] },
 ];
 
-const PER_PAGE = 12; // 📌 Artikel per halaman
+/* ── ID chip untuk setiap key ── */
+const CHIP_ID = {
+  bio:'totalBio', fis:'totalFis', tek:'totalTek', ast:'totalAst', kim:'totalKim',
+  mat:'totalMat', sej:'totalSej', mus:'totalMus',
+  isl:'totalIsl', krs:'totalKrs', bud:'totalBud', hin:'totalHin', kon:'totalKon'
+};
 
-/* ══ STATE ══ */
+const PER_PAGE = 12;
+
 let allArticles = [];
 let filtered    = [];
 let page        = 1;
 let sortMode    = 'new';
 let filterKey   = 'all';
-let loaded      = 0;
+let doneCount   = 0;          // jumlah BIDANG yang selesai di-fetch
+const globalSeen = new Set(); // deduplikasi URL global
 
-/* ══ THEME TOGGLE ══ */
+/* ── THEME ── */
 function toggleTheme(){
   const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.getElementById('themeIcon').textContent  = isDark ? '☀️' : '🌙';
-  document.getElementById('themeLabel').textContent = isDark ? 'Terang' : 'Gelap';
-  localStorage.setItem('ilmiora-theme', isDark ? 'light' : 'dark');
+  const dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  document.getElementById('themeIcon').innerHTML  = dark ? '&#9728;' : '&#x1F319;';
+  document.getElementById('themeLabel').textContent = dark ? 'Terang' : 'Gelap';
+  localStorage.setItem('ilmiora-theme', dark ? 'light' : 'dark');
 }
-// Restore saved theme
 (function(){
-  const saved = localStorage.getItem('ilmiora-theme');
-  if(saved){
-    document.documentElement.setAttribute('data-theme', saved);
-    if(saved === 'light'){
-      document.getElementById('themeIcon').textContent  = '☀️';
-      document.getElementById('themeLabel').textContent = 'Terang';
-    }
-  }
+  const s = localStorage.getItem('ilmiora-theme');
+  if(s){ document.documentElement.setAttribute('data-theme',s);
+    if(s==='light'){ document.getElementById('themeIcon').innerHTML='&#9728;'; document.getElementById('themeLabel').textContent='Terang'; } }
 })();
 
-/* ══ SCROLL ══ */
 window.addEventListener('scroll',()=>{
   document.getElementById('scrollBar').style.width =
-    (scrollY / (document.body.scrollHeight - innerHeight) * 100) + '%';
+    (scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
 });
 
-/* ══ FETCH SEMUA BIDANG ══ */
-function fetchBidang(bidang, cb){
-  const s = document.createElement('script');
-  const fnName = '_cb_' + bidang.key;
-  window[fnName] = function(data){
-    const entries = (data.feed.entry || []).map(e => {
-      const link = (e.link||[]).find(l => l.rel === 'alternate');
-      const raw  = e.published.$t;
-      const dateObj = new Date(raw);
+/* ── SLIDE TAB ── */
+function switchTab(btn){
+  const tab = btn.getAttribute('data-tab');
+  /* reset semua tab */
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  /* sembunyikan semua panel */
+  document.querySelectorAll('.pill-panel').forEach(p=>p.classList.remove('show'));
+  const panel = document.getElementById('panel-'+tab);
+  if(panel) panel.classList.add('show');
+  /* auto-filter untuk tab single-bidang */
+  const autoFilter = {mat:'mat',sej:'sej',mus:'mus'};
+  if(tab === 'semua') setFilter('all');
+  else if(autoFilter[tab]) setFilter(autoFilter[tab]);
+}
+
+/* ── FETCH ── */
+function fetchOneLabel(lbl, bidang, cb){
+  /* nama callback unik per fetch — hindari collision */
+  const uid = '_cb_' + bidang.key + '_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+  window[uid] = function(data){
+    const entries = ((data.feed && data.feed.entry) || []).map(e => {
+      const link    = (e.link||[]).find(l=>l.rel==='alternate');
+      const dateObj = new Date(e.published.$t);
       const dateStr = dateObj.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
-      const snippet = ((e.summary ? e.summary.$t : e.title.$t) || '')
-        .replace(/<[^>]+>/g,'').substring(0, 160) + '…';
-      return { title: e.title.$t, url: link ? link.href : '#',
-               date: dateStr, dateObj, snippet,
-               key: bidang.key, label: bidang.label,
-               icon: bidang.icon, color: bidang.color };
+      const raw     = (e.summary ? e.summary.$t : '') || e.title.$t || '';
+      const snippet = raw.replace(/<[^>]+>/g,'').substring(0,160)+'…';
+      return {
+        title: e.title.$t, url: link?link.href:'#',
+        date: dateStr, dateObj, snippet,
+        key: bidang.key, label: bidang.label, icon: bidang.icon
+      };
     });
     cb(entries);
+    /* bersihkan callback */
+    delete window[uid];
   };
-  s.onerror = () => cb([]);
-  s.src = `${BLOG}/feeds/posts/default/-/${encodeURIComponent(bidang.label)}?alt=json-in-script&max-results=50&callback=${fnName}`;
+  const s = document.createElement('script');
+  s.onerror = ()=>{ cb([]); delete window[uid]; };
+  /* max-results=50 — ambil semua artikel per label */
+  s.src = BLOG+'/feeds/posts/default/-/'+encodeURIComponent(lbl)
+        +'?alt=json-in-script&max-results=50&callback='+uid;
   document.head.appendChild(s);
 }
 
+function fetchBidang(bidang, cb){
+  const labels  = bidang.labels || [bidang.label];
+  const seen    = new Set();
+  let collected = [];
+  let pending   = labels.length;
+  labels.forEach(lbl => {
+    fetchOneLabel(lbl, bidang, entries => {
+      entries.forEach(e=>{
+        if(!seen.has(e.url)){ seen.add(e.url); collected.push(e); }
+      });
+      if(--pending === 0) cb(collected);
+    });
+  });
+}
+
+/* ── LOAD ALL ─────────────────────────────────────────────
+   FIX UTAMA:
+   - Satu loop, setiap key unik → doneCount akan mencapai BIDANG.length
+   - Global deduplikasi via globalSeen
+   - totalArtikel diupdate HANYA setelah semua BIDANG selesai
+────────────────────────────────────────────────────────── */
 (function loadAll(){
-  const counts = {};
-  BIDANG.forEach(b => counts[b.key] = 0);
-  let done = 0;
+  const total = BIDANG.length;
 
   BIDANG.forEach((b, i) => {
     setTimeout(() => {
       fetchBidang(b, entries => {
-        allArticles.push(...entries);
-        counts[b.key] = entries.length;
-        done++;
-        loaded = done;
+        /* deduplikasi global — cegah artikel muncul ganda */
+        let added = 0;
+        entries.forEach(e => {
+          if(!globalSeen.has(e.url)){
+            globalSeen.add(e.url);
+            allArticles.push(e);
+            added++;
+          }
+        });
 
-        // Update stat chips
-        document.getElementById('total' + b.key.charAt(0).toUpperCase() + b.key.slice(1)).textContent = entries.length;
+        /* update chip per bidang (tampilkan jumlah artikel di bidang itu) */
+        const chipEl = document.getElementById(CHIP_ID[b.key]);
+        if(chipEl) chipEl.textContent = entries.length;
 
-        // Progress bar
-        const pct = Math.round(done / BIDANG.length * 100);
-        document.getElementById('fpBar').style.width = pct + '%';
-        document.getElementById('fetchPct').textContent = pct + '%';
-        document.getElementById('fetchTxt').textContent =
-          `Memuat ${b.icon} ${b.label}...`;
+        /* progress bar */
+        doneCount++;
+        const pct = Math.round(doneCount/total*100);
+        document.getElementById('fpBar').style.width    = pct+'%';
+        document.getElementById('fetchPct').textContent = pct+'%';
+        document.getElementById('fetchTxt').textContent = 'Memuat '+b.label+'...';
 
-        if(done === BIDANG.length){
-          // Semua selesai
+        /* semua bidang selesai */
+        if(doneCount === total){
           document.getElementById('totalArtikel').textContent = allArticles.length;
           document.getElementById('fetchProgress').style.display = 'none';
           applyFilter();
         }
       });
-    }, i * 200); // stagger 200ms antar fetch
+    }, i * 450); /* stagger 450ms — cukup longgar untuk Blogger API */
   });
 })();
 
-/* ══ FILTER & SORT ══ */
+/* ── FILTER ── */
 function setFilter(key){
   filterKey = key;
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-  document.querySelector('.pill-' + (key === 'all' ? 'all' : key)).classList.add('active');
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  const t = document.querySelector('.pill-'+(key==='all'?'all':key));
+  if(t) t.classList.add('active');
   page = 1;
   applyFilter();
 }
 
 function setSort(mode){
   sortMode = mode;
-  ['sortNew','sortOld','sortAZ'].forEach(id =>
-    document.getElementById(id).classList.remove('active'));
+  ['sortNew','sortOld','sortAZ'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById(mode==='new'?'sortNew':mode==='old'?'sortOld':'sortAZ').classList.add('active');
   page = 1;
   applyFilter();
 }
 
 function applyFilter(){
-  if(loaded < BIDANG.length && allArticles.length === 0) return;
-  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  if(allArticles.length === 0) return;
+  const q = (document.getElementById('searchInput').value||'').toLowerCase().trim();
+
   filtered = allArticles.filter(a => {
-    const matchBidang = filterKey === 'all' || a.key === filterKey;
-    const matchSearch = !q ||
+    const matchKey = filterKey === 'all' || a.key === filterKey;
+    const matchQ   = !q ||
       a.title.toLowerCase().includes(q) ||
       a.snippet.toLowerCase().includes(q) ||
       a.label.toLowerCase().includes(q);
-    return matchBidang && matchSearch;
+    return matchKey && matchQ;
   });
 
-  // Sort
-  if(sortMode === 'new') filtered.sort((a,b) => b.dateObj - a.dateObj);
-  else if(sortMode === 'old') filtered.sort((a,b) => a.dateObj - b.dateObj);
-  else filtered.sort((a,b) => a.title.localeCompare(b.title,'id'));
+  if(sortMode==='new')      filtered.sort((a,b)=>b.dateObj-a.dateObj);
+  else if(sortMode==='old') filtered.sort((a,b)=>a.dateObj-b.dateObj);
+  else                      filtered.sort((a,b)=>a.title.localeCompare(b.title,'id'));
 
   page = 1;
   render();
 }
 
-/* ══ RENDER ══ */
+/* ── RENDER ── */
 function render(){
   const grid  = document.getElementById('artGrid');
   const pager = document.getElementById('pager');
-  const total = Math.ceil(filtered.length / PER_PAGE);
-  const start = (page - 1) * PER_PAGE;
-  const items = filtered.slice(start, start + PER_PAGE);
+  const total = Math.ceil(filtered.length/PER_PAGE);
+  const items = filtered.slice((page-1)*PER_PAGE, page*PER_PAGE);
 
   if(!items.length){
-    const isLoading = loaded < BIDANG.length;
     grid.innerHTML = `
       <div class="empty">
-        <span class="empty-icon">${isLoading ? '⏳' : '🔍'}</span>
+        <span class="empty-icon">&#128269;</span>
         <div class="empty-txt">
-          ${isLoading
-            ? 'Masih memuat artikel...'
-            : 'Artikel tidak ditemukan.<br>Coba kata kunci lain atau pilih bidang berbeda.<br><br>Pastikan postingan di Blogger sudah diberi label yang sesuai.'}
+          Artikel tidak ditemukan.<br>
+          Coba kata kunci lain atau pilih bidang lain.<br><br>
+          Pastikan postingan Blogger sudah diberi label yang sesuai.
         </div>
       </div>`;
     pager.classList.remove('show');
     return;
   }
 
-  grid.innerHTML = items.map((a, i) => `
-    <article class="art-card" style="animation-delay:${i * 0.05}s;">
+  grid.innerHTML = items.map((a,i)=>`
+    <article class="art-card" style="animation-delay:${i*.05}s;">
       <div class="card-strip ${a.key}"></div>
       <div class="card-body">
         <div class="card-meta">
@@ -845,45 +786,28 @@ function render(){
         <p class="card-snippet">${a.snippet}</p>
         <a class="card-cta ${a.key}" href="${a.url}" target="_blank">
           <span>Baca Selengkapnya</span>
-          <span class="cta-arrow">→</span>
+          <span class="cta-arrow">&#8594;</span>
         </a>
       </div>
     </article>`).join('');
 
-  // Pager
   if(total > 1){
     pager.classList.add('show');
-    document.getElementById('btnPrev').disabled = page === 1;
-    document.getElementById('btnNext').disabled = page === total;
-
-    // Page numbers (max 5 shown)
-    const nums = document.getElementById('pagerNums');
-    let html = '';
-    let startP = Math.max(1, page - 2);
-    let endP   = Math.min(total, startP + 4);
-    if(endP - startP < 4) startP = Math.max(1, endP - 4);
-    for(let n = startP; n <= endP; n++){
-      html += `<div class="pg-num${n===page?' active':''}" onclick="goPage(${n})">${n}</div>`;
-    }
-    nums.innerHTML = html;
-    document.getElementById('pagerInfo').textContent = '';
+    document.getElementById('btnPrev').disabled = page===1;
+    document.getElementById('btnNext').disabled = page===total;
+    let s=Math.max(1,page-2), e=Math.min(total,s+4);
+    if(e-s<4) s=Math.max(1,e-4);
+    document.getElementById('pagerNums').innerHTML =
+      Array.from({length:e-s+1},(_,n)=>`
+        <div class="pg-num${(s+n)===page?' active':''}" onclick="goPage(${s+n})">${s+n}</div>`).join('');
   } else {
     pager.classList.remove('show');
   }
-
-  // Scroll ke atas artikel area
-  document.querySelector('.filter-bar').scrollIntoView({behavior:'smooth', block:'start'});
+  document.querySelector('.filter-bar').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function changePage(d){
-  const total = Math.ceil(filtered.length / PER_PAGE);
-  page = Math.max(1, Math.min(total, page + d));
-  render();
-}
-function goPage(n){
-  page = n;
-  render();
-}
+function changePage(d){ page=Math.max(1,Math.min(Math.ceil(filtered.length/PER_PAGE),page+d)); render(); }
+function goPage(n){ page=n; render(); }
 </script>
 </body>
 </html>
