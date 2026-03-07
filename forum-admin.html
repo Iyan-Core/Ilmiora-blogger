@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel &mdash; ILMIORA Moderasi</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+  import {
+    getDatabase, ref, onValue, update, remove,
+    query, orderByChild, serverTimestamp
+  } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+  /* ════════════════════════════════════
+     CONFIG FIREBASE — PROJECT ilmiora-auth
+     Satu project untuk semua fitur ILMIORA:
+     Auth login, chat, admin forum, dsb.
+  ════════════════════════════════════ */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",
+    authDomain:        "ilmiora-auth.firebaseapp.com",
+    // 📌 Aktifkan Realtime Database di Firebase Console dulu
+    // URL otomatis setelah aktif: https://ilmiora-auth-default-rtdb.firebaseio.com
+    databaseURL:       "https://ilmiora-auth-default-rtdb.firebaseio.com",
+    projectId:         "ilmiora-auth",
+    storageBucket:     "ilmiora-auth.firebasestorage.app",
+    messagingSenderId: "945061456781",
+    appId:             "1:945061456781:web:222e641bdef891dfe2abc4"
+  };
+
+  /* ════════════════════════════════════
+     📌 PASSWORD ADMIN
+     Ganti dengan password yang kuat!
+  ════════════════════════════════════ */
+  const ADMIN_PASSWORD = 'ilmiora_admin_2026';
+
+  /* ── State ── */
+  let allThreads = {};
+  let activeFilter = 'pending';
+  let activeSearch = '';
+  let editId = null;
+
+  const KATEGORI_MAP = {
+    sains:     { label:'Sains & Teknologi', icon:'🔬', color:'#22d3ee' },
+    sejarah:   { label:'Sejarah & Budaya',  icon:'📜', color:'#c8924a' },
+    spiritual: { label:'Spiritual & Agama', icon:'✨', color:'#818cf8' },
+    matematika:{ label:'Matematika',        icon:'📐', color:'#f472b6' },
+    musik:     { label:'Musik & Seni',      icon:'🎵', color:'#34d399' },
+    opini:     { label:'Opini & Analisis',  icon:'💭', color:'#a855f7' },
+    berita:    { label:'Berita Lokal',      icon:'📰', color:'#f59e0b' },
+    lainnya:   { label:'Lainnya',           icon:'🌐', color:'#6b7a99' },
+  };
+
+  let db;
+
+  /* ════════════════════════════════════
+     AUTH — login sederhana
+  ════════════════════════════════════ */
+  window.doLogin = function() {
+    const pw = document.getElementById('pwInput').value;
+    if(pw === ADMIN_PASSWORD) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminApp').style.display   = 'block';
+      sessionStorage.setItem('ilm_admin_auth', '1');
+      initAdmin();
+    } else {
+      const err = document.getElementById('loginErr');
+      err.textContent = 'Password salah. Coba lagi.';
+      err.style.display = 'block';
+      document.getElementById('pwInput').classList.add('shake');
+      setTimeout(() => document.getElementById('pwInput').classList.remove('shake'), 500);
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Auto-login jika sudah auth di session
+    if(sessionStorage.getItem('ilm_admin_auth') === '1') {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminApp').style.display   = 'block';
+      initAdmin();
+    }
+    // Enter key untuk login
+    document.getElementById('pwInput')?.addEventListener('keydown', e => {
+      if(e.key === 'Enter') window.doLogin();
+    });
+
+    // Scroll bar
+    window.addEventListener('scroll', () => {
+      document.getElementById('sb').style.width =
+        (scrollY / (document.body.scrollHeight - innerHeight) * 100) + '%';
+    });
+  });
+
+  /* ════════════════════════════════════
+     INIT ADMIN
+  ════════════════════════════════════ */
+  function initAdmin() {
+    const app = initializeApp(firebaseConfig);
+    db = getDatabase(app);
+
+    // Load semua thread, live update
+    onValue(ref(db, 'threads'), snap => {
+      allThreads = {};
+      snap.forEach(child => {
+        allThreads[child.key] = { id: child.key, ...child.val() };
+      });
+      updateCounts();
+      renderList();
+    });
+  }
+
+  /* ════════════════════════════════════
+     COUNTS (tab badge)
+  ════════════════════════════════════ */
+  function updateCounts() {
+    const counts = { pending:0, approved:0, rejected:0 };
+    Object.values(allThreads).forEach(t => {
+      if(counts[t.status] !== undefined) counts[t.status]++;
+    });
+    document.getElementById('cnt_pending').textContent  = counts.pending;
+    document.getElementById('cnt_approved').textContent = counts.approved;
+    document.getElementById('cnt_rejected').textContent = counts.rejected;
+    document.getElementById('cnt_total').textContent    = Object.keys(allThreads).length;
+
+    // Badge warna
+    const pendingBadge = document.getElementById('cnt_pending');
+    pendingBadge.style.background = counts.pending > 0
+      ? 'rgba(245,158,11,.18)' : 'rgba(255,255,255,.06)';
+    pendingBadge.style.color = counts.pending > 0 ? '#f59e0b' : 'var(--muted)';
+  }
+
+  /* ════════════════════════════════════
+     FILTER & RENDER LIST
+  ════════════════════════════════════ */
+  window.setFilter = function(f) {
+    activeFilter = f;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab_' + f).classList.add('active');
+    renderList();
+  };
+
+  window.doSearch = function() {
+    activeSearch = document.getElementById('searchAdmin').value.toLowerCase().trim();
+    renderList();
+  };
+
+  function renderList() {
+    const grid = document.getElementById('threadGrid');
+    let items = Object.values(allThreads)
+      .filter(t => {
+        const matchStatus = activeFilter === 'all' || t.status === activeFilter;
+        const matchSearch = !activeSearch ||
+          (t.judul||'').toLowerCase().includes(activeSearch) ||
+          (t.konten||'').toLowerCase().includes(activeSearch) ||
+          (t.nama||'').toLowerCase().includes(activeSearch) ||
+          (t.kategori||'').toLowerCase().includes(activeSearch);
+        return matchStatus && matchSearch;
+      })
+      .sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+
+    if(!items.length) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <div class="empty-txt">${activeFilter === 'pending' ? 'Tidak ada artikel menunggu review.' : 'Tidak ada artikel ditemukan.'}</div>
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = items.map(t => renderCard(t)).join('');
+  }
+
+  function renderCard(t) {
+    const kat     = KATEGORI_MAP[t.kategori] || KATEGORI_MAP.lainnya;
+    const dateStr = t.createdAt
+      ? new Date(t.createdAt).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})
+      : '—';
+    const snippet = (t.konten||'').substring(0, 220) + (t.konten?.length > 220 ? '...' : '');
+    const statusClass = { pending:'warn', approved:'ok', rejected:'err' }[t.status] || 'warn';
+    const statusLabel = { pending:'⏳ Pending', approved:'✓ Approved', rejected:'✗ Rejected' }[t.status] || t.status;
+
+    return `
+    <div class="thread-card" id="card_${t.id}" data-status="${t.status}">
+      <div class="tc-head">
+        <span class="tc-kat" style="color:${kat.color};border-color:${kat.color}33;">
+          ${kat.icon} ${kat.label}
+        </span>
+        <span class="tc-status ${statusClass}">${statusLabel}</span>
+        <span class="tc-id">ID: ${t.id.slice(-6).toUpperCase()}</span>
+      </div>
+      <h3 class="tc-title">${escHtml(t.judul)}</h3>
+      <p class="tc-body">${escHtml(snippet)}</p>
+      <div class="tc-meta">
+        <span>👤 ${escHtml(t.nama||'Anonim')}</span>
+        ${t.kontak ? `<span>📧 ${escHtml(t.kontak)}</span>` : ''}
+        ${t.sumber ? `<span>🔗 <a href="${escHtml(t.sumber)}" target="_blank" style="color:var(--neon);">${escHtml(t.sumber.substring(0,40))}...</a></span>` : ''}
+        <span>🕐 ${dateStr}</span>
+      </div>
+      <div class="tc-actions">
+        ${t.status !== 'approved' ? `
+        <button class="act-btn approve" onclick="approveThread('${t.id}')">
+          ✓ Setujui
+        </button>` : ''}
+        ${t.status !== 'rejected' ? `
+        <button class="act-btn reject" onclick="rejectThread('${t.id}')">
+          ✗ Tolak
+        </button>` : ''}
+        <button class="act-btn edit" onclick="openEdit('${t.id}')">
+          ✎ Edit
+        </button>
+        <button class="act-btn preview" onclick="toggleFull('${t.id}')">
+          ⊞ Lihat Lengkap
+        </button>
+        <button class="act-btn delete" onclick="deleteThread('${t.id}')">
+          🗑 Hapus
+        </button>
+      </div>
+      <div class="tc-full" id="full_${t.id}" style="display:none;">
+        <div class="full-divider"></div>
+        <div class="full-content">${escHtml(t.konten||'').replace(/\n/g,'<br>')}</div>
+      </div>
+    </div>`;
+  }
+
+  window.toggleFull = function(id) {
+    const el = document.getElementById('full_' + id);
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  };
+
+  /* ════════════════════════════════════
+     AKSI MODERASI
+  ════════════════════════════════════ */
+  window.approveThread = async function(id) {
+    flashCard(id, 'approving');
+    await update(ref(db, 'threads/' + id), {
+      status: 'approved',
+      approvedAt: serverTimestamp()
+    });
+    toast('✓ Artikel disetujui', 'ok');
+  };
+
+  window.rejectThread = async function(id) {
+    const alasan = prompt('Alasan penolakan (opsional, akan dicatat):') || '';
+    flashCard(id, 'rejecting');
+    await update(ref(db, 'threads/' + id), {
+      status: 'rejected',
+      rejectedAt: serverTimestamp(),
+      rejectReason: alasan
+    });
+    toast('✗ Artikel ditolak', 'err');
+  };
+
+  window.deleteThread = async function(id) {
+    if(!confirm('Hapus artikel ini permanen? Tidak bisa dibatalkan.')) return;
+    await remove(ref(db, 'threads/' + id));
+    toast('🗑 Artikel dihapus', 'warn');
+  };
+
+  /* ════════════════════════════════════
+     EDIT MODAL
+  ════════════════════════════════════ */
+  window.openEdit = function(id) {
+    const t = allThreads[id];
+    if(!t) return;
+    editId = id;
+
+    document.getElementById('editJudul').value   = t.judul || '';
+    document.getElementById('editKonten').value  = t.konten || '';
+    document.getElementById('editNama').value    = t.nama || '';
+    document.getElementById('editSumber').value  = t.sumber || '';
+    document.getElementById('editKategori').value = t.kategori || 'lainnya';
+    document.getElementById('editModal').classList.add('open');
+  };
+
+  window.closeEdit = function() {
+    document.getElementById('editModal').classList.remove('open');
+    editId = null;
+  };
+
+  window.saveEdit = async function() {
+    if(!editId) return;
+    const data = {
+      judul:    document.getElementById('editJudul').value.trim(),
+      konten:   document.getElementById('editKonten').value.trim(),
+      nama:     document.getElementById('editNama').value.trim(),
+      sumber:   document.getElementById('editSumber').value.trim(),
+      kategori: document.getElementById('editKategori').value,
+      editedAt: serverTimestamp(),
+    };
+    if(!data.judul || !data.konten) { alert('Judul dan konten tidak boleh kosong.'); return; }
+    await update(ref(db, 'threads/' + editId), data);
+    toast('✎ Artikel berhasil diedit', 'ok');
+    closeEdit();
+  };
+
+  /* ════════════════════════════════════
+     BULK ACTIONS
+  ════════════════════════════════════ */
+  window.approveAll = async function() {
+    const pending = Object.values(allThreads).filter(t => t.status === 'pending');
+    if(!pending.length) { toast('Tidak ada artikel pending.', 'warn'); return; }
+    if(!confirm(`Setujui ${pending.length} artikel pending sekaligus?`)) return;
+    const updates = {};
+    pending.forEach(t => { updates[`threads/${t.id}/status`] = 'approved'; });
+    // Firebase multi-path update
+    await update(ref(db), updates);
+    toast(`✓ ${pending.length} artikel disetujui`, 'ok');
+  };
+
+  window.rejectAll = async function() {
+    const pending = Object.values(allThreads).filter(t => t.status === 'pending');
+    if(!pending.length) { toast('Tidak ada artikel pending.', 'warn'); return; }
+    if(!confirm(`Tolak ${pending.length} artikel pending sekaligus?`)) return;
+    const updates = {};
+    pending.forEach(t => { updates[`threads/${t.id}/status`] = 'rejected'; });
+    await update(ref(db), updates);
+    toast(`✗ ${pending.length} artikel ditolak`, 'err');
+  };
+
+  window.exportCSV = function() {
+    const rows = [['ID','Judul','Kategori','Status','Nama','Kontak','Sumber','Tanggal']];
+    Object.values(allThreads).forEach(t => {
+      rows.push([
+        t.id, t.judul||'', t.kategori||'', t.status||'',
+        t.nama||'', t.kontak||'', t.sumber||'',
+        t.createdAt ? new Date(t.createdAt).toISOString() : ''
+      ]);
+    });
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a'); a.href=url; a.download='ilmiora-threads.csv'; a.click();
+    toast('📥 CSV berhasil diunduh', 'ok');
+  };
+
+  /* ── Helpers ── */
+  function flashCard(id, cls) {
+    const card = document.getElementById('card_' + id);
+    if(card) { card.classList.add(cls); setTimeout(() => card.classList.remove(cls), 600); }
+  }
+
+  function toast(msg, type='ok') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show ' + type;
+    setTimeout(() => el.classList.remove('show'), 3000);
+  }
+
+  function escHtml(s) {
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  window.doLogout = function() {
+    sessionStorage.removeItem('ilm_admin_auth');
+    location.reload();
+  };
+</script>
+
+<style>
+/* ═══════════════════════════
+   VARIABLES
+═══════════════════════════ */
+[data-theme="dark"]{
+  --bg:#020405;--bg2:#050a08;--card:#0c110e;--lift:#141c18;
+  --chalk:#d4f0e0;--body:rgba(212,240,224,.75);
+  --muted:#3d6b4f;--dim:#1a2e20;
+  --border:rgba(0,255,136,.08);--border2:rgba(255,255,255,.06);
+  --input-bg:rgba(0,0,0,.4);--shadow:rgba(0,0,0,.5);
+  --modal-bg:rgba(2,4,5,.95);
+}
+[data-theme="light"]{
+  --bg:#f7f8fa;--bg2:#eef0f4;--card:#fff;--lift:#fff;
+  --chalk:#0a0e14;--body:#3d4a5c;--muted:#6b7a99;
+  --dim:#dde3f0;--border:rgba(0,200,100,.18);--border2:rgba(10,14,20,.08);
+  --input-bg:#fff;--shadow:rgba(10,14,20,.10);
+  --modal-bg:rgba(247,248,250,.98);
+}
+:root{--neon:#00ff88;--green:#10b981;--plasma:#22d3ee;--violet:#a855f7;--warn:#f59e0b;--danger:#ef4444;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--chalk);overflow-x:hidden;min-height:100vh;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--neon);}
+#sb{position:fixed;top:0;left:0;height:2px;z-index:9999;width:0%;background:linear-gradient(90deg,var(--neon),var(--plasma),var(--violet));}
+
+/* ═══════════ LOGIN SCREEN ═══════════ */
+#loginScreen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);
+}
+.login-box{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:16px;padding:40px 44px;width:100%;max-width:380px;
+  text-align:center;box-shadow:0 20px 60px var(--shadow);
+}
+.login-logo{font-family:'Fira Code',monospace;font-size:13px;color:var(--neon);margin-bottom:24px;}
+.login-title{font-size:22px;font-weight:800;margin-bottom:6px;}
+.login-sub{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);margin-bottom:28px;}
+.login-input{
+  width:100%;padding:12px 16px;
+  background:var(--input-bg);border:1px solid var(--border2);
+  border-radius:8px;color:var(--chalk);font-family:'Fira Code',monospace;
+  font-size:13px;outline:none;text-align:center;letter-spacing:4px;
+  transition:all .2s;margin-bottom:14px;
+}
+.login-input:focus{border-color:rgba(0,255,136,.4);box-shadow:0 0 0 3px rgba(0,255,136,.05);}
+.login-input.shake{animation:shake .4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}50%{transform:translateX(6px);}}
+.login-btn{
+  width:100%;padding:12px;background:var(--neon);color:#000;
+  border:none;border-radius:8px;font-family:'Fira Code',monospace;
+  font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;
+}
+.login-btn:hover{background:#00cc6a;}
+#loginErr{display:none;font-family:'Fira Code',monospace;font-size:11px;color:var(--danger);margin-top:10px;}
+.login-hint{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);margin-top:16px;line-height:1.6;}
+
+/* ═══════════ ADMIN APP ═══════════ */
+#adminApp{display:none;}
+
+/* NAV */
+.nav{
+  position:sticky;top:0;z-index:500;height:58px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  background:rgba(2,4,5,.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+[data-theme="light"] .nav{background:rgba(247,248,250,.97);border-color:rgba(10,14,20,.08);}
+.nav-brand{font-family:'Fira Code',monospace;font-size:12px;color:var(--neon);display:flex;align-items:center;gap:10px;}
+.admin-badge{font-size:9px;padding:2px 8px;background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.2);border-radius:2px;letter-spacing:1px;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-btn{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);padding:5px 12px;border:1px solid var(--border2);border-radius:3px;cursor:pointer;background:none;transition:all .2s;}
+.nav-btn:hover{color:var(--neon);border-color:rgba(0,255,136,.3);}
+.nav-btn.logout{color:var(--danger);border-color:rgba(239,68,68,.2);}
+.nav-btn.logout:hover{background:rgba(239,68,68,.06);}
+.theme-toggle{display:flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--border2);border-radius:100px;cursor:pointer;font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);background:var(--card);transition:all .3s;}
+.theme-toggle:hover{color:var(--neon);border-color:rgba(0,255,136,.3);}
+.tog-track{width:28px;height:14px;border-radius:100px;position:relative;transition:background .3s;}
+[data-theme="dark"] .tog-track{background:rgba(0,255,136,.2);}
+[data-theme="light"] .tog-track{background:rgba(16,185,129,.3);}
+.tog-thumb{width:10px;height:10px;border-radius:50%;position:absolute;top:2px;transition:left .3s;}
+[data-theme="dark"] .tog-thumb{left:2px;background:var(--neon);}
+[data-theme="light"] .tog-thumb{left:16px;background:var(--green);}
+
+/* DASHBOARD HEADER */
+.dash-header{padding:28px 32px 0;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.dash-title{font-size:28px;font-weight:800;letter-spacing:-1px;}
+.dash-title span{color:var(--neon);}
+.dash-sub{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);margin-top:4px;}
+
+/* STATS ROW */
+.stats-row{display:flex;gap:12px;padding:20px 32px 0;flex-wrap:wrap;}
+.stat-chip{display:flex;flex-direction:column;padding:14px 18px;background:var(--card);border:1px solid var(--border2);border-radius:10px;min-width:100px;flex:1;transition:all .2s;}
+[data-theme="light"] .stat-chip{background:#fff;border-color:rgba(10,14,20,.08);box-shadow:0 2px 8px rgba(10,14,20,.05);}
+.stat-chip:hover{border-color:var(--border);}
+.stat-n{font-family:'Fira Code',monospace;font-size:26px;font-weight:700;line-height:1;}
+.stat-l{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;}
+
+/* TOOLBAR */
+.toolbar{padding:20px 32px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.tab-btn{padding:8px 16px;border-radius:100px;font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;border:1px solid var(--border2);background:var(--card);color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.tab-btn:hover{border-color:rgba(0,255,136,.3);color:var(--chalk);}
+.tab-btn.active{background:var(--neon);color:#000;border-color:var(--neon);}
+.tab-count{font-size:9px;padding:1px 6px;border-radius:100px;background:rgba(255,255,255,.06);color:inherit;}
+.tab-btn.active .tab-count{background:rgba(0,0,0,.15);}
+.search-wrap{flex:1;min-width:200px;position:relative;}
+.search-input{width:100%;padding:9px 14px 9px 38px;background:var(--input-bg);border:1px solid var(--border2);border-radius:6px;color:var(--chalk);font-family:'Fira Code',monospace;font-size:11px;outline:none;transition:all .2s;}
+[data-theme="light"] .search-input{color:#0a0e14;background:#fff;}
+.search-input:focus{border-color:rgba(0,255,136,.3);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;}
+.action-wrap{display:flex;gap:6px;}
+.bulk-btn{padding:8px 14px;border-radius:6px;font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;border:1px solid;transition:all .2s;white-space:nowrap;}
+.bulk-btn.approve{background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.2);color:var(--neon);}
+.bulk-btn.approve:hover{background:rgba(0,255,136,.12);}
+.bulk-btn.reject{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2);color:var(--danger);}
+.bulk-btn.reject:hover{background:rgba(239,68,68,.12);}
+.bulk-btn.export{background:rgba(34,211,238,.06);border-color:rgba(34,211,238,.2);color:#22d3ee;}
+.bulk-btn.export:hover{background:rgba(34,211,238,.12);}
+
+/* THREAD GRID */
+.thread-wrap{padding:0 32px 80px;}
+#threadGrid{display:flex;flex-direction:column;gap:14px;}
+
+/* THREAD CARD */
+.thread-card{
+  background:var(--card);border:1px solid var(--border2);border-radius:12px;
+  padding:20px 22px;transition:all .3s;
+}
+[data-theme="light"] .thread-card{background:#fff;border-color:rgba(10,14,20,.08);box-shadow:0 2px 10px rgba(10,14,20,.05);}
+.thread-card:hover{border-color:var(--border);}
+.thread-card.approving{border-color:rgba(0,255,136,.5);background:rgba(0,255,136,.04);transform:translateX(4px);}
+.thread-card.rejecting{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.04);transform:translateX(4px);}
+.thread-card[data-status="approved"]{border-left:3px solid var(--neon);}
+.thread-card[data-status="rejected"]{border-left:3px solid var(--danger);opacity:.75;}
+.thread-card[data-status="rejected"]:hover{opacity:1;}
+
+.tc-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.tc-kat{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1.5px;padding:3px 9px;border-radius:2px;border:1px solid;}
+.tc-status{font-family:'Fira Code',monospace;font-size:9px;padding:2px 8px;border-radius:2px;letter-spacing:1px;}
+.tc-status.ok{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.2);color:var(--neon);}
+.tc-status.warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--warn);}
+.tc-status.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:var(--danger);}
+.tc-id{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);margin-left:auto;}
+.tc-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:8px;line-height:1.3;}
+.tc-body{font-family:'Libre Baskerville',serif;font-size:13px;font-style:italic;color:var(--body);line-height:1.7;margin-bottom:12px;}
+.tc-meta{display:flex;gap:14px;flex-wrap:wrap;font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);margin-bottom:14px;}
+.tc-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.act-btn{padding:7px 14px;border-radius:6px;font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;border:1px solid;transition:all .2s;white-space:nowrap;}
+.act-btn.approve{background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.2);color:var(--neon);}
+.act-btn.approve:hover{background:rgba(0,255,136,.14);}
+.act-btn.reject{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2);color:var(--danger);}
+.act-btn.reject:hover{background:rgba(239,68,68,.14);}
+.act-btn.edit{background:rgba(34,211,238,.06);border-color:rgba(34,211,238,.2);color:#22d3ee;}
+.act-btn.edit:hover{background:rgba(34,211,238,.14);}
+.act-btn.preview{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2);color:#a855f7;}
+.act-btn.preview:hover{background:rgba(168,85,247,.14);}
+.act-btn.delete{background:rgba(239,68,68,.04);border-color:rgba(239,68,68,.15);color:var(--muted);}
+.act-btn.delete:hover{color:var(--danger);border-color:rgba(239,68,68,.35);}
+
+/* Full content expand */
+.tc-full{margin-top:14px;}
+.full-divider{height:1px;background:var(--border2);margin-bottom:14px;}
+.full-content{font-family:'Libre Baskerville',serif;font-size:14px;color:var(--body);line-height:1.85;white-space:pre-wrap;background:var(--input-bg);padding:16px 18px;border-radius:8px;border:1px solid var(--border2);}
+
+/* EMPTY STATE */
+.empty-state{padding:80px 20px;text-align:center;}
+.empty-icon{font-size:40px;margin-bottom:14px;}
+.empty-txt{font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);}
+
+/* ═══════════ EDIT MODAL ═══════════ */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:900;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--modal-bg);border:1px solid var(--border2);
+  border-radius:16px;padding:28px 30px;width:100%;max-width:640px;
+  max-height:90vh;overflow-y:auto;
+}
+[data-theme="light"] .modal-box{background:#fff;border-color:rgba(10,14,20,.1);box-shadow:0 20px 60px rgba(10,14,20,.15);}
+.modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:6px;}
+.modal-sub{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);margin-bottom:24px;}
+.modal-row{margin-bottom:18px;}
+.modal-label{font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);text-transform:uppercase;letter-spacing:2px;margin-bottom:7px;}
+.modal-input,.modal-textarea,.modal-select{width:100%;padding:10px 13px;background:var(--input-bg);border:1px solid var(--border2);border-radius:7px;color:var(--chalk);font-family:'Fira Code',monospace;font-size:12px;outline:none;transition:all .2s;resize:vertical;}
+[data-theme="light"] .modal-input,[data-theme="light"] .modal-textarea,[data-theme="light"] .modal-select{color:#0a0e14;background:#fff;border-color:rgba(10,14,20,.12);}
+.modal-textarea{min-height:160px;font-family:'Libre Baskerville',serif;font-size:14px;line-height:1.7;}
+.modal-input:focus,.modal-textarea:focus{border-color:rgba(0,255,136,.35);}
+.modal-select option{background:var(--bg);}
+.modal-actions{display:flex;gap:10px;margin-top:24px;}
+.modal-save{flex:1;padding:12px;background:var(--neon);color:#000;border:none;border-radius:8px;font-family:'Fira Code',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;cursor:pointer;transition:all .2s;}
+.modal-save:hover{background:#00cc6a;}
+.modal-cancel{padding:12px 22px;background:none;border:1px solid var(--border2);border-radius:8px;font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);cursor:pointer;transition:all .2s;}
+.modal-cancel:hover{color:var(--chalk);border-color:var(--border);}
+
+/* ═══════════ TOAST ═══════════ */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:9000;
+  padding:12px 18px;border-radius:8px;
+  font-family:'Fira Code',monospace;font-size:11px;
+  opacity:0;transform:translateY(8px);
+  transition:all .3s;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.ok{background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.3);color:var(--neon);}
+.toast.err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:var(--danger);}
+.toast.warn{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--warn);}
+
+/* BLOG INTEGRATION GUIDE */
+.integration-box{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:22px 26px;margin:0 32px 32px;}
+[data-theme="light"] .integration-box{background:#fff;border-color:rgba(10,14,20,.08);}
+.int-title{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--plasma);margin-bottom:14px;}
+.int-step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border2);}
+.int-step:last-child{border:none;}
+.int-num{font-family:'Fira Code',monospace;font-size:11px;color:var(--plasma);font-weight:700;min-width:24px;}
+.int-body{font-family:'Fira Code',monospace;font-size:11px;color:var(--body);line-height:1.7;}
+.int-body strong{color:var(--chalk);}
+.int-body code{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.15);padding:1px 6px;border-radius:3px;font-size:10px;color:var(--plasma);}
+
+/* RESPONSIVE */
+@media(max-width:680px){
+  .nav{padding:0 16px;}
+  .dash-header,.stats-row,.toolbar,.thread-wrap{padding-left:16px;padding-right:16px;}
+  .integration-box{margin:0 16px 32px;}
+  .stats-row{gap:8px;}
+  .stat-n{font-size:22px;}
+  .modal-overlay{padding:12px;}
+}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+
+<!-- ════════ LOGIN SCREEN ════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">~/ILMIORA <span style="color:var(--muted);">/</span> admin</div>
+    <div class="login-title">Admin Panel</div>
+    <div class="login-sub">Masukkan password untuk mengakses dashboard</div>
+    <input class="login-input" id="pwInput" type="password" placeholder="••••••••••••" autocomplete="current-password"/>
+    <button class="login-btn" onclick="doLogin()">MASUK →</button>
+    <div id="loginErr"></div>
+    <div class="login-hint">Session akan bertahan hingga browser ditutup.<br>Jangan login di perangkat orang lain.</div>
+  </div>
+</div>
+
+<!-- ════════ ADMIN APP ════════ -->
+<div id="adminApp">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-brand">
+      ~/ILMIORA
+      <span class="admin-badge">ADMIN</span>
+    </div>
+    <div class="nav-right">
+      <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="themeIcon">🌙</span>
+        <div class="tog-track"><div class="tog-thumb" id="togThumb"></div></div>
+      </div>
+      <a class="nav-btn" href="forum-submit.html" target="_blank">Lihat Halaman User</a>
+      <button class="nav-btn logout" onclick="doLogout()">Keluar</button>
+    </div>
+  </nav>
+
+  <!-- DASH HEADER -->
+  <div class="dash-header">
+    <div>
+      <div class="dash-title">Moderasi <span>Thread</span></div>
+      <div class="dash-sub">Seleksi, edit, dan kelola artikel yang dikirim pengguna</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-chip">
+      <div class="stat-n" id="cnt_total" style="color:var(--neon);">—</div>
+      <div class="stat-l">Total Masuk</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-n" id="cnt_pending" style="color:var(--warn);background:rgba(245,158,11,.06);padding:2px 8px;border-radius:6px;display:inline-block;">—</div>
+      <div class="stat-l" style="margin-top:8px;">Menunggu Review</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-n" id="cnt_approved" style="color:var(--neon);">—</div>
+      <div class="stat-l">Disetujui</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-n" id="cnt_rejected" style="color:var(--danger);">—</div>
+      <div class="stat-l">Ditolak</div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <!-- Tabs filter -->
+    <button class="tab-btn active" id="tab_pending" onclick="setFilter('pending')">
+      ⏳ Pending <span class="tab-count" id="cnt_pending2" style="display:none;"></span>
+    </button>
+    <button class="tab-btn" id="tab_approved" onclick="setFilter('approved')">
+      ✓ Disetujui
+    </button>
+    <button class="tab-btn" id="tab_rejected" onclick="setFilter('rejected')">
+      ✗ Ditolak
+    </button>
+    <button class="tab-btn" id="tab_all" onclick="setFilter('all')">
+      ☰ Semua
+    </button>
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchAdmin" type="text"
+        placeholder="Cari judul, nama, kategori..."
+        oninput="doSearch()"/>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="action-wrap">
+      <button class="bulk-btn approve" onclick="approveAll()">✓ Setujui Semua Pending</button>
+      <button class="bulk-btn reject"  onclick="rejectAll()">✗ Tolak Semua Pending</button>
+      <button class="bulk-btn export"  onclick="exportCSV()">📥 Export CSV</button>
+    </div>
+  </div>
+
+  <!-- THREAD GRID -->
+  <div class="thread-wrap">
+    <div id="threadGrid">
+      <div class="empty-state">
+        <div class="empty-icon">⏳</div>
+        <div class="empty-txt">Menghubungkan ke Firebase...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARA INTEGRASI DENGAN BLOGGER -->
+  <div class="integration-box">
+    <div class="int-title">// Cara Publikasi ke Blog ILMIORA</div>
+    <div class="int-step">
+      <div class="int-num">01</div>
+      <div class="int-body"><strong>Setelah klik Setujui</strong> &mdash; status thread berubah ke <code>approved</code> di Firebase. Artikel belum otomatis masuk ke Blogger (Blogger tidak punya API publik write).</div>
+    </div>
+    <div class="int-step">
+      <div class="int-num">02</div>
+      <div class="int-body"><strong>Copy konten thread</strong> &mdash; klik <code>✎ Edit</code> lalu copy judul + isi, buka Blogger &rarr; Postingan Baru &rarr; paste &rarr; tambah label kategori yang sesuai &rarr; Terbitkan.</div>
+    </div>
+    <div class="int-step">
+      <div class="int-num">03</div>
+      <div class="int-body"><strong>Label Blogger yang cocok:</strong> <code>Sejarah Islam</code> / <code>Kronik Umum</code> / <code>Teknologi</code> / <code>Biologi</code> / dst. &mdash; sesuai kategori yang dipilih pengguna saat submit.</div>
+    </div>
+    <div class="int-step">
+      <div class="int-num">04</div>
+      <div class="int-body"><strong>Artikel langsung muncul</strong> di <code>mulai-membaca.html</code> secara otomatis melalui Blogger API setelah terbit di blog &mdash; karena mulai-membaca sudah live-sync dari Blogger.</div>
+    </div>
+    <div class="int-step">
+      <div class="int-num">05</div>
+      <div class="int-body"><strong>Tandai penulis</strong> &mdash; di Blogger tambahkan atribusi <code>Ditulis oleh: [nama pengirim]</code> di awal atau akhir artikel sebagai kredit kepada kontributor.</div>
+    </div>
+  </div>
+
+</div><!-- end adminApp -->
+
+<!-- ════════ EDIT MODAL ════════ -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <div class="modal-title">Edit Artikel</div>
+    <div class="modal-sub">Perubahan akan tersimpan ke Firebase secara langsung</div>
+    <div class="modal-row">
+      <div class="modal-label">Judul</div>
+      <input class="modal-input" id="editJudul" type="text" maxlength="120"/>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label">Kategori</div>
+      <select class="modal-select modal-input" id="editKategori">
+        <option value="sains">🔬 Sains & Teknologi</option>
+        <option value="sejarah">📜 Sejarah & Budaya</option>
+        <option value="spiritual">✨ Spiritual & Agama</option>
+        <option value="matematika">📐 Matematika</option>
+        <option value="musik">🎵 Musik & Seni</option>
+        <option value="opini">💭 Opini & Analisis</option>
+        <option value="berita">📰 Berita Lokal</option>
+        <option value="lainnya">🌐 Lainnya</option>
+      </select>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label">Isi Artikel</div>
+      <textarea class="modal-textarea" id="editKonten" rows="10"></textarea>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label">Nama Penulis</div>
+      <input class="modal-input" id="editNama" type="text"/>
+    </div>
+    <div class="modal-row">
+      <div class="modal-label">Sumber / Referensi</div>
+      <input class="modal-input" id="editSumber" type="text"/>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeEdit()">Batal</button>
+      <button class="modal-save" onclick="saveEdit()">SIMPAN PERUBAHAN →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* THEME */
+function toggleTheme(){
+  const h=document.documentElement;
+  const dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeIcon').textContent=dark?'☀️':'🌙';
+  localStorage.setItem('ilmiora-theme',dark?'light':'dark');
+}
+(function(){
+  const s=localStorage.getItem('ilmiora-theme');
+  if(s&&s==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeIcon').textContent='☀️';
+  }
+})();
+
+/* Close modal on overlay click */
+document.getElementById('editModal').addEventListener('click', function(e){
+  if(e.target===this) window.closeEdit?.();
+});
+</script>
+</body>
+</html>
