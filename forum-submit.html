@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kirim Artikel &mdash; ILMIORA Community</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+  import { getDatabase, ref, push, serverTimestamp, onValue, query, orderByChild, equalTo }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+  /* ════════════════════════════════════
+     CONFIG FIREBASE — PROJECT ilmiora-auth
+     Satu project untuk semua fitur ILMIORA:
+     Auth login, chat, admin forum, dsb.
+  ════════════════════════════════════ */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",
+    authDomain:        "ilmiora-auth.firebaseapp.com",
+    // 📌 Aktifkan Realtime Database di Firebase Console dulu
+    // lalu URL-nya otomatis: https://ilmiora-auth-default-rtdb.firebaseio.com
+    databaseURL:       "https://ilmiora-auth-default-rtdb.firebaseio.com",
+    projectId:         "ilmiora-auth",
+    storageBucket:     "ilmiora-auth.firebasestorage.app",
+    messagingSenderId: "945061456781",
+    appId:             "1:945061456781:web:222e641bdef891dfe2abc4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+
+  /* ── KATEGORI ── */
+  const KATEGORI = [
+    { key:'sains',     label:'Sains & Teknologi', icon:'🔬' },
+    { key:'sejarah',   label:'Sejarah & Budaya',  icon:'📜' },
+    { key:'spiritual', label:'Spiritual & Agama', icon:'✨' },
+    { key:'matematika',label:'Matematika',         icon:'📐' },
+    { key:'musik',     label:'Musik & Seni',       icon:'🎵' },
+    { key:'opini',     label:'Opini & Analisis',   icon:'💭' },
+    { key:'berita',    label:'Berita Lokal',       icon:'📰' },
+    { key:'lainnya',   label:'Lainnya',            icon:'🌐' },
+  ];
+
+  /* ── RENDER KATEGORI ── */
+  function renderKategori() {
+    const wrap = document.getElementById('kategoriWrap');
+    wrap.innerHTML = KATEGORI.map(k => `
+      <label class="kat-item">
+        <input type="radio" name="kategori" value="${k.key}" required>
+        <span class="kat-btn">
+          <span class="kat-icon">${k.icon}</span>
+          <span class="kat-lbl">${k.label}</span>
+        </span>
+      </label>`).join('');
+  }
+
+  /* ── COUNTER CHARS ── */
+  function bindCounters() {
+    const fields = [
+      { id:'judul',   maxEl:'judulCount',   max:120 },
+      { id:'konten',  maxEl:'kontenCount',  max:5000 },
+      { id:'sumber',  maxEl:'sumberCount',  max:200 },
+    ];
+    fields.forEach(f => {
+      const el = document.getElementById(f.id);
+      const cnt = document.getElementById(f.maxEl);
+      if(!el || !cnt) return;
+      el.addEventListener('input', () => {
+        const len = el.value.length;
+        cnt.textContent = len;
+        cnt.style.color = len > f.max * 0.9 ? '#ef4444' : 'var(--muted)';
+      });
+    });
+  }
+
+  /* ── PREVIEW ── */
+  function bindPreview() {
+    ['judul','konten','nama','kategori'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', updatePreview);
+    });
+    document.querySelectorAll('input[name="kategori"]').forEach(r =>
+      r.addEventListener('change', updatePreview));
+  }
+
+  function updatePreview() {
+    const judul   = document.getElementById('judul')?.value || '';
+    const konten  = document.getElementById('konten')?.value || '';
+    const nama    = document.getElementById('nama')?.value || 'Anonim';
+    const katEl   = document.querySelector('input[name="kategori"]:checked');
+    const katKey  = katEl?.value || '';
+    const kat     = KATEGORI.find(k => k.key === katKey);
+
+    document.getElementById('prevJudul').textContent  = judul || 'Judul artikel kamu...';
+    document.getElementById('prevKonten').textContent = konten
+      ? konten.substring(0, 280) + (konten.length > 280 ? '...' : '')
+      : 'Isi artikel akan muncul di sini...';
+    document.getElementById('prevNama').textContent   = nama;
+    document.getElementById('prevKat').textContent    = kat ? `${kat.icon} ${kat.label}` : '—';
+  }
+
+  /* ── SUBMIT ── */
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const katEl = document.querySelector('input[name="kategori"]:checked');
+
+    // Validasi
+    if(!katEl) { showError('Pilih salah satu kategori.'); return; }
+
+    const data = {
+      judul:     document.getElementById('judul').value.trim(),
+      konten:    document.getElementById('konten').value.trim(),
+      nama:      document.getElementById('nama').value.trim() || 'Anonim',
+      kontak:    document.getElementById('kontak').value.trim() || '',
+      sumber:    document.getElementById('sumber').value.trim() || '',
+      kategori:  katEl.value,
+      status:    'pending',       // pending | approved | rejected
+      votes:     0,
+      createdAt: serverTimestamp(),
+      ipHint:    '',              // bisa diisi lewat server-side nanti
+    };
+
+    if(data.judul.length < 10)  { showError('Judul minimal 10 karakter.'); return; }
+    if(data.konten.length < 50) { showError('Konten minimal 50 karakter.'); return; }
+
+    // Cooldown check (localStorage)
+    const last = localStorage.getItem('ilm_last_submit');
+    if(last && Date.now() - parseInt(last) < 5 * 60 * 1000) {
+      const sisa = Math.ceil((5 * 60 * 1000 - (Date.now() - parseInt(last))) / 60000);
+      showError(`Tunggu ${sisa} menit sebelum mengirim lagi.`); return;
+    }
+
+    // Submit
+    btn.disabled = true;
+    btn.textContent = 'Mengirim...';
+    setStatus('loading', 'Mengirim artikel...');
+
+    try {
+      const r = await push(ref(db, 'threads'), data);
+      localStorage.setItem('ilm_last_submit', Date.now().toString());
+      setStatus('success',
+        `✓ Artikel terkirim! ID: ${r.key.slice(-6).toUpperCase()}<br>
+         Admin akan meninjau dalam 1×24 jam. Terima kasih sudah berkontribusi.`);
+      document.getElementById('mainForm').reset();
+      updatePreview();
+    } catch(err) {
+      console.error(err);
+      setStatus('error', 'Gagal mengirim. Cek koneksi internet atau coba lagi nanti.');
+      btn.disabled = false;
+      btn.textContent = 'Kirim Artikel';
+    }
+  }
+
+  /* ── RECENT APPROVED ── */
+  function loadRecent() {
+    const listEl = document.getElementById('recentList');
+    const q = query(ref(db,'threads'), orderByChild('status'), equalTo('approved'));
+    onValue(q, snap => {
+      const items = [];
+      snap.forEach(c => {
+        const d = c.val();
+        items.push({ id: c.key, ...d });
+      });
+      items.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+      const latest = items.slice(0, 6);
+
+      if(!latest.length) {
+        listEl.innerHTML = '<div class="empty-recent">Belum ada artikel yang disetujui.</div>';
+        return;
+      }
+      const KAT_MAP = Object.fromEntries(KATEGORI.map(k => [k.key, k]));
+      listEl.innerHTML = latest.map(t => {
+        const kat = KAT_MAP[t.kategori] || { icon:'🌐', label:'Lainnya' };
+        return `
+        <a class="recent-card" href="#">
+          <span class="rc-kat">${kat.icon} ${kat.label}</span>
+          <span class="rc-title">${escHtml(t.judul)}</span>
+          <span class="rc-meta">oleh ${escHtml(t.nama)}</span>
+        </a>`;
+      }).join('');
+    }, { onlyOnce: true });
+  }
+
+  /* ── HELPERS ── */
+  function showError(msg) {
+    setStatus('error', msg);
+    window.scrollTo({ top: document.getElementById('statusBox').offsetTop - 100, behavior: 'smooth' });
+  }
+  function setStatus(type, msg) {
+    const box = document.getElementById('statusBox');
+    box.className = 'status-box ' + type;
+    box.innerHTML = msg;
+    box.style.display = 'block';
+  }
+  function escHtml(s) {
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── INIT ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    renderKategori();
+    bindCounters();
+    setTimeout(() => { bindPreview(); updatePreview(); }, 50);
+    document.getElementById('mainForm').addEventListener('submit', handleSubmit);
+    loadRecent();
+
+    // Scroll bar
+    window.addEventListener('scroll', () => {
+      document.getElementById('sb').style.width =
+        (scrollY / (document.body.scrollHeight - innerHeight) * 100) + '%';
+    });
+  });
+</script>
+
+<style>
+/* ═══════════════════════════
+   VARIABLES
+═══════════════════════════ */
+[data-theme="dark"]{
+  --bg:#020405;--bg2:#050a08;--card:#0c110e;--lift:#141c18;
+  --chalk:#d4f0e0;--body:rgba(212,240,224,.75);
+  --muted:#3d6b4f;--dim:#1a2e20;
+  --border:rgba(0,255,136,.08);--border2:rgba(255,255,255,.06);
+  --input-bg:rgba(0,0,0,.4);--shadow:rgba(0,0,0,.5);
+}
+[data-theme="light"]{
+  --bg:#f7f8fa;--bg2:#eef0f4;--card:#fff;--lift:#fff;
+  --chalk:#0a0e14;--body:#3d4a5c;--muted:#6b7a99;
+  --dim:#dde3f0;--border:rgba(0,200,100,.18);--border2:rgba(10,14,20,.08);
+  --input-bg:#fff;--shadow:rgba(10,14,20,.10);
+}
+:root{
+  --neon:#00ff88;--green:#10b981;
+  --plasma:#22d3ee;--violet:#a855f7;
+  --warn:#f59e0b;--danger:#ef4444;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Syne',sans-serif;
+  background:var(--bg);color:var(--chalk);
+  overflow-x:hidden;min-height:100vh;
+}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--neon);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;z-index:9999;width:0%;
+  background:linear-gradient(90deg,var(--neon),var(--plasma),var(--violet));}
+
+/* NAV */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;height:58px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 40px;
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
+  background:rgba(2,4,5,.95);transition:background .3s;
+}
+[data-theme="light"] .nav{background:rgba(247,248,250,.97);border-color:rgba(10,14,20,.08);}
+.nav-brand{font-family:'Fira Code',monospace;font-size:12px;color:var(--neon);text-decoration:none;}
+.nav-crumb{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.nav-crumb a{color:var(--muted);text-decoration:none;}
+.nav-crumb a:hover{color:var(--neon);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-btn{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--border2);border-radius:3px;transition:all .2s;background:none;cursor:pointer;}
+.nav-btn:hover,.nav-btn.active{color:var(--neon);border-color:rgba(0,255,136,.3);}
+.theme-toggle{display:flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--border2);border-radius:100px;cursor:pointer;font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);background:var(--card);transition:all .3s;}
+.theme-toggle:hover{border-color:rgba(0,255,136,.3);color:var(--neon);}
+.tog-track{width:28px;height:14px;border-radius:100px;position:relative;transition:background .3s;}
+[data-theme="dark"] .tog-track{background:rgba(0,255,136,.2);}
+[data-theme="light"] .tog-track{background:rgba(16,185,129,.3);}
+.tog-thumb{width:10px;height:10px;border-radius:50%;position:absolute;top:2px;transition:left .3s;}
+[data-theme="dark"] .tog-thumb{left:2px;background:var(--neon);}
+[data-theme="light"] .tog-thumb{left:16px;background:var(--green);}
+
+/* LAYOUT */
+.main{max-width:1100px;margin:0 auto;padding:80px 40px 80px;display:grid;grid-template-columns:1fr 360px;gap:32px;}
+.col-form{}
+.col-sidebar{}
+
+/* PAGE HERO */
+.page-hero{margin-bottom:36px;}
+.hero-eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.hero-eye::before{content:'';width:20px;height:1px;background:var(--neon);}
+.hero-title{font-size:clamp(26px,4vw,44px);font-weight:800;line-height:1.05;letter-spacing:-1px;margin-bottom:10px;}
+.hero-title .hl{color:var(--neon);}
+.hero-desc{font-family:'Libre Baskerville',serif;font-style:italic;font-size:15px;color:var(--body);line-height:1.75;max-width:500px;}
+
+/* FORM CARD */
+.form-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:28px 30px;}
+[data-theme="light"] .form-card{background:#fff;border-color:rgba(10,14,20,.08);box-shadow:0 4px 20px rgba(10,14,20,.06);}
+.form-section{margin-bottom:24px;}
+.form-label{font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
+.form-label .char-count{color:var(--muted);}
+.form-input,.form-textarea,.form-select{
+  width:100%;padding:11px 14px;
+  background:var(--input-bg);border:1px solid var(--border2);
+  border-radius:7px;color:var(--chalk);
+  font-family:'Fira Code',monospace;font-size:12px;
+  outline:none;transition:all .2s;resize:vertical;
+}
+.form-textarea{min-height:180px;font-family:'Libre Baskerville',serif;font-size:14px;line-height:1.7;}
+.form-input:focus,.form-textarea:focus{border-color:rgba(0,255,136,.35);box-shadow:0 0 0 3px rgba(0,255,136,.05);}
+[data-theme="light"] .form-input,[data-theme="light"] .form-textarea{color:#0a0e14;background:#fff;border-color:rgba(10,14,20,.12);}
+[data-theme="light"] .form-input:focus,[data-theme="light"] .form-textarea:focus{border-color:rgba(0,138,74,.4);}
+.form-hint{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);margin-top:6px;line-height:1.6;}
+
+/* KATEGORI RADIO GRID */
+#kategoriWrap{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.kat-item input{display:none;}
+.kat-btn{
+  display:flex;align-items:center;gap:8px;padding:10px 14px;
+  background:var(--input-bg);border:1px solid var(--border2);
+  border-radius:8px;cursor:pointer;transition:all .2s;
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+}
+.kat-btn:hover{border-color:rgba(0,255,136,.3);color:var(--chalk);}
+.kat-item input:checked + .kat-btn{
+  background:rgba(0,255,136,.08);border-color:rgba(0,255,136,.4);
+  color:var(--neon);
+}
+.kat-icon{font-size:14px;}
+.kat-lbl{font-size:10px;letter-spacing:.3px;}
+
+/* IDENTITY ROW */
+.identity-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* STATUS BOX */
+.status-box{display:none;padding:14px 18px;border-radius:8px;font-family:'Fira Code',monospace;font-size:11px;line-height:1.7;margin-bottom:20px;}
+.status-box.loading{background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.2);color:#22d3ee;}
+.status-box.success{background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.25);color:var(--neon);}
+.status-box.error{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);color:#ef4444;}
+
+/* SUBMIT BTN */
+.submit-btn{
+  width:100%;padding:14px;
+  background:var(--neon);color:#000;
+  border:none;border-radius:8px;
+  font-family:'Fira Code',monospace;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;
+}
+.submit-btn:hover:not(:disabled){background:#00cc6a;transform:translateY(-1px);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* RULES */
+.rules-box{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:20px 22px;margin-bottom:20px;}
+[data-theme="light"] .rules-box{background:#fff;border-color:rgba(10,14,20,.08);}
+.rules-title{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon);margin-bottom:12px;}
+.rules-box ol{list-style:none;display:flex;flex-direction:column;gap:7px;counter-reset:r;}
+.rules-box li{font-family:'Fira Code',monospace;font-size:10px;color:var(--body);padding-left:22px;position:relative;line-height:1.65;counter-increment:r;}
+.rules-box li::before{content:counter(r)'.';position:absolute;left:0;color:var(--acc,var(--neon));font-weight:700;}
+
+/* PREVIEW */
+.preview-box{background:var(--card);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-bottom:20px;position:sticky;top:76px;}
+[data-theme="light"] .preview-box{background:#fff;border-color:rgba(10,14,20,.08);box-shadow:0 4px 16px rgba(10,14,20,.05);}
+.preview-header{padding:12px 18px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;}
+.preview-label{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);}
+.preview-badge{font-family:'Fira Code',monospace;font-size:9px;color:var(--warn);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);padding:2px 8px;border-radius:2px;}
+.preview-body{padding:18px 20px;}
+.prev-kat{font-family:'Fira Code',monospace;font-size:9px;color:var(--neon);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;}
+.prev-judul{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;line-height:1.3;margin-bottom:10px;color:var(--chalk);}
+.prev-konten{font-family:'Libre Baskerville',serif;font-size:13px;font-style:italic;color:var(--body);line-height:1.7;margin-bottom:12px;}
+.prev-meta{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.prev-status{display:inline-flex;align-items:center;gap:5px;font-family:'Fira Code',monospace;font-size:9px;padding:2px 8px;border-radius:2px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--warn);margin-top:8px;}
+
+/* RECENT APPROVED */
+.recent-box{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:20px 22px;}
+[data-theme="light"] .recent-box{background:#fff;border-color:rgba(10,14,20,.08);}
+.recent-title{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon);margin-bottom:14px;}
+#recentList{display:flex;flex-direction:column;gap:8px;}
+.recent-card{display:flex;flex-direction:column;gap:3px;padding:10px 14px;background:var(--input-bg);border:1px solid var(--border2);border-radius:8px;text-decoration:none;transition:all .2s;}
+.recent-card:hover{border-color:rgba(0,255,136,.25);}
+.rc-kat{font-family:'Fira Code',monospace;font-size:9px;color:var(--neon);text-transform:uppercase;letter-spacing:1px;}
+.rc-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--chalk);line-height:1.3;}
+.rc-meta{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
+.empty-recent{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);text-align:center;padding:20px 0;}
+
+/* DIVIDER */
+.form-divider{display:flex;align-items:center;gap:12px;margin:22px 0;}
+.form-divider-line{flex:1;height:1px;background:var(--border2);}
+.form-divider-txt{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border2);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--bg2);}
+.footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;}
+.footer a:hover{color:var(--neon);}
+
+/* RESPONSIVE */
+@media(max-width:880px){
+  .main{grid-template-columns:1fr;padding:72px 20px 60px;}
+  .col-sidebar{order:-1;}
+  .preview-box{position:static;}
+  .identity-row{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .nav{padding:0 16px;}
+  #kategoriWrap{grid-template-columns:1fr;}
+  .footer{padding:16px;}
+}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <a class="nav-brand" href="https://ilmiora.blogspot.com">~/ILMIORA</a>
+    <div class="nav-crumb">
+      <a href="https://ilmiora.blogspot.com">home</a>
+      <span style="color:var(--muted);">/</span>
+      <span style="color:var(--neon);">community</span>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span id="themeIcon">🌙</span>
+      <div class="tog-track"><div class="tog-thumb" id="togThumb"></div></div>
+    </div>
+    <a class="nav-btn" href="https://iyan-core.github.io/Ilmiora-blogger/mulai-membaca.html">📚 Baca</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- KOLOM FORM -->
+  <div class="col-form">
+    <div class="page-hero">
+      <div class="hero-eye">// ILMIORA Community</div>
+      <h1 class="hero-title">Kirim <span class="hl">Artikel</span><br>atau Thread</h1>
+      <p class="hero-desc">Bagikan pengetahuan, analisis, atau berita sekitar yang kamu tulis. Artikel yang lolos seleksi admin akan masuk ke halaman Mulai Membaca ILMIORA.</p>
+    </div>
+
+    <!-- Status Box -->
+    <div class="status-box" id="statusBox"></div>
+
+    <form class="form-card" id="mainForm" novalidate>
+
+      <!-- Judul -->
+      <div class="form-section">
+        <div class="form-label">
+          Judul Artikel
+          <span class="char-count"><span id="judulCount">0</span>/120</span>
+        </div>
+        <input class="form-input" id="judul" type="text" maxlength="120"
+          placeholder="Tulis judul yang informatif dan menarik..." required/>
+        <div class="form-hint">Minimal 10 karakter. Hindari huruf kapital semua.</div>
+      </div>
+
+      <!-- Kategori -->
+      <div class="form-section">
+        <div class="form-label">Kategori</div>
+        <div id="kategoriWrap"></div>
+      </div>
+
+      <!-- Konten -->
+      <div class="form-section">
+        <div class="form-label">
+          Isi Artikel / Thread
+          <span class="char-count"><span id="kontenCount">0</span>/5000</span>
+        </div>
+        <textarea class="form-textarea" id="konten" maxlength="5000"
+          placeholder="Tulis artikel kamu di sini. Jelaskan dengan detail, sertakan fakta, dan gunakan bahasa yang santun..." required></textarea>
+        <div class="form-hint">Minimal 50 karakter. Artikel yang detail dan didukung fakta lebih mudah disetujui.</div>
+      </div>
+
+      <!-- Sumber -->
+      <div class="form-section">
+        <div class="form-label">
+          Sumber / Referensi <span style="color:var(--muted);font-size:9px;">(opsional)</span>
+          <span class="char-count"><span id="sumberCount">0</span>/200</span>
+        </div>
+        <input class="form-input" id="sumber" type="text" maxlength="200"
+          placeholder="https://sumber-referensi.com atau nama buku/media"/>
+      </div>
+
+      <div class="form-divider">
+        <div class="form-divider-line"></div>
+        <div class="form-divider-txt">Identitas Penulis (opsional &mdash; untuk kredit)</div>
+        <div class="form-divider-line"></div>
+      </div>
+
+      <!-- Identitas -->
+      <div class="form-section">
+        <div class="identity-row">
+          <div>
+            <div class="form-label">Nama / Alias</div>
+            <input class="form-input" id="nama" type="text" maxlength="60"
+              placeholder="Nama atau alias kamu"/>
+          </div>
+          <div>
+            <div class="form-label">Kontak <span style="color:var(--muted);font-size:9px;">(email/IG)</span></div>
+            <input class="form-input" id="kontak" type="text" maxlength="100"
+              placeholder="Tidak dipublikasikan"/>
+          </div>
+        </div>
+        <div class="form-hint">Nama dan kontak hanya digunakan untuk koordinasi admin jika diperlukan. Tidak akan dipublikasikan tanpa izin.</div>
+      </div>
+
+      <!-- Persetujuan -->
+      <div class="form-section">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+          <input type="checkbox" id="setuju" required
+            style="margin-top:3px;accent-color:var(--neon);">
+          <span style="font-family:'Fira Code',monospace;font-size:10px;color:var(--body);line-height:1.7;">
+            Saya menyatakan bahwa artikel ini adalah karya asli atau dirangkum dengan kredit sumber, bebas dari SARA, ujaran kebencian, dan konten ilegal. Saya menyetujui artikel ini dapat diedit dan dipublikasikan oleh ILMIORA.
+          </span>
+        </label>
+      </div>
+
+      <button class="submit-btn" type="submit" id="submitBtn">
+        KIRIM ARTIKEL &rarr;
+      </button>
+
+    </form>
+  </div>
+
+  <!-- KOLOM SIDEBAR -->
+  <div class="col-sidebar">
+
+    <!-- Preview Real-time -->
+    <div class="preview-box">
+      <div class="preview-header">
+        <span class="preview-label">Preview Artikel</span>
+        <span class="preview-badge">MENUNGGU REVIEW</span>
+      </div>
+      <div class="preview-body">
+        <div class="prev-kat" id="prevKat">— Pilih Kategori</div>
+        <div class="prev-judul" id="prevJudul">Judul artikel kamu...</div>
+        <div class="prev-konten" id="prevKonten">Isi artikel akan muncul di sini...</div>
+        <div class="prev-meta">oleh <span id="prevNama">Anonim</span></div>
+        <div class="prev-status">⏳ Menunggu persetujuan admin</div>
+      </div>
+    </div>
+
+    <!-- Aturan -->
+    <div class="rules-box">
+      <div class="rules-title">// Panduan Kontribusi</div>
+      <ol>
+        <li>Artikel harus informatif, edukatif, atau mengandung nilai pengetahuan</li>
+        <li>Cantumkan sumber jika mengutip fakta atau data</li>
+        <li>Gunakan bahasa Indonesia yang baik</li>
+        <li>Dilarang: SARA, hoaks, promosi produk, konten dewasa</li>
+        <li>Admin akan meninjau dalam 1&times;24 jam</li>
+        <li>Artikel yang disetujui akan muncul di halaman Mulai Membaca</li>
+        <li>Admin berhak mengedit judul/konten untuk kesesuaian</li>
+        <li>Pengirim dibatasi 1 artikel per 5 menit</li>
+      </ol>
+    </div>
+
+    <!-- Artikel Terbaru Disetujui -->
+    <div class="recent-box">
+      <div class="recent-title">// Terbaru Disetujui</div>
+      <div id="recentList">
+        <div class="empty-recent">Memuat...</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="https://ilmiora.blogspot.com">&larr; ILMIORA Home</a>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.5;">ILMIORA Community &copy; 2026</span>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/mulai-membaca.html">Mulai Membaca &rarr;</a>
+</footer>
+
+<script>
+/* THEME TOGGLE */
+function toggleTheme(){
+  const h = document.documentElement;
+  const dark = h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme', dark?'light':'dark');
+  document.getElementById('themeIcon').textContent = dark?'☀️':'🌙';
+  localStorage.setItem('ilmiora-theme', dark?'light':'dark');
+}
+(function(){
+  const s = localStorage.getItem('ilmiora-theme');
+  if(s && s==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeIcon').textContent='☀️';
+  }
+})();
+</script>
+</body>
+</html>
