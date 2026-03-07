@@ -3,35 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mulai Membaca &mdash; ILMIORA</title>
-<link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;600;700;800&family=Open+Sans:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<title>Mulai Membaca — ILMIORA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════
-   VARIABLES
-═══════════════════════════ */
+/* ══ VARIABLES ══ */
 [data-theme="dark"]{
-  --bg:#020405;--bg2:#050a08;--card:#0c110e;
-  --chalk:#d4f0e0;--body-txt:rgba(212,240,224,.75);
+  --bg:#020405;--bg2:#050a08;--card:#0c110e;--lift:#141c16;
+  --chalk:#d4f0e0;--body-txt:rgba(212,240,224,0.75);
   --muted:#3d6b4f;--dim:#1a2e20;
-  --border:rgba(0,255,136,.08);--border2:rgba(255,255,255,.06);
-  --input-bg:rgba(0,0,0,.4);--shadow:rgba(0,0,0,.5);
-  --scanline:rgba(0,255,136,.008);
+  --border:rgba(0,255,136,0.08);--border2:rgba(255,255,255,0.06);
+  --input-bg:rgba(0,0,0,0.4);--shadow:rgba(0,0,0,0.5);
+  --scanline:rgba(0,255,136,0.008);
 }
 [data-theme="light"]{
-  --bg:#f7f8fa;--bg2:#eef0f4;--card:#fff;
-  --chalk:#0a0e14;--body-txt:#3d4a5c;
-  --muted:#6b7a99;--dim:#dde3f0;
-  --border:rgba(0,200,100,.18);--border2:rgba(10,14,20,.08);
-  --input-bg:#fff;--shadow:rgba(10,14,20,.10);--scanline:transparent;
+  --bg:#f7f8fa;--bg2:#eef0f4;--card:#fff;--lift:#fff;
+  --chalk:#0a0e14;--body-txt:#3d4a5c;--muted:#6b7a99;
+  --dim:#dde3f0;--border:rgba(0,200,100,0.18);--border2:rgba(10,14,20,0.08);
+  --input-bg:#fff;--shadow:rgba(10,14,20,0.10);--scanline:transparent;
 }
 :root{
-  --neon:#00ff88;--green:#10b981;--plasma:#22d3ee;--violet:#a855f7;
+  --neon:#00ff88;--green:#10b981;--plasma:#22d3ee;
+  --violet:#a855f7;--warn:#f59e0b;--danger:#ef4444;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{
-  font-family:'Syne',sans-serif;
-  background:var(--bg);color:var(--chalk);
+  font-family:'Syne',sans-serif;background:var(--bg);color:var(--chalk);
   overflow-x:hidden;min-height:100vh;transition:background .4s,color .4s;
 }
 ::-webkit-scrollbar{width:3px;}
@@ -40,12 +37,10 @@ body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,var(--scanline) 2px,var(--scanline) 4px);
 }
-#scrollBar{
-  position:fixed;top:0;left:0;height:2px;z-index:9999;width:0%;
-  background:linear-gradient(90deg,var(--neon),var(--plasma),var(--violet));
-}
+#scrollBar{position:fixed;top:0;left:0;height:2px;z-index:9999;width:0%;
+  background:linear-gradient(90deg,var(--neon),var(--plasma),var(--violet));}
 
-/* ── LIGHT OVERRIDES ── */
+/* ══ LIGHT OVERRIDES ══ */
 [data-theme="light"] .nav{background:rgba(247,248,250,.97);border-bottom:1px solid rgba(10,14,20,.08);box-shadow:0 1px 12px rgba(10,14,20,.06);}
 [data-theme="light"] .nav-brand{color:#008a4a;}
 [data-theme="light"] .page-title .hl{color:#008a4a;text-shadow:none;}
@@ -71,18 +66,18 @@ body::before{
 [data-theme="light"] .nav-back:hover{color:#008a4a;border-color:#008a4a;}
 [data-theme="light"] .header-eye{color:#008a4a;}
 [data-theme="light"] #scrollBar{background:linear-gradient(90deg,#008a4a,#22d3ee,#a855f7);}
+[data-theme="light"] .pill{box-shadow:0 1px 4px rgba(10,14,20,.06);}
+[data-theme="light"] .pill-all{background:rgba(0,138,74,.07);border-color:rgba(0,138,74,.2);color:#008a4a;}
+[data-theme="light"] .pill-all.active{background:#008a4a;color:#fff;}
 [data-theme="light"] .tab-btn{background:#fff;border:1px solid rgba(10,14,20,.1);color:#6b7a99;}
 [data-theme="light"] .tab-btn.active{background:#008a4a;color:#fff;border-color:#008a4a;}
-[data-theme="light"] .tab-btn:hover:not(.active){border-color:#008a4a;color:#008a4a;}
-[data-theme="light"] .pill-panel{background:#f0f5f0;border-color:rgba(10,14,20,.08);}
+[data-theme="light"] .tab-panel{background:#f0f4f0;border-color:rgba(10,14,20,.08);}
 [data-theme="light"] .fp-bar-wrap{background:rgba(10,14,20,.08);}
 
 /* ══ NAV ══ */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;height:60px;
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;
   display:flex;align-items:center;justify-content:space-between;padding:0 40px;
-  backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:background .4s;
-}
+  backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:background .4s;}
 [data-theme="dark"] .nav{background:rgba(2,4,5,.95);}
 .nav-left{display:flex;align-items:center;gap:16px;}
 .nav-brand{font-family:'Fira Code',monospace;font-size:13px;color:var(--neon);text-decoration:none;white-space:nowrap;}
@@ -90,131 +85,133 @@ body::before{
 .nav-crumb a{color:var(--muted);text-decoration:none;transition:color .2s;}
 .nav-crumb a:hover{color:var(--neon);}
 .nav-right{display:flex;align-items:center;gap:12px;}
-.theme-toggle{
-  display:flex;align-items:center;gap:8px;padding:6px 14px;
+.theme-toggle{display:flex;align-items:center;gap:8px;padding:6px 14px;
   border:1px solid var(--border);border-radius:100px;cursor:pointer;
   font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
-  background:var(--card);transition:all .3s;white-space:nowrap;
-}
+  background:var(--card);transition:all .3s;white-space:nowrap;}
 .theme-toggle:hover{border-color:rgba(0,255,136,.3);color:var(--neon);}
-.toggle-track{width:32px;height:16px;border-radius:100px;position:relative;transition:background .3s;flex-shrink:0;}
+.toggle-track{width:32px;height:16px;border-radius:100px;background:var(--dim);position:relative;transition:background .3s;flex-shrink:0;}
 [data-theme="dark"] .toggle-track{background:rgba(0,255,136,.2);}
 [data-theme="light"] .toggle-track{background:rgba(16,185,129,.3);}
 .toggle-thumb{width:12px;height:12px;border-radius:50%;position:absolute;top:2px;transition:left .3s,background .3s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
 [data-theme="dark"] .toggle-thumb{left:2px;background:var(--neon);}
 [data-theme="light"] .toggle-thumb{left:18px;background:var(--green);}
-.nav-back{
-  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
-  text-decoration:none;padding:5px 12px;border:1px solid var(--border);border-radius:3px;transition:all .2s;
-}
+.nav-back{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+  text-decoration:none;padding:5px 12px;border:1px solid var(--border);border-radius:3px;transition:all .2s;white-space:nowrap;}
 .nav-back:hover{color:var(--neon);border-color:rgba(0,255,136,.3);}
+.nav-community{
+  font-family:'Fira Code',monospace;font-size:10px;font-weight:700;
+  color:#000;background:var(--neon);
+  text-decoration:none;padding:5px 14px;
+  border-radius:3px;border:1px solid var(--neon);
+  transition:all .2s;white-space:nowrap;
+}
+.nav-community:hover{background:#00cc6a;border-color:#00cc6a;transform:translateY(-1px);}
+[data-theme="light"] .nav-community{color:#000;}
 
 /* ══ HEADER ══ */
 .page-header{padding:90px 40px 32px;max-width:1100px;margin:0 auto;}
-.header-eye{
-  font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);
-  text-transform:uppercase;letter-spacing:3px;margin-bottom:12px;
-  display:flex;align-items:center;gap:10px;
-}
+.header-eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);
+  text-transform:uppercase;letter-spacing:3px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
 .header-eye::before{content:'';width:22px;height:1px;background:var(--neon);}
-.page-title{font-family:'Syne',sans-serif;font-size:clamp(32px,6vw,72px);font-weight:800;line-height:1;letter-spacing:-2px;margin-bottom:14px;}
+.page-title{font-family:'Syne',sans-serif;font-size:clamp(32px,6vw,72px);
+  font-weight:800;line-height:1;letter-spacing:-2px;margin-bottom:14px;}
 .page-title .hl{color:var(--neon);text-shadow:0 0 30px rgba(0,255,136,.25);}
-.page-desc{font-family:'Libre Baskerville',serif;font-size:clamp(14px,1.8vw,17px);font-style:italic;color:var(--body-txt);line-height:1.75;max-width:560px;margin-bottom:28px;}
-.live-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15);padding:5px 14px;border-radius:3px;}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--neon);box-shadow:0 0 6px var(--neon);animation:blink 1.5s infinite;}
+.page-desc{font-family:'Libre Baskerville',serif;font-size:clamp(14px,1.8vw,17px);
+  font-style:italic;color:var(--body-txt);line-height:1.75;max-width:560px;margin-bottom:28px;}
+.live-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Fira Code',monospace;
+  font-size:10px;color:var(--neon);background:rgba(0,255,136,.06);
+  border:1px solid rgba(0,255,136,.15);padding:5px 14px;border-radius:3px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--neon);
+  box-shadow:0 0 6px var(--neon);animation:blink 1.5s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
 
-/* ══ STATS — horizontal scroll ══ */
-.stats-outer{overflow-x:auto;padding:0 40px 4px;max-width:1100px;margin:0 auto 28px;scrollbar-width:none;}
-.stats-outer::-webkit-scrollbar{display:none;}
-.stats-row{display:flex;gap:10px;width:max-content;}
-.stat-chip{
-  display:flex;flex-direction:column;align-items:center;
+/* ══ STATS — horizontal scroll strip ══ */
+.stats-strip-wrap{overflow-x:auto;padding:0 40px 8px;max-width:1100px;margin:0 auto 24px;
+  scrollbar-width:none;}
+.stats-strip-wrap::-webkit-scrollbar{display:none;}
+.stats-strip{display:flex;gap:10px;width:max-content;}
+.stat-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:10px 16px;background:var(--card);border:1px solid var(--border2);
-  border-radius:8px;min-width:76px;transition:all .3s;flex-shrink:0;
-}
+  border-radius:8px;min-width:80px;transition:all .3s;flex-shrink:0;}
 .stat-chip:hover{border-color:var(--border);}
 .stat-chip-n{font-family:'Fira Code',monospace;font-size:20px;font-weight:700;line-height:1;}
-.stat-chip-l{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;white-space:nowrap;}
-
-/* ══ PROGRESS ══ */
-.fetch-progress{max-width:1100px;margin:0 auto;padding:0 40px 16px;font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);display:flex;align-items:center;gap:10px;}
-.fp-bar-wrap{flex:1;height:2px;background:var(--dim);border-radius:2px;overflow:hidden;}
-.fp-bar{height:100%;background:linear-gradient(90deg,var(--neon),var(--plasma));width:0%;transition:width .4s;}
+.stat-chip-l{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;margin-top:4px;white-space:nowrap;}
 
 /* ══ FILTER BAR ══ */
-.filter-bar{max-width:1100px;margin:0 auto;padding:0 40px 24px;display:flex;flex-direction:column;gap:12px;}
+.filter-bar{max-width:1100px;margin:0 auto;padding:0 40px 24px;}
 
 /* Search + Sort */
-.search-row{display:flex;gap:10px;align-items:center;}
+.search-row{display:flex;gap:10px;align-items:center;margin-bottom:16px;}
 .search-wrap{flex:1;position:relative;}
-.search-input{width:100%;padding:11px 14px 11px 42px;background:var(--input-bg);border:1px solid var(--border2);border-radius:6px;color:var(--chalk);font-family:'Fira Code',monospace;font-size:12px;outline:none;transition:all .2s;}
+.search-input{width:100%;padding:11px 14px 11px 42px;background:var(--input-bg);
+  border:1px solid var(--border2);border-radius:6px;color:var(--chalk);
+  font-family:'Fira Code',monospace;font-size:12px;outline:none;transition:all .2s;}
 .search-input:focus{border-color:rgba(0,255,136,.3);}
 [data-theme="light"] .search-input{color:#0d1f15;}
 .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;}
 .sort-wrap{display:flex;gap:6px;}
-.sort-btn{padding:10px 14px;background:var(--card);border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.sort-btn{padding:10px 14px;background:var(--card);border:1px solid var(--border2);
+  border-radius:6px;color:var(--muted);font-family:'Fira Code',monospace;font-size:10px;
+  cursor:pointer;transition:all .2s;white-space:nowrap;}
 .sort-btn.active,.sort-btn:hover{border-color:rgba(0,255,136,.3);color:var(--neon);background:rgba(0,255,136,.06);}
 
-/* ── SLIDE TABS ── */
-.filter-tabs{
-  display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;
-}
+/* ── SLIDE FILTER TABS ── */
+.filter-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;
+  scrollbar-width:none;margin-bottom:12px;}
 .filter-tabs::-webkit-scrollbar{display:none;}
-.tab-btn{
-  padding:7px 16px;border-radius:100px;
-  font-family:'Fira Code',monospace;font-size:10px;letter-spacing:.3px;
-  cursor:pointer;border:1px solid var(--border2);background:var(--card);
-  color:var(--muted);white-space:nowrap;flex-shrink:0;transition:all .2s;
-}
+.tab-btn{padding:7px 16px;border-radius:100px;
+  font-family:'Fira Code',monospace;font-size:10px;
+  cursor:pointer;border:1px solid var(--border2);
+  background:var(--card);color:var(--muted);
+  white-space:nowrap;transition:all .2s;flex-shrink:0;}
 .tab-btn:hover{border-color:rgba(0,255,136,.3);color:var(--neon);}
 .tab-btn.active{background:var(--neon);color:#000;border-color:var(--neon);}
 
-/* ── PILL PANEL (muncul di bawah tabs) ── */
-.pill-panel{
-  display:none;flex-wrap:wrap;gap:8px;align-items:center;
-  padding:12px 16px;border-radius:10px;
+/* ── PILL PANEL per tab ── */
+.tab-panel{
+  display:none;gap:8px;flex-wrap:wrap;align-items:center;
+  padding:12px 16px;border-radius:8px;
   background:var(--card);border:1px solid var(--border2);
-  animation:panelSlide .2s ease;
+  animation:panelIn .2s ease;
 }
-.pill-panel.show{display:flex;}
-@keyframes panelSlide{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.tab-panel.show{display:flex;}
+@keyframes panelIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+.pill{padding:6px 14px;border-radius:100px;font-family:'Fira Code',monospace;
+  font-size:10px;cursor:pointer;border:1px solid;transition:all .2s;white-space:nowrap;}
 
-/* Pills */
-.pill{padding:6px 14px;border-radius:100px;font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;border:1px solid;transition:all .2s;white-space:nowrap;}
-
-/* ── semua warna pill ── */
+/* pill warna per bidang */
 .pill-all{color:var(--neon);border-color:rgba(0,255,136,.2);background:rgba(0,255,136,.06);}
 .pill-all.active,.pill-all:hover{background:var(--neon);color:#000;border-color:var(--neon);}
-.pill-bio{color:#10b981;border-color:rgba(16,185,129,.25);}
-.pill-bio.active,.pill-bio:hover{background:#10b981;color:#000;border-color:#10b981;}
-.pill-fis{color:#22d3ee;border-color:rgba(34,211,238,.25);}
-.pill-fis.active,.pill-fis:hover{background:#22d3ee;color:#000;border-color:#22d3ee;}
-.pill-tek{color:#a855f7;border-color:rgba(168,85,247,.25);}
-.pill-tek.active,.pill-tek:hover{background:#a855f7;color:#fff;border-color:#a855f7;}
-.pill-ast{color:#f59e0b;border-color:rgba(245,158,11,.25);}
-.pill-ast.active,.pill-ast:hover{background:#f59e0b;color:#000;border-color:#f59e0b;}
-.pill-kim{color:#ef4444;border-color:rgba(239,68,68,.25);}
-.pill-kim.active,.pill-kim:hover{background:#ef4444;color:#fff;border-color:#ef4444;}
-.pill-mat{color:#f472b6;border-color:rgba(244,114,182,.25);}
-.pill-mat.active,.pill-mat:hover{background:#f472b6;color:#000;border-color:#f472b6;}
-.pill-sej{color:#c8924a;border-color:rgba(200,146,74,.25);}
-.pill-sej.active,.pill-sej:hover{background:#c8924a;color:#000;border-color:#c8924a;}
-.pill-mus{color:#34d399;border-color:rgba(52,211,153,.25);}
-.pill-mus.active,.pill-mus:hover{background:#34d399;color:#000;border-color:#34d399;}
-/* spiritual */
-.pill-isl{color:#818cf8;border-color:rgba(129,140,248,.25);}
-.pill-isl.active,.pill-isl:hover{background:#818cf8;color:#000;border-color:#818cf8;}
-.pill-krs{color:#60a8d4;border-color:rgba(96,168,212,.25);}
-.pill-krs.active,.pill-krs:hover{background:#60a8d4;color:#000;border-color:#60a8d4;}
-.pill-bud{color:#c8a020;border-color:rgba(200,160,32,.25);}
-.pill-bud.active,.pill-bud:hover{background:#c8a020;color:#000;border-color:#c8a020;}
-.pill-hin{color:#e07850;border-color:rgba(224,120,80,.25);}
-.pill-hin.active,.pill-hin:hover{background:#e07850;color:#000;border-color:#e07850;}
-.pill-kon{color:#d46060;border-color:rgba(212,96,96,.25);}
-.pill-kon.active,.pill-kon:hover{background:#d46060;color:#000;border-color:#d46060;}
+.pill-bio{color:#10b981;border-color:rgba(16,185,129,.2);background:rgba(16,185,129,.04);}
+.pill-bio.active,.pill-bio:hover{background:#10b981;color:#000;}
+.pill-fis{color:#22d3ee;border-color:rgba(34,211,238,.2);background:rgba(34,211,238,.04);}
+.pill-fis.active,.pill-fis:hover{background:#22d3ee;color:#000;}
+.pill-tek{color:#a855f7;border-color:rgba(168,85,247,.2);background:rgba(168,85,247,.04);}
+.pill-tek.active,.pill-tek:hover{background:#a855f7;color:#fff;}
+.pill-ast{color:#f59e0b;border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.04);}
+.pill-ast.active,.pill-ast:hover{background:#f59e0b;color:#000;}
+.pill-kim{color:#ef4444;border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.04);}
+.pill-kim.active,.pill-kim:hover{background:#ef4444;color:#fff;}
+.pill-mat{color:#f472b6;border-color:rgba(244,114,182,.3);}
+.pill-mat.active,.pill-mat:hover{background:#f472b6;color:#000;}
+.pill-sej{color:#c8924a;border-color:rgba(200,146,74,.3);}
+.pill-sej.active,.pill-sej:hover{background:#c8924a;color:#000;}
+.pill-mus{color:#34d399;border-color:rgba(52,211,153,.3);}
+.pill-mus.active,.pill-mus:hover{background:#34d399;color:#000;}
+.pill-isl{color:#818cf8;border-color:rgba(129,140,248,.3);}
+.pill-isl.active,.pill-isl:hover{background:#818cf8;color:#000;}
+.pill-krs{color:#60a8d4;border-color:rgba(96,168,212,.3);}
+.pill-krs.active,.pill-krs:hover{background:#60a8d4;color:#000;}
+.pill-bud{color:#c8a020;border-color:rgba(200,160,32,.3);}
+.pill-bud.active,.pill-bud:hover{background:#c8a020;color:#000;}
+.pill-hin{color:#e07850;border-color:rgba(224,120,80,.3);}
+.pill-hin.active,.pill-hin:hover{background:#e07850;color:#000;}
+.pill-kon{color:#d46060;border-color:rgba(212,96,96,.3);}
+.pill-kon.active,.pill-kon:hover{background:#d46060;color:#000;}
 
-/* ══ ARTIKEL ══ */
+/* ══ ARTIKEL GRID ══ */
 .art-wrap{max-width:1100px;margin:0 auto;padding:0 40px 80px;}
 .loading{padding:80px 20px;text-align:center;}
 .ld-dots{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
@@ -223,17 +220,14 @@ body::before{
 @keyframes ldp{0%,80%,100%{transform:scale(.5);opacity:.3;}40%{transform:scale(1);opacity:1;}}
 .ld-txt{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);}
 .art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
-.art-card{
-  background:var(--card);border:1px solid var(--border2);border-radius:12px;
+.art-card{background:var(--card);border:1px solid var(--border2);border-radius:12px;
   overflow:hidden;display:flex;flex-direction:column;
   animation:cardIn .45s ease both;
   transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s;
-  box-shadow:0 2px 12px var(--shadow);
-}
+  box-shadow:0 2px 12px var(--shadow);}
 @keyframes cardIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 .art-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px var(--shadow);}
 .card-strip{height:3px;width:100%;flex-shrink:0;}
-
 /* strip semua bidang */
 .card-strip.bio{background:linear-gradient(90deg,#10b981,transparent);}
 .card-strip.fis{background:linear-gradient(90deg,#22d3ee,transparent);}
@@ -248,12 +242,11 @@ body::before{
 .card-strip.bud{background:linear-gradient(90deg,#c8a020,#d97706);}
 .card-strip.hin{background:linear-gradient(90deg,#e07850,#dc2626);}
 .card-strip.kon{background:linear-gradient(90deg,#d46060,#b91c1c);}
-
 .card-body{padding:20px;flex:1;display:flex;flex-direction:column;}
 .card-meta{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
-.card-bidang{font-family:'Fira Code',monospace;font-size:8px;text-transform:uppercase;letter-spacing:1.5px;padding:3px 8px;border-radius:2px;border:1px solid;white-space:nowrap;}
-
-/* badge semua bidang */
+.card-bidang{font-family:'Fira Code',monospace;font-size:8px;text-transform:uppercase;
+  letter-spacing:1.5px;padding:3px 8px;border-radius:2px;border:1px solid;white-space:nowrap;}
+/* bidang badge semua */
 .card-bidang.bio{color:#10b981;border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.07);}
 .card-bidang.fis{color:#22d3ee;border-color:rgba(34,211,238,.3);background:rgba(34,211,238,.07);}
 .card-bidang.tek{color:#a855f7;border-color:rgba(168,85,247,.3);background:rgba(168,85,247,.07);}
@@ -267,14 +260,18 @@ body::before{
 .card-bidang.bud{color:#c8a020;border-color:rgba(200,160,32,.3);background:rgba(200,160,32,.07);}
 .card-bidang.hin{color:#e07850;border-color:rgba(224,120,80,.3);background:rgba(224,120,80,.07);}
 .card-bidang.kon{color:#d46060;border-color:rgba(212,96,96,.3);background:rgba(212,96,96,.07);}
-
 .card-date{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
-.card-title{font-family:'Syne',sans-serif;font-size:clamp(13px,1.4vw,16px);font-weight:800;line-height:1.3;margin-bottom:10px;color:var(--chalk);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:color .2s;}
+.card-title{font-family:'Syne',sans-serif;font-size:clamp(13px,1.4vw,16px);font-weight:800;
+  line-height:1.3;margin-bottom:10px;color:var(--chalk);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:color .2s;}
 .art-card:hover .card-title{color:var(--neon);}
-.card-snippet{font-family:'Libre Baskerville',serif;font-size:12px;font-style:italic;color:var(--body-txt);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1;margin-bottom:14px;}
-.card-cta{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-radius:6px;border:1px solid;text-decoration:none;font-family:'Fira Code',monospace;font-size:10px;transition:all .2s;}
-
-/* cta semua bidang */
+.card-snippet{font-family:'Libre Baskerville',serif;font-size:12px;font-style:italic;
+  color:var(--body-txt);line-height:1.7;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  flex:1;margin-bottom:14px;}
+.card-cta{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;
+  border-radius:6px;border:1px solid;text-decoration:none;
+  font-family:'Fira Code',monospace;font-size:10px;letter-spacing:.5px;transition:all .2s;}
 .card-cta.bio{color:#10b981;border-color:rgba(16,185,129,.2);background:rgba(16,185,129,.05);}
 .card-cta.bio:hover{background:rgba(16,185,129,.12);}
 .card-cta.fis{color:#22d3ee;border-color:rgba(34,211,238,.2);background:rgba(34,211,238,.05);}
@@ -293,6 +290,100 @@ body::before{
 .card-cta.mus:hover{background:rgba(52,211,153,.12);}
 .card-cta.isl{color:#818cf8;border-color:rgba(129,140,248,.2);background:rgba(129,140,248,.05);}
 .card-cta.isl:hover{background:rgba(129,140,248,.12);}
+
+/* ══ COMMUNITY BANNER ══ */
+.community-section{
+  max-width:1200px;margin:0 auto 48px;padding:0 32px;
+}
+.community-banner{
+  position:relative;overflow:hidden;
+  background:var(--card);border:1px solid rgba(0,255,136,.15);
+  border-radius:16px;padding:40px 44px;
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;
+}
+[data-theme="light"] .community-banner{background:#fff;box-shadow:0 4px 24px rgba(10,14,20,.07);}
+.community-banner::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 80% 50%,rgba(0,255,136,.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.community-banner::after{
+  content:'COMMUNITY';position:absolute;right:-20px;top:50%;transform:translateY(-50%);
+  font-family:'Fira Code',monospace;font-size:80px;font-weight:700;
+  color:rgba(0,255,136,.03);letter-spacing:-2px;pointer-events:none;white-space:nowrap;
+}
+.cb-eye{
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--neon);
+  letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.cb-eye::before{content:'';width:16px;height:1px;background:var(--neon);}
+.cb-title{
+  font-family:'Syne',sans-serif;font-size:clamp(20px,2.8vw,30px);
+  font-weight:800;line-height:1.15;letter-spacing:-0.5px;margin-bottom:10px;
+}
+.cb-title .hl{color:var(--neon);}
+.cb-desc{
+  font-family:'Libre Baskerville',serif;font-style:italic;
+  font-size:14px;color:var(--body-txt);line-height:1.75;max-width:480px;
+  margin-bottom:20px;
+}
+.cb-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:0;}
+.cb-pill{
+  font-family:'Fira Code',monospace;font-size:9px;
+  padding:3px 10px;border-radius:100px;
+  border:1px solid var(--border2);color:var(--muted);
+  letter-spacing:.5px;
+}
+.cb-actions{display:flex;flex-direction:column;gap:10px;align-items:flex-end;z-index:1;}
+.cb-btn-main{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 24px;background:var(--neon);color:#000;
+  border:none;border-radius:8px;text-decoration:none;
+  font-family:'Fira Code',monospace;font-size:11px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;
+  transition:all .25s;cursor:pointer;
+}
+.cb-btn-main:hover{background:#00cc6a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,255,136,.2);}
+.cb-btn-sec{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 18px;background:none;color:var(--muted);
+  border:1px solid var(--border2);border-radius:8px;
+  text-decoration:none;font-family:'Fira Code',monospace;
+  font-size:10px;white-space:nowrap;transition:all .2s;
+}
+.cb-btn-sec:hover{color:var(--neon);border-color:rgba(0,255,136,.3);}
+.cb-stats{display:flex;gap:20px;margin-top:12px;}
+.cb-stat{text-align:center;}
+.cb-stat-n{font-family:'Fira Code',monospace;font-size:18px;font-weight:700;color:var(--neon);}
+.cb-stat-l{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+
+/* HOW IT WORKS strip */
+.how-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  margin-top:16px;padding-top:20px;border-top:1px solid var(--border2);
+  grid-column:1/-1;
+}
+.how-item{display:flex;align-items:flex-start;gap:12px;}
+.how-num{
+  font-family:'Fira Code',monospace;font-size:10px;font-weight:700;
+  color:var(--neon);background:rgba(0,255,136,.08);
+  border:1px solid rgba(0,255,136,.15);border-radius:6px;
+  padding:4px 8px;flex-shrink:0;
+}
+.how-body{}
+.how-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--chalk);margin-bottom:3px;}
+.how-desc{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);line-height:1.65;}
+
+@media(max-width:700px){
+  .community-section{padding:0 16px;}
+  .community-banner{grid-template-columns:1fr;padding:28px 22px;}
+  .cb-actions{align-items:stretch;}
+  .cb-btn-main,.cb-btn-sec{justify-content:center;}
+  .how-strip{grid-template-columns:1fr;}
+  .community-banner::after{display:none;}
+  .cb-stats{gap:16px;}
+}
 .card-cta.krs{color:#60a8d4;border-color:rgba(96,168,212,.2);background:rgba(96,168,212,.05);}
 .card-cta.krs:hover{background:rgba(96,168,212,.12);}
 .card-cta.bud{color:#c8a020;border-color:rgba(200,160,32,.2);background:rgba(200,160,32,.05);}
@@ -303,24 +394,37 @@ body::before{
 .card-cta.kon:hover{background:rgba(212,96,96,.12);}
 .cta-arrow{transition:transform .2s;}
 .art-card:hover .cta-arrow{transform:translateX(4px);}
-
 .empty{padding:80px 20px;text-align:center;grid-column:1/-1;}
 .empty-icon{font-size:40px;margin-bottom:16px;display:block;}
 .empty-txt{font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);line-height:1.8;}
 
 /* ══ PAGER ══ */
-.pager{display:none;justify-content:space-between;align-items:center;padding:20px 0 0;border-top:1px solid var(--border2);}
+.pager{display:none;justify-content:space-between;align-items:center;
+  padding:20px 0 0;border-top:1px solid var(--border2);}
 .pager.show{display:flex;}
-.pager-btn{padding:9px 20px;background:var(--card);border:1px solid var(--border2);border-radius:5px;color:var(--muted);cursor:pointer;font-family:'Fira Code',monospace;font-size:10px;transition:all .2s;}
+.pager-btn{padding:9px 20px;background:var(--card);border:1px solid var(--border2);
+  border-radius:5px;color:var(--muted);cursor:pointer;
+  font-family:'Fira Code',monospace;font-size:10px;transition:all .2s;}
 .pager-btn:hover:not(:disabled){border-color:rgba(0,255,136,.3);color:var(--neon);}
 .pager-btn:disabled{opacity:.25;cursor:not-allowed;}
 .pager-nums{display:flex;gap:6px;}
-.pg-num{width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;border:1px solid var(--border2);color:var(--muted);background:var(--card);transition:all .2s;}
+.pg-num{width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:'Fira Code',monospace;font-size:10px;cursor:pointer;
+  border:1px solid var(--border2);color:var(--muted);background:var(--card);transition:all .2s;}
 .pg-num.active{border-color:var(--neon);color:var(--neon);background:rgba(0,255,136,.08);}
 .pg-num:hover:not(.active){border-color:rgba(0,255,136,.2);color:var(--chalk);}
 
+/* ══ PROGRESS ══ */
+.fetch-progress{max-width:1100px;margin:0 auto;padding:0 40px 16px;
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+  display:flex;align-items:center;gap:10px;}
+.fp-bar-wrap{flex:1;height:2px;background:var(--dim);border-radius:2px;overflow:hidden;}
+.fp-bar{height:100%;background:linear-gradient(90deg,var(--neon),var(--plasma));width:0%;transition:width .4s;}
+
 /* ══ FOOTER ══ */
-.footer{border-top:1px solid var(--border2);padding:22px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:var(--bg2);}
+.footer{border-top:1px solid var(--border2);padding:22px 40px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  background:var(--bg2);}
 .footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
 .footer a:hover{color:var(--neon);}
 
@@ -330,8 +434,9 @@ body::before{
   .art-grid{grid-template-columns:1fr;}
   .nav{padding:0 16px;}
   .page-header{padding:80px 18px 28px;}
-  .stats-outer,.filter-bar,.art-wrap{padding-left:18px;padding-right:18px;}
-  .art-wrap{padding-bottom:60px;}
+  .stats-strip-wrap{padding:0 18px 8px;}
+  .filter-bar,.art-wrap{padding:0 18px 60px;}
+  .art-wrap{padding:0 18px 60px;}
   .footer{padding:18px;}
   .sort-wrap{flex-wrap:wrap;}
   .nav-crumb{display:none;}
@@ -352,12 +457,13 @@ body::before{
     </div>
   </div>
   <div class="nav-right">
-    <div class="theme-toggle" onclick="toggleTheme()">
-      <span id="themeIcon">&#x1F319;</span>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Ganti tema">
+      <span class="toggle-icon" id="themeIcon">🌙</span>
       <div class="toggle-track"><div class="toggle-thumb" id="toggleThumb"></div></div>
       <span id="themeLabel" style="font-size:10px;">Gelap</span>
     </div>
-    <a class="nav-back" href="https://ilmiora.blogspot.com">&#8592; ILMIORA Home</a>
+    <a class="nav-community" href="forum-submit.html">&#43; Kirim Artikel</a>
+    <a class="nav-back" href="https://ilmiora.blogspot.com">&#8592; Home</a>
   </div>
 </nav>
 
@@ -368,73 +474,73 @@ body::before{
   <p class="page-desc">Koleksi lengkap dari seluruh bidang ILMIORA &mdash; Sains, Matematika, Sejarah, Musik, dan Spiritual &mdash; dalam satu halaman. Diperbarui otomatis setiap ada artikel baru.</p>
   <div class="live-badge">
     <span class="live-dot"></span>
-    <span>Sistem Hidup &middot; 13 bidang ilmu</span>
+    <span>Live dari Blogger &middot; Sains &bull; Matematika &bull; Sejarah &bull; Musik &bull; Spiritual</span>
   </div>
 </div>
 
-<!-- STATS — scrollable horizontal -->
-<div class="stats-outer">
-  <div class="stats-row">
+<!-- STATS STRIP (scrollable) -->
+<div class="stats-strip-wrap">
+  <div class="stats-strip">
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalArtikel" style="color:var(--neon);">&mdash;</div>
-      <div class="stat-chip-l">&#127758; Total</div>
+      <div class="stat-chip-n" id="totalArtikel" style="color:var(--neon);">&#8212;</div>
+      <div class="stat-chip-l">Total</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalBio" style="color:#10b981;">&mdash;</div>
-      <div class="stat-chip-l">&#x1F9EC; Biologi</div>
+      <div class="stat-chip-n" id="totalBio" style="color:#10b981;">&#8212;</div>
+      <div class="stat-chip-l">&#129516; Biologi</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalFis" style="color:#22d3ee;">&mdash;</div>
-      <div class="stat-chip-l">&#9883; Fisika</div>
+      <div class="stat-chip-n" id="totalFis" style="color:#22d3ee;">&#8212;</div>
+      <div class="stat-chip-l">&#9883;&#65039; Fisika</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalTek" style="color:#a855f7;">&mdash;</div>
-      <div class="stat-chip-l">&#x1F4BB; Teknologi</div>
+      <div class="stat-chip-n" id="totalTek" style="color:#a855f7;">&#8212;</div>
+      <div class="stat-chip-l">&#128187; Teknologi</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalAst" style="color:#f59e0b;">&mdash;</div>
-      <div class="stat-chip-l">&#x1F52D; Astronomi</div>
+      <div class="stat-chip-n" id="totalAst" style="color:#f59e0b;">&#8212;</div>
+      <div class="stat-chip-l">&#128301; Astronomi</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalKim" style="color:#ef4444;">&mdash;</div>
-      <div class="stat-chip-l">&#x1F9EA; Kimia</div>
+      <div class="stat-chip-n" id="totalKim" style="color:#ef4444;">&#8212;</div>
+      <div class="stat-chip-l">&#129514; Kimia</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalMat" style="color:#f472b6;">&mdash;</div>
-      <div class="stat-chip-l">&#x1F4D0; Matematika</div>
+      <div class="stat-chip-n" id="totalMat" style="color:#f472b6;">&#8212;</div>
+      <div class="stat-chip-l">&#128208; Matematika</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalSej" style="color:#c8924a;">&mdash;</div>
-      <div class="stat-chip-l">&#x1F4DC; Sejarah</div>
+      <div class="stat-chip-n" id="totalSej" style="color:#c8924a;">&#8212;</div>
+      <div class="stat-chip-l">&#128220; Sejarah</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalMus" style="color:#34d399;">&mdash;</div>
-      <div class="stat-chip-l">&#x1F3B5; Musik</div>
+      <div class="stat-chip-n" id="totalMus" style="color:#34d399;">&#8212;</div>
+      <div class="stat-chip-l">&#127925; Musik</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalIsl" style="color:#818cf8;">&mdash;</div>
-      <div class="stat-chip-l">&#9764; Islam</div>
+      <div class="stat-chip-n" id="totalIsl" style="color:#818cf8;">&#8212;</div>
+      <div class="stat-chip-l">&#9764;&#65039; Islam</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalKrs" style="color:#60a8d4;">&mdash;</div>
-      <div class="stat-chip-l">&#10013; Kristen</div>
+      <div class="stat-chip-n" id="totalKrs" style="color:#60a8d4;">&#8212;</div>
+      <div class="stat-chip-l">&#10013;&#65039; Kristen</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalBud" style="color:#c8a020;">&mdash;</div>
-      <div class="stat-chip-l">&#9784; Buddha</div>
+      <div class="stat-chip-n" id="totalBud" style="color:#c8a020;">&#8212;</div>
+      <div class="stat-chip-l">&#9784;&#65039; Buddha</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalHin" style="color:#e07850;">&mdash;</div>
-      <div class="stat-chip-l">&#x1F549; Hindu</div>
+      <div class="stat-chip-n" id="totalHin" style="color:#e07850;">&#8212;</div>
+      <div class="stat-chip-l">&#128329;&#65039; Hindu</div>
     </div>
     <div class="stat-chip">
-      <div class="stat-chip-n" id="totalKon" style="color:#d46060;">&mdash;</div>
-      <div class="stat-chip-l">&#9775; Konghucu</div>
+      <div class="stat-chip-n" id="totalKon" style="color:#d46060;">&#8212;</div>
+      <div class="stat-chip-l">&#9775;&#65039; Konghucu</div>
     </div>
   </div>
 </div>
 
-<!-- PROGRESS -->
+<!-- FETCH PROGRESS -->
 <div class="fetch-progress" id="fetchProgress">
   <span id="fetchTxt">Memuat dari Blogger...</span>
   <div class="fp-bar-wrap"><div class="fp-bar" id="fpBar"></div></div>
@@ -443,69 +549,68 @@ body::before{
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
-
   <!-- Search + Sort -->
   <div class="search-row">
     <div class="search-wrap">
       <span class="search-icon">&#128269;</span>
       <input class="search-input" id="searchInput" type="text"
-        placeholder="Cari judul, bidang, atau topik..." oninput="applyFilter()"/>
+        placeholder="Cari artikel dari semua bidang..."
+        oninput="applyFilter()"/>
     </div>
     <div class="sort-wrap">
       <button class="sort-btn active" id="sortNew" onclick="setSort('new')">Terbaru</button>
       <button class="sort-btn" id="sortOld" onclick="setSort('old')">Terlama</button>
-      <button class="sort-btn" id="sortAZ"  onclick="setSort('az')">A&ndash;Z</button>
+      <button class="sort-btn" id="sortAZ"  onclick="setSort('az')">A&#8211;Z</button>
     </div>
   </div>
 
-  <!-- SLIDE TABS — satu baris scrollable -->
-  <div class="filter-tabs">
-    <button class="tab-btn active" data-tab="semua"    onclick="switchTab(this)">&#127758; Semua</button>
-    <button class="tab-btn"        data-tab="sains"    onclick="switchTab(this)">&#x1F52C; Sains</button>
-    <button class="tab-btn"        data-tab="mat"      onclick="switchTab(this)">&#x1F4D0; Matematika</button>
-    <button class="tab-btn"        data-tab="sej"      onclick="switchTab(this)">&#x1F4DC; Sejarah</button>
-    <button class="tab-btn"        data-tab="mus"      onclick="switchTab(this)">&#x1F3B5; Musik</button>
-    <button class="tab-btn"        data-tab="spiritual" onclick="switchTab(this)">&#10024; Spiritual</button>
+  <!-- SLIDE TABS — satu baris, bisa scroll horizontal -->
+  <div class="filter-tabs" id="filterTabs">
+    <button class="tab-btn active" onclick="switchTab('semua',this)">&#127758; Semua</button>
+    <button class="tab-btn" onclick="switchTab('sains',this)">&#128300; Sains</button>
+    <button class="tab-btn" onclick="switchTab('mat',this)">&#128208; Matematika</button>
+    <button class="tab-btn" onclick="switchTab('sej',this)">&#128220; Sejarah</button>
+    <button class="tab-btn" onclick="switchTab('mus',this)">&#127925; Musik</button>
+    <button class="tab-btn" onclick="switchTab('spiritual',this)">&#10024; Spiritual</button>
   </div>
 
-  <!-- PANEL: Semua -->
-  <div class="pill-panel show" id="panel-semua">
+  <!-- Panel Semua -->
+  <div class="tab-panel show" id="panel-semua">
     <span class="pill pill-all active" onclick="setFilter('all')">&#127758; Semua Artikel</span>
   </div>
 
-  <!-- PANEL: Sains -->
-  <div class="pill-panel" id="panel-sains">
-    <span class="pill pill-bio" onclick="setFilter('bio')">&#x1F9EC; Biologi</span>
+  <!-- Panel Sains -->
+  <div class="tab-panel" id="panel-sains">
+    <span class="pill pill-bio" onclick="setFilter('bio')">&#129516; Biologi</span>
     <span class="pill pill-fis" onclick="setFilter('fis')">&#9883; Fisika</span>
-    <span class="pill pill-tek" onclick="setFilter('tek')">&#x1F4BB; Teknologi</span>
-    <span class="pill pill-ast" onclick="setFilter('ast')">&#x1F52D; Astronomi</span>
-    <span class="pill pill-kim" onclick="setFilter('kim')">&#x1F9EA; Kimia</span>
+    <span class="pill pill-tek" onclick="setFilter('tek')">&#128187; Teknologi</span>
+    <span class="pill pill-ast" onclick="setFilter('ast')">&#128301; Astronomi</span>
+    <span class="pill pill-kim" onclick="setFilter('kim')">&#129514; Kimia</span>
   </div>
 
-  <!-- PANEL: Matematika -->
-  <div class="pill-panel" id="panel-mat">
-    <span class="pill pill-mat" onclick="setFilter('mat')">&#x1F4D0; Matematika</span>
+  <!-- Panel Matematika -->
+  <div class="tab-panel" id="panel-mat">
+    <span class="pill pill-mat" onclick="setFilter('mat')">&#128208; Matematika</span>
   </div>
 
-  <!-- PANEL: Sejarah -->
-  <div class="pill-panel" id="panel-sej">
-    <span class="pill pill-sej" onclick="setFilter('sej')">&#x1F4DC; Semua Sejarah</span>
+  <!-- Panel Sejarah -->
+  <div class="tab-panel" id="panel-sej">
+    <span class="pill pill-sej" onclick="setFilter('sej')">&#128220; Semua Sejarah</span>
   </div>
 
-  <!-- PANEL: Musik -->
-  <div class="pill-panel" id="panel-mus">
-    <span class="pill pill-mus" onclick="setFilter('mus')">&#x1F3B5; Musik</span>
+  <!-- Panel Musik -->
+  <div class="tab-panel" id="panel-mus">
+    <span class="pill pill-mus" onclick="setFilter('mus')">&#127925; Musik</span>
   </div>
 
-  <!-- PANEL: Spiritual — semua agama -->
-  <div class="pill-panel" id="panel-spiritual">
-    <span class="pill pill-isl" onclick="setFilter('isl')">&#9764; Islam</span>
-    <span class="pill pill-krs" onclick="setFilter('krs')">&#10013; Kristen</span>
-    <span class="pill pill-bud" onclick="setFilter('bud')">&#9784; Buddha</span>
-    <span class="pill pill-hin" onclick="setFilter('hin')">&#x1F549; Hindu</span>
-    <span class="pill pill-kon" onclick="setFilter('kon')">&#9775; Konghucu</span>
+  <!-- Panel Spiritual -->
+  <div class="tab-panel" id="panel-spiritual">
+    <span class="pill pill-isl" onclick="setFilter('isl')">&#9764;&#65039; Islam</span>
+    <span class="pill pill-krs" onclick="setFilter('krs')">&#10013;&#65039; Kristen</span>
+    <span class="pill pill-bud" onclick="setFilter('bud')">&#9784;&#65039; Buddha</span>
+    <span class="pill pill-hin" onclick="setFilter('hin')">&#128329;&#65039; Hindu</span>
+    <span class="pill pill-kon" onclick="setFilter('kon')">&#9775;&#65039; Konghucu</span>
   </div>
-
 </div>
 
 <!-- ARTIKEL -->
@@ -523,166 +628,251 @@ body::before{
   </div>
 </div>
 
+<!-- ══ COMMUNITY SECTION ══ -->
+<div class="community-section">
+  <div class="community-banner">
+
+    <!-- Kiri: teks -->
+    <div class="cb-left">
+      <div class="cb-eye">// Bergabung sebagai Kontributor</div>
+      <h2 class="cb-title">Punya artikel atau<br>cerita untuk dibagikan?<br><span class="hl">Kirim ke ILMIORA.</span></h2>
+      <p class="cb-desc">Tulis tentang sains, sejarah, budaya, teknologi, atau apapun yang menurutmu layak dibaca. Artikel terbaik akan masuk ke halaman Mulai Membaca dan dibaca oleh seluruh komunitas ILMIORA.</p>
+      <div class="cb-pills">
+        <span class="cb-pill">🔬 Sains</span>
+        <span class="cb-pill">📜 Sejarah</span>
+        <span class="cb-pill">✨ Spiritual</span>
+        <span class="cb-pill">💭 Opini</span>
+        <span class="cb-pill">📰 Berita Lokal</span>
+        <span class="cb-pill">🎵 Musik & Seni</span>
+      </div>
+    </div>
+
+    <!-- Kanan: aksi -->
+    <div class="cb-actions">
+      <a class="cb-btn-main" href="forum-submit.html">
+        ✦ Kirim Artikel
+      </a>
+      <div class="cb-stats">
+        <div class="cb-stat">
+          <div class="cb-stat-n">24jam</div>
+          <div class="cb-stat-l">Waktu Review</div>
+        </div>
+        <div class="cb-stat">
+          <div class="cb-stat-n">Gratis</div>
+          <div class="cb-stat-l">Tanpa Biaya</div>
+        </div>
+        <div class="cb-stat">
+          <div class="cb-stat-n">Kredit</div>
+          <div class="cb-stat-l">Nama Tercantum</div>
+        </div>
+      </div>
+      <!-- Admin link — samarkan, hanya untuk kamu -->
+      <a class="cb-btn-sec" href="forum-admin.html" title="Admin Panel"
+         style="font-size:9px;opacity:.25;transition:opacity .3s;"
+         onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='.25'">
+        ⚙ Panel Admin
+      </a>
+    </div>
+
+    <!-- How it works -->
+    <div class="how-strip">
+      <div class="how-item">
+        <span class="how-num">01</span>
+        <div class="how-body">
+          <div class="how-title">Tulis Artikel</div>
+          <div class="how-desc">Isi form di halaman kirim. Minimal 50 karakter, pilih kategori, cantumkan sumber jika ada.</div>
+        </div>
+      </div>
+      <div class="how-item">
+        <span class="how-num">02</span>
+        <div class="how-body">
+          <div class="how-title">Admin Seleksi</div>
+          <div class="how-desc">Tim admin ILMIORA meninjau dalam 1×24 jam. Artikel bisa diedit untuk kesesuaian gaya penulisan.</div>
+        </div>
+      </div>
+      <div class="how-item">
+        <span class="how-num">03</span>
+        <div class="how-body">
+          <div class="how-title">Terbit & Dibaca</div>
+          <div class="how-desc">Artikel yang lolos langsung terbit di blog dan muncul di halaman Mulai Membaca ini secara otomatis.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <footer class="footer">
   <a href="https://ilmiora.blogspot.com">&#8592; ILMIORA Home</a>
-  <span style="font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.5;">ILMIORA &copy; 2025 &mdash; Semua Artikel &middot; Live Feed</span>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.5;">ILMIORA &copy; 2026 &mdash; Semua Artikel &middot; Live Feed</span>
   <a href="https://ilmiora.blogspot.com">ILMIORA Home &#8594;</a>
 </footer>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   KONFIGURASI BIDANG
-   PENTING: Setiap key HARUS UNIK. Tidak boleh duplikat.
-   Label harus SAMA PERSIS dengan label di Blogger.
-═══════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   KONFIGURASI
+══════════════════════════════════════════ */
 const BLOG = 'https://ilmiora.blogspot.com';
 
+/* 
+  BIDANG — setiap entry UNIK (tidak ada duplikat key).
+  Islam: semua label kajian Islam dari Taman Islam.
+  max-results=50 per label — cukup untuk fetch semua artikel.
+*/
 const BIDANG = [
-  /* ── Sains ── */
-  { key:'bio', label:'Biologi',    icon:'&#x1F9EC;', labels:['Biologi'] },
-  { key:'fis', label:'Fisika',     icon:'&#9883;',   labels:['Fisika'] },
-  { key:'tek', label:'Teknologi',  icon:'&#x1F4BB;', labels:['Teknologi'] },
-  { key:'ast', label:'Astronomi',  icon:'&#x1F52D;', labels:['Astronomi'] },
-  { key:'kim', label:'Kimia',      icon:'&#x1F9EA;', labels:['Kimia'] },
-  /* ── Matematika ── */
-  { key:'mat', label:'Matematika', icon:'&#x1F4D0;', labels:['Matematika'] },
-  /* ── Sejarah — semua sub-kajian ── */
-  { key:'sej', label:'Sejarah',    icon:'&#x1F4DC;',
+  // ── Sains ──
+  { key:'bio', label:'Biologi',    icon:'&#129516;', color:'#10b981', labels:['Biologi'] },
+  { key:'fis', label:'Fisika',     icon:'&#9883;',   color:'#22d3ee', labels:['Fisika'] },
+  { key:'tek', label:'Teknologi',  icon:'&#128187;', color:'#a855f7', labels:['Teknologi'] },
+  { key:'ast', label:'Astronomi',  icon:'&#128301;', color:'#f59e0b', labels:['Astronomi'] },
+  { key:'kim', label:'Kimia',      icon:'&#129514;', color:'#ef4444', labels:['Kimia'] },
+  // ── Matematika ──
+  { key:'mat', label:'Matematika', icon:'&#128208;', color:'#f472b6', labels:['Matematika'] },
+  // ── Sejarah ──
+  { key:'sej', label:'Sejarah',    icon:'&#128220;', color:'#c8924a',
     labels:['Sejarah Islam','Sejarah Nusantara','Tokoh & Biografi','Sejarah Dunia','Sejarah Sains','Kronik Umum'] },
-  /* ── Musik ── */
-  { key:'mus', label:'Musik',      icon:'&#x1F3B5;', labels:['Musik'] },
-  /* ── Islam — semua label kajian Taman Islam ──
-     Tambah label baru di sini jika ada kajian baru di Taman Islam */
-  { key:'isl', label:'Islam',      icon:'&#9764;',
+  // ── Musik ──
+  { key:'mus', label:'Musik',      icon:'&#127925;', color:'#34d399', labels:['Musik'] },
+  // ── Islam — semua sub-label Taman Islam ──
+  // Sesuaikan dengan label yang dipakai di Blogger
+  { key:'isl', label:'Islam',      icon:'&#9764;&#65039;', color:'#818cf8',
     labels:[
-      'Al-Quran','Hadits','Tauhid','Fiqh','Tasawuf',
-      'Sejarah Islam','Sirah Nabawiyah','Akhlak','Muamalah',
-      'Al-quran','Al-hadist','Kajian Islam'
-    ]},
-  /* ── Kristen ── */
-  { key:'krs', label:'Kristen',    icon:'&#10013;',
+      'Al-Quran','Al-quran','Hadits','Al-hadist',
+      'Tauhid','Fiqh','Tasawuf','Akhlak','Muamalah',
+      'Sirah Nabawiyah','Kajian Islam'
+    ] },
+  // ── Kristen ──
+  { key:'krs', label:'Kristen',    icon:'&#10013;&#65039;', color:'#60a8d4',
     labels:['Alkitab','Teologi','Doa & Ibadah','Sejarah Gereja','Etika Kristen'] },
-  /* ── Buddha ── */
-  { key:'bud', label:'Buddha',     icon:'&#9784;',
+  // ── Buddha ──
+  { key:'bud', label:'Buddha',     icon:'&#9784;&#65039;', color:'#c8a020',
     labels:['Dhamma','Meditasi','Tripitaka','Nirvana','Etika Buddha'] },
-  /* ── Hindu ── */
-  { key:'hin', label:'Hindu',      icon:'&#x1F549;',
+  // ── Hindu ──
+  { key:'hin', label:'Hindu',      icon:'&#128329;&#65039;', color:'#e07850',
     labels:['Veda','Dharma','Karma & Moksha','Yoga','Puja & Ritual'] },
-  /* ── Konghucu ── */
-  { key:'kon', label:'Konghucu',   icon:'&#9775;',
-    labels:['Lunyu','Ren (\u4EC1)','Yi (\u4E49)','Li (\u793C)','Zhi (\u667A)'] },
+  // ── Konghucu ──
+  { key:'kon', label:'Konghucu',   icon:'&#9775;&#65039;', color:'#d46060',
+    labels:['Lunyu','Ren (\u4ed1)','Yi (\u4e49)','Li (\u793c)','Zhi (\u667a)'] },
 ];
-
-/* ── ID chip untuk setiap key ── */
-const CHIP_ID = {
-  bio:'totalBio', fis:'totalFis', tek:'totalTek', ast:'totalAst', kim:'totalKim',
-  mat:'totalMat', sej:'totalSej', mus:'totalMus',
-  isl:'totalIsl', krs:'totalKrs', bud:'totalBud', hin:'totalHin', kon:'totalKon'
-};
 
 const PER_PAGE = 12;
 
+/* ══ STATE ══ */
 let allArticles = [];
 let filtered    = [];
 let page        = 1;
 let sortMode    = 'new';
 let filterKey   = 'all';
-let doneCount   = 0;          // jumlah BIDANG yang selesai di-fetch
-const globalSeen = new Set(); // deduplikasi URL global
 
-/* ── THEME ── */
+/* ══ KEY MAP untuk stat chip IDs ══ */
+const KEY_MAP = {
+  bio:'Bio', fis:'Fis', tek:'Tek', ast:'Ast', kim:'Kim',
+  mat:'Mat', sej:'Sej', mus:'Mus',
+  isl:'Isl', krs:'Krs', bud:'Bud', hin:'Hin', kon:'Kon'
+};
+
+/* ══ THEME ══ */
 function toggleTheme(){
   const html = document.documentElement;
-  const dark = html.getAttribute('data-theme') === 'dark';
-  html.setAttribute('data-theme', dark ? 'light' : 'dark');
-  document.getElementById('themeIcon').innerHTML  = dark ? '&#9728;' : '&#x1F319;';
-  document.getElementById('themeLabel').textContent = dark ? 'Terang' : 'Gelap';
-  localStorage.setItem('ilmiora-theme', dark ? 'light' : 'dark');
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeIcon').textContent  = isDark ? '&#9728;&#65039;' : '&#127769;';
+  document.getElementById('themeLabel').textContent = isDark ? 'Terang' : 'Gelap';
+  localStorage.setItem('ilmiora-theme', isDark ? 'light' : 'dark');
 }
 (function(){
-  const s = localStorage.getItem('ilmiora-theme');
-  if(s){ document.documentElement.setAttribute('data-theme',s);
-    if(s==='light'){ document.getElementById('themeIcon').innerHTML='&#9728;'; document.getElementById('themeLabel').textContent='Terang'; } }
+  const saved = localStorage.getItem('ilmiora-theme');
+  if(saved){
+    document.documentElement.setAttribute('data-theme', saved);
+    if(saved === 'light'){
+      document.getElementById('themeIcon').textContent  = '&#9728;&#65039;';
+      document.getElementById('themeLabel').textContent = 'Terang';
+    }
+  }
 })();
 
-window.addEventListener('scroll',()=>{
+/* ══ SCROLL BAR ══ */
+window.addEventListener('scroll', () => {
   document.getElementById('scrollBar').style.width =
-    (scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+    (scrollY / (document.body.scrollHeight - innerHeight) * 100) + '%';
 });
 
-/* ── SLIDE TAB ── */
-function switchTab(btn){
-  const tab = btn.getAttribute('data-tab');
-  /* reset semua tab */
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+/* ══ SLIDE TAB SWITCH ══ */
+function switchTab(tabKey, btn) {
+  // Deaktifkan semua tab
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  /* sembunyikan semua panel */
-  document.querySelectorAll('.pill-panel').forEach(p=>p.classList.remove('show'));
-  const panel = document.getElementById('panel-'+tab);
+  // Sembunyikan semua panel
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('show'));
+  // Tampilkan panel yang sesuai
+  const panel = document.getElementById('panel-' + tabKey);
   if(panel) panel.classList.add('show');
-  /* auto-filter untuk tab single-bidang */
-  const autoFilter = {mat:'mat',sej:'sej',mus:'mus'};
-  if(tab === 'semua') setFilter('all');
-  else if(autoFilter[tab]) setFilter(autoFilter[tab]);
+  // Jika tab Semua → reset filter ke all
+  if(tabKey === 'semua') setFilter('all');
 }
 
-/* ── FETCH ── */
-function fetchOneLabel(lbl, bidang, cb){
-  /* nama callback unik per fetch — hindari collision */
-  const uid = '_cb_' + bidang.key + '_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
-  window[uid] = function(data){
-    const entries = ((data.feed && data.feed.entry) || []).map(e => {
-      const link    = (e.link||[]).find(l=>l.rel==='alternate');
+/* ══ FETCH ══ */
+function fetchOneLabel(lbl, bidang, cb) {
+  const fnName = '_cb_' + bidang.key + '_' + Math.random().toString(36).slice(2);
+  window[fnName] = function(data) {
+    const entries = (data.feed && data.feed.entry || []).map(e => {
+      const link    = (e.link || []).find(l => l.rel === 'alternate');
       const dateObj = new Date(e.published.$t);
       const dateStr = dateObj.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
-      const raw     = (e.summary ? e.summary.$t : '') || e.title.$t || '';
-      const snippet = raw.replace(/<[^>]+>/g,'').substring(0,160)+'…';
+      const snippet = ((e.summary ? e.summary.$t : e.title.$t) || '')
+        .replace(/<[^>]+>/g, '').substring(0, 160) + '&#8230;';
       return {
-        title: e.title.$t, url: link?link.href:'#',
-        date: dateStr, dateObj, snippet,
-        key: bidang.key, label: bidang.label, icon: bidang.icon
+        title: e.title.$t,
+        url:   link ? link.href : '#',
+        date:  dateStr, dateObj,
+        snippet,
+        key:   bidang.key,
+        label: bidang.label,
+        icon:  bidang.icon,
+        color: bidang.color
       };
     });
     cb(entries);
-    /* bersihkan callback */
-    delete window[uid];
   };
   const s = document.createElement('script');
-  s.onerror = ()=>{ cb([]); delete window[uid]; };
-  /* max-results=50 — ambil semua artikel per label */
-  s.src = BLOG+'/feeds/posts/default/-/'+encodeURIComponent(lbl)
-        +'?alt=json-in-script&max-results=50&callback='+uid;
+  s.onerror = () => cb([]);
+  // max-results=50 per label — pastikan semua artikel termuat
+  s.src = `${BLOG}/feeds/posts/default/-/${encodeURIComponent(lbl)}?alt=json-in-script&max-results=50&callback=${fnName}`;
   document.head.appendChild(s);
 }
 
-function fetchBidang(bidang, cb){
-  const labels  = bidang.labels || [bidang.label];
-  const seen    = new Set();
-  let collected = [];
-  let pending   = labels.length;
+function fetchBidang(bidang, cb) {
+  const labels   = bidang.labels || [bidang.label];
+  const seenUrls = new Set();
+  let collected  = [];
+  let pending    = labels.length;
+
   labels.forEach(lbl => {
     fetchOneLabel(lbl, bidang, entries => {
-      entries.forEach(e=>{
-        if(!seen.has(e.url)){ seen.add(e.url); collected.push(e); }
+      entries.forEach(e => {
+        if(!seenUrls.has(e.url)){
+          seenUrls.add(e.url);
+          collected.push(e);
+        }
       });
-      if(--pending === 0) cb(collected);
+      pending--;
+      if(pending === 0) cb(collected);
     });
   });
 }
 
-/* ── LOAD ALL ─────────────────────────────────────────────
-   FIX UTAMA:
-   - Satu loop, setiap key unik → doneCount akan mencapai BIDANG.length
-   - Global deduplikasi via globalSeen
-   - totalArtikel diupdate HANYA setelah semua BIDANG selesai
-────────────────────────────────────────────────────────── */
-(function loadAll(){
+/* ══ LOAD ALL — satu loop bersih tanpa duplikat key ══ */
+(function loadAll() {
   const total = BIDANG.length;
+  let done    = 0;
+
+  // Global dedup set
+  const globalSeen = new Set();
 
   BIDANG.forEach((b, i) => {
     setTimeout(() => {
       fetchBidang(b, entries => {
-        /* deduplikasi global — cegah artikel muncul ganda */
+        // Tambahkan ke allArticles, skip URL yang sudah ada
         let added = 0;
         entries.forEach(e => {
           if(!globalSeen.has(e.url)){
@@ -692,90 +882,100 @@ function fetchBidang(bidang, cb){
           }
         });
 
-        /* update chip per bidang (tampilkan jumlah artikel di bidang itu) */
-        const chipEl = document.getElementById(CHIP_ID[b.key]);
+        // Update stat chip
+        const chipEl = document.getElementById('total' + (KEY_MAP[b.key] || b.key));
         if(chipEl) chipEl.textContent = entries.length;
 
-        /* progress bar */
-        doneCount++;
-        const pct = Math.round(doneCount/total*100);
-        document.getElementById('fpBar').style.width    = pct+'%';
-        document.getElementById('fetchPct').textContent = pct+'%';
-        document.getElementById('fetchTxt').textContent = 'Memuat '+b.label+'...';
+        done++;
+        const pct = Math.round(done / total * 100);
+        document.getElementById('fpBar').style.width   = pct + '%';
+        document.getElementById('fetchPct').textContent = pct + '%';
+        document.getElementById('fetchTxt').textContent  = 'Memuat ' + b.label + '...';
 
-        /* semua bidang selesai */
-        if(doneCount === total){
+        if(done === total) {
+          // UPDATE TOTAL
           document.getElementById('totalArtikel').textContent = allArticles.length;
           document.getElementById('fetchProgress').style.display = 'none';
           applyFilter();
         }
       });
-    }, i * 450); /* stagger 450ms — cukup longgar untuk Blogger API */
+    }, i * 450); // stagger 400ms — lebih longgar agar tidak throttled
   });
 })();
 
-/* ── FILTER ── */
-function setFilter(key){
+/* ══ FILTER ══ */
+function setFilter(key) {
   filterKey = key;
-  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
-  const t = document.querySelector('.pill-'+(key==='all'?'all':key));
-  if(t) t.classList.add('active');
+  // Reset semua pill active
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  const target = document.querySelector('.pill-' + (key === 'all' ? 'all' : key));
+  if(target) target.classList.add('active');
   page = 1;
   applyFilter();
 }
 
-function setSort(mode){
+function setSort(mode) {
   sortMode = mode;
-  ['sortNew','sortOld','sortAZ'].forEach(id=>document.getElementById(id).classList.remove('active'));
-  document.getElementById(mode==='new'?'sortNew':mode==='old'?'sortOld':'sortAZ').classList.add('active');
+  ['sortNew','sortOld','sortAZ'].forEach(id =>
+    document.getElementById(id).classList.remove('active'));
+  document.getElementById(
+    mode === 'new' ? 'sortNew' : mode === 'old' ? 'sortOld' : 'sortAZ'
+  ).classList.add('active');
   page = 1;
   applyFilter();
 }
 
-function applyFilter(){
+function applyFilter() {
   if(allArticles.length === 0) return;
-  const q = (document.getElementById('searchInput').value||'').toLowerCase().trim();
+
+  const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+  const spiritualKeys = ['isl','krs','bud','hin','kon'];
 
   filtered = allArticles.filter(a => {
-    const matchKey = filterKey === 'all' || a.key === filterKey;
-    const matchQ   = !q ||
+    let match;
+    if(filterKey === 'all')  match = true;
+    else                     match = a.key === filterKey;
+
+    const matchQ = !q ||
       a.title.toLowerCase().includes(q) ||
       a.snippet.toLowerCase().includes(q) ||
       a.label.toLowerCase().includes(q);
-    return matchKey && matchQ;
+    return match && matchQ;
   });
 
-  if(sortMode==='new')      filtered.sort((a,b)=>b.dateObj-a.dateObj);
-  else if(sortMode==='old') filtered.sort((a,b)=>a.dateObj-b.dateObj);
-  else                      filtered.sort((a,b)=>a.title.localeCompare(b.title,'id'));
+  // Sort
+  if(sortMode === 'new')      filtered.sort((a,b) => b.dateObj - a.dateObj);
+  else if(sortMode === 'old') filtered.sort((a,b) => a.dateObj - b.dateObj);
+  else                        filtered.sort((a,b) => a.title.localeCompare(b.title,'id'));
 
   page = 1;
   render();
 }
 
-/* ── RENDER ── */
-function render(){
+/* ══ RENDER ══ */
+function render() {
   const grid  = document.getElementById('artGrid');
   const pager = document.getElementById('pager');
-  const total = Math.ceil(filtered.length/PER_PAGE);
-  const items = filtered.slice((page-1)*PER_PAGE, page*PER_PAGE);
+  const total = Math.ceil(filtered.length / PER_PAGE);
+  const start = (page - 1) * PER_PAGE;
+  const items = filtered.slice(start, start + PER_PAGE);
 
-  if(!items.length){
+  if(!items.length) {
     grid.innerHTML = `
       <div class="empty">
         <span class="empty-icon">&#128269;</span>
         <div class="empty-txt">
           Artikel tidak ditemukan.<br>
-          Coba kata kunci lain atau pilih bidang lain.<br><br>
-          Pastikan postingan Blogger sudah diberi label yang sesuai.
+          Coba kata kunci lain atau pilih bidang berbeda.<br><br>
+          Pastikan postingan di Blogger sudah diberi label yang sesuai.
         </div>
       </div>`;
     pager.classList.remove('show');
     return;
   }
 
-  grid.innerHTML = items.map((a,i)=>`
-    <article class="art-card" style="animation-delay:${i*.05}s;">
+  grid.innerHTML = items.map((a, i) => `
+    <article class="art-card" style="animation-delay:${i * 0.05}s;">
       <div class="card-strip ${a.key}"></div>
       <div class="card-body">
         <div class="card-meta">
@@ -791,23 +991,29 @@ function render(){
       </div>
     </article>`).join('');
 
-  if(total > 1){
+  if(total > 1) {
     pager.classList.add('show');
-    document.getElementById('btnPrev').disabled = page===1;
-    document.getElementById('btnNext').disabled = page===total;
-    let s=Math.max(1,page-2), e=Math.min(total,s+4);
-    if(e-s<4) s=Math.max(1,e-4);
-    document.getElementById('pagerNums').innerHTML =
-      Array.from({length:e-s+1},(_,n)=>`
-        <div class="pg-num${(s+n)===page?' active':''}" onclick="goPage(${s+n})">${s+n}</div>`).join('');
+    document.getElementById('btnPrev').disabled = page === 1;
+    document.getElementById('btnNext').disabled = page === total;
+    const nums = document.getElementById('pagerNums');
+    let html = '';
+    let s = Math.max(1, page - 2);
+    let e = Math.min(total, s + 4);
+    if(e - s < 4) s = Math.max(1, e - 4);
+    for(let n = s; n <= e; n++)
+      html += `<div class="pg-num${n===page?' active':''}" onclick="goPage(${n})">${n}</div>`;
+    nums.innerHTML = html;
   } else {
     pager.classList.remove('show');
   }
-  document.querySelector('.filter-bar').scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelector('.filter-bar').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function changePage(d){ page=Math.max(1,Math.min(Math.ceil(filtered.length/PER_PAGE),page+d)); render(); }
-function goPage(n){ page=n; render(); }
+function changePage(d) {
+  page = Math.max(1, Math.min(Math.ceil(filtered.length / PER_PAGE), page + d));
+  render();
+}
+function goPage(n) { page = n; render(); }
 </script>
 </body>
 </html>
