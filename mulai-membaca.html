@@ -4,6 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mulai Membaca — ILMIORA</title>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+  import { getDatabase, ref, query, orderByChild, equalTo, onValue } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+  const firebaseConfig = {
+    apiKey:            "AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",
+    authDomain:        "ilmiora-auth.firebaseapp.com",
+    databaseURL:       "https://ilmiora-auth-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId:         "ilmiora-auth",
+    storageBucket:     "ilmiora-auth.firebasestorage.app",
+    messagingSenderId: "945061456781",
+    appId:             "1:945061456781:web:222e641bdef891dfe2abc4"
+  };
+
+  const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+
+  // Expose ke window agar bisa dipanggil dari script biasa
+  window._fbLoadKomunitas = function(onData, onError) {
+    try {
+      const q = query(ref(db,'threads'), orderByChild('status'), equalTo('approved'));
+      onValue(q, snap => {
+        const items = [];
+        snap.forEach(c => items.push({ id: c.key, ...c.val() }));
+        items.sort((a,b) => (b.approvedAt||b.createdAt||0) - (a.approvedAt||a.createdAt||0));
+        onData(items);
+      }, { onlyOnce: true });
+    } catch(e) { onError(e); }
+  };
+  window._fbReady = true;
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 /* ══ VARIABLES ══ */
@@ -917,7 +949,6 @@ async function loadKomunitas() {
   const grid = document.getElementById('komunitasGrid');
   if(!grid) return;
 
-  // Kalau data sudah ada di cache, langsung render ulang
   if(komunitasLoaded && komunitasItems.length) {
     renderKomunitas(komunitasItems);
     return;
@@ -925,38 +956,29 @@ async function loadKomunitas() {
 
   grid.innerHTML = `<div class="komunitas-loading"><div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div> Memuat artikel komunitas...</div>`;
 
-  try {
-    const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
-    const { getDatabase, ref, query, orderByChild, equalTo, onValue } =
-      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+  // Tunggu Firebase module siap (max 5 detik)
+  let waited = 0;
+  while(!window._fbLoadKomunitas && waited < 50) {
+    await new Promise(r => setTimeout(r, 100));
+    waited++;
+  }
 
-    const firebaseConfig = {
-      apiKey:            "AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",
-      authDomain:        "ilmiora-auth.firebaseapp.com",
-      databaseURL:       "https://ilmiora-auth-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId:         "ilmiora-auth",
-      storageBucket:     "ilmiora-auth.firebasestorage.app",
-      messagingSenderId: "945061456781",
-      appId:             "1:945061456781:web:222e641bdef891dfe2abc4"
-    };
+  if(!window._fbLoadKomunitas) {
+    grid.innerHTML = `<div class="komunitas-empty"><div class="ke-icon">⚠️</div><div>Firebase tidak dapat dimuat. Cek koneksi internet.</div></div>`;
+    return;
+  }
 
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-    const db  = getDatabase(app);
-    const q   = query(ref(db,'threads'), orderByChild('status'), equalTo('approved'));
-
-    onValue(q, snap => {
-      const items = [];
-      snap.forEach(c => items.push({ id: c.key, ...c.val() }));
-      items.sort((a,b) => (b.approvedAt||b.createdAt||0) - (a.approvedAt||a.createdAt||0));
+  window._fbLoadKomunitas(
+    function(items) {
       komunitasItems  = items;
       komunitasLoaded = true;
       renderKomunitas(items);
-    }, { onlyOnce: true });
-
-  } catch(err) {
-    console.error(err);
-    grid.innerHTML = `<div class="komunitas-empty"><div class="ke-icon">⚠️</div><div>Gagal memuat. Cek koneksi internet.</div></div>`;
-  }
+    },
+    function(err) {
+      console.error(err);
+      grid.innerHTML = `<div class="komunitas-empty"><div class="ke-icon">⚠️</div><div>Gagal memuat. Cek koneksi internet.</div></div>`;
+    }
+  );
 }
 
 function renderKomunitas(items) {
@@ -1047,80 +1069,6 @@ function closeKomunitasModal() {
 
 function escHtml(s) {
   return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-
-  grid.innerHTML = `<div class="komunitas-loading"><div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div> Memuat artikel komunitas...</div>`;
-
-  try {
-    // Load Firebase dinamis
-    const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
-    const { getDatabase, ref, query, orderByChild, equalTo, onValue } =
-      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
-
-    const firebaseConfig = {
-      apiKey:            "AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",
-      authDomain:        "ilmiora-auth.firebaseapp.com",
-      databaseURL:       "https://ilmiora-auth-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId:         "ilmiora-auth",
-      storageBucket:     "ilmiora-auth.firebasestorage.app",
-      messagingSenderId: "945061456781",
-      appId:             "1:945061456781:web:222e641bdef891dfe2abc4"
-    };
-
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-    const db  = getDatabase(app);
-    const q   = query(ref(db,'threads'), orderByChild('status'), equalTo('approved'));
-
-    onValue(q, snap => {
-      const items = [];
-      snap.forEach(c => items.push({ id: c.key, ...c.val() }));
-      items.sort((a,b) => (b.approvedAt||b.createdAt||0) - (a.approvedAt||a.createdAt||0));
-
-      if(!items.length) {
-        grid.innerHTML = `
-          <div class="komunitas-empty">
-            <div class="ke-icon">✍️</div>
-            <div>Belum ada artikel komunitas yang disetujui.</div>
-            <a href="forum-submit.html" style="color:var(--neon);font-size:11px;margin-top:8px;display:inline-block;">+ Kirim artikel pertama</a>
-          </div>`;
-        return;
-      }
-
-      const KAT_ICON = {
-        sains:'🔬', sejarah:'📜', spiritual:'✨', matematika:'📐',
-        musik:'🎵', opini:'💭', berita:'📰', lainnya:'🌐'
-      };
-
-      grid.innerHTML = items.map(t => {
-        const icon    = KAT_ICON[t.kategori] || '🌐';
-        const snippet = (t.konten||'').substring(0,180) + (t.konten?.length > 180 ? '…' : '');
-        const tgl     = t.approvedAt
-          ? new Date(t.approvedAt).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})
-          : '—';
-        return `
-        <div class="card-komunitas">
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <span class="ck-badge">&#128101; KOMUNITAS</span>
-            <span class="ck-kat">${icon} ${t.kategori||'lainnya'}</span>
-          </div>
-          <div class="ck-title">${escHtml(t.judul)}</div>
-          <div class="ck-snippet">${escHtml(snippet)}</div>
-          <div class="ck-meta">
-            <span class="ck-nama">✍️ ${escHtml(t.nama||'Anonim')}</span>
-            <span>📅 ${tgl}</span>
-            ${t.sumber ? `<a href="${escHtml(t.sumber)}" target="_blank" style="color:var(--neon);">🔗 Sumber</a>` : ''}
-          </div>
-        </div>`;
-      }).join('');
-
-      komunitasLoaded = true;
-    }, { onlyOnce: true });
-
-  } catch(err) {
-    console.error(err);
-    grid.innerHTML = `<div class="komunitas-empty"><div class="ke-icon">⚠️</div><div>Gagal memuat. Cek koneksi internet.</div></div>`;
-  }
 }
 
 
