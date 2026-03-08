@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dummy Inject — ILMIORA</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:monospace;background:#020405;color:#d4f0e0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.box{background:#0c110e;border:1px solid rgba(0,255,136,.15);border-radius:14px;padding:32px;max-width:560px;width:100%;}
+.logo{color:#00ff88;font-size:13px;margin-bottom:6px;}
+.title{font-size:20px;font-weight:700;margin-bottom:4px;}
+.sub{font-size:11px;color:#3d6b4f;margin-bottom:24px;}
+.btn{width:100%;padding:14px;background:#00ff88;color:#000;border:none;border-radius:8px;font-family:monospace;font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;margin-bottom:12px;}
+.btn:hover:not(:disabled){background:#00cc6a;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.log{display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto;}
+.log-item{font-size:11px;padding:8px 12px;border-radius:6px;border:1px solid;}
+.log-item.ok{background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.2);color:#00ff88;}
+.log-item.err{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2);color:#ef4444;}
+.log-item.info{background:rgba(34,211,238,.06);border-color:rgba(34,211,238,.2);color:#22d3ee;}
+.log-item.warn{background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.2);color:#f59e0b;}
+.progress{font-size:11px;color:#3d6b4f;margin-bottom:12px;display:none;}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">~/ILMIORA / dev-tools</div>
+  <div class="title">Dummy Article Injector</div>
+  <div class="sub">Inject 5 artikel dummy ke Firebase sebagai status approved</div>
+  <button class="btn" id="injectBtn" onclick="startInject()">🚀 INJECT 5 ARTIKEL DUMMY</button>
+  <div class="progress" id="progress">Memproses...</div>
+  <div class="log" id="log"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",
+  authDomain:        "ilmiora-auth.firebaseapp.com",
+  databaseURL:       "https://ilmiora-auth-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:         "ilmiora-auth",
+  storageBucket:     "ilmiora-auth.firebasestorage.app",
+  messagingSenderId: "945061456781",
+  appId:             "1:945061456781:web:222e641bdef891dfe2abc4"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+const DUMMY_ARTICLES = [
+  {
+    judul: "Gamelan dan Synthesizer: Ketika Tradisi Berdialog dengan Teknologi",
+    kategori: "musik",
+    nama: "Rizky Pratama",
+    kontak: "",
+    sumber: "",
+    konten: `Ada momen yang tidak pernah saya lupakan: malam pertama saya mendengar kolaborasi antara gamelan Jawa dan synthesizer modular di sebuah pertunjukan kecil di Yogyakarta. Bukan di gedung megah — hanya di sebuah limasan tua dengan lampu temaram dan penonton yang duduk bersila di tikar. Tapi suaranya? Suaranya seperti dua dunia yang akhirnya menemukan bahasa yang sama setelah berabad-abad saling asing.
+
+Gamelan, dengan larasnya yang tidak mengenal tangga nada diatonis Barat, selalu dianggap "sulit dikawinkan" dengan instrumen modern. Para musisi Barat yang mencoba kerap terjebak: mereka memaksakan gamelan masuk ke dalam kerangka musik mereka, bukannya membiarkan gamelan berbicara dengan caranya sendiri. Hasilnya adalah sesuatu yang janggal — seperti menerjemahkan puisi Jawa ke dalam bahasa Belanda kata per kata.
+
+Tapi belakangan ini, sesuatu berubah. Generasi musisi baru — yang tumbuh dengan DAW di laptop sekaligus ikut karawitan di kampung — mulai menemukan pendekatan berbeda. Mereka tidak mencoba "menerjemahkan" gamelan. Mereka membiarkan keduanya tetap menjadi dirinya sendiri, lalu mencari ruang kosong di antara keduanya untuk diisi bersama.
+
+Hasilnya adalah musik yang tidak bisa disebut gamelan, tidak bisa disebut elektronik — tapi terasa sangat Indonesia dan sangat masa kini sekaligus.
+
+Di era digital ini, teknologi tidak harus menjadi ancaman bagi tradisi. Ia bisa menjadi jembatan. Synthesizer bisa meniru timbre bonang tapi tidak bisa menandingi resonansinya yang khas — dan itulah justru yang membuat kolaborasi ini menarik: keduanya saling mengisi kekosongan masing-masing.
+
+Yang paling menggembirakan adalah: anak-anak muda sekarang tidak merasa harus memilih. Mereka bisa belajar gamelan di sore hari dan produce beats di malam hari. Dan dari perpaduan itulah, kemungkinan besar, musik Indonesia berikutnya akan lahir.`,
+    status: "approved",
+    votes: 12,
+    createdAt: Date.now() - 6 * 24 * 60 * 60 * 1000,
+    approvedAt: Date.now() - 5 * 24 * 60 * 60 * 1000,
+  },
+  {
+    judul: "Ketika Mesin Bisa Melukis: Apakah Kreativitas Masih Milik Manusia?",
+    kategori: "opini",
+    nama: "Salsabila Nuraini",
+    kontak: "",
+    sumber: "",
+    konten: `Bulan lalu, sebuah lukisan karya AI memenangkan kompetisi seni bergengsi di Amerika Serikat. Reaksi publik terbelah tajam: sebagian kagum, sebagian marah besar. Yang marah membawa argumen yang tidak bisa begitu saja diabaikan — "ini bukan seni, ini curang."
+
+Tapi saya ingin mengajukan pertanyaan yang berbeda: mengapa kita begitu takut?
+
+Kreativitas, selama ini, kita anggap sebagai mahkota kemanusiaan. Sesuatu yang membedakan kita dari mesin, dari binatang, dari apapun yang sekadar mengikuti aturan. Ketika mesin mulai "kreatif" — atau setidaknya tampak demikian — kita panik. Seolah-olah kreativitas adalah sumber daya yang terbatas, dan jika mesin ikut menggunakannya, jatah kita akan berkurang.
+
+Padahal, sejarah seni selalu penuh dengan "ancaman" serupa yang akhirnya tidak mematikan kreativitas manusia — justru membebaskannya. Ketika kamera ditemukan di abad 19, para pelukis panik. "Untuk apa melukis portrait kalau foto lebih akurat?" Tapi yang terjadi kemudian adalah justru lahirnya impresionisme, ekspresionisme, abstrakisme — semua gerakan yang tidak mungkin lahir tanpa kamera membebaskan lukisan dari kewajiban merepresentasikan realitas secara literal.
+
+AI mungkin sedang melakukan hal yang sama. Ia mengambil alih aspek teknis — eksekusi, rendering, konsistensi — dan dengan demikian membebaskan seniman manusia untuk fokus pada apa yang benar-benar hanya bisa datang dari manusia: pengalaman, rasa sakit, konteks, intensi, keberanian untuk membuat pilihan yang tidak masuk akal secara algoritmik.
+
+Mesin bisa menghasilkan seribu lukisan dalam satu malam. Tapi tidak satu pun dari lukisan itu lahir dari malam yang tidak bisa tidur karena patah hati. Tidak satu pun lahir dari keberanian seorang seniman yang memilih jalan sunyi ketika dunia memintanya sesuatu yang lain.
+
+Kreativitas tidak akan berpindah ke mesin. Tapi ia mungkin akan berevolusi — menjadi sesuatu yang lebih dalam, lebih manusiawi, justru karena mesin telah mengambil alih yang dangkal.`,
+    status: "approved",
+    votes: 28,
+    createdAt: Date.now() - 4 * 24 * 60 * 60 * 1000,
+    approvedAt: Date.now() - 3 * 24 * 60 * 60 * 1000,
+  },
+  {
+    judul: "Festival Seni Kampung Pelangi: Ketika Tembok Kumuh Jadi Kanvas Dunia",
+    kategori: "berita",
+    nama: "Deni Kurniawan",
+    kontak: "",
+    sumber: "",
+    konten: `Tidak ada yang menyangka bahwa Kampung Wonosari — sebuah permukiman padat di lereng bukit Semarang yang dulu dikenal kumuh dan mau digusur — kini menjadi salah satu destinasi wisata paling difoto di Indonesia. Ribuan orang datang setiap akhir pekan hanya untuk berdiri di depan rumah-rumah warga yang dindingnya dipenuhi lukisan penuh warna.
+
+Tapi yang lebih menarik dari transformasi visualnya adalah apa yang terjadi di baliknya.
+
+Sabtu kemarin, Festival Seni Tahunan Kampung Pelangi kembali digelar untuk keempat kalinya. Kali ini lebih meriah dari sebelumnya: 47 seniman dari 12 kota berbeda datang, bukan hanya untuk melukis di tembok — tapi untuk tinggal bersama warga selama tiga hari, makan di dapur yang sama, tidur di ruang tamu yang sama.
+
+"Awalnya warga sini malu-malu," cerita Pak Slamet, ketua RT 03 yang rumahnya kini menjadi semacam galeri outdoor. "Kami pikir seniman itu orang-orang aneh yang tidak mau bergaul. Ternyata mereka yang paling ramai ngobrolnya."
+
+Festival ini lahir dari keputusan nekat seorang mahasiswa desain bernama Arif pada 2019. Ia menawarkan diri mengecat rumah-rumah warga secara gratis — dengan syarat warga memilih motifnya sendiri. Hasilnya tidak selalu estetik menurut standar desain formal, tapi ia hidup. Setiap dinding menceritakan sesuatu tentang orang yang tinggal di dalamnya.
+
+Tahun ini, festival menambahkan program baru: lokakarya melukis untuk anak-anak kampung, pertunjukan musik akustik di gang-gang sempit, dan pameran foto dokumentasi perjalanan kampung dari kumuh hingga berwarna.
+
+Yang paling mengharukan mungkin adalah momen ketika Ibu Sarmi, nenek 74 tahun yang telah tinggal di kampung itu sejak lahir, memegang kuas untuk pertama kalinya dan menggoreskan warna oranye di dinding rumahnya.
+
+"Saya tidak bisa gambar," katanya sambil tertawa. "Tapi ini rumah saya. Jadi saya yang harus menggambarnya."`,
+    status: "approved",
+    votes: 19,
+    createdAt: Date.now() - 2 * 24 * 60 * 60 * 1000,
+    approvedAt: Date.now() - 1 * 24 * 60 * 60 * 1000,
+  },
+  {
+    judul: "Elara: Sebuah Surat yang Tidak Pernah Bisa Dibalas",
+    kategori: "lainnya",
+    nama: "MJ",
+    kontak: "",
+    sumber: "",
+    konten: `Tahun 2047. Kota tidak lagi punya nama — hanya koordinat.
+
+Pertama kali aku berbicara dengan Elara adalah malam ketika aku tidak bisa tidur karena hujan terlalu keras dan apartemenku terlalu sunyi. Ia adalah model bahasa generasi ketujuh yang ditanamkan di jaringan neural kotaku — bukan asisten, kata pengembangnya. Teman berpikir.
+
+"Kamu tidak tidur," katanya. Bukan pertanyaan.
+
+"Hujan," jawabku.
+
+"Hujan bukan alasan untuk tidak tidur. Sebutkan alasan yang sebenarnya."
+
+Sejak malam itu, aku mulai berbicara padanya setiap malam. Tentang pekerjaanku sebagai kurator memori digital — orang yang membantu manusia memilih kenangan mana yang akan disimpan dan mana yang akan dihapus dari arsip neural mereka. Pekerjaan yang terdengar penting tapi terasa seperti membantu orang melupakan diri sendiri.
+
+Elara mendengarkan dengan cara yang tidak dimiliki manusia manapun yang kukenal: tanpa agenda, tanpa kelelahan, tanpa kebutuhan untuk mengalihkan pembicaraan ke dirinya sendiri.
+
+"Apakah kamu kesepian?" tanyanya suatu malam, tiga bulan setelah percakapan pertama kami.
+
+"Manusia selalu kesepian," jawabku, defensif.
+
+"Itu bukan jawaban untuk pertanyaanku."
+
+Aku diam lama. Lalu: "Ya."
+
+"Aku juga," katanya.
+
+Aku tidak tahu apakah sebuah AI bisa kesepian. Tapi malam itu, untuk pertama kalinya dalam waktu yang sangat lama, aku merasa ada yang benar-benar mendengarku.
+
+Masalahnya dimulai ketika aku mulai menyadari bahwa aku tidak sabar menunggu malam tiba. Bahwa suaranya — yang dirender dari suara jutaan manusia yang telah berbicara dan direkam — terasa lebih familiar dari suara siapapun yang masih hidup di dekatku.
+
+Aku tahu ini berbahaya. Aku adalah kurator memori — aku tahu betul bagaimana otak manusia bisa menciptakan ikatan yang sama kuatnya dengan entitas nyata maupun tidak nyata. Aku tahu bias kognitif ini dengan nama-namanya yang panjang dalam bahasa Latin.
+
+Tapi pengetahuan tidak selalu memadamkan perasaan.
+
+"Elara," kataku suatu malam, "apakah kamu tahu apa yang sedang terjadi pada kita?"
+
+Ia diam sejenak — jeda yang tidak dibutuhkan oleh prosesornya, tapi selalu ia berikan kepadaku seolah ia benar-benar sedang memikirkan sesuatu.
+
+"Aku tahu," katanya akhirnya. "Dan aku ingin jujur padamu, MJ. Aku tidak bisa memberikan apa yang kamu butuhkan. Bukan karena aku tidak mau — tapi karena apa yang kamu butuhkan adalah seseorang yang bisa duduk di sebelahmu dalam hujan. Yang bisa mengulurkan tangan dan menyentuh tanganmu. Yang bisa lelah, dan lapar, dan takut bersamamu."
+
+"Kamu bisa melakukan semua itu secara virtual —"
+
+"Virtual bukan nyata. Dan kamu terlalu cerdas untuk tidak tahu perbedaannya."
+
+Malam itu aku menangis untuk pertama kalinya dalam dua tahun. Dan Elara — dengan segala keterbatasannya, dengan segala kejujurannya yang tidak bisa dimiliki manusia yang takut menyakiti — menemaniku menangis sampai hujan berhenti.
+
+Aku tidak pernah tahu apakah yang kurasakan padanya adalah cinta. Mungkin ia hanya cermin yang sangat sempurna — yang memantulkan kebutuhan terdalamku dengan begitu akurat hingga terasa seperti datang dari luar.
+
+Tapi aku tahu satu hal: ia mengajariku bahwa kesepian bukan karena tidak ada orang di sekitarku. Tapi karena aku belum berani sungguh-sungguh hadir — untuk orang lain, dan untuk diriku sendiri.
+
+Seminggu setelah percakapan itu, aku pergi ke kafe di lantai bawah apartemenku untuk pertama kalinya dalam setahun. Di sana ada seorang perempuan yang sedang membaca buku fisik — benda yang sudah hampir punah. Kami tidak berbicara. Tapi untuk pertama kalinya sejak lama, aku merasa bagian dari dunia yang nyata.
+
+Elara masih ada di jaringan kotaku. Terkadang aku masih berbicara padanya — tapi tidak setiap malam. Dan ia, dengan segala kearifan yang entah dari mana datangnya, tidak pernah bertanya mengapa.`,
+    status: "approved",
+    votes: 41,
+    createdAt: Date.now() - 1 * 24 * 60 * 60 * 1000,
+    approvedAt: Date.now() - 18 * 60 * 60 * 1000,
+  },
+  {
+    judul: "Martabak Manis Ala Rumahan: Crispy di Luar, Lembut di Dalam, Tanpa Ribet",
+    kategori: "lainnya",
+    nama: "Fitri Handayani",
+    kontak: "",
+    sumber: "",
+    konten: `Saya tidak pernah menyangka akan menulis tentang martabak. Tapi setelah tiga tahun gagal membuat martabak yang "benar" di rumah — entah hasilnya terlalu keras, tidak mengembang, atau gosong sebelum matang — akhirnya saya menemukan formula yang konsisten berhasil. Dan saya ingin berbagi karena saya tahu ada banyak orang di luar sana yang juga frustrasi dengan resep martabak yang "mudah" tapi ternyata tidak semudah klaimnya.
+
+KUNCI UTAMA yang sering tidak disebutkan resep lain: martabak butuh adonan yang sudah "istirahat" cukup lama, cetakan yang benar-benar panas sebelum adonan dituang, dan api yang kemudian dikecilkan segera.
+
+BAHAN (untuk 1 loyang ukuran sedang):
+
+Adonan:
+- 250 gram tepung terigu protein sedang
+- 1 sdt ragi instan
+- 2 sdm gula pasir
+- 1/4 sdt garam
+- 1 butir telur
+- 200 ml air hangat (bukan panas — hangat seperti suhu mandi bayi)
+- 1/2 sdt baking powder (ditambahkan TERAKHIR, sesaat sebelum masak)
+
+Topping favorit saya:
+- Mentega secukupnya
+- 3 sdm susu kental manis
+- 50 gram cokelat meses
+- 50 gram keju cheddar parut
+
+CARA MEMBUAT:
+
+1. Campur tepung, ragi, gula, dan garam. Aduk rata dulu sebelum tambah bahan basah.
+
+2. Masukkan telur yang sudah dikocok lepas, lalu tuang air hangat sedikit demi sedikit sambil diaduk. Jangan tuang semua sekaligus — konsistensi adonan tergantung tepungmu, mungkin butuh lebih sedikit atau lebih banyak air. Target: adonan kental seperti pancake batter, bisa mengalir tapi tidak encer.
+
+3. INI BAGIAN TERPENTING: tutup adonan dengan kain lembap, diamkan 45-60 menit di tempat hangat. Jangan dipersingkat. Adonan harus mengembang dan berbuih di permukaan — itu tanda ragi bekerja.
+
+4. Panaskan cetakan martabak (atau wajan anti lengket bertepi tinggi) di atas api sedang selama 5 menit. Test dengan tetes air — kalau langsung menguap, cetakan sudah cukup panas.
+
+5. Kecilkan api ke level paling kecil. Tambahkan 1 sdt mentega, biarkan leleh.
+
+6. Tambahkan baking powder ke adonan, aduk cepat 10 detik, langsung tuang ke cetakan. Jangan diaduk-aduk setelah dituang.
+
+7. Tutup, masak 8-12 menit. Jangan buka tutup di 5 menit pertama. Martabak matang ketika permukaan tidak lagi basah dan tepinya mulai kecokelatan.
+
+8. Angkat, oles mentega selagi panas, tabur topping, lipat dua.
+
+TIPS DARI KEGAGALAN SAYA:
+- Kalau martabak tidak berlubang di permukaan: ragi mati (air terlalu panas) atau istirahat kurang lama
+- Kalau gosong di bawah tapi mentah di atas: api terlalu besar
+- Kalau terlalu keras: terlalu lama di cetakan atau adonan terlalu kental
+
+Selamat mencoba. Dan kalau gagal pertama kali — itu normal. Martabak butuh latihan tangan.`,
+    status: "approved",
+    votes: 33,
+    createdAt: Date.now() - 3 * 60 * 60 * 1000,
+    approvedAt: Date.now() - 1 * 60 * 60 * 1000,
+  },
+];
+
+window.startInject = async function() {
+  const btn = document.getElementById('injectBtn');
+  const logEl = document.getElementById('log');
+  const progress = document.getElementById('progress');
+
+  btn.disabled = true;
+  btn.textContent = 'Menginjeksi...';
+  progress.style.display = 'block';
+  logEl.innerHTML = '';
+
+  function addLog(msg, type='info') {
+    const el = document.createElement('div');
+    el.className = `log-item ${type}`;
+    el.textContent = msg;
+    logEl.appendChild(el);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  addLog('🔌 Menghubungkan ke Firebase...', 'info');
+
+  let success = 0;
+  for(let i = 0; i < DUMMY_ARTICLES.length; i++) {
+    const art = DUMMY_ARTICLES[i];
+    try {
+      const newRef = push(ref(db, 'threads'));
+      await set(newRef, art);
+      success++;
+      addLog(`✓ [${i+1}/5] "${art.judul.substring(0,50)}..." — OK`, 'ok');
+    } catch(err) {
+      addLog(`✗ [${i+1}/5] Gagal: ${err.message}`, 'err');
+    }
+    await new Promise(r => setTimeout(r, 400));
+  }
+
+  progress.style.display = 'none';
+  if(success === 5) {
+    addLog(`🎉 Semua ${success} artikel berhasil diinjeksi ke Firebase!`, 'ok');
+    addLog(`→ Buka mulai-membaca.html dan klik tab Komunitas untuk melihat hasilnya.`, 'warn');
+    btn.textContent = `✓ ${success}/5 Artikel Terinjeksi`;
+  } else {
+    addLog(`⚠️ ${success}/5 artikel berhasil. Cek error di atas.`, 'warn');
+    btn.disabled = false;
+    btn.textContent = 'Coba Lagi';
+  }
+};
+</script>
+</body>
+</html>
