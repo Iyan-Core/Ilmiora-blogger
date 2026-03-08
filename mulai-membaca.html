@@ -202,6 +202,68 @@ body::before{
 .pill-mus.active,.pill-mus:hover{background:#34d399;color:#000;}
 .pill-isl{color:#818cf8;border-color:rgba(129,140,248,.3);}
 .pill-isl.active,.pill-isl:hover{background:#818cf8;color:#000;}
+
+/* ── KOMUNITAS TAB & KARTU ── */
+.tab-btn-komunitas{
+  color:#f59e0b !important;
+  border-color:rgba(245,158,11,.3) !important;
+}
+.tab-btn-komunitas.active{
+  background:#f59e0b !important;
+  color:#000 !important;
+  border-color:#f59e0b !important;
+}
+.pill-komunitas{
+  color:#f59e0b;border-color:rgba(245,158,11,.3);
+  background:rgba(245,158,11,.06);cursor:default;
+}
+.card-komunitas{
+  background:var(--card);border:1px solid rgba(245,158,11,.2);
+  border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;
+  transition:all .2s;position:relative;overflow:hidden;
+}
+.card-komunitas::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#f59e0b,#fbbf24);
+}
+.card-komunitas:hover{border-color:rgba(245,158,11,.4);transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,158,11,.08);}
+[data-theme="light"] .card-komunitas{background:#fff;box-shadow:0 2px 10px rgba(10,14,20,.05);}
+.ck-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:'Fira Code',monospace;font-size:9px;
+  color:#f59e0b;background:rgba(245,158,11,.1);
+  border:1px solid rgba(245,158,11,.2);
+  padding:2px 8px;border-radius:2px;letter-spacing:1px;
+  width:fit-content;
+}
+.ck-kat{
+  font-family:'Fira Code',monospace;font-size:9px;
+  color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;
+}
+.ck-title{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:800;
+  color:var(--chalk);line-height:1.3;
+}
+.ck-snippet{
+  font-family:'Libre Baskerville',serif;font-style:italic;
+  font-size:13px;color:var(--body-txt);line-height:1.7;
+}
+.ck-meta{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+  padding-top:8px;border-top:1px solid var(--border2);
+}
+.ck-nama{color:var(--chalk);}
+.komunitas-empty{
+  grid-column:1/-1;text-align:center;padding:60px 20px;
+  font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);
+}
+.komunitas-empty .ke-icon{font-size:36px;margin-bottom:12px;}
+.komunitas-loading{
+  grid-column:1/-1;display:flex;align-items:center;justify-content:center;
+  gap:8px;padding:60px 20px;
+  font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);
+}
 .pill-krs{color:#60a8d4;border-color:rgba(96,168,212,.3);}
 .pill-krs.active,.pill-krs:hover{background:#60a8d4;color:#000;}
 .pill-bud{color:#c8a020;border-color:rgba(200,160,32,.3);}
@@ -572,6 +634,7 @@ body::before{
     <button class="tab-btn" onclick="switchTab('sej',this)">&#128220; Sejarah</button>
     <button class="tab-btn" onclick="switchTab('mus',this)">&#127925; Musik</button>
     <button class="tab-btn" onclick="switchTab('spiritual',this)">&#10024; Spiritual</button>
+    <button class="tab-btn tab-btn-komunitas" onclick="switchTab('komunitas',this)">&#128101; Komunitas</button>
   </div>
 
   <!-- Panel Semua -->
@@ -610,6 +673,11 @@ body::before{
     <span class="pill pill-bud" onclick="setFilter('bud')">&#9784;&#65039; Buddha</span>
     <span class="pill pill-hin" onclick="setFilter('hin')">&#128329;&#65039; Hindu</span>
     <span class="pill pill-kon" onclick="setFilter('kon')">&#9775;&#65039; Konghucu</span>
+  </div>
+
+  <!-- Panel Komunitas -->
+  <div class="tab-panel" id="panel-komunitas">
+    <span class="pill pill-komunitas active">&#128101; Semua Kontribusi</span>
   </div>
 </div>
 
@@ -791,7 +859,90 @@ function toggleTheme(){
   }
 })();
 
-/* ══ SCROLL BAR ══ */
+/* ══ KOMUNITAS — Firebase Realtime DB ══ */
+let komunitasLoaded = false;
+
+async function loadKomunitas() {
+  if(komunitasLoaded) return;
+  const grid = document.getElementById('artGrid');
+  grid.innerHTML = `<div class="komunitas-loading"><div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div> Memuat artikel komunitas...</div>`;
+
+  try {
+    // Load Firebase dinamis
+    const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const { getDatabase, ref, query, orderByChild, equalTo, onValue } =
+      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+
+    const firebaseConfig = {
+      apiKey:            "AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",
+      authDomain:        "ilmiora-auth.firebaseapp.com",
+      databaseURL:       "https://ilmiora-auth-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId:         "ilmiora-auth",
+      storageBucket:     "ilmiora-auth.firebasestorage.app",
+      messagingSenderId: "945061456781",
+      appId:             "1:945061456781:web:222e641bdef891dfe2abc4"
+    };
+
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const db  = getDatabase(app);
+    const q   = query(ref(db,'threads'), orderByChild('status'), equalTo('approved'));
+
+    onValue(q, snap => {
+      const items = [];
+      snap.forEach(c => items.push({ id: c.key, ...c.val() }));
+      items.sort((a,b) => (b.approvedAt||b.createdAt||0) - (a.approvedAt||a.createdAt||0));
+
+      if(!items.length) {
+        grid.innerHTML = `
+          <div class="komunitas-empty">
+            <div class="ke-icon">✍️</div>
+            <div>Belum ada artikel komunitas yang disetujui.</div>
+            <a href="forum-submit.html" style="color:var(--neon);font-size:11px;margin-top:8px;display:inline-block;">+ Kirim artikel pertama</a>
+          </div>`;
+        return;
+      }
+
+      const KAT_ICON = {
+        sains:'🔬', sejarah:'📜', spiritual:'✨', matematika:'📐',
+        musik:'🎵', opini:'💭', berita:'📰', lainnya:'🌐'
+      };
+
+      grid.innerHTML = items.map(t => {
+        const icon    = KAT_ICON[t.kategori] || '🌐';
+        const snippet = (t.konten||'').substring(0,180) + (t.konten?.length > 180 ? '…' : '');
+        const tgl     = t.approvedAt
+          ? new Date(t.approvedAt).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})
+          : '—';
+        return `
+        <div class="card-komunitas">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span class="ck-badge">&#128101; KOMUNITAS</span>
+            <span class="ck-kat">${icon} ${t.kategori||'lainnya'}</span>
+          </div>
+          <div class="ck-title">${escHtml(t.judul)}</div>
+          <div class="ck-snippet">${escHtml(snippet)}</div>
+          <div class="ck-meta">
+            <span class="ck-nama">✍️ ${escHtml(t.nama||'Anonim')}</span>
+            <span>📅 ${tgl}</span>
+            ${t.sumber ? `<a href="${escHtml(t.sumber)}" target="_blank" style="color:var(--neon);">🔗 Sumber</a>` : ''}
+          </div>
+        </div>`;
+      }).join('');
+
+      komunitasLoaded = true;
+    }, { onlyOnce: true });
+
+  } catch(err) {
+    console.error(err);
+    grid.innerHTML = `<div class="komunitas-empty"><div class="ke-icon">⚠️</div><div>Gagal memuat. Cek koneksi internet.</div></div>`;
+  }
+}
+
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+
 window.addEventListener('scroll', () => {
   document.getElementById('scrollBar').style.width =
     (scrollY / (document.body.scrollHeight - innerHeight) * 100) + '%';
@@ -807,6 +958,11 @@ function switchTab(tabKey, btn) {
   // Tampilkan panel yang sesuai
   const panel = document.getElementById('panel-' + tabKey);
   if(panel) panel.classList.add('show');
+  // Jika tab Komunitas → load dari Firebase
+  if(tabKey === 'komunitas') {
+    loadKomunitas();
+    return;
+  }
   // Jika tab Semua → reset filter ke all
   if(tabKey === 'semua') setFilter('all');
 }
