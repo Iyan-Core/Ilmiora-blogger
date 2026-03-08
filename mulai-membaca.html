@@ -730,10 +730,9 @@ body::before{
 
 <!-- MODAL BACA SELENGKAPNYA -->
 <div id="ckModal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;padding:16px;"></div>
-</div>
 
 <!-- ARTIKEL -->
-<div class="art-wrap">
+<div class="art-wrap" id="bloggerWrap">
   <div class="art-grid" id="artGrid">
     <div class="loading" style="grid-column:1/-1;">
       <div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>
@@ -1138,7 +1137,7 @@ function switchTab(tabKey, btn) {
   const panel = document.getElementById('panel-' + tabKey);
   if(panel) panel.classList.add('show');
 
-  const bloggerWrap   = document.querySelector('.art-wrap');
+  const bloggerWrap   = document.getElementById('bloggerWrap');
   const komunitasWrap = document.getElementById('komunitasWrap');
 
   if(tabKey === 'komunitas') {
