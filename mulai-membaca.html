@@ -7,7 +7,7 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-  import { getDatabase, ref, query, orderByChild, equalTo, onValue } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+  import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
   const firebaseConfig = {
     apiKey:            "AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",
@@ -25,10 +25,13 @@
   // Expose ke window agar bisa dipanggil dari script biasa
   window._fbLoadKomunitas = function(onData, onError) {
     try {
-      const q = query(ref(db,'threads'), orderByChild('status'), equalTo('approved'));
-      onValue(q, snap => {
+      // Ambil semua threads lalu filter approved di client — lebih reliable tanpa index
+      onValue(ref(db,'threads'), snap => {
         const items = [];
-        snap.forEach(c => items.push({ id: c.key, ...c.val() }));
+        snap.forEach(c => {
+          const d = c.val();
+          if(d && d.status === 'approved') items.push({ id: c.key, ...d });
+        });
         items.sort((a,b) => (b.approvedAt||b.createdAt||0) - (a.approvedAt||a.createdAt||0));
         onData(items);
       }, { onlyOnce: true });
@@ -173,6 +176,15 @@ body::before{
 
 /* ══ FILTER BAR ══ */
 .filter-bar{max-width:1100px;margin:0 auto;padding:0 40px 24px;}
+
+/* Filter bar sticky */
+.filter-bar-wrap{
+  position:sticky;top:60px;z-index:400;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  padding:12px 0 0;
+}
 
 /* Search + Sort */
 .search-row{display:flex;gap:10px;align-items:center;margin-bottom:16px;}
@@ -338,6 +350,24 @@ body::before{
   color:var(--body-txt);line-height:1.85;
 }
 [data-theme="light"] .ckm-box{background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.15);}
+
+/* Komunitas pagination */
+.kom-pager{
+  grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0 8px;margin-top:8px;border-top:1px solid var(--border2);
+}
+.kom-pager-btn{
+  padding:8px 18px;background:transparent;
+  border:1px solid rgba(245,158,11,.3);color:#f59e0b;
+  border-radius:6px;font-family:'Fira Code',monospace;font-size:11px;
+  cursor:pointer;transition:all .2s;
+}
+.kom-pager-btn:hover:not(:disabled){background:rgba(245,158,11,.1);border-color:#f59e0b;}
+.kom-pager-btn:disabled{opacity:.3;cursor:not-allowed;}
+.kom-pager-info{
+  font-family:'Fira Code',monospace;font-size:12px;color:var(--chalk);
+  text-align:center;
+}
 .pill-krs{color:#60a8d4;border-color:rgba(96,168,212,.3);}
 .pill-krs.active,.pill-krs:hover{background:#60a8d4;color:#000;}
 .pill-bud{color:#c8a020;border-color:rgba(200,160,32,.3);}
@@ -684,6 +714,7 @@ body::before{
 </div>
 
 <!-- FILTER BAR -->
+<div class="filter-bar-wrap">
 <div class="filter-bar">
   <!-- Search + Sort -->
   <div class="search-row">
@@ -754,6 +785,7 @@ body::before{
     <span class="pill pill-komunitas active">👥 Semua Kontribusi</span>
   </div>
 </div>
+</div><!-- /filter-bar-wrap -->
 
 <!-- GRID KOMUNITAS — terpisah dari artGrid Blogger -->
 <div class="art-wrap" id="komunitasWrap" style="display:none;">
@@ -981,6 +1013,9 @@ async function loadKomunitas() {
   );
 }
 
+const KOM_PER_PAGE = 6;
+let komPage = 1;
+
 function renderKomunitas(items) {
   const grid = document.getElementById('komunitasGrid');
   if(!grid) return;
@@ -1000,7 +1035,12 @@ function renderKomunitas(items) {
     musik:'🎵', opini:'💭', berita:'📰', lainnya:'🌐'
   };
 
-  grid.innerHTML = items.map((t, idx) => {
+  const totalPages = Math.ceil(items.length / KOM_PER_PAGE);
+  const start = (komPage - 1) * KOM_PER_PAGE;
+  const pageItems = items.slice(start, start + KOM_PER_PAGE);
+
+  const cards = pageItems.map((t, idx) => {
+    const realIdx = start + idx;
     const icon    = KAT_ICON[t.kategori] || '🌐';
     const snippet = (t.konten||'').substring(0, 200) + (t.konten?.length > 200 ? '…' : '');
     const tgl     = t.approvedAt
@@ -1018,10 +1058,28 @@ function renderKomunitas(items) {
         <span class="ck-nama">✍️ ${escHtml(t.nama||'Anonim')}</span>
         <span>📅 ${tgl}</span>
         ${t.sumber ? `<a href="${escHtml(t.sumber)}" target="_blank" style="color:var(--neon);">🔗 Sumber</a>` : ''}
-        <button class="ck-readmore" onclick="openKomunitasModal(${idx})">Baca Selengkapnya →</button>
+        <button class="ck-readmore" onclick="openKomunitasModal(${realIdx})">Baca Selengkapnya →</button>
       </div>
     </div>`;
   }).join('');
+
+  // Pagination controls
+  const paginationHtml = totalPages > 1 ? `
+    <div class="kom-pager">
+      <button class="kom-pager-btn" onclick="changeKomPage(-1)" ${komPage===1?'disabled':''}>← Sebelumnya</button>
+      <span class="kom-pager-info">${komPage} / ${totalPages} <span style="color:var(--muted);font-size:10px;">(${items.length} artikel)</span></span>
+      <button class="kom-pager-btn" onclick="changeKomPage(1)" ${komPage===totalPages?'disabled':''}>Selanjutnya →</button>
+    </div>` : `<div style="text-align:center;font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);padding:16px 0;">${items.length} artikel komunitas</div>`;
+
+  grid.innerHTML = cards + paginationHtml;
+}
+
+function changeKomPage(dir) {
+  const totalPages = Math.ceil(komunitasItems.length / KOM_PER_PAGE);
+  komPage = Math.max(1, Math.min(totalPages, komPage + dir));
+  renderKomunitas(komunitasItems);
+  // Scroll ke atas grid komunitas
+  document.getElementById('komunitasWrap').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function openKomunitasModal(idx) {
@@ -1089,9 +1147,9 @@ function switchTab(tabKey, btn) {
   const komunitasWrap = document.getElementById('komunitasWrap');
 
   if(tabKey === 'komunitas') {
-    // Sembunyikan grid Blogger, tampilkan grid Komunitas
     if(bloggerWrap)   bloggerWrap.style.display   = 'none';
     if(komunitasWrap) komunitasWrap.style.display = '';
+    komPage = 1;
     loadKomunitas();
     return;
   }
