@@ -264,6 +264,48 @@ body::before{
   gap:8px;padding:60px 20px;
   font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);
 }
+
+/* Tombol Baca Selengkapnya */
+.ck-readmore{
+  margin-left:auto;padding:4px 12px;
+  background:transparent;border:1px solid rgba(245,158,11,.3);
+  color:#f59e0b;border-radius:4px;font-family:'Fira Code',monospace;
+  font-size:10px;cursor:pointer;transition:all .2s;
+}
+.ck-readmore:hover{background:rgba(245,158,11,.1);border-color:#f59e0b;}
+
+/* Modal */
+.ckm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);}
+.ckm-box{
+  position:relative;z-index:1;background:var(--card);
+  border:1px solid rgba(245,158,11,.2);border-radius:14px;
+  width:100%;max-width:680px;max-height:88vh;overflow-y:auto;
+  padding:28px;display:flex;flex-direction:column;gap:14px;
+}
+.ckm-box::-webkit-scrollbar{width:4px;}
+.ckm-box::-webkit-scrollbar-thumb{background:rgba(245,158,11,.3);border-radius:2px;}
+.ckm-close{
+  position:sticky;top:0;align-self:flex-end;
+  background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);
+  color:#f59e0b;width:32px;height:32px;border-radius:50%;
+  font-size:14px;cursor:pointer;transition:all .2s;
+}
+.ckm-close:hover{background:rgba(245,158,11,.25);}
+.ckm-head{display:flex;align-items:center;flex-wrap:wrap;gap:6px;}
+.ckm-title{
+  font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
+  color:var(--chalk);line-height:1.3;
+}
+.ckm-meta{
+  display:flex;gap:12px;flex-wrap:wrap;
+  font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);
+  padding-bottom:14px;border-bottom:1px solid var(--border2);
+}
+.ckm-body{
+  font-family:'Libre Baskerville',serif;font-size:14px;
+  color:var(--body-txt);line-height:1.85;
+}
+[data-theme="light"] .ckm-box{background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.15);}
 .pill-krs{color:#60a8d4;border-color:rgba(96,168,212,.3);}
 .pill-krs.active,.pill-krs:hover{background:#60a8d4;color:#000;}
 .pill-bud{color:#c8a020;border-color:rgba(200,160,32,.3);}
@@ -677,8 +719,17 @@ body::before{
 
   <!-- Panel Komunitas -->
   <div class="tab-panel" id="panel-komunitas">
-    <span class="pill pill-komunitas active">&#128101; Semua Kontribusi</span>
+    <span class="pill pill-komunitas active">👥 Semua Kontribusi</span>
   </div>
+</div>
+
+<!-- GRID KOMUNITAS — terpisah dari artGrid Blogger -->
+<div class="art-wrap" id="komunitasWrap" style="display:none;">
+  <div class="art-grid" id="komunitasGrid"></div>
+</div>
+
+<!-- MODAL BACA SELENGKAPNYA -->
+<div id="ckModal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;padding:16px;"></div>
 </div>
 
 <!-- ARTIKEL -->
@@ -861,10 +912,145 @@ function toggleTheme(){
 
 /* ══ KOMUNITAS — Firebase Realtime DB ══ */
 let komunitasLoaded = false;
+let komunitasItems  = []; // cache data Firebase
 
 async function loadKomunitas() {
-  if(komunitasLoaded) return;
-  const grid = document.getElementById('artGrid');
+  const grid = document.getElementById('komunitasGrid');
+  if(!grid) return;
+
+  // Kalau data sudah ada di cache, langsung render ulang
+  if(komunitasLoaded && komunitasItems.length) {
+    renderKomunitas(komunitasItems);
+    return;
+  }
+
+  grid.innerHTML = `<div class="komunitas-loading"><div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div> Memuat artikel komunitas...</div>`;
+
+  try {
+    const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const { getDatabase, ref, query, orderByChild, equalTo, onValue } =
+      await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+
+    const firebaseConfig = {
+      apiKey:            "AIzaSyB8pcbCw4fCsEDJ6sREgHAJaYiPKHz6noA",
+      authDomain:        "ilmiora-auth.firebaseapp.com",
+      databaseURL:       "https://ilmiora-auth-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId:         "ilmiora-auth",
+      storageBucket:     "ilmiora-auth.firebasestorage.app",
+      messagingSenderId: "945061456781",
+      appId:             "1:945061456781:web:222e641bdef891dfe2abc4"
+    };
+
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const db  = getDatabase(app);
+    const q   = query(ref(db,'threads'), orderByChild('status'), equalTo('approved'));
+
+    onValue(q, snap => {
+      const items = [];
+      snap.forEach(c => items.push({ id: c.key, ...c.val() }));
+      items.sort((a,b) => (b.approvedAt||b.createdAt||0) - (a.approvedAt||a.createdAt||0));
+      komunitasItems  = items;
+      komunitasLoaded = true;
+      renderKomunitas(items);
+    }, { onlyOnce: true });
+
+  } catch(err) {
+    console.error(err);
+    grid.innerHTML = `<div class="komunitas-empty"><div class="ke-icon">⚠️</div><div>Gagal memuat. Cek koneksi internet.</div></div>`;
+  }
+}
+
+function renderKomunitas(items) {
+  const grid = document.getElementById('komunitasGrid');
+  if(!grid) return;
+
+  if(!items.length) {
+    grid.innerHTML = `
+      <div class="komunitas-empty">
+        <div class="ke-icon">✍️</div>
+        <div>Belum ada artikel komunitas yang disetujui.</div>
+        <a href="forum-submit.html" style="color:var(--neon);font-size:11px;margin-top:8px;display:inline-block;">+ Kirim artikel pertama</a>
+      </div>`;
+    return;
+  }
+
+  const KAT_ICON = {
+    sains:'🔬', sejarah:'📜', spiritual:'✨', matematika:'📐',
+    musik:'🎵', opini:'💭', berita:'📰', lainnya:'🌐'
+  };
+
+  grid.innerHTML = items.map((t, idx) => {
+    const icon    = KAT_ICON[t.kategori] || '🌐';
+    const snippet = (t.konten||'').substring(0, 200) + (t.konten?.length > 200 ? '…' : '');
+    const tgl     = t.approvedAt
+      ? new Date(t.approvedAt).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})
+      : '—';
+    return `
+    <div class="card-komunitas">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="ck-badge">👥 KOMUNITAS</span>
+        <span class="ck-kat">${icon} ${t.kategori||'lainnya'}</span>
+      </div>
+      <div class="ck-title">${escHtml(t.judul)}</div>
+      <div class="ck-snippet">${escHtml(snippet)}</div>
+      <div class="ck-meta">
+        <span class="ck-nama">✍️ ${escHtml(t.nama||'Anonim')}</span>
+        <span>📅 ${tgl}</span>
+        ${t.sumber ? `<a href="${escHtml(t.sumber)}" target="_blank" style="color:var(--neon);">🔗 Sumber</a>` : ''}
+        <button class="ck-readmore" onclick="openKomunitasModal(${idx})">Baca Selengkapnya →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openKomunitasModal(idx) {
+  const t = komunitasItems[idx];
+  if(!t) return;
+  const KAT_ICON = {
+    sains:'🔬', sejarah:'📜', spiritual:'✨', matematika:'📐',
+    musik:'🎵', opini:'💭', berita:'📰', lainnya:'🌐'
+  };
+  const icon = KAT_ICON[t.kategori] || '🌐';
+  const tgl  = t.approvedAt
+    ? new Date(t.approvedAt).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})
+    : '—';
+
+  // Format konten: baris kosong jadi paragraf
+  const kontenHtml = escHtml(t.konten||'')
+    .split(/\n\n+/)
+    .map(p => `<p style="margin-bottom:1.2em;line-height:1.8;">${p.replace(/\n/g,'<br>')}</p>`)
+    .join('');
+
+  document.getElementById('ckModal').innerHTML = `
+    <div class="ckm-overlay" onclick="closeKomunitasModal()"></div>
+    <div class="ckm-box">
+      <button class="ckm-close" onclick="closeKomunitasModal()">✕</button>
+      <div class="ckm-head">
+        <span class="ck-badge">👥 KOMUNITAS</span>
+        <span class="ck-kat" style="margin-left:8px;">${icon} ${t.kategori||'lainnya'}</span>
+      </div>
+      <h2 class="ckm-title">${escHtml(t.judul)}</h2>
+      <div class="ckm-meta">
+        <span>✍️ ${escHtml(t.nama||'Anonim')}</span>
+        <span>📅 ${tgl}</span>
+        ${t.sumber ? `<a href="${escHtml(t.sumber)}" target="_blank" style="color:var(--neon);">🔗 Sumber</a>` : ''}
+      </div>
+      <div class="ckm-body">${kontenHtml}</div>
+    </div>`;
+  document.getElementById('ckModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeKomunitasModal() {
+  document.getElementById('ckModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+
   grid.innerHTML = `<div class="komunitas-loading"><div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div> Memuat artikel komunitas...</div>`;
 
   try {
@@ -938,10 +1124,6 @@ async function loadKomunitas() {
   }
 }
 
-function escHtml(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
 
 window.addEventListener('scroll', () => {
   document.getElementById('scrollBar').style.width =
@@ -950,20 +1132,26 @@ window.addEventListener('scroll', () => {
 
 /* ══ SLIDE TAB SWITCH ══ */
 function switchTab(tabKey, btn) {
-  // Deaktifkan semua tab
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  // Sembunyikan semua panel
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('show'));
-  // Tampilkan panel yang sesuai
   const panel = document.getElementById('panel-' + tabKey);
   if(panel) panel.classList.add('show');
-  // Jika tab Komunitas → load dari Firebase
+
+  const bloggerWrap   = document.querySelector('.art-wrap');
+  const komunitasWrap = document.getElementById('komunitasWrap');
+
   if(tabKey === 'komunitas') {
+    // Sembunyikan grid Blogger, tampilkan grid Komunitas
+    if(bloggerWrap)   bloggerWrap.style.display   = 'none';
+    if(komunitasWrap) komunitasWrap.style.display = '';
     loadKomunitas();
     return;
   }
-  // Jika tab Semua → reset filter ke all
+
+  // Tab lain: tampilkan grid Blogger, sembunyikan Komunitas
+  if(bloggerWrap)   bloggerWrap.style.display   = '';
+  if(komunitasWrap) komunitasWrap.style.display = 'none';
   if(tabKey === 'semua') setFilter('all');
 }
 
