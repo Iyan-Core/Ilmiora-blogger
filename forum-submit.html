@@ -6,6 +6,9 @@
 <title>Kirim Artikel &mdash; ILMIORA Community</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
@@ -32,7 +35,47 @@
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
-  /* ── KATEGORI ── */
+  /* ════════════════════════════════════
+     📧 KONFIGURASI EMAILJS
+     Daftar gratis di: https://emailjs.com
+     Isi 3 nilai di bawah setelah setup
+  ════════════════════════════════════ */
+  const EMAILJS_CONFIG = {
+    publicKey:   '0PZTDeCzFS7MeDinG',
+    serviceId:   'service_kpypu5e',
+    templateId:  'template_v1mfwew',
+  };
+
+  /* Inisialisasi EmailJS */
+  if(EMAILJS_CONFIG.publicKey !== 'GANTI_PUBLIC_KEY_EMAILJS') {
+    emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+  }
+
+  /* Fungsi kirim notifikasi ke email admin */
+  async function kirimNotifikasiAdmin(data, threadId) {
+    if(EMAILJS_CONFIG.publicKey === 'GANTI_PUBLIC_KEY_EMAILJS') return; // skip jika belum diset
+    try {
+      await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+        // variabel ini akan dipakai di template EmailJS kamu
+        thread_id:    threadId.slice(-6).toUpperCase(),
+        thread_judul: data.judul,
+        thread_nama:  data.nama || 'Anonim',
+        thread_kontak:data.kontak || '—',
+        thread_kat:   data.kategori,
+        thread_cuplikan: data.konten.substring(0, 200) + '...',
+        admin_url:    'https://iyan-core.github.io/Ilmiora-blogger/forum-admin.html',
+        waktu:        new Date().toLocaleString('id-ID', {
+                        dateStyle:'full', timeStyle:'short'
+                      }),
+      });
+      console.log('✓ Notifikasi email terkirim ke admin');
+    } catch(err) {
+      console.warn('Email notif gagal (tidak kritis):', err);
+      // Tidak perlu show error ke user — artikel tetap tersimpan
+    }
+  }
+
+
   const KATEGORI = [
     { key:'sains',     label:'Sains & Teknologi', icon:'🔬' },
     { key:'sejarah',   label:'Sejarah & Budaya',  icon:'📜' },
@@ -141,6 +184,9 @@
     try {
       const r = await push(ref(db, 'threads'), data);
       localStorage.setItem('ilm_last_submit', Date.now().toString());
+
+      // Kirim notifikasi email ke admin (async, tidak blokir UI)
+      kirimNotifikasiAdmin(data, r.key);
       setStatus('success',
         `✓ Artikel terkirim! ID: ${r.key.slice(-6).toUpperCase()}<br>
          Admin akan meninjau dalam 1×24 jam. Terima kasih sudah berkontribusi.`);
