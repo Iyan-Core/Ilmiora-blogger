@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Kontrapoin: Seni Mempertemukan Dua Melodi yang Saling Hidup — ILMIORA</title>
+<meta name="description" content="Dari Fuga Bach hingga two-voice counterpoint — panduan mendalam tentang prinsip kontrapoin, aturan yang telah membentuk musik Barat selama 400 tahun, dan mengapa ia masih relevan hari ini.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05040a;--bg2:#080710;--card:#100d18;--lift:#181424;
+  --chalk:#eee8f8;--body:rgba(238,232,248,0.66);--muted:#6a5888;
+  --dim:#1a1628;--border:rgba(124,58,237,0.13);--border2:rgba(255,255,255,0.04);
+  --acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);
+  --rose:#c084fc;--sage:#6ee7b7;--amber:#f0c060;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.88;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--rose));z-index:9999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(5,4,10,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);background:var(--accx);}
+.wrap{max-width:780px;margin:0 auto;padding:0 36px;}
+.hero{padding:104px 0 56px;position:relative;overflow:hidden;}
+.hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.06),transparent 65%);top:-100px;right:-200px;pointer-events:none;}
+.h-eyebrow{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:12px;}
+.h-eyebrow::before{content:'';width:24px;height:1px;background:var(--acc);}
+.h-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.h-title{font-size:clamp(30px,5.5vw,56px);font-weight:700;line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px;}
+.h-title em{font-style:italic;color:var(--acc2);}
+.h-title .line2{display:block;color:rgba(238,232,248,.35);font-size:0.78em;}
+.h-sub{font-style:italic;color:var(--body);font-size:clamp(15px,2vw,19px);margin-bottom:28px;line-height:1.7;max-width:620px;}
+.h-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.hmt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:3px;border:1px solid rgba(124,58,237,0.3);background:var(--accx);color:var(--acc2);}
+.hmd{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.body-content{padding:56px 0 100px;}
+.body-content h2{font-family:'Syne',sans-serif;font-size:clamp(20px,2.8vw,27px);font-weight:800;color:var(--chalk);margin:56px 0 16px;letter-spacing:-.5px;position:relative;padding-left:18px;}
+.body-content h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:70%;background:var(--acc);border-radius:2px;}
+.body-content h3{font-family:'Syne',sans-serif;font-size:clamp(16px,2.2vw,20px);font-weight:800;color:var(--acc2);margin:36px 0 12px;}
+.body-content p{margin-bottom:24px;}
+.body-content strong{color:var(--chalk);font-weight:600;}
+.body-content em{color:var(--acc2);font-style:italic;}
+.pull-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.6vw,25px);color:var(--chalk);line-height:1.65;border-left:3px solid var(--acc);padding:18px 28px;margin:40px 0;background:var(--accx);border-radius:0 10px 10px 0;position:relative;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:24px;font-size:72px;color:var(--acc);opacity:.15;font-family:'Cormorant Garamond',serif;line-height:1;}
+.fact-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:32px 0;}
+.fact-title{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.fact-box ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fact-box li{font-size:16px;color:var(--body);padding-left:20px;position:relative;line-height:1.7;}
+.fact-box li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.fact-box li strong{color:var(--chalk);}
+.data-table{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0;margin:32px 0;overflow:hidden;}
+.data-table table{width:100%;border-collapse:collapse;}
+.data-table th{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--acc2);text-align:left;padding:14px 18px;background:rgba(124,58,237,0.06);border-bottom:1px solid var(--border);}
+.data-table td{font-size:15px;color:var(--body);padding:12px 18px;border-bottom:1px solid var(--border2);vertical-align:top;line-height:1.6;}
+.data-table td:first-child{font-family:'Fira Code',monospace;font-size:12px;font-weight:500;color:var(--acc2);white-space:nowrap;}
+.data-table tr:last-child td{border-bottom:none;}
+
+/* ── SPECIES CARDS ── */
+.species-list{display:flex;flex-direction:column;gap:16px;margin:32px 0;}
+.sp-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:22px 26px;
+  display:grid;grid-template-columns:80px 1fr;gap:20px;
+  align-items:start;
+}
+.sp-num{
+  font-family:'Syne',sans-serif;font-size:28px;font-weight:800;
+  color:var(--acc);opacity:.4;line-height:1;
+  padding-top:4px;
+}
+.sp-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--chalk);margin-bottom:6px;}
+.sp-latin{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);margin-bottom:10px;letter-spacing:1px;}
+.sp-desc{font-size:15px;color:var(--body);line-height:1.65;}
+
+/* ── MOTION TYPE VISUAL ── */
+.motion-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:28px 0;}
+.mt-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+.mt-title{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.mt-desc{font-size:14px;color:var(--body);line-height:1.6;}
+.mt-example{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);margin-top:8px;font-style:italic;}
+.mt-card.preferred{border-color:rgba(110,231,183,0.3);}
+.mt-card.preferred .mt-title{color:var(--sage);}
+.mt-card.avoid{border-color:rgba(192,132,252,0.25);}
+.mt-card.avoid .mt-title{color:var(--rose);}
+
+.divider{display:flex;align-items:center;gap:16px;margin:56px 0;}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+.divider-sym{font-family:'Fira Code',monospace;font-size:13px;color:var(--acc);opacity:.6;}
+footer{border-top:1px solid var(--border);padding:24px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+.footer-copy{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;}
+@media(max-width:680px){nav{padding:0 18px;}.wrap{padding:0 20px;}footer{padding:18px 20px;}.sp-card{grid-template-columns:1fr;}.motion-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+<script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});</script>
+
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>melodi-kontrapoin</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+</nav>
+
+<div class="wrap">
+<div class="hero">
+  <div class="hero-orb"></div>
+
+  <div class="h-eyebrow">
+    <span class="h-eyebrow-dot"></span>
+    🎶 Teori Musik &nbsp;·&nbsp; Melodi &amp; Kontrapoin
+  </div>
+
+  <h1 class="h-title">
+    Kontrapoin: Seni Mempertemukan Dua Melodi yang <em>Saling Hidup</em>
+    <span class="line2">— percakapan paling elegan dalam sejarah musik</span>
+  </h1>
+
+  <p class="h-sub">
+    Ketika Bach menulis sebuah fuga, ia tidak menulis satu melodi dengan iringan — ia menulis dua, tiga, bahkan empat melodi yang masing-masing berdiri sendiri tapi bersama-sama menciptakan harmoni yang sempurna. Inilah kontrapoin.
+  </p>
+
+  <div class="h-meta">
+    <span class="hmt">Melodi &amp; Kontrapoin</span>
+    <span class="hmd">📅 2025</span>
+    <span class="hmd">⏱ 16 menit baca</span>
+    <span class="hmd">✍ ILMIORA</span>
+  </div>
+</div>
+
+<div class="body-content">
+
+<p>Ada sebuah paradoks di jantung kontrapoin: semakin ketat aturannya, semakin bebas musik yang bisa lahir darinya. Johann Sebastian Bach, yang menguasai kontrapoin seperti tidak ada orang lain dalam sejarah, pernah berkata bahwa ia tidak menciptakan sesuatu yang baru — ia hanya menulis apa yang sudah seharusnya ada.</p>
+
+<p>Kontrapoin (dari bahasa Latin <em>punctus contra punctum</em> — "nada melawan nada") adalah seni menggabungkan dua atau lebih melodi yang berdiri mandiri secara bersamaan, sehingga keduanya terdengar independen <em>dan</em> saling melengkapi. Bukan melodi dengan iringan. Bukan melodi dengan bas. Dua melodi yang setara, masing-masing punya kepribadiannya sendiri.</p>
+
+<div class="pull-quote">
+  "Kontrapoin adalah konversasi — bukan monolog dengan latar belakang. Dan seperti konversasi terbaik, ia membutuhkan dua pihak yang sama-sama punya sesuatu untuk dikatakan."
+</div>
+
+<h2>Sejarah Singkat: Dari Organum ke Fuga</h2>
+
+<p>Kontrapoin tidak lahir tiba-tiba. Ia berkembang selama berabad-abad, dari <strong>organum</strong> abad ke-9 — di mana penyanyi kedua hanya menambahkan nada paralel di atas chant Gregorian yang sudah ada — hingga <strong>mottet</strong> abad ke-13 yang lebih kompleks dengan dua atau tiga suara yang mulai bergerak lebih independen.</p>
+
+<p>Pada abad ke-16, Palestrina mengembangkan apa yang sekarang disebut <em>Renaissance counterpoint</em> — sebuah gaya vokal yang sangat halus, mengalir, dan jarang menggunakan disonansi. Kemudian datang <strong>era Baroque</strong>, dan Johann Sebastian Bach menempatkan kontrapoin pada puncaknya: <em>Well-Tempered Clavier</em>, <em>The Art of Fugue</em>, <em>Musical Offering</em> — karya-karya yang mengeksplorasi batas kemungkinan kontrapoin hingga ujung terjauhnya.</p>
+
+<h2>Empat Tipe Gerak Suara (Voice Motion)</h2>
+
+<p>Fondasi kontrapoin adalah pemahaman tentang bagaimana dua suara bergerak <em>relatif satu sama lain</em>. Ada empat tipe gerak yang menjadi kosakata dasar kontrapoin:</p>
+
+<div class="motion-grid">
+  <div class="mt-card preferred">
+    <div class="mt-title">Contrary Motion — Pilihan Utama</div>
+    <div class="mt-desc">Kedua suara bergerak ke arah berlawanan — satu naik, yang lain turun. Menciptakan kemandirian maksimal dan keindahan harmonis tertinggi.</div>
+    <div class="mt-example">Suara 1: C→E (naik) · Suara 2: G→E (turun)</div>
+  </div>
+  <div class="mt-card preferred">
+    <div class="mt-title">Oblique Motion — Efektif</div>
+    <div class="mt-desc">Satu suara bergerak, satu suara diam pada nada yang sama. Memberikan stabilitas sementara suara lain bergerak bebas.</div>
+    <div class="mt-example">Suara 1: C→D→E · Suara 2: G→G→G</div>
+  </div>
+  <div class="mt-card">
+    <div class="mt-title">Similar Motion — Boleh Berhati-hati</div>
+    <div class="mt-desc">Kedua suara bergerak ke arah sama tapi dengan interval yang berbeda. Boleh digunakan sesekali, tapi jangan terlalu sering.</div>
+    <div class="mt-example">Suara 1: C→E (naik 3) · Suara 2: G→B (naik 3)</div>
+  </div>
+  <div class="mt-card avoid">
+    <div class="mt-title">Parallel Motion — Hindari</div>
+    <div class="mt-desc">Kedua suara bergerak ke arah sama dengan interval yang identik (paralel fifth atau octave). Ini membuat keduanya terdengar sebagai satu suara, bukan dua.</div>
+    <div class="mt-example">Suara 1: C→G · Suara 2: G→D (paralel fifth — HINDARI)</div>
+  </div>
+</div>
+
+<h2>Lima Spesies Kontrapoin: Sistem Pendidikan Terbaik</h2>
+
+<p>Pada abad ke-18, Johann Joseph Fux mengkodifikasi pendidikan kontrapoin dalam bukunya yang fenomenal, <em>Gradus ad Parnassum</em> (1725) — sebuah buku yang digunakan Haydn, Mozart, dan Beethoven untuk belajar. Ia memperkenalkan sistem <strong>lima spesies (species counterpoint)</strong>: lima tingkat kompleksitas yang meningkat secara bertahap.</p>
+
+<div class="species-list">
+  <div class="sp-card">
+    <div class="sp-num">I</div>
+    <div>
+      <div class="sp-title">Note Against Note</div>
+      <div class="sp-latin">// Spesies Pertama — satu suara, satu not</div>
+      <div class="sp-desc">Setiap not dalam <em>cantus firmus</em> (melodi yang sudah ada) direspons dengan tepat satu not dalam suara counterpoint. Fokus pada pemilihan interval konsonan. Aturan utama: hindari paralel fifth dan octave, utamakan contrary motion.</div>
+    </div>
+  </div>
+  <div class="sp-card">
+    <div class="sp-num">II</div>
+    <div>
+      <div class="sp-title">Two Notes Against One</div>
+      <div class="sp-latin">// Spesies Kedua — dua not per ketukan</div>
+      <div class="sp-desc">Setiap not cantus firmus direspons dengan dua not counterpoint. Not kedua boleh lewat melalui disonansi sebagai <em>passing note</em> — dengan syarat ia bergerak bertahap. Ini adalah pengenalan pertama pada penggunaan disonansi yang terkontrol.</div>
+    </div>
+  </div>
+  <div class="sp-card">
+    <div class="sp-num">III</div>
+    <div>
+      <div class="sp-title">Four Notes Against One</div>
+      <div class="sp-latin">// Spesies Ketiga — empat not per ketukan</div>
+      <div class="sp-desc">Empat not per ketukan cantus firmus. Memungkinkan lebih banyak passing notes dan neighbor tones (cambiata). Suara counterpoint mulai bergerak dengan ritme yang lebih hidup. Aturan menjadi lebih fleksibel tapi tetap ketat pada posisi-posisi kuat birama.</div>
+    </div>
+  </div>
+  <div class="sp-card">
+    <div class="sp-num">IV</div>
+    <div>
+      <div class="sp-title">Syncopated Notes</div>
+      <div class="sp-latin">// Spesies Keempat — sinkopasi dan suspensi</div>
+      <div class="sp-desc">Pengenalan <em>suspension</em> — disonansi yang sengaja disiapkan dari not sebelumnya, dipegang di atas bar line, lalu diselesaikan ke bawah. Ini adalah teknik yang paling ekspresif secara emosional dan menjadi tulang punggung ekspresi harmonis dalam musik tonal.</div>
+    </div>
+  </div>
+  <div class="sp-card">
+    <div class="sp-num">V</div>
+    <div>
+      <div class="sp-title">Florid Counterpoint</div>
+      <div class="sp-latin">// Spesies Kelima — bebas dan ornamental</div>
+      <div class="sp-desc">Kombinasi bebas dari semua spesies sebelumnya — not berbeda durasi, ornamen, passing notes, suspensions, semua hadir bersama. Ini adalah kontrapoin dalam bentuk paling ekspresif. Dasarnya adalah yang dipelajari oleh Bach dan semua komposer Baroque.</div>
+    </div>
+  </div>
+</div>
+
+<h2>Fuga: Puncak Kontrapoin</h2>
+
+<p>Jika spesies kontrapoin adalah tata bahasa, maka <strong>fuga</strong> adalah puisi. Fuga adalah bentuk komposisi yang dibangun di atas prinsip imitasi — satu melodi pendek (disebut <em>subject</em>) diperkenalkan, lalu direspons oleh suara kedua di interval yang berbeda (<em>answer</em>), lalu suara ketiga masuk dengan subject lagi, dan seterusnya — saling mengeja, saling merespons, saling melipat dalam lapisan-lapisan harmoni yang semakin kompleks.</p>
+
+<div class="fact-box">
+  <div class="fact-title">// Anatomi Sebuah Fuga Klasik</div>
+  <ul>
+    <li><strong>Subject (Subjek)</strong> — melodi utama fuga, biasanya 1-2 birama. Diperkenalkan sendirian di awal, tanpa iringan. Seluruh fuga dibangun dari materi ini.</li>
+    <li><strong>Answer (Jawaban)</strong> — imitasi subject oleh suara kedua, biasanya di interval fifth di atas (atau fourth di bawah). Bisa <em>real</em> (imitasi persis) atau <em>tonal</em> (dimodifikasi untuk menjaga tonalitas).</li>
+    <li><strong>Countersubject</strong> — melodi yang dimainkan suara pertama saat suara kedua membawakan answer. Ia harus kontrapuntal sempurna dengan subject maupun answer.</li>
+    <li><strong>Exposition</strong> — bagian pertama fuga di mana semua suara masuk membawakan subject/answer untuk pertama kalinya. Setelah ini, fuga bisa berkembang ke mana saja.</li>
+    <li><strong>Episode</strong> — bagian transisi di antara entri-entri subject yang lengkap. Biasanya menggunakan materi dari subject/countersubject dalam teknik sekuensial.</li>
+    <li><strong>Stretto</strong> — teknik di mana entri subject dari suara berikutnya masuk sebelum entri sebelumnya selesai. Menciptakan efek saling mengejar yang sangat dramatis dan intens.</li>
+  </ul>
+</div>
+
+<h2>Kontrapoin di Luar Musik Klasik</h2>
+
+<p>Kontrapoin bukan milik eksklusif musik klasik. Prinsipnya hidup di hampir setiap genre musik yang ada:</p>
+
+<p><strong>Jazz:</strong> Improvisasi jazz pada dasarnya adalah kontrapoin real-time — solois bermain melodi yang independen di atas harmoni yang dimainkan rhythm section. Ketika dua solois bermain bersamaan (seperti dalam jazz collective improvisation), ini adalah kontrapoin yang murni.</p>
+
+<p><strong>Bluegrass dan Folk:</strong> Teknik "call and response" antara banjo dan fiddle, atau antara dua gitar, mengikuti prinsip oblique dan contrary motion kontrapoin dengan sangat intuitif.</p>
+
+<p><strong>Musik Pop Modern:</strong> Banyak produser pop menggunakan teknik kontrapuntal tanpa menamakannya demikian — hook yang bermain di atas melodi verse, vocal harmony yang bergerak contrary terhadap melodi utama, atau counter-melody di bridge lagu yang kontras dengan chorus.</p>
+
+<div class="pull-quote">
+  "Bach tidak menulis untuk Tuhan atau untuk raja — ia menulis untuk musik itu sendiri. Dan musik itu, 300 tahun kemudian, masih terdengar seperti sesuatu yang akan ada selamanya."
+</div>
+
+<h2>Cara Memulai Belajar Kontrapoin</h2>
+
+<div class="data-table">
+  <table>
+    <tr><th>Tahap</th><th>Materi</th><th>Target Waktu</th></tr>
+    <tr>
+      <td>Dasar</td>
+      <td>Interval konsonan vs. disonan · Identifikasi contrary/parallel motion · Species I dua suara</td>
+      <td>2–4 minggu</td>
+    </tr>
+    <tr>
+      <td>Menengah</td>
+      <td>Species II–IV · Suspension dan resolusi · Analisis inventions Bach dua suara</td>
+      <td>1–2 bulan</td>
+    </tr>
+    <tr>
+      <td>Lanjut</td>
+      <td>Species V (florid) · Kontrapoin tiga suara · Analisis Well-Tempered Clavier</td>
+      <td>3–6 bulan</td>
+    </tr>
+    <tr>
+      <td>Mahir</td>
+      <td>Kontrapoin empat suara · Double counterpoint · Analisis dan komposisi fuga</td>
+      <td>Berkelanjutan</td>
+    </tr>
+  </table>
+</div>
+
+<p>Sumber terbaik untuk memulai: <em>Gradus ad Parnassum</em> oleh Fux (versi terjemahan tersedia), <em>Counterpoint in Composition</em> oleh Felix Salzer dan Carl Schachter, atau untuk pendekatan yang lebih modern dan kurang intimidatif, <em>Tonal Counterpoint</em> oleh Johan Forkel. Analisis <strong>15 Two-Part Inventions</strong> Bach secara mendalam — setiap halaman adalah pelajaran kontrapoin yang sempurna.</p>
+
+</div>
+</div>
+
+<div class="divider" style="max-width:780px;margin:0 auto;padding:0 36px;">
+  <div class="divider-line"></div>
+  <span class="divider-sym">🎶</span>
+  <div class="divider-line"></div>
+</div>
+
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+  <span class="footer-copy">ILMIORA © 2025 — Melodi &amp; Kontrapoin</span>
+  <a href="https://ilmiora.blogspot.com">Beranda Ilmiora →</a>
+</footer>
+</body>
+</html>
