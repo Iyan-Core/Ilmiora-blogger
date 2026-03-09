@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mayor vs. Minor: Mengapa Dua Tangga Nada Ini Terdengar Begitu Berbeda? — ILMIORA</title>
+<meta name="description" content="Analisis mendalam tentang perbedaan tangga nada mayor dan minor — dari fisika akustik, psikologi persepsi, hingga bagaimana komposer memanipulasi emosi pendengar.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05040a;--card:#100d18;--chalk:#eee8f8;--body:rgba(238,232,248,0.66);--muted:#6a5888;--border:rgba(124,58,237,0.13);--acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.9;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2));z-index:999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(5,4,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 4px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--border);border-radius:3px;transition:all 0.2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);}
+.wrap{max-width:760px;margin:0 auto;padding:0 32px;}
+.hero{padding:96px 0 52px;position:relative;}
+.hero-orb{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.07),transparent 70%);top:-60px;right:-160px;pointer-events:none;}
+.h-kj{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.h-kj::before{content:'';width:20px;height:1px;background:var(--acc);}
+.h-title{font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.05;letter-spacing:-1px;margin-bottom:16px;}
+.h-title em{font-style:italic;color:var(--acc2);}
+.h-sub{font-style:italic;color:var(--body);font-size:clamp(14px,2vw,18px);margin-bottom:22px;line-height:1.65;}
+.h-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.hmt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:3px 10px;border-radius:2px;border:1px solid rgba(124,58,237,0.28);background:var(--accx);color:var(--acc2);}
+.hmd{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.body-content{padding:52px 0 96px;}
+.body-content h2{font-family:'Syne',sans-serif;font-size:clamp(19px,2.6vw,25px);font-weight:800;color:var(--chalk);margin:52px 0 14px;letter-spacing:-0.3px;}
+.body-content h3{font-family:'Syne',sans-serif;font-size:clamp(15px,2vw,19px);font-weight:800;color:var(--acc2);margin:32px 0 10px;}
+.body-content p{margin-bottom:22px;}
+.body-content strong{color:var(--chalk);font-weight:600;}
+.body-content em{color:var(--acc2);font-style:italic;}
+.pull-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(18px,2.5vw,24px);color:var(--chalk);line-height:1.6;border-left:3px solid var(--acc);padding:16px 24px;margin:36px 0;background:var(--accx);border-radius:0 8px 8px 0;}
+.fact-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 26px;margin:28px 0;}
+.fact-title{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--acc2);margin-bottom:12px;}
+.fact-box ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.fact-box li{font-size:15px;color:var(--body);padding-left:16px;position:relative;line-height:1.65;}
+.fact-box li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.scale-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0;}
+.sc-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.sc-panel.minor{border-color:rgba(167,139,250,0.3);}
+.sc-header{font-family:'Fira Code',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.sc-header.major{color:#f0c060;}
+.sc-header.minor{color:var(--acc2);}
+.scale-notes{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.sn{min-width:38px;height:38px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:6px;border:1px solid var(--border);}
+.sn.root{background:rgba(124,58,237,0.25);border-color:var(--acc);}
+.sn.half{border-style:dashed;opacity:.7;}
+.sn-note{font-family:'Fira Code',monospace;font-size:12px;font-weight:700;color:var(--acc2);}
+.sn.root .sn-note{color:var(--chalk);}
+.sn-int{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);margin-top:2px;}
+.interval-formula{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;word-spacing:4px;}
+.interval-formula span{color:var(--acc2);}
+.note-chart{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin:28px 0;overflow-x:auto;}
+.note-chart table{width:100%;border-collapse:collapse;}
+.note-chart th{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--acc2);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);}
+.note-chart td{font-size:15px;color:var(--body);padding:9px 12px;border-bottom:1px solid rgba(124,58,237,0.05);}
+.note-chart td:first-child{font-family:'Fira Code',monospace;font-size:14px;font-weight:700;color:var(--acc2);}
+.note-chart tr:last-child td{border-bottom:none;}
+.divider{display:flex;align-items:center;gap:14px;margin:52px 0;}
+.divider-line{flex:1;height:1px;background:var(--border);}
+.divider-sym{color:var(--acc2);font-size:12px;}
+footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+@media(max-width:640px){nav{padding:0 16px;}.wrap{padding:0 18px;}footer{padding:18px;}.scale-compare{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+<script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});</script>
+
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>tangga-nada</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-orb"></div>
+    <div class="h-kj">🎵 Teori Musik · Tangga Nada</div>
+    <h1 class="h-title"><em>Mayor</em> vs. Minor: Mengapa Dua Tangga Nada Ini Terdengar Begitu Berbeda?</h1>
+    <p class="h-sub">Satu nada yang digeser setengah langkah — dan seluruh emosi musik berubah total. Inilah sains dan seni di balik perbedaan mayor dan minor yang terasa begitu mendalam bagi telinga manusia.</p>
+    <div class="h-meta">
+      <span class="hmt">Tangga Nada</span>
+      <span class="hmd">📅 2025</span>
+      <span class="hmd">⏱ 15 menit baca</span>
+      <span class="hmd">✍ ILMIORA</span>
+    </div>
+  </div>
+
+  <div class="body-content">
+
+<p>Coba bayangkan lagu "Happy Birthday to You." Sekarang bayangkan versi yang sama dimainkan dalam nada minor — nada ketiganya diturunkan setengah langkah. Meski melodi dan liriknya identik, versi minor terdengar seperti pengumuman kematian daripada perayaan ulang tahun. Perubahan satu nada kecil mengubah segalanya.</p>
+
+<p>Ini bukan sekadar kebiasaan budaya atau imajinasi berlebihan. Penelitian ilmiah telah mengkonfirmasi bahwa perbedaan antara mayor dan minor memicu respons emosional yang konsisten dan dapat diukur pada pendengar dari berbagai latar belakang budaya — bahkan pada anak-anak yang belum pernah mendapat pendidikan musik formal.</p>
+
+<h2>Anatomi Tangga Nada: Formula Interval</h2>
+
+<p>Tangga nada bukan sekadar deretan tujuh nada. Ia adalah <strong>formula spesifik jarak antar nada (interval)</strong>. Dan formula itulah yang menentukan karakter emosionalnya.</p>
+
+<p>Ada dua jenis jarak dasar dalam sistem 12 nada: <strong>setengah nada (semitone)</strong> — jarak terkecil yang mungkin, dari C ke C♯ misalnya — dan <strong>satu nada penuh (whole tone)</strong>, yang setara dengan dua semitone.</p>
+
+<div class="scale-compare">
+  <div class="sc-panel">
+    <div class="sc-header major">// C Mayor — Cerah, Stabil</div>
+    <div class="scale-notes">
+      <div class="sn root"><span class="sn-note">C</span><span class="sn-int">1</span></div>
+      <div class="sn"><span class="sn-note">D</span><span class="sn-int">2</span></div>
+      <div class="sn"><span class="sn-note">E</span><span class="sn-int">3</span></div>
+      <div class="sn half"><span class="sn-note">F</span><span class="sn-int">4</span></div>
+      <div class="sn"><span class="sn-note">G</span><span class="sn-int">5</span></div>
+      <div class="sn"><span class="sn-note">A</span><span class="sn-int">6</span></div>
+      <div class="sn"><span class="sn-note">B</span><span class="sn-int">7</span></div>
+    </div>
+    <div class="interval-formula">W <span>W</span> H W <span>W</span> W H</div>
+    <div style="margin-top:10px;font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);">W = whole tone · H = semitone</div>
+  </div>
+  <div class="sc-panel minor">
+    <div class="sc-header minor">// C Minor — Gelap, Dramatis</div>
+    <div class="scale-notes">
+      <div class="sn root"><span class="sn-note">C</span><span class="sn-int">1</span></div>
+      <div class="sn"><span class="sn-note">D</span><span class="sn-int">2</span></div>
+      <div class="sn half"><span class="sn-note">E♭</span><span class="sn-int">♭3</span></div>
+      <div class="sn"><span class="sn-note">F</span><span class="sn-int">4</span></div>
+      <div class="sn"><span class="sn-note">G</span><span class="sn-int">5</span></div>
+      <div class="sn half"><span class="sn-note">A♭</span><span class="sn-int">♭6</span></div>
+      <div class="sn"><span class="sn-note">B♭</span><span class="sn-int">♭7</span></div>
+    </div>
+    <div class="interval-formula">W <span>H</span> W W <span>H</span> W W</div>
+    <div style="margin-top:10px;font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);">W = whole tone · H = semitone</div>
+  </div>
+</div>
+
+<p>Perbedaan kunci antara keduanya: dalam mayor, <strong>nada ketiga (mediant)</strong> berjarak dua nada penuh dari tonik — ini disebut <em>major third</em>. Dalam minor, nada ketiga hanya berjarak satu setengah nada — ini <em>minor third</em>. Perbedaan setengah nada pada posisi ketiga inilah yang menjadi penentu utama "warna" emosional seluruh tangga nada.</p>
+
+<h2>Mengapa Perbedaan Setengah Nada Terasa Sebegitu Besar?</h2>
+
+<p>Jawabannya ada dalam fisika gelombang dan psikologi persepsi. Ketika dua nada dibunyikan bersamaan, rasio frekuensinya menentukan apakah mereka terdengar <em>konsonan</em> (harmonis, menyenangkan) atau <em>disonan</em> (tegang, tidak nyaman).</p>
+
+<p><strong>Mayor third</strong> (C ke E) memiliki rasio frekuensi 5:4 — rasio kecil dengan angka sederhana yang diproses otak sebagai "bersih" dan stabil. <strong>Minor third</strong> (C ke E♭) memiliki rasio 6:5 — sedikit lebih kompleks, yang otak proses sebagai lebih "berat" dan emosional.</p>
+
+<div class="pull-quote">"Mayor terdengar seperti siang hari dan minor terdengar seperti malam — bukan karena itu konvensi budaya, tapi karena ada sesuatu dalam rasio matematika interval itu yang beresonansi dengan cara kerja sistem saraf manusia."</div>
+
+<h2>Tiga Jenis Tangga Nada Minor</h2>
+
+<p>Tangga nada minor bukan hanya satu. Ada tiga varian yang masing-masing memiliki karakter dan fungsi tersendiri dalam komposisi musik:</p>
+
+<h3>1. Natural Minor (Aeolian)</h3>
+<p>Ini adalah minor "alami" — tangga nada yang diturunkan dengan formula W-H-W-W-H-W-W. Ia memberikan nuansa melankolis yang tenang, sepi, dan introvert. Banyak lagu folk, balada, dan musik tradisional menggunakan natural minor karena nuansanya yang organik dan tidak dramatis berlebihan.</p>
+
+<h3>2. Harmonic Minor</h3>
+<p>Dalam natural minor, nada ke-7 jaraknya satu nada penuh dari tonik. Ini membuat "tarikan" ke tonik terasa lemah. Maka dalam harmonic minor, nada ke-7 dinaikkan setengah nada — menciptakan kembali <em>leading tone</em> yang kuat. Hasilnya adalah tangga nada dengan nada ke-6 dan ke-7 yang berjarak tiga semitone — interval augmented second yang terasa eksotis, dramatis, sedikit Timur Tengah. Banyak digunakan dalam musik klasik Eropa dan musik klasik Arab.</p>
+
+<h3>3. Melodic Minor</h3>
+<p>Komposer menemukan bahwa augmented second dalam harmonic minor terasa canggung saat dinyanyikan. Solusinya: saat melodi naik, nada ke-6 dan ke-7 dinaikkan (seperti mayor). Saat melodi turun, kembali ke natural minor. Hasilnya adalah tangga nada yang "berubah bentuk" tergantung arah melodi — sebuah kompromi yang sangat halus dan canggih.</p>
+
+<div class="note-chart">
+  <table>
+    <tr><th>Jenis Minor</th><th>Formula</th><th>Karakter</th><th>Contoh Penggunaan</th></tr>
+    <tr><td>Natural Minor</td><td>W H W W H W W</td><td>Melankolis, tenang, folk</td><td>House of the Rising Sun, Scarborough Fair</td></tr>
+    <tr><td>Harmonic Minor</td><td>W H W W H 3H H</td><td>Dramatis, eksotis, Timur Tengah</td><td>Moonlight Sonata (Beethoven), musik Flamenco</td></tr>
+    <tr><td>Melodic Minor</td><td>Naik: W H W W W W H · Turun: natural</td><td>Halus, ekspresif, sering vokal</td><td>Bach, Handel, banyak aria opera</td></tr>
+  </table>
+</div>
+
+<h2>Apakah Mayor = Bahagia dan Minor = Sedih?</h2>
+
+<p>Ini adalah oversimplifikasi yang perlu dikritisi. Asosiasi itu <em>sangat umum dan sering benar</em> — tapi tidak mutlak. Ada banyak lagu dalam kunci minor yang terasa energik, agresif, bahkan gembira (banyak musik dansa tradisional Eropa Timur, misalnya). Dan ada lagu dalam kunci mayor yang terasa kesepian dan penuh kerinduan.</p>
+
+<p>Yang lebih tepat adalah menggambarkan mayor sebagai "terang dan stabil" dan minor sebagai "gelap dan bergerak." Emosi spesifik yang dirasakan pendengar adalah hasil interaksi antara tangga nada, tempo, dinamik, melodi, harmoni, dan — yang sering dilupakan — konteks budaya dan pengalaman pribadi pendengar.</p>
+
+<div class="fact-box">
+  <div class="fact-title">// Fakta Menarik tentang Mayor dan Minor</div>
+  <ul>
+    <li>Musik populer India (Carnatic dan Hindustani) menggunakan puluhan "raga" — tangga nada yang jauh lebih nuanced dari sekadar mayor dan minor, dengan interval mikrotonal yang tidak ada dalam sistem Barat.</li>
+    <li>Dalam studi cross-cultural yang melibatkan suku Mafa di Kamerun (yang tidak pernah terekspos musik Barat), mereka masih bisa membedakan emosi bahagia vs. sedih dari contoh musik mayor dan minor — mengisyaratkan ada komponen universal.</li>
+    <li>Beethoven menulis Simfoni No. 5 dalam C minor (gelap, dramatis) tapi mengakhirinya dalam C mayor — pergeseran yang dramatis melambangkan perjalanan dari penderitaan ke kemenangan.</li>
+    <li>Banyak lagu anak-anak Indonesia seperti "Balonku" dan "Burung Kakaktua" ditulis dalam mayor karena energinya yang cerah dan mudah dinyanyikan.</li>
+  </ul>
+</div>
+
+<h2>Cara Melatih Telinga untuk Membedakan Mayor dan Minor</h2>
+
+<p>Kemampuan mendengar dan mengidentifikasi tangga nada secara instan adalah keterampilan yang bisa dilatih. Mulai dengan cara paling sederhana: ambil lagu yang sangat kamu kenal, lalu cari versi "mayor ke minor" atau sebaliknya di YouTube (banyak musisi yang membuatnya sebagai eksperimen). Dengarkan perbedaannya dengan sadar dan perhatikan di mana tepatnya perbedaan itu terasa.</p>
+
+<p>Lalu, saat mendengarkan musik sehari-hari, biasakan bertanya: ini mayor atau minor? Cari not ketiga melodi utamanya — apakah ia terasa "tinggi" (major third) atau "rendah" (minor third)? Setelah beberapa minggu, kemampuan identifikasi ini akan menjadi hampir otomatis.</p>
+
+<div class="pull-quote">"Setiap tangga nada adalah lensa yang berbeda untuk melihat dunia emosi manusia. Mayor dan minor hanyalah dua dari puluhan lensa yang tersedia — tapi memahami keduanya membuka pintu untuk memahami semua yang lain."</div>
+
+  </div>
+</div>
+
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+  <span style="font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;">ILMIORA © 2025 — Tangga Nada</span>
+  <a href="https://ilmiora.blogspot.com">Beranda →</a>
+</footer>
+</body>
+</html>
