@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Circle of Fifths: Peta Harta Karun yang Setiap Musisi Harus Kuasai — ILMIORA</title>
+<meta name="description" content="Diagram melingkar yang menyimpan hampir semua rahasia teori musik Barat — kunci, tanda kunci, modulasi, dan hubungan harmonis antar tangga nada.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05040a;--card:#100d18;--lift:#181424;
+  --chalk:#eee8f8;--body:rgba(238,232,248,0.66);--muted:#6a5888;
+  --border:rgba(124,58,237,0.13);--border2:rgba(255,255,255,0.04);
+  --acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);
+  --rose:#c084fc;--sage:#6ee7b7;--amber:#f0c060;--warm:#f87171;--teal:#67e8f9;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.9;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--rose));z-index:9999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(5,4,10,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);background:var(--accx);}
+.wrap{max-width:780px;margin:0 auto;padding:0 36px;}
+.hero{padding:104px 0 56px;position:relative;overflow:hidden;}
+.hero-orb{position:absolute;width:580px;height:580px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.07),transparent 65%);top:-100px;right:-200px;pointer-events:none;}
+.h-eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:12px;}
+.h-eye::before{content:'';width:24px;height:1px;background:var(--acc);}
+.h-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.h-title{font-size:clamp(30px,5.5vw,54px);font-weight:700;line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px;}
+.h-title em{font-style:italic;color:var(--acc2);}
+.h-dim{display:block;color:rgba(238,232,248,.3);font-size:.76em;}
+.h-sub{font-style:italic;color:var(--body);font-size:clamp(15px,2vw,19px);margin-bottom:28px;line-height:1.7;max-width:630px;}
+.h-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.hmt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:3px;border:1px solid rgba(124,58,237,0.3);background:var(--accx);color:var(--acc2);}
+.hmd{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.body-content{padding:56px 0 100px;}
+.body-content h2{font-family:'Syne',sans-serif;font-size:clamp(19px,2.7vw,26px);font-weight:800;color:var(--chalk);margin:56px 0 16px;letter-spacing:-.5px;padding-left:18px;position:relative;}
+.body-content h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:72%;background:var(--acc);border-radius:2px;}
+.body-content h3{font-family:'Syne',sans-serif;font-size:clamp(15px,2.1vw,19px);font-weight:800;color:var(--acc2);margin:36px 0 12px;}
+.body-content p{margin-bottom:24px;}
+.body-content strong{color:var(--chalk);font-weight:600;}
+.body-content em{color:var(--acc2);font-style:italic;}
+.pq{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.5vw,24px);color:var(--chalk);line-height:1.65;border-left:3px solid var(--acc);padding:18px 28px;margin:40px 0;background:var(--accx);border-radius:0 10px 10px 0;position:relative;}
+.pq::before{content:'"';position:absolute;top:-8px;left:22px;font-size:68px;color:var(--acc);opacity:.14;font-family:'Cormorant Garamond',serif;line-height:1;}
+.fb{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:32px 0;}
+.ft{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.fb ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fb li{font-size:16px;color:var(--body);padding-left:20px;position:relative;line-height:1.7;}
+.fb li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.fb li strong{color:var(--chalk);}
+.tbl{background:var(--card);border:1px solid var(--border);border-radius:12px;margin:32px 0;overflow:hidden;}
+.tbl table{width:100%;border-collapse:collapse;}
+.tbl th{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--acc2);text-align:left;padding:13px 18px;background:rgba(124,58,237,0.07);border-bottom:1px solid var(--border);}
+.tbl td{font-size:15px;color:var(--body);padding:12px 18px;border-bottom:1px solid var(--border2);vertical-align:top;line-height:1.6;}
+.tbl td:first-child{font-family:'Fira Code',monospace;font-size:12px;font-weight:600;color:var(--acc2);white-space:nowrap;}
+.tbl tr:last-child td{border-bottom:none;}
+.dv{display:flex;align-items:center;gap:14px;margin:52px 0;}
+.dv-l{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+.dv-s{font-family:'Fira Code',monospace;font-size:13px;color:var(--acc);opacity:.5;}
+footer{border-top:1px solid var(--border);padding:24px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+.fc{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;}
+@media(max-width:680px){nav{padding:0 18px;}.wrap{padding:0 20px;}footer{padding:18px 20px;}}
+
+.key-row{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0;}
+.kk{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:center;min-width:70px;}
+.kk.sharp{border-color:rgba(240,192,96,0.4);}
+.kk.flat{border-color:rgba(103,232,249,0.35);}
+.kk-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--acc2);}
+.kk.sharp .kk-name{color:var(--amber);}
+.kk.flat .kk-name{color:var(--teal);}
+.kk-sig{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);margin-top:3px;}
+.kk-rel{font-family:'Fira Code',monospace;font-size:9px;color:var(--acc);margin-top:2px;}
+</style>
+</head><body>
+<div id="sb"></div><script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});</script>
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>harmoni-akor</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+</nav>
+<div class="wrap">
+<div class="hero"><div class="hero-orb"></div>
+  <div class="h-eye"><span class="h-dot"></span>🎹 Teori Musik &nbsp;·&nbsp; Harmoni & Akor</div>
+  <h1 class="h-title"><em>Circle of Fifths</em>: Peta Harta Karun yang Setiap Musisi Harus Kuasai<span class="h-dim">— satu lingkaran, semua rahasia teori musik Barat</span></h1>
+  <p class="h-sub">Dari cara membaca tanda kunci hingga bagaimana memindahkan musik ke kunci lain tanpa terdengar canggung — Circle of Fifths adalah kompas yang setiap musisi butuhkan.</p>
+  <div class="h-meta"><span class="hmt">Harmoni & Akor</span><span class="hmd">📅 2025</span><span class="hmd">⏱ 15 menit baca</span><span class="hmd">✍ ILMIORA</span></div>
+</div>
+<div class="body-content">
+<p>Bayangkan sebuah kompas. Di utara: C mayor. Bergerak searah jarum jam satu langkah: G mayor. Satu langkah lagi: D mayor. Terus, terus, dua belas langkah penuh, dan kamu kembali ke C. Setiap langkah adalah <strong>perfect fifth</strong> — interval paling konsonan setelah oktaf.</p>
+
+<p>Inilah <strong>Circle of Fifths</strong> — lingkaran kuint — sebuah diagram yang dikembangkan sekitar abad ke-17 dan masih menjadi alat analisis musik paling berguna yang pernah dibuat. Ia bukan hanya peta kunci — ia adalah peta seluruh hubungan harmonis dalam musik tonal Barat.</p>
+
+<div class="pq">Circle of Fifths adalah peta topografi dari lanskap emosional musik — ia menunjukkan bukan hanya di mana setiap kunci berada, tapi seberapa jauh jarak harmonis di antara mereka.</div>
+
+<h2>Prinsip Dasar: Mengapa Fifth?</h2>
+
+<p>Perfect fifth (7 semitone) adalah interval paling stabil setelah oktaf. Rasio frekuensinya 3:2 — angka sederhana yang otak manusia proses sebagai sangat harmonis. Ketika kamu menyusun kunci-kunci berdasarkan hubungan fifth, yang bersebelahan dalam lingkaran berbeda hanya <strong>satu nada</strong> satu sama lain. Pindah dari C mayor ke G mayor hanya mengubah F ke F♯ — satu perubahan kecil yang telinga hampir tidak mendeteksinya sebagai "modulasi."</p>
+
+<h2>Dua Belas Kunci dalam Lingkaran</h2>
+
+<div class="key-row">
+  <div class="kk"><div class="kk-name">C</div><div class="kk-sig">0 ♯♭</div><div class="kk-rel">rel: Am</div></div>
+  <div class="kk sharp"><div class="kk-name">G</div><div class="kk-sig">1♯ (F♯)</div><div class="kk-rel">rel: Em</div></div>
+  <div class="kk sharp"><div class="kk-name">D</div><div class="kk-sig">2♯</div><div class="kk-rel">rel: Bm</div></div>
+  <div class="kk sharp"><div class="kk-name">A</div><div class="kk-sig">3♯</div><div class="kk-rel">rel: F♯m</div></div>
+  <div class="kk sharp"><div class="kk-name">E</div><div class="kk-sig">4♯</div><div class="kk-rel">rel: C♯m</div></div>
+  <div class="kk sharp"><div class="kk-name">B</div><div class="kk-sig">5♯</div><div class="kk-rel">rel: G♯m</div></div>
+  <div class="kk flat"><div class="kk-name">F</div><div class="kk-sig">1♭ (B♭)</div><div class="kk-rel">rel: Dm</div></div>
+  <div class="kk flat"><div class="kk-name">B♭</div><div class="kk-sig">2♭</div><div class="kk-rel">rel: Gm</div></div>
+  <div class="kk flat"><div class="kk-name">E♭</div><div class="kk-sig">3♭</div><div class="kk-rel">rel: Cm</div></div>
+  <div class="kk flat"><div class="kk-name">A♭</div><div class="kk-sig">4♭</div><div class="kk-rel">rel: Fm</div></div>
+  <div class="kk flat"><div class="kk-name">D♭</div><div class="kk-sig">5♭</div><div class="kk-rel">rel: B♭m</div></div>
+  <div class="kk flat"><div class="kk-name">G♭</div><div class="kk-sig">6♭</div><div class="kk-rel">rel: E♭m</div></div>
+</div>
+
+<p>Bergerak searah jarum jam = menambah sharp satu per satu. Berlawanan jarum jam = menambah flat satu per satu. Di setiap posisi, ada <strong>kunci mayor di luar</strong> dan <strong>kunci minor relatifnya di dalam</strong> — dua kunci yang berbagi koleksi nada identik.</p>
+
+<h2>Cara Hafal Tanda Kunci — Mnemonik Klasik</h2>
+
+<div class="fb">
+<div class="ft">// Urutan Sharp &amp; Flat — Mnemonik yang Bertahan Ratusan Tahun</div>
+<ul>
+<li><strong>Sharp — searah jarum jam:</strong> "Father Charles Goes Down And Ends Battle" → F♯ C♯ G♯ D♯ A♯ E♯ B♯. Setiap kunci baru menambah sharp berikutnya dari urutan ini.</li>
+<li><strong>Flat — berlawanan jarum jam:</strong> Urutan terbalik → "Battle Ends And Down Goes Charles Father" → B♭ E♭ A♭ D♭ G♭ C♭ F♭.</li>
+<li><strong>Kunci dari sharp:</strong> Sharp terakhir + setengah nada di atas = nama kunci. 3 sharp = G♯, G♯ + semitone = A mayor.</li>
+<li><strong>Kunci dari flat:</strong> Flat terakhir kedua = nama kunci. 4 flat (B♭ E♭ A♭ D♭) → flat kedua dari terakhir = A♭ mayor.</li>
+</ul>
+</div>
+
+<h2>Modulasi: Pindah Kunci dengan Peta</h2>
+
+<p>Circle of Fifths adalah GPS modulasi. Ketika kamu ingin pindah kunci dalam sebuah komposisi, lingkaran ini menunjukkan caranya:</p>
+
+<div class="tbl"><table>
+<tr><th>Jenis Modulasi</th><th>Arah di Circle</th><th>Efek Emosional</th><th>Contoh</th></tr>
+<tr><td>Ke kunci bersebelahan</td><td>1 langkah kanan/kiri</td><td>Halus, hampir tidak terasa</td><td>C → G (menambah energi)</td></tr>
+<tr><td>Ke relatif minor/mayor</td><td>Masuk/keluar lingkaran</td><td>Perubahan warna dramatis</td><td>C → Am (gelap mendadak)</td></tr>
+<tr><td>Ke kunci paralel</td><td>Sama root, beda kualitas</td><td>Kontras kuat, dramatis</td><td>C mayor → C minor</td></tr>
+<tr><td>Modulasi jauh</td><td>5-6 langkah berlawanan</td><td>Mengejutkan, dramatis</td><td>C → F♯ (paling dramatis)</td></tr>
+</table></div>
+
+<h2>Circle of Fifths dalam Musik Populer</h2>
+
+<p>Prinsip circle of fifths beroperasi dalam musik yang kamu dengar setiap hari, sering tanpa komposernya sendiri menyadarinya secara eksplisit:</p>
+
+<p><strong>Autumn Leaves (jazz standard):</strong> Progresinya adalah Cm7 → F7 → B♭maj7 → E♭maj7 → Am7♭5 → D7 → Gm. Setiap pasang bergerak tepat satu langkah dalam circle — pergerakan "terdekat" yang menghasilkan alur harmonis yang sangat natural dan elegan.</p>
+
+<p><strong>Pachelbel Canon:</strong> Progresi D-A-Bm-F♯m-G-D-G-A adalah pergerakan yang sangat teratur di dalam segmen circle, menciptakan rasa kepastian dan keindahan yang predictable tapi tidak pernah membosankan.</p>
+
+<p>Menguasai circle of fifths tidak berarti menghafal semua detailnya. Yang penting adalah membangun <em>intuisi</em> tentang hubungan antar kunci — kunci mana yang "dekat," ke mana bisa pergi dengan halus, dan ke mana bila ingin mengejutkan pendengar.</p>
+
+<div class="pq">Circle of Fifths mengajarkan bahwa dalam musik, "dekat" dan "jauh" bukan soal jarak fisik tapi soal hubungan harmonik. Dan memahami hubungan itu memberi kamu kebebasan untuk bergerak ke mana saja dengan tujuan yang jelas.</div>
+</div>
+</div>
+<div class="dv" style="max-width:780px;margin:0 auto;padding:0 36px;"><div class="dv-l"></div><span class="dv-s">🎹</span><div class="dv-l"></div></div>
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+  <span class="fc">ILMIORA © 2025 — Harmoni & Akor</span>
+  <a href="https://ilmiora.blogspot.com">Beranda →</a>
+</footer></body></html>
