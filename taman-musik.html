@@ -13,20 +13,24 @@
    warm, atmospheric, deeply musical.
 ════════════════════════════════════════ */
 :root {
-  --noir:    #080808;
-  --deep:    #0f0f0f;
-  --surface: #161616;
-  --card:    #1c1c1c;
-  --lift:    #242424;
-  --amber:   #f59e0b;
-  --gold:    #fbbf24;
-  --warm:    #fde68a;
-  --rose:    #fb7185;
-  --sage:    #6ee7b7;
-  --mist:    #c4b5a0;
-  --muted:   #5a5248;
-  --border:  rgba(245,158,11,0.1);
-  --glow:    rgba(245,158,11,0.06);
+  /* Background: charcoal hangat, bukan hitam murni.
+     Lebih nyaman di mata saat membaca lama. */
+  --noir:    #0d0b08;
+  --deep:    #131009;
+  --surface: #1a1710;
+  --card:    #211e15;
+  --lift:    #2a261a;
+  /* Amber lebih soft — dikurangi saturasi ~15% */
+  --amber:   #d4902a;
+  --gold:    #e8a840;
+  --warm:    #edd898;
+  --rose:    #d4607a;
+  --sage:    #58b890;
+  /* Teks: krem hangat, bukan abu dingin */
+  --mist:    #c8baa0;
+  --muted:   #786858;
+  --border:  rgba(212,144,42,0.12);
+  --glow:    rgba(212,144,42,0.07);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -62,12 +66,15 @@ body {
 /* ═══ NAVBAR ═══ */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-  height: 64px;
+  backdrop-filter: blur(24px);
+  background: rgba(13,11,8,0.96);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-top {
+  height: 62px;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 48px;
-  background: rgba(8,8,8,0.92);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
 }
 
 .nav-logo {
@@ -85,13 +92,58 @@ body {
 }
 .nav-back:hover { color: var(--amber); }
 
+/* ── TAMAN MENU BAR ── */
+.nav-taman {
+  display: flex; align-items: stretch;
+  padding: 0 48px;
+  border-top: 1px solid rgba(212,144,42,0.07);
+  overflow-x: auto; gap: 0;
+  scrollbar-width: none;
+}
+.nav-taman::-webkit-scrollbar { display: none; }
+
+.nt-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--muted);
+  letter-spacing: 2.5px; text-transform: uppercase;
+  display: flex; align-items: center;
+  padding-right: 18px;
+  margin-right: 4px;
+  border-right: 1px solid var(--border);
+  white-space: nowrap; flex-shrink: 0;
+}
+
+.nt-item {
+  display: flex; align-items: center; gap: 7px;
+  padding: 0 18px; height: 40px;
+  text-decoration: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid transparent;
+  transition: color .22s, background .22s, border-color .22s;
+  white-space: nowrap; flex-shrink: 0; cursor: pointer;
+}
+.nt-item:hover {
+  color: var(--warm);
+  border-bottom-color: rgba(212,144,42,0.4);
+  background: rgba(212,144,42,0.04);
+}
+.nt-item.active {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
+  background: rgba(212,144,42,0.07);
+}
+.nt-icon { font-size: 13px; }
+.nt-sep  { width:1px; background:var(--border); margin:10px 0; flex-shrink:0; }
+
 /* ═══ HERO ═══ */
 .hero {
   min-height: 100vh;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   text-align: center;
-  padding: 100px 32px 72px;
+  padding: 140px 32px 72px;
   position: relative; overflow: hidden;
 }
 
@@ -556,7 +608,7 @@ body {
 }
 
 .chord-type-btn:hover,
-.chord-type-btn.active { background: rgba(245,158,11,0.12); border-color: var(--amber); color: var(--amber); }
+.chord-type-btn.active { background: rgba(212,144,42,0.10); border-color: var(--amber); color: var(--amber); }
 
 .chord-name-display {
   text-align: center; padding: 20px;
@@ -573,7 +625,7 @@ body {
 
 .btn-play-chord {
   width: 100%; padding: 12px;
-  background: rgba(245,158,11,0.12);
+  background: rgba(212,144,42,0.10);
   border: 1px solid rgba(245,158,11,0.25);
   border-radius: 4px; color: var(--amber);
   font-family: 'IBM Plex Mono', monospace;
@@ -728,12 +780,14 @@ body {
   .chord-layout { grid-template-columns:1fr; }
   .chord-panel { position:static; }
   .video-grid { grid-template-columns:1fr; }
-  .nav { padding:0 24px; }
+  .nav-top { padding:0 24px; }
+  .nav-taman { padding:0 20px; }
   .section { padding:60px 24px; }
 }
 @media(max-width:600px){
   .teori-grid { grid-template-columns:1fr; }
-  .hero { padding:90px 20px 60px; }
+  .hero { padding:120px 20px 60px; }
+  .nt-eyebrow { display:none; }
   .hero-stats { gap:28px; }
   .piano-keys .key-white { width:36px; }
   .piano-keys .key-black { width:22px; }
@@ -748,9 +802,47 @@ body {
 <div class="page">
 
 <!-- ══ NAV ══ -->
-<nav class="nav">
-  <a class="nav-logo" href="/">🎵 Ilmiora</a>
-  <a class="nav-back" href="/">← kembali ke beranda</a>
+<nav class="nav" id="mainNav">
+  <!-- baris atas: logo + back -->
+  <div class="nav-top">
+    <a class="nav-logo" href="/">🎵 Ilmiora</a>
+    <a class="nav-back" href="/">← kembali ke beranda</a>
+  </div>
+
+  <!-- baris bawah: 5 taman musik -->
+  <div class="nav-taman">
+    <span class="nt-eyebrow">Jelajahi</span>
+
+    <a class="nt-item" id="nt-hub"
+       href="https://iyan-core.github.io/Ilmiora-blogger/taman-musik.html">
+      <span class="nt-icon">🎵</span>Hub Musik
+    </a>
+    <div class="nt-sep"></div>
+    <a class="nt-item" id="nt-teori"
+       href="https://iyan-core.github.io/Ilmiora-blogger/musik/teori-musik.html">
+      <span class="nt-icon">🎼</span>Teori Musik
+    </a>
+    <div class="nt-sep"></div>
+    <a class="nt-item" id="nt-instrumen"
+       href="https://iyan-core.github.io/Ilmiora-blogger/musik/instrument-musik.html">
+      <span class="nt-icon">🎻</span>Instrumen
+    </a>
+    <div class="nt-sep"></div>
+    <a class="nt-item" id="nt-sejarah"
+       href="https://iyan-core.github.io/Ilmiora-blogger/musik/sejarah-musik.html">
+      <span class="nt-icon">🏛️</span>Sejarah Musik
+    </a>
+    <div class="nt-sep"></div>
+    <a class="nt-item" id="nt-genre"
+       href="https://iyan-core.github.io/Ilmiora-blogger/musik/genre-musik.html">
+      <span class="nt-icon">🎤</span>Genre & Aliran
+    </a>
+    <div class="nt-sep"></div>
+    <a class="nt-item" id="nt-komposisi"
+       href="https://iyan-core.github.io/Ilmiora-blogger/musik/komposisi-produksi.html">
+      <span class="nt-icon">🎬</span>Komposisi & Produksi
+    </a>
+  </div>
 </nav>
 
 <!-- ══ HERO ══ -->
@@ -1101,7 +1193,7 @@ for (let i = 0; i < 14; i++) {
   const n = document.createElement('span');
   n.className = 'note';
   n.textContent = noteSyms[i % noteSyms.length];
-  n.style.cssText = `left:${Math.random()*90+5}%;top:${Math.random()*70+15}%;color:rgba(245,158,11,0.12);animation-delay:${Math.random()*6}s;animation-duration:${5+Math.random()*5}s;`;
+  n.style.cssText = `left:${Math.random()*90+5}%;top:${Math.random()*70+15}%;color:rgba(212,144,42,0.10);animation-delay:${Math.random()*6}s;animation-duration:${5+Math.random()*5}s;`;
   hero.appendChild(n);
 }
 
@@ -1122,7 +1214,7 @@ window.addEventListener('resize', resizeCanvas);
 let phase = 0;
 function drawViz() {
   ctx.clearRect(0, 0, W, H);
-  ctx.strokeStyle = 'rgba(245,158,11,0.04)';
+  ctx.strokeStyle = 'rgba(212,144,42,0.04)';
   ctx.lineWidth = 1.5;
 
   for (let wave = 0; wave < 3; wave++) {
@@ -1508,6 +1600,24 @@ function closeVid() {
 document.getElementById('vidModal').addEventListener('click', function(e) {
   if (e.target === this) closeVid();
 });
+
+/* ── TAMAN NAV: tandai halaman aktif ── */
+(function(){
+  const pg = window.location.pathname.split('/').pop() || '';
+  const map = {
+    'taman-musik.html':               'nt-hub',
+    'taman-teori-musik.html':         'nt-teori',
+    'taman-instrumen-musik.html':     'nt-instrumen',
+    'taman-sejarah-musik.html':       'nt-sejarah',
+    'taman-genre-aliran-musik.html':  'nt-genre',
+    'taman-komposisi-produksi.html':  'nt-komposisi',
+  };
+  // Halaman ini adalah taman-musik.html (hub)
+  const id = map[pg] || 'nt-hub';
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+})();
+
 </script>
 </body>
 </html>
