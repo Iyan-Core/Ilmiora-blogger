@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tangga Nada Pentatonik: Lima Nada yang Ada di Setiap Peradaban — ILMIORA</title>
+<meta name="description" content="Dari gamelan Jawa hingga blues Amerika — mengapa tangga nada pentatonik ditemukan secara independen oleh hampir semua kebudayaan musik besar di dunia, dan apa yang membuatnya begitu universal.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05040a;--card:#100d18;--lift:#181424;
+  --chalk:#eee8f8;--body:rgba(238,232,248,0.66);--muted:#6a5888;
+  --border:rgba(124,58,237,0.13);--border2:rgba(255,255,255,0.04);
+  --acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);
+  --rose:#c084fc;--sage:#6ee7b7;--amber:#f0c060;--warm:#f87171;--teal:#67e8f9;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.9;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--rose));z-index:9999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(5,4,10,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);background:var(--accx);}
+.wrap{max-width:780px;margin:0 auto;padding:0 36px;}
+.hero{padding:104px 0 56px;position:relative;overflow:hidden;}
+.hero-orb{position:absolute;width:580px;height:580px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.07),transparent 65%);top:-100px;right:-200px;pointer-events:none;}
+.h-eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:12px;}
+.h-eye::before{content:'';width:24px;height:1px;background:var(--acc);}
+.h-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.h-title{font-size:clamp(30px,5.5vw,54px);font-weight:700;line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px;}
+.h-title em{font-style:italic;color:var(--acc2);}
+.h-dim{display:block;color:rgba(238,232,248,.3);font-size:.76em;}
+.h-sub{font-style:italic;color:var(--body);font-size:clamp(15px,2vw,19px);margin-bottom:28px;line-height:1.7;max-width:630px;}
+.h-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.hmt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:3px;border:1px solid rgba(124,58,237,0.3);background:var(--accx);color:var(--acc2);}
+.hmd{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.body-content{padding:56px 0 100px;}
+.body-content h2{font-family:'Syne',sans-serif;font-size:clamp(19px,2.7vw,26px);font-weight:800;color:var(--chalk);margin:56px 0 16px;letter-spacing:-.5px;padding-left:18px;position:relative;}
+.body-content h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:72%;background:var(--acc);border-radius:2px;}
+.body-content h3{font-family:'Syne',sans-serif;font-size:clamp(15px,2.1vw,19px);font-weight:800;color:var(--acc2);margin:36px 0 12px;}
+.body-content p{margin-bottom:24px;}
+.body-content strong{color:var(--chalk);font-weight:600;}
+.body-content em{color:var(--acc2);font-style:italic;}
+.pq{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.5vw,24px);color:var(--chalk);line-height:1.65;border-left:3px solid var(--acc);padding:18px 28px;margin:40px 0;background:var(--accx);border-radius:0 10px 10px 0;position:relative;}
+.pq::before{content:'"';position:absolute;top:-8px;left:22px;font-size:68px;color:var(--acc);opacity:.14;font-family:'Cormorant Garamond',serif;line-height:1;}
+.fb{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:32px 0;}
+.ft{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.fb ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fb li{font-size:16px;color:var(--body);padding-left:20px;position:relative;line-height:1.7;}
+.fb li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.fb li strong{color:var(--chalk);}
+.tbl{background:var(--card);border:1px solid var(--border);border-radius:12px;margin:32px 0;overflow:hidden;}
+.tbl table{width:100%;border-collapse:collapse;}
+.tbl th{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--acc2);text-align:left;padding:13px 18px;background:rgba(124,58,237,0.07);border-bottom:1px solid var(--border);}
+.tbl td{font-size:15px;color:var(--body);padding:12px 18px;border-bottom:1px solid var(--border2);vertical-align:top;line-height:1.6;}
+.tbl td:first-child{font-family:'Fira Code',monospace;font-size:12px;font-weight:600;color:var(--acc2);white-space:nowrap;}
+.tbl tr:last-child td{border-bottom:none;}
+.dv{display:flex;align-items:center;gap:14px;margin:52px 0;}
+.dv-l{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+.dv-s{font-family:'Fira Code',monospace;font-size:13px;color:var(--acc);opacity:.5;}
+footer{border-top:1px solid var(--border);padding:24px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+.fc{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;}
+@media(max-width:680px){nav{padding:0 18px;}.wrap{padding:0 20px;}footer{padding:18px 20px;}}
+
+.scale-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:16px 0;}
+.sn{min-width:46px;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--border);background:var(--card);}
+.sn.r{background:rgba(124,58,237,0.25);border-color:var(--acc);}
+.sn.skip{opacity:.25;border-style:dashed;}
+.sn-n{font-family:'Fira Code',monospace;font-size:13px;font-weight:700;color:var(--acc2);}
+.sn.r .sn-n{color:var(--chalk);}
+.sn-d{font-family:'Fira Code',monospace;font-size:8px;color:var(--muted);margin-top:2px;}
+.scale-label{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0;}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.panel-t{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+@media(max-width:600px){.two-col{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+<script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});</script>
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>tangga-nada</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+</nav>
+<div class="wrap">
+<div class="hero">
+  <div class="hero-orb"></div>
+  <div class="h-eye"><span class="h-dot"></span>🎵 Teori Musik &nbsp;·&nbsp; Tangga Nada</div>
+  <h1 class="h-title">Tangga Nada <em>Pentatonik</em>: Lima Nada yang Ada di Setiap Peradaban<span class="h-dim">— bahasa universal yang ditemukan semua budaya</span></h1>
+  <p class="h-sub">Dari gamelan Jawa hingga riff Jimi Hendrix, dari lagu rakyat Skotlandia hingga musik klasik Tiongkok — lima nada yang sama terus muncul di semua peradaban. Bukan kebetulan. Ini fisika.</p>
+  <div class="h-meta">
+    <span class="hmt">Tangga Nada</span>
+    <span class="hmd">📅 2025</span>
+    <span class="hmd">⏱ 14 menit baca</span>
+    <span class="hmd">✍ ILMIORA</span>
+  </div>
+</div>
+<div class="body-content">
+
+<p>Coba bayangkan eksperimen ini: kamu mengundang 200 orang ke sebuah festival, memberi masing-masing sebuah kalimba kecil yang hanya memiliki lima nada — nada-nada pentatonik mayor — dan meminta mereka semua memainkannya sekaligus secara acak. Tidak ada konduktor. Tidak ada arahan.</p>
+
+<p>Hasilnya? <strong>Musik.</strong> Bukan kekacauan. Bukan kebisingan. Musik yang terdengar nyata dan harmonis.</p>
+
+<p>Ini bukan sulap. Ini adalah matematika akustik: tangga nada pentatonik dirancang sedemikian rupa — atau lebih tepatnya, <em>ditemukan</em> sedemikian rupa — sehingga kombinasi nada apapun di dalamnya tidak menghasilkan disonansi. Setiap kombinasi terdengar benar.</p>
+
+<div class="pq">Tangga nada pentatonik tidak ditemukan oleh satu peradaban. Ia ditemukan oleh semua peradaban besar — secara independen, terpisah ribuan kilometer dan ribuan tahun — karena ia sudah ada di dalam hukum fisika gelombang suara.</div>
+
+<h2>Mengapa Lima Nada, Bukan Tujuh?</h2>
+
+<p>Tangga nada diatonis (mayor/minor) yang kita kenal punya tujuh nada. Pentatonik hanya lima. Yang dihilangkan bukan sembarang nada — melainkan dua nada yang paling sering menciptakan ketegangan: <strong>nada ke-4 (F dalam C mayor)</strong> dan <strong>nada ke-7 (B)</strong>.</p>
+
+<p>Dua nada itu adalah komponen dari <em>tritone</em> — interval paling disonan dalam sistem 12 nada. Dengan menghapus keduanya, semua sisa nada dalam pentatonik tidak memiliki pasangan disonan satu sama lain. Setiap dua nada yang dibunyikan bersamaan akan terdengar harmonis.</p>
+
+<div class="two-col">
+  <div class="panel">
+    <div class="panel-t">// C Mayor (7 nada)</div>
+    <div class="scale-row">
+      <div class="sn r"><span class="sn-n">C</span><span class="sn-d">1</span></div>
+      <div class="sn"><span class="sn-n">D</span><span class="sn-d">2</span></div>
+      <div class="sn"><span class="sn-n">E</span><span class="sn-d">3</span></div>
+      <div class="sn skip"><span class="sn-n">F</span><span class="sn-d">4 ✕</span></div>
+      <div class="sn"><span class="sn-n">G</span><span class="sn-d">5</span></div>
+      <div class="sn"><span class="sn-n">A</span><span class="sn-d">6</span></div>
+      <div class="sn skip"><span class="sn-n">B</span><span class="sn-d">7 ✕</span></div>
+    </div>
+    <p class="scale-label">// hapus nada ke-4 &amp; ke-7</p>
+  </div>
+  <div class="panel">
+    <div class="panel-t">// C Pentatonik Mayor (5 nada)</div>
+    <div class="scale-row">
+      <div class="sn r"><span class="sn-n">C</span><span class="sn-d">1</span></div>
+      <div class="sn"><span class="sn-n">D</span><span class="sn-d">2</span></div>
+      <div class="sn"><span class="sn-n">E</span><span class="sn-d">3</span></div>
+      <div class="sn"><span class="sn-n">G</span><span class="sn-d">5</span></div>
+      <div class="sn"><span class="sn-n">A</span><span class="sn-d">6</span></div>
+    </div>
+    <p class="scale-label">// tidak ada disonansi internal</p>
+  </div>
+</div>
+
+<h2>Lima Nada yang Ditemukan Semua Peradaban</h2>
+
+<p>Salah satu fakta paling menakjubkan dalam etnomusiologi: hampir semua peradaban besar di dunia mengembangkan sistem pentatonik secara independen — tidak ada kontak satu sama lain, tidak ada pertukaran budaya, tidak ada transfer pengetahuan.</p>
+
+<div class="fb">
+<div class="ft">// Pentatonik di Berbagai Kebudayaan Dunia</div>
+<ul>
+<li><strong>Tiongkok (五声 wǔshēng):</strong> Sistem pentatonik yang tercatat dalam <em>Yueji</em> (Catatan Musik) dari abad ke-3 SM — ribuan tahun sebelum ada hubungan dengan Eropa. Menjadi fondasi musik tradisional Tiongkok, Korea, dan Vietnam.</li>
+<li><strong>Afrika Sub-Sahara:</strong> Sistem pentatonik tersebar luas di musik vokal dan instrumen berbilah seperti balafon dan mbira. Dibawa ke Amerika melalui perbudakan, ia menjadi fondasi blues, gospel, dan jazz.</li>
+<li><strong>Nusantara — Pelog &amp; Slendro:</strong> Gamelan menggunakan dua sistem lima nada yang berbeda dari pentatonik Barat, tapi menganut prinsip yang sama: lima nada dengan stabilitas harmonis tinggi. Slendro lebih egaliter, pelog lebih berwarna.</li>
+<li><strong>Skotlandia &amp; Irlandia:</strong> Hampir semua musik folk Celtic klasik — dari <em>Amazing Grace</em> hingga <em>Auld Lang Syne</em> — berbasis pentatonik mayor, memberikan karakter "mengambang" yang khas.</li>
+<li><strong>Jepang:</strong> Skala <em>yo</em> (pentatonik ceria) dan <em>in</em> (pentatonik melankolis) menjadi fondasi musik tradisional dari koto, shakuhachi, hingga lagu rakyat anak-anak.</li>
+</ul>
+</div>
+
+<h2>Pentatonik Mayor vs. Pentatonik Minor</h2>
+
+<p>Seperti tangga nada diatonis, pentatonik hadir dalam versi mayor dan minor. Keduanya menggunakan nada-nada yang <em>identik</em> — hanya toniknya yang berbeda. Ini disebut hubungan <strong>relatif</strong>.</p>
+
+<div class="tbl"><table>
+<tr><th>Jenis</th><th>Nada (kunci C)</th><th>Karakter</th><th>Genre Utama</th></tr>
+<tr><td>Pentatonik Mayor</td><td>C D E G A</td><td>Cerah, ringan, universal, "riang"</td><td>Folk, pop, lagu anak, country</td></tr>
+<tr><td>Pentatonik Minor</td><td>C E♭ F G B♭</td><td>Gelap, bumi, emosional, "berat"</td><td>Blues, rock, metal, R&amp;B</td></tr>
+<tr><td>Relatif keduanya</td><td>Nada sama, tonik beda</td><td>A minor = relatif dari C Mayor</td><td>Bergantung pada nada yang ditekankan</td></tr>
+</table></div>
+
+<p>Pentatonik minor adalah tangga nada improvisasi paling populer di dunia. Jimi Hendrix, Eric Clapton, Carlos Santana, Slash — hampir semua gitaris rock besar membangun sebagian besar solo mereka di atas pentatonik minor. Alasannya sederhana: tidak ada nada yang "salah." Kamu bisa memainkan nada apapun dalam tangga nada ini di atas progresi blues, dan hasilnya selalu terdengar benar.</p>
+
+<h2>Pentatonik sebagai Jembatan Lintas Budaya</h2>
+
+<p>Karena pentatonik adalah "bahasa universal" yang dikembangkan secara independen oleh hampir semua kebudayaan musik besar, ia memiliki kemampuan luar biasa untuk menjembatani budaya yang berbeda. Musisi Tiongkok yang memainkan erhu dan musisi blues Amerika yang memainkan gitar dapat berkolaborasi secara spontan di atas pentatonik — karena tangga nadanya sudah familiar untuk keduanya, meski dari jalur sejarah yang sama sekali berbeda.</p>
+
+<div class="pq">Lima nada. Tidak ada disonansi. Tidak ada nada yang salah. Mungkin itulah mengapa pentatonik adalah satu-satunya bahasa musik yang dipahami oleh seluruh umat manusia — bukan karena diajarkan, tapi karena ditemukan dari hukum alam yang sama.</div>
+
+<h2>Cara Langsung Bermain Pentatonik</h2>
+
+<p>Pada piano, semua tuts hitam membentuk pentatonik mayor G♭ (G♭ A♭ B♭ D♭ E♭). Itu lima tuts hitam, tidak ada tuts putih. Duduk di piano, pejamkan mata, tekan tuts hitam secara acak — hasilnya selalu terdengar musikal. Ini adalah cara tercepat untuk <em>merasakan</em> apa yang dimaksud dengan "tidak ada disonansi internal."</p>
+
+<p>Eksperimen ini bukan sekadar trik — ia adalah demonstrasi fisika akustik yang sama yang telah membuat pentatonik menjadi dasar musik manusia selama ribuan tahun.</p>
+
+</div>
+</div>
+<div class="dv" style="max-width:780px;margin:0 auto;padding:0 36px;"><div class="dv-l"></div><span class="dv-s">🎵</span><div class="dv-l"></div></div>
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+  <span class="fc">ILMIORA © 2025 — Tangga Nada</span>
+  <a href="https://ilmiora.blogspot.com">Beranda →</a>
+</footer>
+</body>
+</html>
