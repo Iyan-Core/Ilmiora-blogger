@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tujuh Modus: Mengapa Musik Jazz, Metal, dan Musik Gereja Terdengar Seperti Dunia Berbeda — ILMIORA</title>
+<meta name="description" content="Dari Dorian Miles Davis hingga Phrygian Flamenco — panduan mendalam tentang tujuh modus diatonis, karakter emosionalnya yang unik, dan bagaimana memilih modus yang tepat untuk warna musik yang diinginkan.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05040a;--card:#100d18;--lift:#181424;
+  --chalk:#eee8f8;--body:rgba(238,232,248,0.66);--muted:#6a5888;
+  --border:rgba(124,58,237,0.13);--border2:rgba(255,255,255,0.04);
+  --acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);
+  --rose:#c084fc;--sage:#6ee7b7;--amber:#f0c060;--warm:#f87171;
+  --teal:#67e8f9;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.88;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--rose));z-index:9999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(5,4,10,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);background:var(--accx);}
+.wrap{max-width:780px;margin:0 auto;padding:0 36px;}
+.hero{padding:104px 0 56px;position:relative;overflow:hidden;}
+.hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.06),transparent 65%);top:-100px;right:-200px;pointer-events:none;}
+.h-eyebrow{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:12px;}
+.h-eyebrow::before{content:'';width:24px;height:1px;background:var(--acc);}
+.h-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.h-title{font-size:clamp(30px,5.5vw,56px);font-weight:700;line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px;}
+.h-title em{font-style:italic;color:var(--acc2);}
+.h-title .line2{display:block;color:rgba(238,232,248,.35);font-size:0.78em;}
+.h-sub{font-style:italic;color:var(--body);font-size:clamp(15px,2vw,19px);margin-bottom:28px;line-height:1.7;max-width:620px;}
+.h-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.hmt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:3px;border:1px solid rgba(124,58,237,0.3);background:var(--accx);color:var(--acc2);}
+.hmd{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.body-content{padding:56px 0 100px;}
+.body-content h2{font-family:'Syne',sans-serif;font-size:clamp(20px,2.8vw,27px);font-weight:800;color:var(--chalk);margin:56px 0 16px;letter-spacing:-.5px;position:relative;padding-left:18px;}
+.body-content h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:70%;background:var(--acc);border-radius:2px;}
+.body-content h3{font-family:'Syne',sans-serif;font-size:clamp(16px,2.2vw,20px);font-weight:800;color:var(--acc2);margin:36px 0 12px;}
+.body-content p{margin-bottom:24px;}
+.body-content strong{color:var(--chalk);font-weight:600;}
+.body-content em{color:var(--acc2);font-style:italic;}
+.pull-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.6vw,25px);color:var(--chalk);line-height:1.65;border-left:3px solid var(--acc);padding:18px 28px;margin:40px 0;background:var(--accx);border-radius:0 10px 10px 0;position:relative;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:24px;font-size:72px;color:var(--acc);opacity:.15;font-family:'Cormorant Garamond',serif;line-height:1;}
+
+/* ── MODE CARDS ── */
+.mode-stack{display:flex;flex-direction:column;gap:2px;margin:32px 0;}
+.mode-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:0;padding:22px 26px;
+  display:grid;grid-template-columns:180px 1fr;gap:24px;
+  transition:background .2s,border-color .2s;
+  position:relative;overflow:hidden;
+}
+.mode-card:first-child{border-radius:12px 12px 0 0;}
+.mode-card:last-child{border-radius:0 0 12px 12px;}
+.mode-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:var(--mode-color, var(--acc));
+}
+.mode-card:hover{background:rgba(124,58,237,0.04);border-color:rgba(124,58,237,0.2);}
+.mode-left{}
+.mode-name{
+  font-family:'Syne',sans-serif;font-size:18px;font-weight:800;
+  color:var(--chalk);margin-bottom:4px;
+}
+.mode-greek{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:10px;}
+.mode-scale{
+  display:flex;gap:4px;flex-wrap:wrap;
+}
+.ms-note{
+  font-family:'Fira Code',monospace;font-size:11px;
+  padding:3px 7px;border-radius:4px;
+  background:rgba(124,58,237,0.12);
+  color:var(--acc2);
+  border:1px solid var(--border);
+}
+.ms-note.root{background:rgba(124,58,237,0.3);color:var(--chalk);border-color:var(--acc);}
+.ms-note.char{border-style:dashed;color:var(--mode-char-color, var(--rose));}
+.mode-right{}
+.mode-feel{
+  font-family:'Fira Code',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:2px;
+  margin-bottom:8px;color:var(--mode-color, var(--acc));
+}
+.mode-desc{font-size:15px;color:var(--body);line-height:1.65;margin-bottom:10px;}
+.mode-use{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);font-style:italic;}
+
+.fact-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:32px 0;}
+.fact-title{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.fact-box ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fact-box li{font-size:16px;color:var(--body);padding-left:20px;position:relative;line-height:1.7;}
+.fact-box li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.fact-box li strong{color:var(--chalk);}
+
+.divider{display:flex;align-items:center;gap:16px;margin:56px 0;}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+.divider-sym{font-family:'Fira Code',monospace;font-size:13px;color:var(--acc);opacity:.6;}
+footer{border-top:1px solid var(--border);padding:24px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+.footer-copy{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;}
+@media(max-width:680px){nav{padding:0 18px;}.wrap{padding:0 20px;}footer{padding:18px 20px;}.mode-card{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+<script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});</script>
+
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>interval-modus</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+</nav>
+
+<div class="wrap">
+<div class="hero">
+  <div class="hero-orb"></div>
+
+  <div class="h-eyebrow">
+    <span class="h-eyebrow-dot"></span>
+    📐 Teori Musik &nbsp;·&nbsp; Interval &amp; Modus
+  </div>
+
+  <h1 class="h-title">
+    Tujuh Modus: Mengapa Musik Jazz, Metal, dan Musik Gereja Terdengar <em>Seperti Dunia Berbeda</em>
+    <span class="line2">— satu tangga nada, tujuh kepribadian</span>
+  </h1>
+
+  <p class="h-sub">
+    Bayangkan tujuh orang memainkan tangga nada C mayor — tapi masing-masing mulai dari nada yang berbeda. Hasilnya bukan tujuh versi yang sama: hasilnya tujuh dunia emosional yang tak saling menyerupai.
+  </p>
+
+  <div class="h-meta">
+    <span class="hmt">Interval &amp; Modus</span>
+    <span class="hmd">📅 2025</span>
+    <span class="hmd">⏱ 16 menit baca</span>
+    <span class="hmd">✍ ILMIORA</span>
+  </div>
+</div>
+
+<div class="body-content">
+
+<p>Pada tahun 1959, Miles Davis merilis album <em>Kind of Blue</em> — album jazz terlaris sepanjang masa, dengan lebih dari lima juta kopi terjual di Amerika saja. Yang membuatnya revolusioner bukan hanya permainan Miles atau solonya yang luar biasa — tapi keputusannya untuk meninggalkan harmoni berbasis akor dan beralih ke improvisasi berbasis <strong>modus</strong>.</p>
+
+<p>Ia menyebut pendekatannya "modal jazz." Ia memilih modus Dorian untuk lagu <em>So What</em> — dan hasilnya adalah sesuatu yang tidak pernah terdengar sebelumnya dalam jazz: ruang yang luas, tidak terburu-buru, meditatif dan sekaligus intens.</p>
+
+<p>Tapi modus bukan penemuan Miles Davis. Mereka sudah ada sejak ribuan tahun sebelumnya — dalam musik Yunani kuno, dalam nyanyian Gregorian, dalam musik rakyat seluruh Eropa. Yang Miles lakukan adalah menemukan kembali kekuatan kuno yang telah terlupakan.</p>
+
+<div class="pull-quote">
+  "Modal jazz bukan tentang memainkan lebih banyak nada — tapi tentang menggunakan lebih sedikit, lebih dalam, lebih lambat. Modus memberi ruang untuk bernafas."
+  <br><small style="font-size:.7em;opacity:.6;display:block;margin-top:10px;">— Miles Davis, dalam wawancara, 1960</small>
+</div>
+
+<h2>Apa Itu Modus?</h2>
+
+<p>Modus (atau mode) diatonis adalah hasil dari sebuah eksperimen sederhana: ambil tangga nada C mayor (C D E F G A B), tapi <em>mulai dari nada yang berbeda</em> sebagai "tonik."</p>
+
+<p>Jika dimulai dari C → C Mayor (Ionian). Dari D → Dorian. Dari E → Phrygian. Dari F → Lydian. Dari G → Mixolydian. Dari A → Aeolian (minor natural). Dari B → Locrian. Semuanya menggunakan nada yang <em>persis sama</em> dengan C mayor — tapi dengan starting point berbeda, masing-masing terdengar seperti dunia yang berbeda.</p>
+
+<p>Ini bukan sekadar "mulai dari nada lain." Yang berubah adalah <strong>posisi relatif semitone</strong> dalam tangga nada — dan itulah yang menentukan seluruh karakter emosionalnya.</p>
+
+<h2>Tujuh Modus — Tujuh Kepribadian</h2>
+
+<div class="mode-stack">
+
+  <div class="mode-card" style="--mode-color:#a78bfa;--mode-char-color:#a78bfa;">
+    <div class="mode-left">
+      <div class="mode-name">Ionian</div>
+      <div class="mode-greek">// Modus I — Mayor</div>
+      <div class="mode-scale">
+        <span class="ms-note root">C</span>
+        <span class="ms-note">D</span>
+        <span class="ms-note">E</span>
+        <span class="ms-note">F</span>
+        <span class="ms-note">G</span>
+        <span class="ms-note">A</span>
+        <span class="ms-note">B</span>
+      </div>
+    </div>
+    <div class="mode-right">
+      <div class="mode-feel">Cerah · Stabil · Resolute</div>
+      <div class="mode-desc">Tangga nada mayor yang sudah kita kenal. Terasa familiar, stabil, positif. Fondasi hampir seluruh musik klasik, pop, dan folk Barat.</div>
+      <div class="mode-use">// Bach Invention · lagu anak · pop mainstream</div>
+    </div>
+  </div>
+
+  <div class="mode-card" style="--mode-color:#6ee7b7;--mode-char-color:#6ee7b7;">
+    <div class="mode-left">
+      <div class="mode-name">Dorian</div>
+      <div class="mode-greek">// Modus II — Minor ♭3 ♭7</div>
+      <div class="mode-scale">
+        <span class="ms-note root">D</span>
+        <span class="ms-note">E</span>
+        <span class="ms-note char">F</span>
+        <span class="ms-note">G</span>
+        <span class="ms-note">A</span>
+        <span class="ms-note char">C</span>
+        <span class="ms-note">D</span>
+      </div>
+    </div>
+    <div class="mode-right">
+      <div class="mode-feel" style="color:#6ee7b7;">Melankolis · Keren · Optimis-Gelap</div>
+      <div class="mode-desc">Minor tapi dengan nada ke-6 yang mayor — ini yang memberinya karakter unik. Terasa gelap tapi tidak putus asa. Paling banyak digunakan dalam jazz dan rock blues.</div>
+      <div class="mode-use">// Miles Davis "So What" · Carlos Santana · funk soul</div>
+    </div>
+  </div>
+
+  <div class="mode-card" style="--mode-color:#f87171;--mode-char-color:#f87171;">
+    <div class="mode-left">
+      <div class="mode-name">Phrygian</div>
+      <div class="mode-greek">// Modus III — Minor ♭2 ♭3 ♭6 ♭7</div>
+      <div class="mode-scale">
+        <span class="ms-note root">E</span>
+        <span class="ms-note char">F</span>
+        <span class="ms-note">G</span>
+        <span class="ms-note">A</span>
+        <span class="ms-note">B</span>
+        <span class="ms-note char">C</span>
+        <span class="ms-note char">D</span>
+      </div>
+    </div>
+    <div class="mode-right">
+      <div class="mode-feel" style="color:#f87171;">Gelap · Eksotis · Spanyol · Menakutkan</div>
+      <div class="mode-desc">Ditandai oleh minor second di atasnya — interval yang paling disonan. Terasa seperti Andalusia, Timur Tengah, atau skor film horor. Phrygian dominant (varian dengan major third) adalah suara flamenco.</div>
+      <div class="mode-use">// Flamenco · Metallica · dark ambient · skor film</div>
+    </div>
+  </div>
+
+  <div class="mode-card" style="--mode-color:#f0c060;--mode-char-color:#f0c060;">
+    <div class="mode-left">
+      <div class="mode-name">Lydian</div>
+      <div class="mode-greek">// Modus IV — Mayor #4</div>
+      <div class="mode-scale">
+        <span class="ms-note root">F</span>
+        <span class="ms-note">G</span>
+        <span class="ms-note">A</span>
+        <span class="ms-note char">B</span>
+        <span class="ms-note">C</span>
+        <span class="ms-note">D</span>
+        <span class="ms-note">E</span>
+      </div>
+    </div>
+    <div class="mode-right">
+      <div class="mode-feel" style="color:#f0c060;">Mengambang · Dreamlike · Kosmik · Ajaib</div>
+      <div class="mode-desc">Mayor dengan augmented fourth — nada ke-4 yang dinaikkan setengah langkah. Efeknya: terasa seperti terbang, seperti mimpi, seperti membuka pintu ke dimensi lain. Favorit John Williams untuk tema-tema heroik dan magis.</div>
+      <div class="mode-use">// Star Wars "The Force" · E.T. · musik film fantasi</div>
+    </div>
+  </div>
+
+  <div class="mode-card" style="--mode-color:#67e8f9;--mode-char-color:#67e8f9;">
+    <div class="mode-left">
+      <div class="mode-name">Mixolydian</div>
+      <div class="mode-greek">// Modus V — Mayor ♭7</div>
+      <div class="mode-scale">
+        <span class="ms-note root">G</span>
+        <span class="ms-note">A</span>
+        <span class="ms-note">B</span>
+        <span class="ms-note">C</span>
+        <span class="ms-note">D</span>
+        <span class="ms-note">E</span>
+        <span class="ms-note char">F</span>
+      </div>
+    </div>
+    <div class="mode-right">
+      <div class="mode-feel" style="color:#67e8f9;">Bluesy · Earthy · Rock · Folk</div>
+      <div class="mode-desc">Mayor tapi dengan flat seventh — ini yang membuat akor dominant seventh terasa "blues." Terasa tanah, relaxed, sedikit gritty. Ini adalah modus dari hampir seluruh rock klasik, blues rock, dan Celtic folk.</div>
+      <div class="mode-use">// "Norwegian Wood" Beatles · Led Zeppelin · Celtic folk</div>
+    </div>
+  </div>
+
+  <div class="mode-card" style="--mode-color:#c084fc;--mode-char-color:#c084fc;">
+    <div class="mode-left">
+      <div class="mode-name">Aeolian</div>
+      <div class="mode-greek">// Modus VI — Natural Minor</div>
+      <div class="mode-scale">
+        <span class="ms-note root">A</span>
+        <span class="ms-note">B</span>
+        <span class="ms-note char">C</span>
+        <span class="ms-note">D</span>
+        <span class="ms-note">E</span>
+        <span class="ms-note char">F</span>
+        <span class="ms-note char">G</span>
+      </div>
+    </div>
+    <div class="mode-right">
+      <div class="mode-feel" style="color:#c084fc;">Melankolis · Emosional · Intim · Nostalgik</div>
+      <div class="mode-desc">Natural minor yang paling sering digunakan. Terasa mellow, reflektif, penuh perasaan yang tidak terucapkan. Fondasi balada, lagu melankolis, dan banyak musik pop emosional.</div>
+      <div class="mode-use">// Balada pop · "Stairway to Heaven" · k-pop emotional</div>
+    </div>
+  </div>
+
+  <div class="mode-card" style="--mode-color:#6a5888;--mode-char-color:#6a5888;">
+    <div class="mode-left">
+      <div class="mode-name">Locrian</div>
+      <div class="mode-greek">// Modus VII — ♭2 ♭3 ♭5 ♭6 ♭7</div>
+      <div class="mode-scale">
+        <span class="ms-note root">B</span>
+        <span class="ms-note char">C</span>
+        <span class="ms-note char">D</span>
+        <span class="ms-note char">E</span>
+        <span class="ms-note char">F</span>
+        <span class="ms-note char">G</span>
+        <span class="ms-note char">A</span>
+      </div>
+    </div>
+    <div class="mode-right">
+      <div class="mode-feel">Tidak Stabil · Disonan · Teoretis · Jarang Terdengar</div>
+      <div class="mode-desc">Satu-satunya modus dengan diminished fifth di atas toniknya — membuatnya hampir tidak bisa berdiri stabil sebagai tonalitas. Sangat jarang digunakan dalam musik tonal. Hadir dalam musik ekstrem dan eksperimental.</div>
+      <div class="mode-use">// Dream Theater · progressive metal · eksperimental</div>
+    </div>
+  </div>
+
+</div>
+
+<h2>Cara Menggunakan Modus dalam Komposisi</h2>
+
+<p>Ada dua pendekatan utama untuk menggunakan modus dalam komposisi atau improvisasi:</p>
+
+<h3>Pendekatan 1 — Relatif terhadap Mayor (Parent Scale)</h3>
+<p>Ini cara belajar yang paling umum di sekolah musik: modus adalah "rotasi" dari tangga nada mayor yang sama. Dorian dimulai dari nada ke-2 C mayor, Phrygian dari nada ke-3, dst. Cara ini bagus untuk memahami hubungan teoritis tapi bisa membingungkan saat diaplikasikan.</p>
+
+<h3>Pendekatan 2 — Paralel (Semua Mulai dari C)</h3>
+<p>Ini cara yang lebih langsung secara musikal: pelajari setiap modus sebagai entitas tersendiri, dimulai dari root yang sama. C Ionian, C Dorian, C Phrygian — semua mulai dari C tapi berbeda formula interval. Cara ini lebih efektif untuk memahami <em>karakter</em> setiap modus secara langsung.</p>
+
+<div class="fact-box">
+  <div class="fact-title">// Modus dan Emosi — Panduan Cepat untuk Komposer</div>
+  <ul>
+    <li><strong>Ingin terdengar optimis dan stabil?</strong> → Ionian (Mayor)</li>
+    <li><strong>Ingin minor yang tidak terlalu gelap, ada sedikit harapan?</strong> → Dorian. Pilihan sempurna untuk lagu tentang perjuangan yang masih bisa dimenangkan.</li>
+    <li><strong>Ingin eksotis, Timur Tengah, flamenco, atau menakutkan?</strong> → Phrygian atau Phrygian Dominant</li>
+    <li><strong>Ingin terdengar seperti soundtrack film fantasi atau ruang angkasa?</strong> → Lydian. John Williams telah membuktikannya berkali-kali.</li>
+    <li><strong>Ingin nuansa blues-rock yang earthy tanpa terlalu gelap?</strong> → Mixolydian. Ini suaranya guitar hero.</li>
+    <li><strong>Ingin lagu yang secara emosional mendalam tapi tetap bisa didengarkan luas?</strong> → Aeolian (Natural minor). Paling universal dari semua modus minor.</li>
+  </ul>
+</div>
+
+<h2>Modus dalam Musik Tradisional Nusantara</h2>
+
+<p>Sistem modus bukan milik eksklusif Eropa. Musik tradisional Nusantara memiliki sistem serupa yang jauh lebih kaya.</p>
+
+<p>Dalam tradisi gamelan Jawa dan Bali, sistem <strong>pathet</strong> (dalam laras slendro dan pelog) berfungsi seperti modus — ia menentukan nada-nada mana yang ditekankan, nada mana yang dihindari, dan "warna" emosional keseluruhan gendhing. Pathet nem, pathet sanga, dan pathet manyura masing-masing memiliki karakter dan konteks penggunaan yang berbeda — tidak dipilih secara sewenang-wenang, tapi ditentukan oleh waktu pertunjukan dan konteks ritual.</p>
+
+<p>Dalam musik tradisional Sunda, <strong>surupan</strong> dan <strong>pelog degung</strong> adalah sistem modal yang menghasilkan warna khas musik Sunda yang sangat berbeda dari gamelan Jawa — meski menggunakan instrumen yang serupa.</p>
+
+<div class="pull-quote">
+  "Modus bukan sekadar 'tangga nada lain.' Ia adalah cara pandang yang berbeda terhadap dunia yang sama. Tujuh modus, tujuh cara untuk merasakan hidup melalui suara."
+</div>
+
+</div>
+</div>
+
+<div class="divider" style="max-width:780px;margin:0 auto;padding:0 36px;">
+  <div class="divider-line"></div>
+  <span class="divider-sym">📐</span>
+  <div class="divider-line"></div>
+</div>
+
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+  <span class="footer-copy">ILMIORA © 2025 — Interval &amp; Modus</span>
+  <a href="https://ilmiora.blogspot.com">Beranda Ilmiora →</a>
+</footer>
+</body>
+</html>
