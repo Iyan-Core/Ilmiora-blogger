@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>12 Interval Musik: Jarak Antar Nada yang Menentukan Warna Emosi — ILMIORA</title>
+<meta name="description" content="Dari unison hingga oktaf — panduan visual lengkap 12 interval musik, karakter emosionalnya, sejarah tritone sebagai diabolus in musica, dan tabel mnemonik ear training.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05040a;--card:#100d18;
+  --chalk:#eee8f8;--body:rgba(238,232,248,0.66);--muted:#6a5888;
+  --border:rgba(124,58,237,0.13);--border2:rgba(255,255,255,0.04);
+  --acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);
+  --rose:#c084fc;--sage:#6ee7b7;--amber:#f0c060;--warm:#f87171;--teal:#67e8f9;
+}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.9;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--rose));z-index:9999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(5,4,10,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);background:var(--accx);}
+.wrap{max-width:780px;margin:0 auto;padding:0 36px;}
+.hero{padding:104px 0 56px;position:relative;overflow:hidden;}
+.hero-orb{position:absolute;width:580px;height:580px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.07),transparent 65%);top:-100px;right:-200px;pointer-events:none;}
+.eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:12px;}
+.eye::before{content:'';width:24px;height:1px;background:var(--acc);}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+h1.ht{font-size:clamp(30px,5.5vw,54px);font-weight:700;line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px;}
+h1.ht em{font-style:italic;color:var(--acc2);}
+.dim{display:block;color:rgba(238,232,248,.28);font-size:.74em;}
+.sub{font-style:italic;color:var(--body);font-size:clamp(15px,2vw,19px);margin-bottom:28px;line-height:1.7;max-width:630px;}
+.meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.mt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:3px;border:1px solid rgba(124,58,237,0.3);background:var(--accx);color:var(--acc2);}
+.md{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.bc{padding:56px 0 100px;}
+.bc h2{font-family:'Syne',sans-serif;font-size:clamp(19px,2.7vw,26px);font-weight:800;color:var(--chalk);margin:56px 0 16px;letter-spacing:-.5px;padding-left:18px;position:relative;}
+.bc h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:72%;background:var(--acc);border-radius:2px;}
+.bc h3{font-family:'Syne',sans-serif;font-size:clamp(15px,2.1vw,19px);font-weight:800;color:var(--acc2);margin:36px 0 12px;}
+.bc p{margin-bottom:24px;}
+.bc strong{color:var(--chalk);font-weight:600;}
+.bc em{color:var(--acc2);font-style:italic;}
+.pq{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.5vw,24px);color:var(--chalk);line-height:1.65;border-left:3px solid var(--acc);padding:18px 28px;margin:40px 0;background:var(--accx);border-radius:0 10px 10px 0;position:relative;}
+.pq::before{content:'"';position:absolute;top:-8px;left:22px;font-size:68px;color:var(--acc);opacity:.14;font-family:'Cormorant Garamond',serif;line-height:1;}
+.fb{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:32px 0;}
+.ft{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.fb ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fb li{font-size:16px;color:var(--body);padding-left:20px;position:relative;line-height:1.7;}
+.fb li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.fb li strong{color:var(--chalk);}
+.tbl{background:var(--card);border:1px solid var(--border);border-radius:12px;margin:32px 0;overflow:hidden;}
+.tbl table{width:100%;border-collapse:collapse;}
+.tbl th{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--acc2);text-align:left;padding:13px 18px;background:rgba(124,58,237,0.07);border-bottom:1px solid var(--border);}
+.tbl td{font-size:15px;color:var(--body);padding:12px 18px;border-bottom:1px solid var(--border2);vertical-align:top;line-height:1.6;}
+.tbl td:first-child{font-family:'Fira Code',monospace;font-size:12px;font-weight:600;color:var(--acc2);white-space:nowrap;}
+.tbl tr:last-child td{border-bottom:none;}
+footer{border-top:1px solid var(--border);padding:24px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+.fc{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;}
+@media(max-width:680px){nav{padding:0 18px;}.wrap{padding:0 20px;}footer{padding:18px 20px;}}
+
+.int-table{background:var(--card);border:1px solid var(--border);border-radius:14px;margin:32px 0;overflow:hidden;}
+.int-table table{width:100%;border-collapse:collapse;}
+.int-table th{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--acc2);text-align:left;padding:13px 16px;background:rgba(124,58,237,0.07);border-bottom:1px solid var(--border);}
+.int-table td{font-size:14px;color:var(--body);padding:11px 16px;border-bottom:1px solid var(--border2);vertical-align:middle;line-height:1.5;}
+.int-table tr:last-child td{border-bottom:none;}
+.in{font-family:'Fira Code',monospace;font-size:12px;font-weight:700;color:var(--acc2);white-space:nowrap;}
+.ic{font-family:'Fira Code',monospace;font-size:11px;font-weight:700;text-align:center;}
+.ic.perf{color:var(--acc2);}
+.ic.cons{color:var(--sage);}
+.ic.diss{color:var(--warm);}
+.ic.trit{color:var(--rose);}
+.int-table td strong{color:var(--chalk);}
+.mn-list{display:flex;flex-direction:column;gap:8px;margin:24px 0;}
+.mn{display:grid;grid-template-columns:120px 1fr 100px;gap:12px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 18px;}
+.mn-int{font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);font-weight:700;}
+.mn-song{font-size:16px;color:var(--chalk);font-style:italic;}
+.mn-note{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+@media(max-width:640px){.mn{grid-template-columns:90px 1fr;}.mn-note{display:none;}}
+
+</style>
+</head><body>
+<div id="sb"></div><script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});</script>
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>interval-modus</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+</nav>
+<div class="wrap">
+<div class="hero"><div class="hero-orb"></div>
+  <div class="eye"><span class="dot"></span>📐 Teori Musik &nbsp;·&nbsp; Interval & Modus</div>
+  <h1 class="ht"><em>12 Interval Musik:</em> Jarak yang Menentukan Warna Emosi<span class="dim">— dari fisika Pitagoras hingga ear training modern</span></h1>
+  <p class="sub">Dua nada. Satu jarak. Dan dari jarak itu lahirlah semua yang bisa dirasakan musik — gembira, sedih, tegang, heroik, misterius. Inilah panduan lengkap 12 interval dan cara melatih telinga mendengarnya secara langsung.</p>
+  <div class="meta"><span class="mt">Interval & Modus</span><span class="md">📅 2025</span><span class="md">⏱ 15 menit baca</span><span class="md">✍ ILMIORA</span></div>
+</div>
+<div class="bc">
+<p>Sekitar tahun 500 SM, Pitagoras dari Samos merentang senar dan menemukan sesuatu yang akan mengubah sejarah musik seluruh dunia: nada-nada yang terdengar paling harmonis satu sama lain memiliki rasio frekuensi yang paling sederhana. Dua kali lipat frekuensi = oktaf (2:1). Satu setengah kali = perfect fifth (3:2). Empat pertiga = perfect fourth (4:3).</p>
+
+<p>Ini bukan konvensi budaya. Ini fisika gelombang — berlaku di seluruh alam semesta. Dan dari hukum sederhana ini, seluruh sistem interval musik Barat dibangun selama 2.500 tahun berikutnya.</p>
+
+<div class="pq">Interval adalah alfabet musik. Sebelum kamu bisa merasakan harmoni, kamu harus mendengar dan mengenali huruf-hurufnya — satu per satu, sampai mereka terasa sealami huruf dalam kata.</div>
+
+<h2>Dua Belas Interval dalam Satu Oktaf</h2>
+
+<p>Dalam sistem 12 nada, ada 12 interval berbeda dari unison (0 semitone) hingga oktaf (12 semitone). Setiap satu memiliki karakter akustik dan emosional yang unik.</p>
+
+<div class="int-table"><table>
+<tr>
+  <th>Interval</th><th>Semitone</th><th>Contoh (C)</th><th>Karakter Emosional</th><th>Konsonan?</th>
+</tr>
+<tr>
+  <td class="in">Unison</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">0</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→C</td>
+  <td>Identitas total — satu nada, dua sumber</td>
+  <td class="ic perf">Perfect</td>
+</tr>
+<tr>
+  <td class="in">Minor 2nd</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">1</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→C♯</td>
+  <td>Sangat tegang, menakutkan — tema Jaws</td>
+  <td class="ic diss">Disonan</td>
+</tr>
+<tr>
+  <td class="in">Major 2nd</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">2</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→D</td>
+  <td>Langkah bergerak maju, netral</td>
+  <td class="ic diss">Disonan</td>
+</tr>
+<tr>
+  <td class="in">Minor 3rd</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">3</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→E♭</td>
+  <td>Melankolis, gelap, penuh rasa</td>
+  <td class="ic cons">Konsonan</td>
+</tr>
+<tr>
+  <td class="in">Major 3rd</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">4</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→E</td>
+  <td>Cerah, optimis, karakter mayor</td>
+  <td class="ic cons">Konsonan</td>
+</tr>
+<tr>
+  <td class="in">Perfect 4th</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">5</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→F</td>
+  <td>Terbuka, stabil, seperti pertanyaan</td>
+  <td class="ic perf">Perfect</td>
+</tr>
+<tr>
+  <td class="in">Tritone</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">6</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→F♯</td>
+  <td><strong>Diabolus in musica</strong> — gelisah, misterius, ambiguitas total</td>
+  <td class="ic trit">Tritone</td>
+</tr>
+<tr>
+  <td class="in">Perfect 5th</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">7</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→G</td>
+  <td>Kuat, heroik, megah — power chord</td>
+  <td class="ic perf">Perfect</td>
+</tr>
+<tr>
+  <td class="in">Minor 6th</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">8</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→A♭</td>
+  <td>Romantis, rindu, sedikit melankolis</td>
+  <td class="ic cons">Konsonan</td>
+</tr>
+<tr>
+  <td class="in">Major 6th</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">9</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→A</td>
+  <td>Cerah, hangat, lagu anak</td>
+  <td class="ic cons">Konsonan</td>
+</tr>
+<tr>
+  <td class="in">Minor 7th</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">10</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→B♭</td>
+  <td>Blues, jazz, terasa belum selesai</td>
+  <td class="ic diss">Disonan</td>
+</tr>
+<tr>
+  <td class="in">Major 7th</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">11</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→B</td>
+  <td>Sangat tegang, sesaat sebelum resolusi</td>
+  <td class="ic diss">Disonan</td>
+</tr>
+<tr>
+  <td class="in">Oktaf</td><td style="text-align:center;font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);">12</td>
+  <td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);">C→C'</td>
+  <td>Penuh, lengkap, identitas satu tingkat lebih tinggi</td>
+  <td class="ic perf">Perfect</td>
+</tr>
+</table></div>
+
+<h2>Konsonan vs. Disonan: Bukan Baik vs. Buruk</h2>
+
+<p>Salah satu kesalahpahaman paling umum: konsonan = baik, disonan = buruk. Ini keliru. <strong>Konsonansi</strong> berarti stabil — tidak terasa perlu bergerak ke tempat lain. <strong>Disonansi</strong> berarti tidak stabil — terasa menginginkan resolusi.</p>
+
+<p>Dalam musik tonal, disonansi adalah <em>mesin narasi</em>. Ia menciptakan ketegangan yang membuat musik bergerak maju. Tanpa disonansi, musik tidak punya dramaturgi — hanya keindahan yang diam. Resolusi dari disonansi ke konsonansi adalah momen paling emosional dalam musik tonal.</p>
+
+<div class="fb">
+<div class="ft">// Tritone — "Diabolus in Musica"</div>
+<ul>
+<li><strong>Abad Pertengahan:</strong> Komposer dilarang menggunakan tritone dalam musik gereja. Interval ini disebut <em>diabolus in musica</em> — iblis dalam musik — karena ketidakstabilannya yang ekstrem.</li>
+<li><strong>Era Baroque–Klasik:</strong> Tritone menjadi krusial — ia mendefinisikan akor dominant 7th (V7) dan menciptakan ketegangan paling kuat sebelum resolusi ke tonik. Tanpa tritone, tidak ada cadence autentik.</li>
+<li><strong>Abad ke-20:</strong> Komposer justru memanfaatkannya untuk tema gelap dan ambiguitas — Wagner untuk kematian, Stravinsky untuk kekacauan, John Williams untuk Evil. Imperial March Star Wars menggunakan tritone secara prominent.</li>
+<li><strong>Jazz modern:</strong> "Tritone substitution" adalah teknik reharmonisasi di mana akor V7 digantikan oleh akor yang rootnya berjarak tritone. Menghasilkan suara jazz yang modern, sophisticated, dan kompleks.</li>
+</ul>
+</div>
+
+<h2>Ear Training: Mendengar Interval Secara Langsung</h2>
+
+<p>Kemampuan mengidentifikasi interval hanya dari mendengar — disebut <em>relative pitch</em> — bisa dilatih oleh hampir semua orang. Cara paling efektif: asosiasikan setiap interval dengan pembukaan lagu yang sangat familiar.</p>
+
+<div class="mn-list">
+  <div class="mn"><span class="mn-int">Minor 2nd</span><span class="mn-song">Tema Jaws — dua nada yang mengancam</span><span class="mn-note">E → F</span></div>
+  <div class="mn"><span class="mn-int">Major 2nd</span><span class="mn-song">Happy Birthday — "Hap-py Birth-day"</span><span class="mn-note">G → A</span></div>
+  <div class="mn"><span class="mn-int">Minor 3rd</span><span class="mn-song">Smoke on the Water — riff pembuka</span><span class="mn-note">G → B♭</span></div>
+  <div class="mn"><span class="mn-int">Major 3rd</span><span class="mn-song">When the Saints Go Marching In</span><span class="mn-note">C → E</span></div>
+  <div class="mn"><span class="mn-int">Perfect 4th</span><span class="mn-song">Here Comes the Bride — dua nada pertama</span><span class="mn-note">C → F</span></div>
+  <div class="mn"><span class="mn-int">Tritone</span><span class="mn-song">The Simpsons Theme — intro ikonik</span><span class="mn-note">B♭ → E</span></div>
+  <div class="mn"><span class="mn-int">Perfect 5th</span><span class="mn-song">Star Wars Main Theme — "dun dun dun"</span><span class="mn-note">C → G</span></div>
+  <div class="mn"><span class="mn-int">Minor 6th</span><span class="mn-song">The Entertainer — frasa kedua</span><span class="mn-note">E → C</span></div>
+  <div class="mn"><span class="mn-int">Major 6th</span><span class="mn-song">My Bonnie Lies Over the Ocean</span><span class="mn-note">G → E</span></div>
+  <div class="mn"><span class="mn-int">Minor 7th</span><span class="mn-song">Somewhere (West Side Story)</span><span class="mn-note">C → B♭</span></div>
+  <div class="mn"><span class="mn-int">Major 7th</span><span class="mn-song">Take On Me (A-Ha) — lompatan reff</span><span class="mn-note">C → B</span></div>
+  <div class="mn"><span class="mn-int">Oktaf</span><span class="mn-song">Somewhere Over the Rainbow — "Some-WHERE"</span><span class="mn-note">E♭ → E♭'</span></div>
+</div>
+
+<p>Latih 10 menit sehari dengan aplikasi seperti <em>Tenuto</em> atau <em>EarMaster</em> — atau cukup dengan piano dan telinga yang penuh perhatian. Setelah 4–6 minggu latihan konsisten, kemampuan mendengar interval secara langsung akan terasa hampir otomatis, dan cara kamu mendengarkan musik tidak akan pernah sama lagi.</p>
+
+<div class="pq">Saat kamu bisa mendengar "itu perfect fifth" tanpa berpikir, kamu tidak lagi hanya <em>mendengar</em> musik — kamu mulai <em>membaca</em>nya. Dan seorang yang bisa membaca musik adalah orang yang paling bebas dalam segala hal yang berhubungan dengan musik.</div>
+</div>
+</div>
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+  <span class="fc">ILMIORA © 2025 — Interval & Modus</span>
+  <a href="https://ilmiora.blogspot.com">Beranda →</a>
+</footer></body></html>
