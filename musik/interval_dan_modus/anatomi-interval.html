@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Interval Musik: Jarak Antar Nada yang Menentukan Warna Emosi — ILMIORA</title>
+<meta name="description" content="Dari unison hingga oktaf — panduan lengkap tentang interval musik, mengapa setiap jarak antar nada terdengar berbeda, dan bagaimana komposer menggunakannya untuk memanipulasi emosi pendengar.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05040a;--card:#100d18;--lift:#181424;
+  --chalk:#eee8f8;--body:rgba(238,232,248,0.66);--muted:#6a5888;
+  --border:rgba(124,58,237,0.13);--border2:rgba(255,255,255,0.04);
+  --acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);
+  --rose:#c084fc;--sage:#6ee7b7;--amber:#f0c060;--warm:#f87171;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.88;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--rose));z-index:9999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(5,4,10,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);background:var(--accx);}
+.wrap{max-width:780px;margin:0 auto;padding:0 36px;}
+.hero{padding:104px 0 56px;position:relative;overflow:hidden;}
+.hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.06),transparent 65%);top:-100px;right:-200px;pointer-events:none;}
+.h-eyebrow{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:12px;}
+.h-eyebrow::before{content:'';width:24px;height:1px;background:var(--acc);}
+.h-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.h-title{font-size:clamp(30px,5.5vw,56px);font-weight:700;line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px;}
+.h-title em{font-style:italic;color:var(--acc2);}
+.h-title .line2{display:block;color:rgba(238,232,248,.35);font-size:0.78em;}
+.h-sub{font-style:italic;color:var(--body);font-size:clamp(15px,2vw,19px);margin-bottom:28px;line-height:1.7;max-width:620px;}
+.h-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.hmt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:3px;border:1px solid rgba(124,58,237,0.3);background:var(--accx);color:var(--acc2);}
+.hmd{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.body-content{padding:56px 0 100px;}
+.body-content h2{font-family:'Syne',sans-serif;font-size:clamp(20px,2.8vw,27px);font-weight:800;color:var(--chalk);margin:56px 0 16px;letter-spacing:-.5px;position:relative;padding-left:18px;}
+.body-content h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:70%;background:var(--acc);border-radius:2px;}
+.body-content h3{font-family:'Syne',sans-serif;font-size:clamp(16px,2.2vw,20px);font-weight:800;color:var(--acc2);margin:36px 0 12px;}
+.body-content p{margin-bottom:24px;}
+.body-content strong{color:var(--chalk);font-weight:600;}
+.body-content em{color:var(--acc2);font-style:italic;}
+.pull-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.6vw,25px);color:var(--chalk);line-height:1.65;border-left:3px solid var(--acc);padding:18px 28px;margin:40px 0;background:var(--accx);border-radius:0 10px 10px 0;position:relative;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:24px;font-size:72px;color:var(--acc);opacity:.15;font-family:'Cormorant Garamond',serif;line-height:1;}
+
+/* ── INTERVAL TABLE VISUAL ── */
+.interval-visual{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:0;margin:32px 0;overflow:hidden;
+}
+.iv-header{
+  display:grid;grid-template-columns:48px 110px 60px 1fr 120px;
+  gap:0;padding:12px 20px;
+  background:rgba(124,58,237,0.06);
+  border-bottom:1px solid var(--border);
+}
+.iv-header span{
+  font-family:'Fira Code',monospace;font-size:9px;
+  text-transform:uppercase;letter-spacing:2px;color:var(--acc2);
+}
+.iv-row{
+  display:grid;grid-template-columns:48px 110px 60px 1fr 120px;
+  gap:0;padding:14px 20px;
+  border-bottom:1px solid var(--border2);
+  align-items:center;
+  transition:background .2s;
+}
+.iv-row:last-child{border-bottom:none;}
+.iv-row:hover{background:rgba(124,58,237,0.04);}
+.iv-num{font-family:'Fira Code',monospace;font-size:13px;font-weight:700;color:var(--acc);}
+.iv-name{font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);font-weight:500;}
+.iv-semi{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);text-align:center;}
+.iv-desc{font-size:14px;color:var(--body);line-height:1.5;padding:0 16px 0 8px;}
+.iv-feel{font-size:13px;font-style:italic;color:var(--muted);}
+.iv-feel.cons{color:var(--sage);}
+.iv-feel.diss{color:var(--warm);}
+.iv-feel.perf{color:var(--acc2);}
+.iv-feel.trit{color:var(--rose);}
+
+/* ── FACT BOX ── */
+.fact-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:32px 0;}
+.fact-title{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.fact-box ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fact-box li{font-size:16px;color:var(--body);padding-left:20px;position:relative;line-height:1.7;}
+.fact-box li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.fact-box li strong{color:var(--chalk);}
+
+/* ── RECOGNITION MNEMONICS ── */
+.mnemonic-grid{display:flex;flex-direction:column;gap:10px;margin:28px 0;}
+.mn-row{
+  display:grid;grid-template-columns:120px 1fr 1fr;
+  gap:12px;align-items:center;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:14px 18px;
+}
+.mn-int{font-family:'Fira Code',monospace;font-size:12px;color:var(--acc2);font-weight:700;}
+.mn-song{font-size:15px;color:var(--chalk);font-style:italic;}
+.mn-notes{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);}
+
+.divider{display:flex;align-items:center;gap:16px;margin:56px 0;}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+.divider-sym{font-family:'Fira Code',monospace;font-size:13px;color:var(--acc);opacity:.6;}
+footer{border-top:1px solid var(--border);padding:24px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+.footer-copy{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;}
+@media(max-width:680px){nav{padding:0 18px;}.wrap{padding:0 20px;}footer{padding:18px 20px;}.iv-header,.iv-row{grid-template-columns:40px 90px 50px 1fr;}.iv-feel{display:none;}.mnemonic-grid .mn-row{grid-template-columns:100px 1fr;}.mn-notes{display:none;}}
+</style>
+</head>
+<body>
+<div id="sb"></div>
+<script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});</script>
+
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>interval-modus</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+</nav>
+
+<div class="wrap">
+<div class="hero">
+  <div class="hero-orb"></div>
+
+  <div class="h-eyebrow">
+    <span class="h-eyebrow-dot"></span>
+    📐 Teori Musik &nbsp;·&nbsp; Interval &amp; Modus
+  </div>
+
+  <h1 class="h-title">
+    Interval Musik: Jarak Antar Nada yang <em>Menentukan Warna Emosi</em>
+    <span class="line2">— matematika di balik perasaan</span>
+  </h1>
+
+  <p class="h-sub">
+    Dua nada. Satu jarak. Dan dari jarak itu lahirlah semua yang bisa dirasakan musik — gembira, sedih, tegang, damai, misteri, dan kemenangan. Inilah fondasi terdalam dari seluruh bahasa musik.
+  </p>
+
+  <div class="h-meta">
+    <span class="hmt">Interval &amp; Modus</span>
+    <span class="hmd">📅 2025</span>
+    <span class="hmd">⏱ 15 menit baca</span>
+    <span class="hmd">✍ ILMIORA</span>
+  </div>
+</div>
+
+<div class="body-content">
+
+<p>Sebelum ada tangga nada, sebelum ada akor, sebelum ada harmoni — ada <strong>interval</strong>. Jarak antara dua nada. Sesuatu yang sangat sederhana tapi menyimpan kedalaman yang tidak akan pernah habis dijelajahi.</p>
+
+<p>Pitagoras dari Samos, sekitar 500 SM, melakukan eksperimen dengan senar yang direntang. Ia menemukan bahwa nada-nada yang paling harmonis satu sama lain adalah nada-nada dengan rasio frekuensi yang paling sederhana: 2:1 untuk oktaf, 3:2 untuk fifth, 4:3 untuk fourth. Ini bukan kebetulan atau konvensi budaya — ini adalah matematika fisika gelombang, berlaku di mana saja di alam semesta.</p>
+
+<p>Dua ribu lima ratus tahun kemudian, kita masih menggunakan insight Pitagoras setiap kali kita menyebut sebuah nada "indah" atau "disonan."</p>
+
+<div class="pull-quote">
+  "Interval adalah alfabet musik. Sebelum kamu bisa membaca kalimat, kamu harus mengenal huruf-hurufnya. Dan sebelum kamu bisa merasakan harmoni, kamu harus mendengar interval."
+</div>
+
+<h2>Cara Mengukur Interval</h2>
+
+<p>Interval diukur dengan dua cara sekaligus: <strong>nama generic</strong> (second, third, fourth, dst.) yang dihitung dari jumlah garis dan ruang paranada yang dicakup, dan <strong>kualitas</strong> (major, minor, perfect, augmented, diminished) yang memberitahu jumlah semitone yang persis.</p>
+
+<p>Contoh: dari C ke E adalah third (mencakup tiga nada: C-D-E). Tapi dari C ke E adalah <em>major</em> third (4 semitone), sedangkan dari C ke E♭ adalah <em>minor</em> third (3 semitone). Keduanya adalah "third" secara generik, tapi berbeda secara kualitas — dan berbeda secara dramatis dalam karakter emosionalnya.</p>
+
+<h2>Dua Belas Interval dalam Satu Oktaf</h2>
+
+<div class="interval-visual">
+  <div class="iv-header">
+    <span>No.</span>
+    <span>Nama</span>
+    <span>Semitone</span>
+    <span>Deskripsi Akustik</span>
+    <span>Karakter</span>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">1</div>
+    <div class="iv-name">Unison</div>
+    <div class="iv-semi">0</div>
+    <div class="iv-desc">Nada yang sama persis. Dua instrumen berbunyi identik.</div>
+    <div class="iv-feel perf">Identitas total</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">2</div>
+    <div class="iv-name">Minor 2nd</div>
+    <div class="iv-semi">1</div>
+    <div class="iv-desc">Jarak terkecil mungkin. Sangat dissonan dan tegang. C ke C♯.</div>
+    <div class="iv-feel diss">Tegang, disonan</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">3</div>
+    <div class="iv-name">Major 2nd</div>
+    <div class="iv-semi">2</div>
+    <div class="iv-desc">Langkah bertahap dalam tangga nada. C ke D. Terasa bergerak maju.</div>
+    <div class="iv-feel diss">Netral, gerak</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">4</div>
+    <div class="iv-name">Minor 3rd</div>
+    <div class="iv-semi">3</div>
+    <div class="iv-desc">Interval yang memberi warna minor. C ke E♭. Melankolis, gelap.</div>
+    <div class="iv-feel cons">Sedih, dalam</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">5</div>
+    <div class="iv-name">Major 3rd</div>
+    <div class="iv-semi">4</div>
+    <div class="iv-desc">Interval yang memberi warna mayor. C ke E. Cerah, optimis.</div>
+    <div class="iv-feel cons">Cerah, gembira</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">6</div>
+    <div class="iv-name">Perfect 4th</div>
+    <div class="iv-semi">5</div>
+    <div class="iv-desc">Stabil dan terbuka. C ke F. Terasa seperti pertanyaan yang menunggu jawaban.</div>
+    <div class="iv-feel perf">Terbuka, stabil</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">7</div>
+    <div class="iv-name">Tritone</div>
+    <div class="iv-semi">6</div>
+    <div class="iv-desc">Tepat di tengah oktaf. C ke F♯/G♭. Sangat disonan — disebut "diabolus in musica" di Abad Pertengahan.</div>
+    <div class="iv-feel trit">Misterius, gelisah</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">8</div>
+    <div class="iv-name">Perfect 5th</div>
+    <div class="iv-semi">7</div>
+    <div class="iv-desc">Interval paling konsonan setelah oktaf. C ke G. Kuat, megah, universal.</div>
+    <div class="iv-feel perf">Kuat, heroik</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">9</div>
+    <div class="iv-name">Minor 6th</div>
+    <div class="iv-semi">8</div>
+    <div class="iv-desc">Terbalik dari major 3rd. Terasa romantis dan sedikit melankolis. C ke A♭.</div>
+    <div class="iv-feel cons">Romantis, rindu</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">10</div>
+    <div class="iv-name">Major 6th</div>
+    <div class="iv-semi">9</div>
+    <div class="iv-desc">Interval yang cerah dan menyenangkan. C ke A. Sering digunakan dalam melodi lagu anak.</div>
+    <div class="iv-feel cons">Cerah, hangat</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">11</div>
+    <div class="iv-name">Minor 7th</div>
+    <div class="iv-semi">10</div>
+    <div class="iv-desc">Disonan tapi kaya. C ke B♭. Khas jazz dan blues — terasa "belum selesai."</div>
+    <div class="iv-feel diss">Jazz, blues, menggantung</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">12</div>
+    <div class="iv-name">Major 7th</div>
+    <div class="iv-semi">11</div>
+    <div class="iv-desc">Sangat disonan, selangkah dari oktaf. C ke B. Terasa seperti sesaat sebelum resolusi.</div>
+    <div class="iv-feel diss">Intens, gelisah</div>
+  </div>
+  <div class="iv-row">
+    <div class="iv-num">13</div>
+    <div class="iv-name">Oktaf</div>
+    <div class="iv-semi">12</div>
+    <div class="iv-desc">Nada yang sama, satu tingkat lebih tinggi. Rasio 2:1 — paling konsonan secara fisika.</div>
+    <div class="iv-feel perf">Sempurna, penuh</div>
+  </div>
+</div>
+
+<h2>Konsonan vs. Disonan: Bukan Baik vs. Buruk</h2>
+
+<p>Kesalahan umum dalam memahami interval adalah menganggap konsonan = baik dan disonan = buruk. Ini adalah penyederhanaan yang berbahaya.</p>
+
+<p><strong>Konsonansi</strong> berarti interval yang stabil — tidak terasa perlu bergerak ke tempat lain. <strong>Disonansi</strong> berarti interval yang tidak stabil — terasa seperti perlu diselesaikan (resolved) ke interval lain. Dalam musik tonal, disonansi adalah <em>mesin narasi</em>. Ia menciptakan ketegangan yang membuat musik bergerak maju. Resolusi disonansi ke konsonansi adalah momen paling emosional dalam musik.</p>
+
+<div class="fact-box">
+  <div class="fact-title">// Tritone — "Diabolus in Musica"</div>
+  <ul>
+    <li><strong>Di Abad Pertengahan</strong>, komposer dilarang menggunakan tritone (augmented fourth / diminished fifth) dalam musik gereja. Interval ini disebut <em>diabolus in musica</em> — iblis dalam musik — karena efek disonansinya yang sangat kuat dan tidak nyaman.</li>
+    <li><strong>Di era Baroque dan Klasik</strong>, tritone menjadi elemen krusial — ia adalah interval yang mendefinisikan akor dominant seventh (V7) dan menciptakan ketegangan yang paling kuat sebelum resolusi ke tonik.</li>
+    <li><strong>Di abad ke-20</strong>, komposer modernist justru memanfaatkan tritone sebagai simbol ambiguitas, bahaya, atau yang supernatural. Wagner, Stravinsky, dan kemudian John Williams menggunakannya untuk tema-tema gelap (tema Imperial March di Star Wars menggunakan tritone secara prominent).</li>
+    <li><strong>Di musik pop dan jazz</strong>, tritone substitution adalah teknik harmoni canggih di mana akor V7 digantikan oleh akor yang rootnya berjarak tritone — menciptakan reharmonisasi yang kompleks dan modern.</li>
+  </ul>
+</div>
+
+<h2>Ear Training: Mendengar Interval secara Langsung</h2>
+
+<p>Kemampuan mengidentifikasi interval secara auditori — mendengar dua nada dan langsung tahu jarak di antara mereka — adalah keterampilan yang disebut <em>relative pitch</em>. Tidak seperti <em>perfect pitch</em> (mendengar nada tunggal dan tahu namanya), relative pitch bisa dilatih oleh hampir semua orang.</p>
+
+<p>Cara paling efektif: asosiasikan setiap interval dengan pembukaan lagu yang sangat familiar. Ketika kamu mendengar interval itu, otak langsung menghubungkannya dengan lagu yang sudah dikenal — dan nama intervalnya ikut teringat.</p>
+
+<div class="mnemonic-grid">
+  <div class="mn-row">
+    <div class="mn-int">Minor 2nd</div>
+    <div class="mn-song">Tema Jaws (film hiu) — dua nada yang mengancam</div>
+    <div class="mn-notes">E → F</div>
+  </div>
+  <div class="mn-row">
+    <div class="mn-int">Major 2nd</div>
+    <div class="mn-song">Happy Birthday to You — dua nada pertama</div>
+    <div class="mn-notes">G → A</div>
+  </div>
+  <div class="mn-row">
+    <div class="mn-int">Minor 3rd</div>
+    <div class="mn-song">Smoke on the Water (Deep Purple) — riff pembuka</div>
+    <div class="mn-notes">G → B♭</div>
+  </div>
+  <div class="mn-row">
+    <div class="mn-int">Major 3rd</div>
+    <div class="mn-song">When the Saints Go Marching In — "Oh when the..."</div>
+    <div class="mn-notes">E → G♯</div>
+  </div>
+  <div class="mn-row">
+    <div class="mn-int">Perfect 4th</div>
+    <div class="mn-song">Here Comes the Bride (Wedding March) — dua nada pertama</div>
+    <div class="mn-notes">C → F</div>
+  </div>
+  <div class="mn-row">
+    <div class="mn-int">Tritone</div>
+    <div class="mn-song">The Simpsons Theme — intro ikonik</div>
+    <div class="mn-notes">B♭ → E</div>
+  </div>
+  <div class="mn-row">
+    <div class="mn-int">Perfect 5th</div>
+    <div class="mn-song">Star Wars Main Theme — "dun dun dun dun-dun"</div>
+    <div class="mn-notes">C → G</div>
+  </div>
+  <div class="mn-row">
+    <div class="mn-int">Major 6th</div>
+    <div class="mn-song">My Bonnie Lies Over the Ocean — "My Bon-nie"</div>
+    <div class="mn-notes">G → E</div>
+  </div>
+  <div class="mn-row">
+    <div class="mn-int">Minor 7th</div>
+    <div class="mn-song">Somewhere (West Side Story) — dua nada pertama</div>
+    <div class="mn-notes">C → B♭</div>
+  </div>
+  <div class="mn-row">
+    <div class="mn-int">Oktaf</div>
+    <div class="mn-song">Somewhere Over the Rainbow — "Some-WHERE"</div>
+    <div class="mn-notes">E♭ → E♭</div>
+  </div>
+</div>
+
+<p>Latih ear training interval selama 10 menit setiap hari menggunakan aplikasi seperti <em>Tenuto</em>, <em>EarMaster</em>, atau cukup dengan piano dan kuping yang penuh perhatian. Setelah 4–6 minggu latihan konsisten, kemampuan mendengar interval secara langsung akan mulai terasa otomatis — dan mendengarkan musik tidak akan pernah sama lagi.</p>
+
+</div>
+</div>
+
+<div class="divider" style="max-width:780px;margin:0 auto;padding:0 36px;">
+  <div class="divider-line"></div>
+  <span class="divider-sym">📐</span>
+  <div class="divider-line"></div>
+</div>
+
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+  <span class="footer-copy">ILMIORA © 2025 — Interval &amp; Modus</span>
+  <a href="https://ilmiora.blogspot.com">Beranda Ilmiora →</a>
+</footer>
+</body>
+</html>
