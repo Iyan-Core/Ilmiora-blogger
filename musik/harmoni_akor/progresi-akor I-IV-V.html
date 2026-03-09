@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Progresi Akor I-IV-V: Formula di Balik Ribuan Lagu Paling Populer Dunia — ILMIORA</title>
+<meta name="description" content="Dari 12-bar blues hingga Let It Be Beatles — mengapa tiga akor ini menjadi fondasi sebagian besar musik populer dan bagaimana ia bekerja secara harmonis.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05040a;--card:#100d18;--lift:#181424;
+  --chalk:#eee8f8;--body:rgba(238,232,248,0.66);--muted:#6a5888;
+  --border:rgba(124,58,237,0.13);--border2:rgba(255,255,255,0.04);
+  --acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);
+  --rose:#c084fc;--sage:#6ee7b7;--amber:#f0c060;--warm:#f87171;--teal:#67e8f9;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.9;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--rose));z-index:9999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(5,4,10,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);background:var(--accx);}
+.wrap{max-width:780px;margin:0 auto;padding:0 36px;}
+.hero{padding:104px 0 56px;position:relative;overflow:hidden;}
+.hero-orb{position:absolute;width:580px;height:580px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.07),transparent 65%);top:-100px;right:-200px;pointer-events:none;}
+.h-eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:12px;}
+.h-eye::before{content:'';width:24px;height:1px;background:var(--acc);}
+.h-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.h-title{font-size:clamp(30px,5.5vw,54px);font-weight:700;line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px;}
+.h-title em{font-style:italic;color:var(--acc2);}
+.h-dim{display:block;color:rgba(238,232,248,.3);font-size:.76em;}
+.h-sub{font-style:italic;color:var(--body);font-size:clamp(15px,2vw,19px);margin-bottom:28px;line-height:1.7;max-width:630px;}
+.h-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.hmt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:3px;border:1px solid rgba(124,58,237,0.3);background:var(--accx);color:var(--acc2);}
+.hmd{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.body-content{padding:56px 0 100px;}
+.body-content h2{font-family:'Syne',sans-serif;font-size:clamp(19px,2.7vw,26px);font-weight:800;color:var(--chalk);margin:56px 0 16px;letter-spacing:-.5px;padding-left:18px;position:relative;}
+.body-content h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:72%;background:var(--acc);border-radius:2px;}
+.body-content h3{font-family:'Syne',sans-serif;font-size:clamp(15px,2.1vw,19px);font-weight:800;color:var(--acc2);margin:36px 0 12px;}
+.body-content p{margin-bottom:24px;}
+.body-content strong{color:var(--chalk);font-weight:600;}
+.body-content em{color:var(--acc2);font-style:italic;}
+.pq{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.5vw,24px);color:var(--chalk);line-height:1.65;border-left:3px solid var(--acc);padding:18px 28px;margin:40px 0;background:var(--accx);border-radius:0 10px 10px 0;position:relative;}
+.pq::before{content:'"';position:absolute;top:-8px;left:22px;font-size:68px;color:var(--acc);opacity:.14;font-family:'Cormorant Garamond',serif;line-height:1;}
+.fb{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:32px 0;}
+.ft{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.fb ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fb li{font-size:16px;color:var(--body);padding-left:20px;position:relative;line-height:1.7;}
+.fb li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.fb li strong{color:var(--chalk);}
+.tbl{background:var(--card);border:1px solid var(--border);border-radius:12px;margin:32px 0;overflow:hidden;}
+.tbl table{width:100%;border-collapse:collapse;}
+.tbl th{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--acc2);text-align:left;padding:13px 18px;background:rgba(124,58,237,0.07);border-bottom:1px solid var(--border);}
+.tbl td{font-size:15px;color:var(--body);padding:12px 18px;border-bottom:1px solid var(--border2);vertical-align:top;line-height:1.6;}
+.tbl td:first-child{font-family:'Fira Code',monospace;font-size:12px;font-weight:600;color:var(--acc2);white-space:nowrap;}
+.tbl tr:last-child td{border-bottom:none;}
+.dv{display:flex;align-items:center;gap:14px;margin:52px 0;}
+.dv-l{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+.dv-s{font-family:'Fira Code',monospace;font-size:13px;color:var(--acc);opacity:.5;}
+footer{border-top:1px solid var(--border);padding:24px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+.fc{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;}
+@media(max-width:680px){nav{padding:0 18px;}.wrap{padding:0 20px;}footer{padding:18px 20px;}}
+
+.chord-row{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0;}
+.ch{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 16px;text-align:center;flex:1;min-width:100px;}
+.ch.special{border-color:var(--acc);background:var(--accx);}
+.ch-num{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc2);line-height:1;margin-bottom:6px;}
+.ch.special .ch-num{color:var(--chalk);}
+.ch-name{font-family:'Fira Code',monospace;font-size:12px;color:var(--muted);margin-bottom:4px;}
+.ch-notes{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc);}
+.ch-func{font-size:13px;color:var(--body);margin-top:8px;font-style:italic;}
+</style>
+</head><body>
+<div id="sb"></div><script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});</script>
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>harmoni-akor</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+</nav>
+<div class="wrap">
+<div class="hero"><div class="hero-orb"></div>
+  <div class="h-eye"><span class="h-dot"></span>🎹 Teori Musik &nbsp;·&nbsp; Harmoni & Akor</div>
+  <h1 class="h-title">Progresi Akor <em>I-IV-V</em>: Formula di Balik Ribuan Lagu<span class="h-dim">— tiga akor yang menopang hampir semua musik populer</span></h1>
+  <p class="h-sub">Chuck Berry, Beatles, Bob Dylan, Bob Marley — gaya berbeda, era berbeda, budaya berbeda. Tapi semua kembali ke tiga akor yang sama. Inilah mengapa progresi I-IV-V tidak pernah bisa mati.</p>
+  <div class="h-meta"><span class="hmt">Harmoni & Akor</span><span class="hmd">📅 2025</span><span class="hmd">⏱ 13 menit baca</span><span class="hmd">✍ ILMIORA</span></div>
+</div>
+<div class="body-content">
+<p>Seorang komedian Inggris pernah mengejek rock and roll sebagai "musik tiga akor." Ia bermaksud merendahkan. Tapi tanpa disadari, ia justru menggambarkan salah satu penemuan terpenting dalam sejarah musik harmoni: tiga akor — I, IV, V — yang bisa menopang ribuan lagu dari hampir semua genre yang pernah ada.</p>
+
+<p>Chuck Berry. Beatles. Hank Williams. Bob Dylan. Creedence Clearwater Revival. The Rolling Stones. Neil Young. Semuanya kembali ke formula yang sama. Semuanya tahu bahwa dalam kesederhanaan ketiga akor itu tersembunyi kekuatan yang tidak pernah habis.</p>
+
+<div class="pq">Progresi I-IV-V adalah kalimat dasar dalam bahasa harmoni — subjek, predikat, objek. Ia terasa lengkap karena secara struktural, memang lengkap.</div>
+
+<h2>Apa Itu I, IV, dan V?</h2>
+
+<p>Angka romawi itu merujuk pada posisi akor dalam tangga nada. Setiap nada dalam tangga nada bisa menjadi <strong>root</strong> (akar) dari sebuah akor. Dalam tangga nada C mayor, tujuh akor diatonisnya adalah: C (I), Dm (ii), Em (iii), F (IV), G (V), Am (vi), Bdim (vii°).</p>
+
+<div class="chord-row">
+  <div class="ch special"><div class="ch-num">I</div><div class="ch-name">C Mayor</div><div class="ch-notes">C · E · G</div><div class="ch-func">Tonik — "rumah"</div></div>
+  <div class="ch"><div class="ch-num">IV</div><div class="ch-name">F Mayor</div><div class="ch-notes">F · A · C</div><div class="ch-func">Subdominant — "pergi"</div></div>
+  <div class="ch"><div class="ch-num">V</div><div class="ch-name">G Mayor</div><div class="ch-notes">G · B · D</div><div class="ch-func">Dominant — "tegang"</div></div>
+  <div class="ch special"><div class="ch-num">I</div><div class="ch-name">C Mayor</div><div class="ch-notes">C · E · G</div><div class="ch-func">Resolusi — "pulang"</div></div>
+</div>
+
+<p>Yang membuat ketiga akor ini istimewa adalah satu fakta matematis: <strong>C mayor + F mayor + G mayor = semua tujuh nada tangga nada C mayor</strong>. C-E-G + F-A-C + G-B-D = C D E F G A B. Tiga akor yang mencakup seluruh tonalitas. Representasi minimum yang paling efisien.</p>
+
+<h2>Kekuatan V ke I — Cadence Autentik</h2>
+
+<p>Dalam teori harmoni, pergerakan dari akor V ke akor I disebut <strong>cadence autentik</strong> — dan ini adalah momen paling memuaskan dalam seluruh musik tonal. Akor G (V) dalam C mayor mengandung nada B dan F (jika menjadi G7), yang membentuk tritone — interval paling tegang dalam sistem 12 nada. Kedua nada itu "menginginkan" resolusi: B naik ke C, F turun ke E. Dan ketika G bergerak ke C (I), resolusi itu terjadi. Ketegangan terlepas. Telinga merasa puas.</p>
+
+<p>Seluruh dramaturgi musik tonal Barat — ratusan tahun komposisi — dibangun di atas mekanisme sederhana ini: ciptakan ketegangan dengan V, lepaskan dengan I.</p>
+
+<h2>12-Bar Blues — Format Paling Ikonik</h2>
+
+<p>Manifestasi paling terkenal dari progresi I-IV-V adalah <strong>12-bar blues</strong>. Dua belas birama yang menjadi fondasi blues, rock, dan jazz awal.</p>
+
+<div class="tbl"><table>
+<tr><th>Birama</th><th>Akor (kunci A)</th><th>Fungsi Dramatis</th></tr>
+<tr><td>1 – 4</td><td>A7 (I)</td><td>Pernyataan — menetapkan tonik dan "masalah"</td></tr>
+<tr><td>5 – 6</td><td>D7 (IV)</td><td>Komplikasi — merespons pernyataan</td></tr>
+<tr><td>7 – 8</td><td>A7 (I)</td><td>Pengulangan — konfirmasi kembali ke rumah</td></tr>
+<tr><td>9</td><td>E7 (V)</td><td>Klimaks — ketegangan tertinggi</td></tr>
+<tr><td>10</td><td>D7 (IV)</td><td>Pelepasan sebagian</td></tr>
+<tr><td>11 – 12</td><td>A7 → E7</td><td>Resolusi + turnaround untuk mengulang</td></tr>
+</table></div>
+
+<p>Johnny B. Goode. Hound Dog. La Grange. Pride and Joy. Sweet Home Chicago. Ratusan lagu blues dan rock yang paling dikenal di dunia menggunakan template 12-bar ini persis. Bukan karena kekurangan imajinasi — tapi karena format itu terbukti bekerja secara psikologis dan emosional dengan sangat baik.</p>
+
+<h2>Pengembangan: Akor Keempat yang Mengubah Segalanya</h2>
+
+<p>Begitu I-IV-V dikuasai, langkah berikutnya adalah menambahkan <strong>akor vi minor</strong>. Progresi I-V-vi-IV adalah progresi pop paling populer di abad ke-21 — digunakan dalam ribuan lagu dari hampir semua genre.</p>
+
+<div class="fb">
+<div class="ft">// Progresi I-V-vi-IV: Lagu-lagu yang Menggunakannya</div>
+<ul>
+<li><strong>Let It Be</strong> (Beatles) — C G Am F. Mungkin versi paling ikonik dari progresi ini.</li>
+<li><strong>No Woman No Cry</strong> (Bob Marley) — C G Am F dalam reggae feel yang khas.</li>
+<li><strong>Someone Like You</strong> (Adele) — versi ballad piano yang sangat emosional.</li>
+<li><strong>Don't Stop Believin'</strong> (Journey) — versi rock arena yang megah.</li>
+<li><strong>Ribuan lagu pop K-pop, J-pop, dan pop Indonesia</strong> menggunakan variasi progresi ini.</li>
+</ul>
+</div>
+
+<p>Mengapa progresi ini begitu populer? Karena ia memenuhi semua syarat musik yang "terasa benar": ia memiliki tonik yang stabil (I), pergerakan yang menarik (V), warna emosional (vi minor), dan ruang yang terbuka (IV). Empat akor, satu putaran, dan kamu bisa bermain nyaris tanpa henti.</p>
+
+<div class="pq">Musik bukan tentang seberapa kompleks harmoninya. Ia tentang apa yang terjadi di antara akor-akor itu — dalam melodi, dalam lirik, dalam cara seseorang memainkan satu nada yang sederhana dengan seluruh jiwanya.</div>
+
+<h2>I-IV-V dalam Musik Indonesia</h2>
+
+<p>Progresi I-IV-V bukan milik musik Barat semata. Keroncong, pop Indonesia, dangdut modern, dan campursari semuanya menggunakan progresi ini secara ekstensif. Lagu-lagu klasik seperti <em>Bengawan Solo</em>, <em>Kopi Dangdut</em>, hingga pop Iwan Fals era 1980-an — semuanya bergantung pada kekuatan harmonis tiga akor ini.</p>
+
+<p>Ketika Koes Plus di era 1970-an membuat lagu demi lagu yang bisa dimainkan dengan tiga atau empat akor, mereka tidak sedang "terlalu sederhana" — mereka mengikuti tradisi yang sama yang diikuti Chuck Berry, Beatles, dan Bob Dylan. Kekuatan ada di melodinya, di liriknya, di cara Tonny Koeswoyo memainkan intro gitar yang sederhana tapi selalu dikenali jutaan orang.</p>
+</div>
+</div>
+<div class="dv" style="max-width:780px;margin:0 auto;padding:0 36px;"><div class="dv-l"></div><span class="dv-s">🎹</span><div class="dv-l"></div></div>
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-teori-musik.html">← Taman Teori Musik</a>
+  <span class="fc">ILMIORA © 2025 — Harmoni & Akor</span>
+  <a href="https://ilmiora.blogspot.com">Beranda →</a>
+</footer></body></html>
