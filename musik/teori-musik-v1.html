@@ -537,6 +537,7 @@ const DL_CONFIG={
   'melodi-kontrapoin':{icon:'🎶',title:'Panduan Melodi & Kontrapoin',sub:'Frasa Melodik · Kontrapoin · Fuga',btnLabel:'🎶 Panduan',btnUrl:'#'},
   'interval-modus':{icon:'📐',title:'Tabel Interval & Modus',sub:'Interval · Modus Gereja · Sistem Modal',btnLabel:'📐 Tabel',btnUrl:'#'},
   'konteks-peradaban':{icon:'🌐',title:'Musik & Peradaban',sub:'Sejarah Musik · Lintas Budaya · Konteks Agama',btnLabel:'🌐 Jelajahi',btnUrl:'#'}
+};
 
 let cache={},current=SUBS[0].key,filtered=[],page=1,sortMode='new';
 
@@ -570,7 +571,8 @@ function switchKajian(key){
   ['sNew','sOld','sAZ'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById('sNew').classList.add('active');
   document.querySelectorAll('.kj-card').forEach(c=>c.classList.remove('active'));
-  document.getElementById('kj-'+key).classList.add('active');
+  const kjCard=document.getElementById('kj-'+key);
+  if(kjCard) kjCard.classList.add('active');
   const sub=SUBS.find(s=>s.key===key);
   document.getElementById('ahIcon').textContent=sub.icon;
   document.getElementById('ahName').textContent=sub.label;
@@ -657,20 +659,6 @@ function toggleK7(){
 function closeK7(){
   document.getElementById('k7Panel').classList.remove('open');
   document.getElementById('k7Btn').classList.remove('open');
-}
-
-/* ── PATCH: kajian ke-7 tidak punya kj-card di grid, skip getElementById ── */
-const _origSwitch = switchKajian;
-function switchKajian(key){
-  _origSwitch(key);
-  /* jika kajian ke-7 aktif, highlight tombol slide saja */
-  if(key==='konteks-peradaban'){
-    document.querySelectorAll('.kj-card').forEach(c=>c.classList.remove('active'));
-    document.getElementById('k7Btn').classList.add('open');
-  } else {
-    document.getElementById('k7Btn').classList.remove('open');
-    document.getElementById('k7Panel').classList.remove('open');
-  }
 }
 </script>
 </body>
