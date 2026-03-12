@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Gitar dan Keluarga Alat Petik: Fisika Senar dan Jiwa Instrumen — ILMIORA</title>
+<meta name="description" content="Dari kecapi Mesir kuno hingga Fender Stratocaster — fisika getaran senar, keluarga alat petik dunia, dan mengapa gitar menjadi instrumen paling demokratis dalam sejarah musik.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06050a;--card:#110f18;--lift:#181524;--chalk:#ede8f5;--body:rgba(237,232,245,0.64);--muted:#6b5f8a;--border:rgba(124,58,237,0.14);--border2:rgba(255,255,255,0.05);--acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);--rose:#c084fc;--sage:#6ee7b7;--amber:#f0c060;--warm:#f87171;--teal:#67e8f9;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.9;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--rose));z-index:9999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(6,5,10,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);background:var(--accx);}
+.wrap{max-width:780px;margin:0 auto;padding:0 36px;}
+.hero{padding:108px 0 56px;position:relative;overflow:hidden;}
+.hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.07),transparent 65%);top:-120px;right:-200px;pointer-events:none;}
+.eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:12px;}
+.eye::before{content:'';width:24px;height:1px;background:var(--acc);}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+h1.ht{font-size:clamp(30px,5.5vw,54px);font-weight:700;line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px;}
+h1.ht em{font-style:italic;color:var(--acc2);}
+.hdim{display:block;color:rgba(237,232,245,.28);font-size:.74em;}
+.hsub{font-style:italic;color:var(--body);font-size:clamp(15px,2vw,19px);margin-bottom:28px;line-height:1.72;max-width:640px;}
+.meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.mt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:3px;border:1px solid rgba(124,58,237,0.3);background:var(--accx);color:var(--acc2);}
+.md{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.bc{padding:56px 0 100px;}
+.bc h2{font-family:'Syne',sans-serif;font-size:clamp(19px,2.7vw,26px);font-weight:800;color:var(--chalk);margin:56px 0 16px;letter-spacing:-.5px;padding-left:18px;position:relative;}
+.bc h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:72%;background:var(--acc);border-radius:2px;}
+.bc h3{font-family:'Syne',sans-serif;font-size:clamp(15px,2.1vw,19px);font-weight:800;color:var(--acc2);margin:36px 0 12px;}
+.bc p{margin-bottom:24px;}
+.bc strong{color:var(--chalk);font-weight:600;}
+.bc em{color:var(--acc2);font-style:italic;}
+.pq{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.5vw,24px);color:var(--chalk);line-height:1.65;border-left:3px solid var(--acc);padding:18px 28px;margin:40px 0;background:var(--accx);border-radius:0 10px 10px 0;position:relative;}
+.pq::before{content:'"';position:absolute;top:-8px;left:22px;font-size:68px;color:var(--acc);opacity:.13;line-height:1;}
+.fb{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:32px 0;}
+.ft{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.fb ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fb li{font-size:16px;color:var(--body);padding-left:20px;position:relative;line-height:1.7;}
+.fb li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.fb li strong{color:var(--chalk);}
+.tbl{background:var(--card);border:1px solid var(--border);border-radius:12px;margin:32px 0;overflow:hidden;}
+.tbl table{width:100%;border-collapse:collapse;}
+.tbl th{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--acc2);text-align:left;padding:13px 18px;background:rgba(124,58,237,0.07);border-bottom:1px solid var(--border);}
+.tbl td{font-size:15px;color:var(--body);padding:12px 18px;border-bottom:1px solid var(--border2);vertical-align:top;line-height:1.6;}
+.tbl td:first-child{font-family:'Fira Code',monospace;font-size:12px;font-weight:600;color:var(--acc2);white-space:nowrap;}
+.tbl tr:last-child td{border-bottom:none;}
+footer{border-top:1px solid var(--border);padding:24px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+.fc{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;}
+@media(max-width:680px){nav{padding:0 18px;}.wrap{padding:0 20px;}footer{padding:18px 20px;}}
+
+/* ── AUDIO PLAYER ── */
+.audio-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin:36px 0;}
+.audio-title{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.audio-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--acc);display:inline-block;animation:blink 2s infinite;}
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px;}
+.demo-btn{background:rgba(124,58,237,0.07);border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.demo-btn:hover{border-color:var(--acc);background:rgba(124,58,237,0.15);transform:translateY(-2px);}
+.demo-btn.playing{border-color:var(--acc2);background:rgba(167,139,250,0.12);}
+.demo-btn.playing::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(167,139,250,0.1),transparent);animation:ripple 1s ease-out infinite;}
+@keyframes ripple{0%{transform:scale(0.8);opacity:1;}100%{transform:scale(2);opacity:0;}}
+.demo-icon{font-size:22px;display:block;margin-bottom:6px;}
+.demo-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:var(--chalk);margin-bottom:3px;}
+.demo-note{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
+.demo-btn.playing .demo-note{color:var(--acc2);}
+.wiki-audio{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.wiki-label{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}
+.wiki-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:8px;margin-bottom:8px;}
+.wiki-item:last-child{margin-bottom:0;}
+.wiki-play{width:32px;height:32px;border-radius:50%;background:var(--acc);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:all .2s;}
+.wiki-play:hover{background:var(--acc2);transform:scale(1.08);}
+.wiki-info{flex:1;}
+.wiki-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--chalk);}
+.wiki-src{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
+.wiki-link{font-family:'Fira Code',monospace;font-size:9px;color:var(--acc2);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:4px;transition:all .2s;white-space:nowrap;}
+.wiki-link:hover{background:var(--accx);}
+audio{display:none;}
+
+.string-vis{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin:28px 0;}
+.sv-title{font-family:'Fira Code',monospace;font-size:9px;color:var(--acc2);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+.string-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.string-row:last-child{margin-bottom:0;}
+.sn-name{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);width:28px;text-align:right;flex-shrink:0;}
+.sn-line{flex:1;height:2px;border-radius:1px;background:linear-gradient(90deg,var(--acc),var(--acc2));position:relative;}
+.sn-line.t1{height:1px;opacity:.7;}
+.sn-line.t2{height:1px;opacity:.8;}
+.sn-line.t3{height:2px;}
+.sn-line.t4{height:2px;opacity:.9;}
+.sn-line.t5{height:3px;}
+.sn-line.t6{height:4px;background:linear-gradient(90deg,var(--muted),var(--acc));}
+.sn-note{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);width:24px;flex-shrink:0;font-weight:700;}
+.sn-freq{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);width:52px;flex-shrink:0;}
+.instr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0;}
+.ig{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
+.ig-icon{font-size:28px;margin-bottom:8px;display:block;}
+.ig-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--chalk);margin-bottom:4px;}
+.ig-origin{font-family:'Fira Code',monospace;font-size:9px;color:var(--acc);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}
+.ig-desc{font-size:14px;color:var(--body);line-height:1.6;}
+@media(max-width:560px){.instr-grid{grid-template-columns:1fr;}}
+</style>
+</head><body>
+<div id="sb"></div><script>window.addEventListener('scroll',()=>{document.getElementById('sb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%'});</script>
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>alat-petik</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-instrumen-musik.html">← Taman Instrumen</a>
+</nav>
+<div class="wrap">
+<div class="hero"><div class="hero-orb"></div>
+  <div class="eye"><span class="dot"></span>🎸 Instrumen Musik &nbsp;·&nbsp; Alat Petik & Gesek</div>
+  <h1 class="ht"><em>Gitar dan Keluarga</em> Alat Petik Dunia<span class="hdim">— dari kecapi Mesir hingga Fender Stratocaster</span></h1>
+  <p class="hsub">Petik satu senar. Dalam sepersepuluh detik, dua ratus tahun fisika akustik bekerja sekaligus. Begitulah gitar — instrumen paling sederhana sekaligus paling demokratis yang pernah ada.</p>
+  <div class="meta"><span class="mt">Alat Petik & Gesek</span><span class="md">📅 2025</span><span class="md">⏱ 15 menit baca</span><span class="md">✍ ILMIORA</span></div>
+</div>
+<div class="bc">
+<p>Petik senar gitar sekali saja. Dalam sepersepuluh detik, lebih dari dua ratus tahun fisika akustik bekerja secara simultan: senar bergetar menciptakan gelombang transversal, getaran menjalar ke saddle, diteruskan ke soundboard kayu yang bergetar seperti membran, udara di dalam body gitar ikut bergetar menciptakan resonansi, dan seluruh getaran itu akhirnya mencapai telingamu sebagai nada.</p>
+
+<p>Dari kecapi Mesir kuno 3.000 tahun SM hingga gitar listrik Fender Stratocaster 1954 — prinsipnya tidak pernah berubah. Yang berubah hanyalah bagaimana manusia memaksimalkan, memperindah, dan mengeksplorasi getaran senar yang sederhana itu.</p>
+
+<div class="pq">Gitar adalah instrument yang paling demokratis dalam sejarah musik — cukup enam senar, dua tangan, dan ribuan lagu dunia bisa dimainkan. Tidak ada instrumen lain yang menyentuh sebanyak manusia dalam sebanyak genre dalam waktu yang sama.</div>
+
+<h2>Fisika Senar: Mengapa Setiap Senar Berbeda</h2>
+
+<p>Dalam gitar standar terdapat enam senar dengan ketebalan berbeda, menghasilkan nada berbeda. Frekuensi nada senar ditentukan oleh tiga faktor: <strong>panjang senar yang bergetar</strong>, <strong>tegangan senar</strong>, dan <strong>massa per satuan panjang senar</strong>. Itulah mengapa menekan fret (memperpendek panjang yang bergetar) menaikkan nada, dan senar yang lebih tebal menghasilkan nada lebih rendah.</p>
+
+<div class="string-vis">
+  <div class="sv-title">// Enam Senar Gitar Standar — Tuning E Standard</div>
+  <div class="string-row"><span class="sn-name">6</span><div class="sn-line t6"></div><span class="sn-note">E2</span><span class="sn-freq">82.4 Hz</span></div>
+  <div class="string-row"><span class="sn-name">5</span><div class="sn-line t5"></div><span class="sn-note">A2</span><span class="sn-freq">110 Hz</span></div>
+  <div class="string-row"><span class="sn-name">4</span><div class="sn-line t4"></div><span class="sn-note">D3</span><span class="sn-freq">146.8 Hz</span></div>
+  <div class="string-row"><span class="sn-name">3</span><div class="sn-line t3"></div><span class="sn-note">G3</span><span class="sn-freq">196 Hz</span></div>
+  <div class="string-row"><span class="sn-name">2</span><div class="sn-line t2"></div><span class="sn-note">B3</span><span class="sn-freq">246.9 Hz</span></div>
+  <div class="string-row"><span class="sn-name">1</span><div class="sn-line t1"></div><span class="sn-note">E4</span><span class="sn-freq">329.6 Hz</span></div>
+</div>
+
+<div class="audio-section">
+  <div class="audio-title">🎸 Demo Suara — Petik Senar Gitar</div>
+  <div class="demo-grid">
+    <div class="demo-btn" data-label="▶ E2 (senar 6)" onclick="playDemo(this,'guitar',82.4,3.5)">
+      <span class="demo-icon">🎸</span>
+      <div class="demo-name">Senar 6</div>
+      <div class="demo-note">▶ E2 — 82Hz</div>
+    </div>
+    <div class="demo-btn" data-label="▶ A2 (senar 5)" onclick="playDemo(this,'guitar',110,3)">
+      <span class="demo-icon">🎸</span>
+      <div class="demo-name">Senar 5</div>
+      <div class="demo-note">▶ A2 — 110Hz</div>
+    </div>
+    <div class="demo-btn" data-label="▶ D3 (senar 4)" onclick="playDemo(this,'guitar',146.8,2.8)">
+      <span class="demo-icon">🎸</span>
+      <div class="demo-name">Senar 4</div>
+      <div class="demo-note">▶ D3 — 147Hz</div>
+    </div>
+    <div class="demo-btn" data-label="▶ G3 (senar 3)" onclick="playDemo(this,'guitar',196,2.5)">
+      <span class="demo-icon">🎸</span>
+      <div class="demo-name">Senar 3</div>
+      <div class="demo-note">▶ G3 — 196Hz</div>
+    </div>
+    <div class="demo-btn" data-label="▶ B3 (senar 2)" onclick="playDemo(this,'guitar',246.9,2.3)">
+      <span class="demo-icon">🎸</span>
+      <div class="demo-name">Senar 2</div>
+      <div class="demo-note">▶ B3 — 247Hz</div>
+    </div>
+    <div class="demo-btn" data-label="▶ E4 (senar 1)" onclick="playDemo(this,'guitar',329.6,2)">
+      <span class="demo-icon">🎸</span>
+      <div class="demo-name">Senar 1</div>
+      <div class="demo-note">▶ E4 — 330Hz</div>
+    </div>
+  </div>
+  <div class="wiki-audio">
+    <div class="wiki-label">// Rekaman Asli — Wikimedia Commons</div>
+    <div class="wiki-item">
+      <button class="wiki-play" onclick="playWiki('aud-gitar-akustik')">▶</button>
+      <div class="wiki-info">
+        <div class="wiki-name">Gitar Akustik — Fingerpicking</div>
+        <div class="wiki-src">Sumber: Wikimedia Commons · CC BY-SA</div>
+      </div>
+      <a class="wiki-link" href="https://commons.wikimedia.org/wiki/File:GuitareClassique5.ogg" target="_blank">Lihat →</a>
+      <audio id="aud-gitar-akustik" src="https://upload.wikimedia.org/wikipedia/commons/7/74/GuitareClassique5.ogg" preload="none"></audio>
+    </div>
+    <div class="wiki-item">
+      <button class="wiki-play" onclick="playWiki('aud-gitar-chord')">▶</button>
+      <div class="wiki-info">
+        <div class="wiki-name">Gitar Akustik — Chord Strumming</div>
+        <div class="wiki-src">Sumber: Wikimedia Commons · CC BY-SA</div>
+      </div>
+      <a class="wiki-link" href="https://commons.wikimedia.org/wiki/File:Acoustic_guitar_chord_A.ogg" target="_blank">Lihat →</a>
+      <audio id="aud-gitar-chord" src="https://upload.wikimedia.org/wikipedia/commons/1/10/Acoustic_guitar_chord_A.ogg" preload="none"></audio>
+    </div>
+  </div>
+</div>
+
+<h2>Keluarga Alat Petik Dunia</h2>
+
+<p>Gitar hanyalah satu anggota keluarga besar alat musik petik (chordophone) yang mencakup ratusan instrumen dari seluruh peradaban.</p>
+
+<div class="instr-grid">
+  <div class="ig"><span class="ig-icon">🎸</span><div class="ig-name">Gitar Klasik</div><div class="ig-origin">// Spanyol · abad ke-19</div><div class="ig-desc">Senar nilon, dimainkan dengan jari. Repertoar dari Baroque hingga Flamenco. Resonansi hangat dan intim.</div></div>
+  <div class="ig"><span class="ig-icon">🪕</span><div class="ig-name">Oud / Ud</div><div class="ig-origin">// Arab · Persia · abad ke-8</div><div class="ig-desc">Nenek moyang gitar dan lute Eropa. Tidak ada fret — memungkinkan mikrotonal. Suara paling hangat dan dalam di dunia petik.</div></div>
+  <div class="ig"><span class="ig-icon">🎵</span><div class="ig-name">Kecapi Sunda</div><div class="ig-origin">// Nusantara · Jawa Barat</div><div class="ig-desc">Kecapi parahu (perahu) dan kecapi siter. Digunakan dalam tembang Sunda dan kacapi suling. Resonansi yang lembut dan meditatif.</div></div>
+  <div class="ig"><span class="ig-icon">🎶</span><div class="ig-name">Sitar</div><div class="ig-origin">// India · abad ke-13</div><div class="ig-desc">20+ senar simpatis yang beresonansi secara pasif. Menghasilkan timbre yang sangat kaya dan kompleks. Instrumen raga klasik India.</div></div>
+  <div class="ig"><span class="ig-icon">🎸</span><div class="ig-name">Gitar Listrik</div><div class="ig-origin">// Amerika · 1931</div><div class="ig-desc">Pickup elektromagnetik mengubah getaran senar menjadi sinyal listrik. Membuka dunia blues, rock, dan jazz modern.</div></div>
+  <div class="ig"><span class="ig-icon">🎵</span><div class="ig-name">Sasando</div><div class="ig-origin">// Nusantara · NTT · Rote</div><div class="ig-desc">Alat petik bambu dengan resonator daun lontar. Suara yang sangat unik dan langka — salah satu instrumen paling eksotis di dunia.</div></div>
+</div>
+
+<h2>Gitar Listrik: Revolusi yang Mengubah Budaya</h2>
+
+<p>Tidak ada instrumen tunggal yang mengubah budaya populer abad ke-20 lebih dari gitar listrik. Diciptakan secara komersial oleh Les Paul dan Leo Fender di tahun 1950-an, ia segera menjadi simbol pemberontakan, kreativitas, dan kebebasan.</p>
+
+<div class="fb">
+<div class="ft">// Tonggak Sejarah Gitar Listrik</div>
+<ul>
+<li><strong>1931 — Rickenbacker "Frying Pan":</strong> Gitar listrik komersial pertama — bentuk penggorengan, dipakai dalam Hawaiian music.</li>
+<li><strong>1950 — Fender Telecaster:</strong> Gitar solid body pertama yang diproduksi massal. Desain sederhana yang revolusioner — masih diproduksi hingga hari ini tanpa banyak perubahan.</li>
+<li><strong>1952 — Gibson Les Paul:</strong> Berkolaborasi dengan Les Paul sendiri. Humbucking pickup mengeliminasi hum — menghasilkan suara yang tebal dan warm.</li>
+<li><strong>1954 — Fender Stratocaster:</strong> Tiga pickup, tremolo arm, kontur yang ergonomis. Dimainkan Hendrix, Clapton, Gilmour. Ikon yang melampaui instrumen.</li>
+<li><strong>1960-an — Distorsi sebagai seni:</strong> Hendrix dan Clapton menemukan bahwa overdrive amplifier bisa menjadi warna tersendiri, bukan noise. Lahirlah suara rock.</li>
+</ul>
+</div>
+
+<div class="pq">Jimi Hendrix tidak hanya memainkan gitar — ia memainkan amplifier, efek, dan udara di sekitar senarnya. Ia membuktikan bahwa instrumen tidak terbatas pada apa yang dirancang pembuatnya, tapi pada apa yang dibayangkan pemainnya.</div>
+</div>
+</div>
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-instrumen-musik.html">← Taman Instrumen</a>
+  <span class="fc">ILMIORA © 2025 — Alat Petik & Gesek</span>
+  <a href="https://ilmiora.blogspot.com">Beranda →</a>
+</footer>
+<script>
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+let currentSource = null;
+let currentBtn = null;
+
+function getACtx(){
+  if(!actx) actx = new AudioCtx();
+  if(actx.state === 'suspended') actx.resume();
+  return actx;
+}
+
+function stopCurrent(){
+  if(currentSource){try{currentSource.stop();}catch(e){}currentSource=null;}
+  if(currentBtn){currentBtn.classList.remove('playing');currentBtn.querySelector('.demo-note').textContent=currentBtn.dataset.label||'▶ Play';currentBtn=null;}
+}
+
+function playDemo(btn, type, freq, dur){
+  stopCurrent();
+  const ctx = getACtx();
+  const now = ctx.currentTime;
+  const gain = ctx.createGain();
+  gain.connect(ctx.destination);
+
+  if(type==='guitar'||type==='petik'){
+    // Karplus-Strong plucked string simulation
+    const bufSize = Math.floor(ctx.sampleRate / freq);
+    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for(let i=0;i<bufSize;i++) data[i] = Math.random()*2-1;
+    const src = ctx.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    // lowpass filter for string decay
+    const filt = ctx.createBiquadFilter();
+    filt.type='lowpass'; filt.frequency.value = freq*3;
+    src.connect(filt); filt.connect(gain);
+    gain.gain.setValueAtTime(0.6, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now+dur);
+    src.start(now); src.stop(now+dur);
+    currentSource = src;
+
+  } else if(type==='violin'||type==='gesek'){
+    // Violin-like with vibrato
+    const osc = ctx.createOscillator();
+    const vib = ctx.createOscillator();
+    const vibGain = ctx.createGain();
+    osc.type = 'sawtooth'; osc.frequency.value = freq;
+    vib.type = 'sine'; vib.frequency.value = 5.5;
+    vibGain.gain.value = 3;
+    vib.connect(vibGain); vibGain.connect(osc.frequency);
+    osc.connect(gain);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.35, now+0.12);
+    gain.gain.setValueAtTime(0.35, now+dur-0.2);
+    gain.gain.linearRampToValueAtTime(0, now+dur);
+    osc.start(now); osc.stop(now+dur);
+    vib.start(now); vib.stop(now+dur);
+    currentSource = osc;
+
+  } else {
+    // Generic oscillator fallback
+    const osc = ctx.createOscillator();
+    osc.type = type||'sine'; osc.frequency.value = freq;
+    osc.connect(gain);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now+dur);
+    osc.start(now); osc.stop(now+dur);
+    currentSource = osc;
+  }
+
+  currentBtn = btn;
+  btn.classList.add('playing');
+  btn.querySelector('.demo-note').textContent = '♪ Playing...';
+  setTimeout(()=>{if(currentBtn===btn){btn.classList.remove('playing');btn.querySelector('.demo-note').textContent=btn.dataset.label||'▶ Play';currentBtn=null;}}, dur*1000);
+}
+
+function playWiki(audioId){
+  // Stop Web Audio
+  stopCurrent();
+  // Play HTML audio
+  document.querySelectorAll('audio').forEach(a=>{if(!a.paused)a.pause();a.currentTime=0;});
+  const aud = document.getElementById(audioId);
+  if(aud) aud.play();
+}
+</script>
+</body></html>
