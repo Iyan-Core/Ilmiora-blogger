@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Drum Kit dan Perkusi Dunia: Detak Jantung Semua Musik — ILMIORA</title>
+<meta name="description" content="Dari kendang Papua hingga drum kit jazz modern — anatomi drum kit lengkap, fisika membran, mengapa manusia menabuh sebelum berbicara, dan keluarga perkusi dari seluruh peradaban.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06050a;--card:#110f18;--lift:#181524;--chalk:#ede8f5;--body:rgba(237,232,245,0.64);--muted:#6b5f8a;--border:rgba(124,58,237,0.14);--border2:rgba(255,255,255,0.05);--acc:#7c3aed;--acc2:#a78bfa;--accx:rgba(124,58,237,0.07);--rose:#c084fc;--sage:#6ee7b7;--amber:#f0c060;--warm:#f87171;--teal:#67e8f9;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chalk);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.9;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px;}
+#sb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--rose));z-index:9999;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(6,5,10,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nb{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc2);text-decoration:none;}
+.ns{color:var(--muted);margin:0 3px;}
+.nback{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s;}
+.nback:hover{color:var(--acc2);border-color:var(--acc);background:var(--accx);}
+.wrap{max-width:780px;margin:0 auto;padding:0 36px;}
+.hero{padding:108px 0 56px;position:relative;overflow:hidden;}
+.hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.07),transparent 65%);top:-120px;right:-200px;pointer-events:none;}
+.eye{font-family:'Fira Code',monospace;font-size:10px;color:var(--acc2);letter-spacing:3.5px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:12px;}
+.eye::before{content:'';width:24px;height:1px;background:var(--acc);}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+h1.ht{font-size:clamp(30px,5.5vw,54px);font-weight:700;line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px;}
+h1.ht em{font-style:italic;color:var(--acc2);}
+.hdim{display:block;color:rgba(237,232,245,.28);font-size:.74em;}
+.hsub{font-style:italic;color:var(--body);font-size:clamp(15px,2vw,19px);margin-bottom:28px;line-height:1.72;max-width:640px;}
+.meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.mt{font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:3px;border:1px solid rgba(124,58,237,0.3);background:var(--accx);color:var(--acc2);}
+.md{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);}
+.bc{padding:56px 0 100px;}
+.bc h2{font-family:'Syne',sans-serif;font-size:clamp(19px,2.7vw,26px);font-weight:800;color:var(--chalk);margin:56px 0 16px;letter-spacing:-.5px;padding-left:18px;position:relative;}
+.bc h2::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:72%;background:var(--acc);border-radius:2px;}
+.bc h3{font-family:'Syne',sans-serif;font-size:clamp(15px,2.1vw,19px);font-weight:800;color:var(--acc2);margin:36px 0 12px;}
+.bc p{margin-bottom:24px;}
+.bc strong{color:var(--chalk);font-weight:600;}
+.bc em{color:var(--acc2);font-style:italic;}
+.pq{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.5vw,24px);color:var(--chalk);line-height:1.65;border-left:3px solid var(--acc);padding:18px 28px;margin:40px 0;background:var(--accx);border-radius:0 10px 10px 0;position:relative;}
+.pq::before{content:'"';position:absolute;top:-8px;left:22px;font-size:68px;color:var(--acc);opacity:.13;line-height:1;}
+.fb{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:32px 0;}
+.ft{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.fb ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fb li{font-size:16px;color:var(--body);padding-left:20px;position:relative;line-height:1.7;}
+.fb li::before{content:'—';position:absolute;left:0;color:var(--acc);}
+.fb li strong{color:var(--chalk);}
+footer{border-top:1px solid var(--border);padding:24px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+footer a{font-family:'Fira Code',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--acc2);}
+.fc{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);opacity:.4;}
+@media(max-width:680px){nav{padding:0 18px;}.wrap{padding:0 20px;}footer{padding:18px 20px;}}
+
+.audio-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin:36px 0;}
+.audio-title{font-family:'Fira Code',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--acc2);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.audio-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--acc);display:inline-block;animation:blink 2s infinite;}
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px;}
+.demo-btn{background:rgba(124,58,237,0.07);border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.demo-btn:hover{border-color:var(--acc);background:rgba(124,58,237,0.15);transform:translateY(-2px);}
+.demo-btn.playing{border-color:var(--acc2);background:rgba(167,139,250,0.12);}
+.demo-btn.playing::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(167,139,250,0.1),transparent);animation:ripple 1s ease-out infinite;}
+@keyframes ripple{0%{transform:scale(0.8);opacity:1;}100%{transform:scale(2);opacity:0;}}
+.demo-icon{font-size:22px;display:block;margin-bottom:6px;}
+.demo-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:var(--chalk);margin-bottom:3px;}
+.demo-note{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
+.demo-btn.playing .demo-note{color:var(--acc2);}
+.wiki-audio{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.wiki-label{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}
+.wiki-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:8px;margin-bottom:8px;}
+.wiki-item:last-child{margin-bottom:0;}
+.wiki-play{width:32px;height:32px;border-radius:50%;background:var(--acc);border:none;cursor:pointer;font-size:12px;flex-shrink:0;transition:all .2s;color:white;}
+.wiki-play:hover{background:var(--acc2);transform:scale(1.08);}
+.wiki-info{flex:1;}
+.wiki-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--chalk);}
+.wiki-src{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
+.wiki-link{font-family:'Fira Code',monospace;font-size:9px;color:var(--acc2);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:4px;transition:all .2s;white-space:nowrap;}
+.wiki-link:hover{background:var(--accx);}
+audio{display:none;}
+
+.kit-diagram{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin:28px 0;position:relative;}
+.kd-title{font-family:'Fira Code',monospace;font-size:9px;color:var(--acc2);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;}
+.kit-svg-wrap{width:100%;max-width:480px;margin:0 auto;display:block;}
+.kit-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.kl-item{display:flex;align-items:center;gap:6px;font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);}
+.kl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.notation-row{display:flex;align-items:center;gap:0;margin:4px 0;height:32px;}
+.nr-label{font-family:'Fira Code',monospace;font-size:9px;color:var(--muted);width:80px;flex-shrink:0;text-align:right;padding-right:12px;}
+.nr-line{flex:1;height:1px;background:var(--border2);position:relative;}
+.nr-note{position:absolute;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;}
+.nr-note.x-note{border-radius:0;transform:translateY(-50%) rotate(45deg);background:var(--muted);}
+.perc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0;}
+.pg{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-align:center;}
+.pg-icon{font-size:28px;margin-bottom:8px;display:block;}
+.pg-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--chalk);margin-bottom:4px;}
+.pg-role{font-family:'Fira Code',monospace;font-size:8px;color:var(--acc);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}
+.pg-desc{font-size:13px;color:var(--body);line-height:1.55;}
+@media(max-width:560px){.perc-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head><body>
+<div id="sb"></div><script>window.addEventListener("scroll",()=>{document.getElementById("sb").style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+"%"});</script>
+<nav>
+  <a class="nb" href="https://ilmiora.blogspot.com">~/ILMIORA<span class="ns">/</span>musik<span class="ns">/</span>alat-pukul</a>
+  <a class="nback" href="https://iyan-core.github.io/Ilmiora-blogger/taman-instrumen-musik.html">← Taman Instrumen</a>
+</nav>
+<div class="wrap">
+<div class="hero"><div class="hero-orb"></div>
+  <div class="eye"><span class="dot"></span>🥁 Instrumen Musik &nbsp;·&nbsp; Alat Pukul & Perkusi</div>
+  <h1 class="ht"><em>Drum dan</em> Perkusi Dunia<span class="hdim">— detak jantung yang hadir di setiap peradaban</span></h1>
+  <p class="hsub">Tidak ada peradaban yang hidup tanpa perkusi. Manusia menabuh sebelum belajar berbicara, sebelum memetik, sebelum meniup. Drum adalah bahasa pertama yang melampaui semua batas.</p>
+  <div class="meta"><span class="mt">Alat Pukul & Perkusi</span><span class="md">📅 2025</span><span class="md">⏱ 14 menit baca</span><span class="md">✍ ILMIORA</span></div>
+</div>
+<div class="bc">
+<p>Di antara semua instrumen dalam sejarah musik, drum adalah yang paling universal. Tidak ada peradaban yang hidup tanpa perkusi — dari kendang Papua hingga tabla India, dari timpani Romawi kuno hingga drum kit modern. Manusia menabuh benda jauh sebelum belajar meniup atau memetik, dan ritme yang dihasilkan menjadi bahasa pertama yang melampaui batas suku dan bahasa.</p>
+
+<p>Drum kit modern — yang kita kenal dengan bass drum, snare, hi-hat, dan cymbal — sebenarnya adalah instrumen yang sangat muda. Ia lahir pada awal abad ke-20 di Amerika Serikat, ketika aturan teater melarang lebih dari satu pemain perkusi di atas panggung. Musisi jazz merespons dengan kreativitas: menggabungkan semua drum ke dalam satu set yang bisa dimainkan satu orang. Dari keterbatasan lahirlah salah satu instrumen paling ekspresif di dunia.</p>
+
+<div class="pq">Drummer yang baik tidak memukul drum — ia berbicara melalui drum. Setiap ghost note, setiap accent, setiap variasi dynamics bercerita. John Bonham, Buddy Rich, Tony Williams — mereka bukan memainkan ritme, mereka bercerita dengan ritme.</div>
+
+<h2>Anatomi Drum Kit: Setiap Komponen dan Fungsinya</h2>
+
+<div class="kit-diagram">
+  <div class="kd-title">// Anatomi Drum Kit Standar 5-Piece</div>
+  <svg class="kit-svg-wrap" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Bass drum -->
+    <ellipse cx="240" cy="230" rx="70" ry="42" fill="rgba(124,58,237,0.12)" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="240" y="233" text-anchor="middle" font-family="monospace" font-size="10" fill="#a78bfa">Bass Drum</text>
+    <text x="240" y="245" text-anchor="middle" font-family="monospace" font-size="8" fill="#6b5f8a">kick · E1–F2</text>
+    <!-- Snare -->
+    <ellipse cx="160" cy="210" rx="38" ry="20" fill="rgba(192,132,252,0.12)" stroke="#c084fc" stroke-width="1.5"/>
+    <text x="160" y="213" text-anchor="middle" font-family="monospace" font-size="9" fill="#c084fc">Snare</text>
+    <!-- Floor tom -->
+    <ellipse cx="340" cy="210" rx="38" ry="22" fill="rgba(110,231,183,0.1)" stroke="#6ee7b7" stroke-width="1.5"/>
+    <text x="340" y="213" text-anchor="middle" font-family="monospace" font-size="9" fill="#6ee7b7">Floor Tom</text>
+    <!-- Tom 1 -->
+    <ellipse cx="200" cy="145" rx="30" ry="17" fill="rgba(240,192,96,0.1)" stroke="#f0c060" stroke-width="1.5"/>
+    <text x="200" y="148" text-anchor="middle" font-family="monospace" font-size="8" fill="#f0c060">Tom 1</text>
+    <!-- Tom 2 -->
+    <ellipse cx="280" cy="145" rx="32" ry="18" fill="rgba(240,192,96,0.1)" stroke="#f0c060" stroke-width="1.5"/>
+    <text x="280" y="148" text-anchor="middle" font-family="monospace" font-size="8" fill="#f0c060">Tom 2</text>
+    <!-- Hi-hat -->
+    <ellipse cx="105" cy="155" rx="36" ry="8" fill="rgba(103,232,249,0.1)" stroke="#67e8f9" stroke-width="1.5"/>
+    <text x="105" y="158" text-anchor="middle" font-family="monospace" font-size="8" fill="#67e8f9">Hi-Hat</text>
+    <line x1="105" y1="163" x2="105" y2="290" stroke="#67e8f9" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+    <text x="105" y="285" text-anchor="middle" font-family="monospace" font-size="7" fill="#6b5f8a">pedal kaki kiri</text>
+    <!-- Crash cymbal -->
+    <ellipse cx="370" cy="118" rx="40" ry="9" fill="rgba(248,113,113,0.1)" stroke="#f87171" stroke-width="1.5" transform="rotate(-8,370,118)"/>
+    <text x="380" y="110" text-anchor="middle" font-family="monospace" font-size="8" fill="#f87171">Crash</text>
+    <!-- Ride cymbal -->
+    <ellipse cx="420" cy="160" rx="44" ry="10" fill="rgba(167,139,250,0.1)" stroke="#a78bfa" stroke-width="1.5" transform="rotate(-5,420,160)"/>
+    <text x="430" y="152" text-anchor="middle" font-family="monospace" font-size="8" fill="#a78bfa">Ride</text>
+    <!-- Bass pedal -->
+    <rect x="225" y="265" width="30" height="18" rx="3" fill="rgba(124,58,237,0.15)" stroke="#7c3aed" stroke-width="1"/>
+    <text x="240" y="277" text-anchor="middle" font-family="monospace" font-size="7" fill="#6b5f8a">pedal kaki kanan</text>
+  </svg>
+  <div class="kit-legend">
+    <div class="kl-item"><div class="kl-dot" style="background:#7c3aed"></div>Bass Drum</div>
+    <div class="kl-item"><div class="kl-dot" style="background:#c084fc"></div>Snare</div>
+    <div class="kl-item"><div class="kl-dot" style="background:#f0c060"></div>Tom-tom</div>
+    <div class="kl-item"><div class="kl-dot" style="background:#67e8f9"></div>Hi-Hat</div>
+    <div class="kl-item"><div class="kl-dot" style="background:#f87171"></div>Crash Cymbal</div>
+    <div class="kl-item"><div class="kl-dot" style="background:#a78bfa"></div>Ride Cymbal</div>
+  </div>
+</div>
+
+<div class="audio-section">
+  <div class="audio-title">🥁 Demo Suara — Drum Kit Synthesis</div>
+  <div class="demo-grid">
+    <div class="demo-btn" data-label="▶ Kick" onclick="playPerc(this,'kick',60,0.8)">
+      <span class="demo-icon">🥁</span>
+      <div class="demo-name">Bass Drum</div>
+      <div class="demo-note">▶ Kick · 60Hz</div>
+    </div>
+    <div class="demo-btn" data-label="▶ Snare" onclick="playPerc(this,'snare',200,0.25)">
+      <span class="demo-icon">🪘</span>
+      <div class="demo-name">Snare</div>
+      <div class="demo-note">▶ Crack · 200Hz</div>
+    </div>
+    <div class="demo-btn" data-label="▶ Hi-hat closed" onclick="playPerc(this,'hihat',0,0.06)">
+      <span class="demo-icon">🎵</span>
+      <div class="demo-name">Hi-Hat Closed</div>
+      <div class="demo-note">▶ Tick</div>
+    </div>
+    <div class="demo-btn" data-label="▶ Hi-hat open" onclick="playPerc(this,'hihat',0,0.4)">
+      <span class="demo-icon">🎵</span>
+      <div class="demo-name">Hi-Hat Open</div>
+      <div class="demo-note">▶ Tssh</div>
+    </div>
+    <div class="demo-btn" data-label="▶ Crash" onclick="playPerc(this,'cymbal',0,2.5)">
+      <span class="demo-icon">✨</span>
+      <div class="demo-name">Crash Cymbal</div>
+      <div class="demo-note">▶ Crash</div>
+    </div>
+    <div class="demo-btn" data-label="▶ Ride" onclick="playPerc(this,'cymbal',0,1.2)">
+      <span class="demo-icon">🎶</span>
+      <div class="demo-name">Ride Cymbal</div>
+      <div class="demo-note">▶ Ping</div>
+    </div>
+  </div>
+  <div class="wiki-audio">
+    <div class="wiki-label">// Rekaman Asli — Wikimedia Commons</div>
+    <div class="wiki-item">
+      <button class="wiki-play" onclick="playWiki('aud-drum-kit')">▶</button>
+      <div class="wiki-info">
+        <div class="wiki-name">Drum Kit — Rock Beat Demo</div>
+        <div class="wiki-src">Wikimedia Commons · CC BY-SA</div>
+      </div>
+      <a class="wiki-link" href="https://commons.wikimedia.org/wiki/File:Drum_kit_demo.ogg" target="_blank">Lihat →</a>
+      <audio id="aud-drum-kit" src="https://upload.wikimedia.org/wikipedia/commons/5/5d/Drum_kit_demo.ogg" preload="none"></audio>
+    </div>
+    <div class="wiki-item">
+      <button class="wiki-play" onclick="playWiki('aud-tabla')">▶</button>
+      <div class="wiki-info">
+        <div class="wiki-name">Tabla — Perkusi Klasik India</div>
+        <div class="wiki-src">Wikimedia Commons · CC BY-SA</div>
+      </div>
+      <a class="wiki-link" href="https://commons.wikimedia.org/wiki/File:Tabla_solo.ogg" target="_blank">Lihat →</a>
+      <audio id="aud-tabla" src="https://upload.wikimedia.org/wikipedia/commons/4/47/Tabla_solo.ogg" preload="none"></audio>
+    </div>
+  </div>
+</div>
+
+<h2>Fisika Membran: Mengapa Drum Berbunyi Seperti Itu</h2>
+
+<p>Drum menghasilkan suara dari <strong>getaran membran</strong> (drumhead) yang dipukul. Berbeda dengan senar yang bergetar dalam satu dimensi, membran bergetar dalam dua dimensi — menghasilkan pola getaran yang jauh lebih kompleks dan <em>inharmonic</em> (overtone-nya bukan kelipatan integer dari fundamental).</p>
+
+<div class="fb">
+  <div class="ft">// Faktor yang Menentukan Suara Drum</div>
+  <ul>
+    <li><strong>Diameter:</strong> Drum yang lebih besar → fundamental lebih rendah. Bass drum 22" menghasilkan nada jauh lebih rendah dari snare 14".</li>
+    <li><strong>Kedalaman shell:</strong> Shell yang lebih dalam → lebih banyak volume udara → resonansi lebih panjang dan lebih "fat".</li>
+    <li><strong>Tegangan head:</strong> Head yang lebih ketat → nada lebih tinggi dan attack lebih tajam. Snare biasanya di-tune jauh lebih ketat dari bass drum.</li>
+    <li><strong>Material shell:</strong> Maple → warm dan seimbang. Birch → bright dengan attack tajam. Mahoni → dark dan fat di low-mid.</li>
+    <li><strong>Snare wire:</strong> Kawat spiral di bawah snare drum menciptakan suara "crack" — resonansi simpati antara head bawah dan kawat saat dipukul.</li>
+  </ul>
+</div>
+
+<h2>Perkusi Dunia: Jauh Melampaui Drum Kit</h2>
+
+<div class="perc-grid">
+  <div class="pg"><span class="pg-icon">🪘</span><div class="pg-name">Kendang</div><div class="pg-role">// Nusantara</div><div class="pg-desc">Drum dua kepala khas gamelan Jawa-Bali. Dimainkan tangan kanan (dhung) dan kiri (tak). Memimpin dan mengontrol tempo gamelan.</div></div>
+  <div class="pg"><span class="pg-icon">🥁</span><div class="pg-name">Tabla</div><div class="pg-role">// India Utara</div><div class="pg-desc">Sepasang drum kecil. Daya mati (syahi hitam di tengah head) menciptakan karakter nada yang sangat khas dan dapat di-tune tepat.</div></div>
+  <div class="pg"><span class="pg-icon">🪘</span><div class="pg-name">Djembe</div><div class="pg-role">// Afrika Barat</div><div class="pg-desc">Drum goblet dari Mandinka. Tiga suara dasar: bass, tone, slap. Digunakan dalam ritual dan upacara sosial komunitas.</div></div>
+  <div class="pg"><span class="pg-icon">🎵</span><div class="pg-name">Taiko</div><div class="pg-role">// Jepang</div><div class="pg-desc">Drum besar Jepang — dari odaiko raksasa hingga shime-daiko kecil. Kodobushi (teknik tubuh) adalah bagian integral dari performanya.</div></div>
+  <div class="pg"><span class="pg-icon">🥁</span><div class="pg-name">Surdo</div><div class="pg-role">// Brasil</div><div class="pg-desc">Bass drum besar khas samba Brazil. Tiga ukuran dengan peran berbeda dalam ensambel — mengatur pulse dan harmoni ritmis samba.</div></div>
+  <div class="pg"><span class="pg-icon">🪘</span><div class="pg-name">Tifa</div><div class="pg-role">// Nusantara · Papua</div><div class="pg-desc">Drum silinder khas Papua dan Maluku. Dimainkan dalam upacara adat dan tarian. Simbol persatuan dan komunikasi antarkampung.</div></div>
+</div>
+
+<div class="pq">Dalam gamelan Jawa, kendang bukan sekadar penjaga ritme — ia adalah "pemimpin" yang memberi sinyal kepada seluruh ensambel: kapan mulai, kapan berhenti, kapan berubah tempo, kapan beralih gong. Seorang pengendang yang baik bukan drummer — ia adalah konduktor yang berbicara dengan pukulan.</div>
+</div>
+</div>
+<footer>
+  <a href="https://iyan-core.github.io/Ilmiora-blogger/taman-instrumen-musik.html">← Taman Instrumen</a>
+  <span class="fc">ILMIORA © 2025 — Alat Pukul & Perkusi</span>
+  <a href="https://ilmiora.blogspot.com">Beranda →</a>
+</footer>
+<script>
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx=null, currentNodes=[], currentBtn=null;
+
+function getACtx(){
+  if(!actx) actx=new AudioCtx();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+function stopAll(){
+  currentNodes.forEach(n=>{try{n.stop();}catch(e){}});
+  currentNodes=[];
+  if(currentBtn){
+    currentBtn.classList.remove('playing');
+    currentBtn.querySelector('.demo-note').textContent=currentBtn.dataset.label||'▶ Play';
+    currentBtn=null;
+  }
+}
+
+/* ── DRUM / PUKUL synthesis ── */
+function playPerc(btn, type, freq, dur){
+  stopAll();
+  const ctx=getACtx();
+  const now=ctx.currentTime;
+
+  if(type==='kick'){
+    // Bass drum: pitch sweep dari freq tinggi ke rendah
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(freq*3, now);
+    osc.frequency.exponentialRampToValueAtTime(freq*0.5, now+0.08);
+    gain.gain.setValueAtTime(1.0, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now+dur);
+    osc.start(now); osc.stop(now+dur);
+    currentNodes=[osc];
+
+  } else if(type==='snare'){
+    // Snare: noise burst + tonal body
+    const bufLen=ctx.sampleRate*0.2;
+    const buf=ctx.createBuffer(1,bufLen,ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<bufLen;i++) d[i]=(Math.random()*2-1);
+    const noise=ctx.createBufferSource();
+    noise.buffer=buf;
+    const bpf=ctx.createBiquadFilter();
+    bpf.type='bandpass'; bpf.frequency.value=2200; bpf.Q.value=0.8;
+    const ng=ctx.createGain();
+    noise.connect(bpf); bpf.connect(ng); ng.connect(ctx.destination);
+    ng.gain.setValueAtTime(0.7,now);
+    ng.gain.exponentialRampToValueAtTime(0.001,now+0.18);
+    // tonal body
+    const osc=ctx.createOscillator();
+    const og=ctx.createGain();
+    osc.frequency.value=200;
+    osc.connect(og); og.connect(ctx.destination);
+    og.gain.setValueAtTime(0.4,now);
+    og.gain.exponentialRampToValueAtTime(0.001,now+0.08);
+    noise.start(now); noise.stop(now+0.2);
+    osc.start(now); osc.stop(now+0.08);
+    currentNodes=[noise,osc];
+
+  } else if(type==='hihat'){
+    // Hi-hat: high noise burst
+    const bufLen=ctx.sampleRate*0.1;
+    const buf=ctx.createBuffer(1,bufLen,ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<bufLen;i++) d[i]=(Math.random()*2-1);
+    const noise=ctx.createBufferSource(); noise.buffer=buf;
+    const hpf=ctx.createBiquadFilter();
+    hpf.type='highpass'; hpf.frequency.value=7000;
+    const g=ctx.createGain();
+    noise.connect(hpf); hpf.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.5,now);
+    g.gain.exponentialRampToValueAtTime(0.001,now+dur);
+    noise.start(now); noise.stop(now+dur);
+    currentNodes=[noise];
+
+  } else if(type==='cymbal'){
+    // Cymbal: metallic noise
+    const bufLen=ctx.sampleRate*dur;
+    const buf=ctx.createBuffer(1,bufLen,ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<bufLen;i++) d[i]=(Math.random()*2-1)*0.8;
+    const noise=ctx.createBufferSource(); noise.buffer=buf;
+    const hpf=ctx.createBiquadFilter();
+    hpf.type='highpass'; hpf.frequency.value=4000;
+    const lpf=ctx.createBiquadFilter();
+    lpf.type='lowpass'; lpf.frequency.value=12000;
+    const g=ctx.createGain();
+    noise.connect(hpf); hpf.connect(lpf); lpf.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.4,now);
+    g.gain.exponentialRampToValueAtTime(0.001,now+dur);
+    noise.start(now); noise.stop(now+dur);
+    currentNodes=[noise];
+
+  } else if(type==='marimba'){
+    // Marimba/pitched perc: sine with quick decay
+    const osc=ctx.createOscillator();
+    const osc2=ctx.createOscillator();
+    const g=ctx.createGain();
+    osc.type='sine'; osc.frequency.value=freq;
+    osc2.type='sine'; osc2.frequency.value=freq*2.756; // marimba inharmonic partial
+    const g2=ctx.createGain(); g2.gain.value=0.2;
+    osc.connect(g); osc2.connect(g2); g2.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.7,now);
+    g.gain.exponentialRampToValueAtTime(0.001,now+dur);
+    osc.start(now); osc.stop(now+dur);
+    osc2.start(now); osc2.stop(now+dur);
+    currentNodes=[osc,osc2];
+
+  } else if(type==='timpani'){
+    // Timpani: low pitched drum with resonance
+    const osc=ctx.createOscillator();
+    const g=ctx.createGain();
+    osc.type='sine'; 
+    osc.frequency.setValueAtTime(freq*1.4,now);
+    osc.frequency.exponentialRampToValueAtTime(freq,now+0.04);
+    osc.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.8,now);
+    g.gain.exponentialRampToValueAtTime(0.001,now+dur);
+    // noise attack
+    const bufLen=ctx.sampleRate*0.05;
+    const buf=ctx.createBuffer(1,bufLen,ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<bufLen;i++) d[i]=(Math.random()*2-1);
+    const noise=ctx.createBufferSource(); noise.buffer=buf;
+    const ng=ctx.createGain(); ng.gain.value=0.15;
+    noise.connect(ng); ng.connect(ctx.destination);
+    noise.start(now); noise.stop(now+0.05);
+    osc.start(now); osc.stop(now+dur);
+    currentNodes=[osc,noise];
+  }
+
+  currentBtn=btn;
+  btn.classList.add('playing');
+  btn.querySelector('.demo-note').textContent='♪ ...';
+  setTimeout(()=>{if(currentBtn===btn){stopAll();}}, dur*1000+100);
+}
+
+function playWiki(audioId){
+  stopAll();
+  document.querySelectorAll('audio').forEach(a=>{if(!a.paused){a.pause();a.currentTime=0;}});
+  const aud=document.getElementById(audioId);
+  if(aud) aud.play();
+}
+</script>
+</body></html>
