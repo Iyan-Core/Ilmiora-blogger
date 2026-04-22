@@ -1,6 +1,23 @@
 # Ilmiora-blogger
 Sebuah website edukasi untuk semua jaringan
 
+Ilmiora-blog/
+├── .github/
+│   └── workflows/
+│       └── build-cordova.yml    # (opsional) untuk build otomatis via GitHub Actions
+├── www/                          # <-- folder utama untuk Cordova
+│   ├── index.html                # halaman utama (kode lengkap seperti yang saya berikan)
+│   ├── css/
+│   │   └── style.css             (bisa dipisah)
+│   ├── js/
+│   │   └── app.js                (kode JavaScript API Blogger)
+│   └── config.js                 (opsional, untuk API key)
+├── config.xml                    # konfigurasi Cordova
+├── package.json                  # dependensi dan script
+├── .gitignore                    # mengabaikan platforms/, plugins/, dll
+└── README.md                     # diperbarui dengan petunjuk build
+
+
 # Cordova Hooks
 
 Folder ini dapat berisi skrip yang dieksekusi pada tahap tertentu dari siklus hidup Cordova (seperti `before_build`, `after_platform_add`).  
