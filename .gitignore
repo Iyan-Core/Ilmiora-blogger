@@ -1,5 +1,12 @@
-# Object file
-*.o
+# Cordova build artifacts
+platforms/
+plugins/
+node_modules/
+package-lock.json
+resources/
+*.apk
+*.ipa
+*.aab
 
-# Ada Library Information
-*.ali
+# Cordova temporary files
+.cordova/
