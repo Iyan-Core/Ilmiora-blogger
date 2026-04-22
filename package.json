@@ -1,0 +1,35 @@
+{
+  "name": "ilmiora",
+  "displayName": "Ilmiora",
+  "version": "1.0.0",
+  "description": "Aplikasi edukasi untuk semua jaringan - wrapper Cordova dari Ilmiora blog.",
+  "main": "index.js",
+  "scripts": {
+    "build": "cordova build",
+    "build-android": "cordova build android",
+    "build-ios": "cordova build ios",
+    "add-android": "cordova platform add android",
+    "add-ios": "cordova platform add ios",
+    "prepare": "cordova prepare"
+  },
+  "keywords": [
+    "cordova",
+    "education",
+    "webview"
+  ],
+  "author": "lyan-Core",
+  "license": "MIT",
+  "devDependencies": {
+    "cordova": "^12.0.0",
+    "cordova-android": "^12.0.1",
+    "cordova-ios": "^7.0.1"
+  },
+  "cordova": {
+    "platforms": [],
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-statusbar": {}
+    }
+  }
+}
