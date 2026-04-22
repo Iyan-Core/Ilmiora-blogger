@@ -1,12 +1,15 @@
-# Cordova build artifacts
+# Cordova build outputs
 platforms/
 plugins/
 node_modules/
 package-lock.json
 resources/
+
+# Built APK (jangan commit APK ke git)
 *.apk
-*.ipa
 *.aab
 
-# Cordova temporary files
-.cordova/
+# IDE files
+.idea/
+.vscode/
+*.swp
