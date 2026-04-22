@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     <title>Ilmiora - Edukasi</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             background: #f5f7fa;
@@ -24,13 +20,8 @@
             top: 0;
             z-index: 10;
         }
-        .header h1 {
-            font-size: 1.5rem;
-        }
-        .header p {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
+        .header h1 { font-size: 1.5rem; }
+        .header p { font-size: 0.8rem; opacity: 0.8; }
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -42,10 +33,6 @@
             padding: 16px;
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-        .post-card:hover {
-            transform: translateY(-2px);
         }
         .post-card h3 {
             font-size: 1.25rem;
@@ -66,13 +53,8 @@
             color: #3498db;
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.85rem;
         }
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #7f8c8d;
-        }
+        .loading { text-align: center; padding: 40px; color: #7f8c8d; }
         .refresh-btn {
             position: fixed;
             bottom: 20px;
@@ -88,18 +70,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 20;
         }
-        .refresh-btn:active {
-            background: #2980b9;
-        }
-        .new-badge {
-            background: #e74c3c;
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-left: 8px;
-        }
+        .refresh-btn:active { background: #2980b9; }
     </style>
 </head>
 <body>
@@ -114,192 +85,112 @@
 
     <script>
         // ========== KONFIGURASI ==========
-        const BLOG_ID = 'GANTI_DENGAN_BLOG_ID_ANDA';      // ganti dengan ID numerik
-        const API_KEY = 'GANTI_DENGAN_API_KEY_ANDA';      // ganti dengan API Key
-
-        // Waktu terakhir update (gunakan timestamp ISO)
+        // GANTI DENGAN BLOG ID DAN API KEY ANDA
+        const BLOG_ID = '1234567890123456789';   // ganti!
+        const API_KEY = 'AIzaSyD....';           // ganti!
+        
         let lastUpdateTime = new Date().toISOString();
         let pollingInterval = null;
 
-        // ========== AMBIL ARTIKEL DARI API ==========
         async function fetchLatestPosts() {
             const url = `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts?key=${API_KEY}&orderBy=updated&fetchBodies=false&maxResults=10&status=live`;
-            
             try {
                 const response = await fetch(url);
                 const data = await response.json();
-                
-                if (data.error) {
-                    console.error('API Error:', data.error);
-                    return [];
-                }
-                
-                // Filter artikel yang lebih baru dari lastUpdateTime
+                if (data.error) return [];
                 const newPosts = data.items.filter(post => post.updated > lastUpdateTime);
-                
-                // Update lastUpdateTime dengan waktu artikel terbaru (jika ada)
-                if (data.items.length > 0) {
-                    const latest = data.items[0].updated;
-                    if (latest > lastUpdateTime) lastUpdateTime = latest;
-                }
-                
+                if (data.items.length > 0) lastUpdateTime = data.items[0].updated;
                 return newPosts;
-            } catch (err) {
-                console.error('Gagal mengambil artikel:', err);
+            } catch(err) {
+                console.error(err);
                 return [];
             }
         }
 
-        // ========== TAMPILKAN ARTIKEL DI HALAMAN ==========
         function displayPosts(posts, isNew = true) {
             const container = document.getElementById('postsContainer');
-            
-            // Jika pertama kali (container masih loading)
-            if (container.innerHTML.includes('Memuat artikel')) {
-                container.innerHTML = '';
-            }
-            
+            if (container.innerHTML.includes('Memuat artikel')) container.innerHTML = '';
             if (!posts || posts.length === 0) {
                 if (isNew && container.children.length === 0) {
                     container.innerHTML = '<div class="loading">Belum ada artikel. Tarik untuk refresh.</div>';
                 }
                 return;
             }
-            
-            // Urutkan dari yang terbaru ke lama
             posts.sort((a,b) => new Date(b.published) - new Date(a.published));
-            
             for (let post of posts) {
-                // Buat elemen kartu
                 const card = document.createElement('div');
                 card.className = 'post-card';
-                card.setAttribute('data-id', post.id);
-                
-                // Potong konten HTML menjadi teks biasa (excerpt)
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = post.content || '';
-                const plainText = tempDiv.textContent || tempDiv.innerText || '';
-                const excerpt = plainText.length > 200 ? plainText.substring(0, 200) + '...' : plainText;
-                
-                // Format tanggal
+                const plainText = tempDiv.textContent || '';
+                const excerpt = plainText.length > 200 ? plainText.substring(0,200)+'...' : plainText;
                 const pubDate = new Date(post.published);
-                const dateStr = pubDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-                
+                const dateStr = pubDate.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
                 card.innerHTML = `
                     <h3>${escapeHtml(post.title)}</h3>
                     <div class="post-date">📅 ${dateStr}</div>
                     <div class="post-excerpt">${escapeHtml(excerpt)}</div>
                     <a href="${post.url}" class="read-more" target="_blank" rel="noopener noreferrer">Baca selengkapnya →</a>
                 `;
-                
-                // Sisipkan di awal container (artikel terbaru di atas)
-                if (container.firstChild) {
-                    container.insertBefore(card, container.firstChild);
-                } else {
-                    container.appendChild(card);
-                }
-            }
-            
-            // Kirim notifikasi lokal (opsional) jika ada artikel baru dan aplikasi aktif
-            if (isNew && posts.length > 0 && window.cordova && cordova.plugins && cordova.plugins.localNotification) {
-                posts.forEach(post => {
-                    cordova.plugins.localNotification.schedule({
-                        title: '📢 Artikel Baru',
-                        text: post.title,
-                        foreground: true,
-                        icon: 'res://icon.png'
-                    });
-                });
+                container.prepend(card);
             }
         }
 
-        // Fungsi bantu untuk menghindari XSS
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
+                if(m==='&') return '&amp;';
+                if(m==='<') return '&lt;';
+                if(m==='>') return '&gt;';
                 return m;
-            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-                return c;
             });
         }
 
-        // ========== LOAD ARTIKEL PERTAMA KALI (SEMUA) ==========
         async function loadAllPosts() {
             const container = document.getElementById('postsContainer');
             container.innerHTML = '<div class="loading">Memuat artikel...</div>';
-            
             const url = `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts?key=${API_KEY}&orderBy=published&fetchBodies=false&maxResults=20&status=live`;
-            
             try {
                 const response = await fetch(url);
                 const data = await response.json();
                 if (data.error) throw new Error(data.error.message);
-                
                 container.innerHTML = '';
                 displayPosts(data.items, false);
-                
-                // Set lastUpdateTime ke waktu artikel terbaru
-                if (data.items.length > 0) {
-                    lastUpdateTime = data.items[0].updated;
-                }
-            } catch (err) {
-                console.error(err);
-                container.innerHTML = '<div class="loading">Gagal memuat artikel. Periksa koneksi internet.</div>';
+                if (data.items.length > 0) lastUpdateTime = data.items[0].updated;
+            } catch(err) {
+                container.innerHTML = '<div class="loading">Gagal memuat artikel. Periksa koneksi.</div>';
             }
         }
 
-        // ========== CEK ARTIKEL BARU (POLLING) ==========
         async function checkNewPosts() {
             const newPosts = await fetchLatestPosts();
             if (newPosts.length > 0) {
                 displayPosts(newPosts, true);
-                // Bisa juga getar atau suara
                 if (window.cordova && cordova.plugins && cordova.plugins.vibration) {
                     cordova.plugins.vibration.vibrate(200);
                 }
             }
         }
 
-        // ========== START & STOP POLLING ==========
         function startPolling(intervalSeconds = 30) {
             if (pollingInterval) clearInterval(pollingInterval);
-            // Langsung cek sekali saat mulai
             checkNewPosts();
             pollingInterval = setInterval(checkNewPosts, intervalSeconds * 1000);
         }
-
         function stopPolling() {
-            if (pollingInterval) {
-                clearInterval(pollingInterval);
-                pollingInterval = null;
-            }
+            if (pollingInterval) clearInterval(pollingInterval);
         }
-
-        // ========== MANUAL REFRESH ==========
         function manualRefresh() {
-            loadAllPosts();    // muat ulang semua artikel
-            checkNewPosts();   // cek artikel baru juga
+            loadAllPosts();
+            checkNewPosts();
         }
 
-        // ========== INIT APLIKASI ==========
         document.addEventListener('deviceready', onDeviceReady, false);
-        
         function onDeviceReady() {
-            console.log('Cordova siap, mulai polling...');
             loadAllPosts();
-            startPolling(30);  // cek setiap 30 detik
-            
-            // Tombol refresh manual
-            const btn = document.getElementById('refreshBtn');
-            if (btn) {
-                btn.addEventListener('click', manualRefresh);
-            }
+            startPolling(30);
+            document.getElementById('refreshBtn').addEventListener('click', manualRefresh);
         }
-        
-        // Jika tidak dijalankan di Cordova (misal debugging di browser biasa)
         if (!window.cordova) {
             window.addEventListener('load', () => {
                 loadAllPosts();
@@ -307,13 +198,8 @@
                 document.getElementById('refreshBtn').addEventListener('click', manualRefresh);
             });
         }
-        
-        // Hentikan polling saat app masuk background
         document.addEventListener('pause', stopPolling);
-        document.addEventListener('resume', () => {
-            startPolling(30);
-            checkNewPosts();
-        });
+        document.addEventListener('resume', () => { startPolling(30); checkNewPosts(); });
     </script>
 </body>
 </html>
