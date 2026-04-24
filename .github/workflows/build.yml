@@ -23,25 +23,23 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Verify Java
+        run: java -version
+
       - name: Install Cordova
         run: npm install -g cordova
 
       - name: Install dependencies
         run: npm install --ignore-scripts
 
+      # 🔥 PAKAI VERSION STABIL
       - name: Add Android platform
-        run: cordova platform add android
-
-      # 🔥 FIX GRADLE
-      - name: Downgrade Gradle
-        run: |
-          cd platforms/android
-          ./gradlew wrapper --gradle-version 7.6
+        run: cordova platform add android@11
 
       - name: Build APK
         run: cordova build android --release -- --packageType=apk
 
-      # Cari APK otomatis
+      # Cari APK
       - name: Find APK
         run: find . -name "*.apk"
 
