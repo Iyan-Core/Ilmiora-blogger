@@ -2,14 +2,17 @@ name: Build Ilmiora APK
 
 on:
   push:
-    branches: [ main, master ]
-  workflow_dispatch:   # memungkinkan run manual dari tab Actions
+    branches:
+      - main
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -17,23 +20,26 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Cordova
+      - name: Install Cordova CLI
         run: npm install -g cordova
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install project dependencies (skip prepare)
+        run: npm install --ignore-scripts
 
       - name: Add Android platform
-        run: cordova platform add android --no-fetch
+        run: cordova platform add android
 
-      - name: Build APK (release unsigned)
+      - name: Prepare Cordova project
+        run: cordova prepare android
+
+      - name: Build APK Release
         run: cordova build android --release -- --packageType=apk
 
-      - name: Rename APK to ilmiora.apk
+      - name: Rename APK
         run: |
           cp platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ilmiora.apk
 
-      - name: Upload APK as artifact
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ilmiora-apk
